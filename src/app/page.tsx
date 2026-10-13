@@ -1,11 +1,11 @@
 import { QCromoDiferido } from "@/componentes/3d/QCromoDiferido";
 import { TextoTipeado } from "@/componentes/estructura/TextoTipeado";
+import { Nosotros } from "@/componentes/secciones/Nosotros";
 import { EN_CONSTRUCCION, HERO } from "@/datos/textos";
 
 /**
- * Página única del sitio. La portada ya tiene la Q de cromo en 3D (fase 2);
- * la animación de tipeo y el punto que avanza con el scroll llegan en la
- * fase 3, y las demás secciones son marcadores anclados.
+ * Página única del sitio: portada con la Q de cromo, Nosotros, y los
+ * marcadores anclados de las secciones que faltan (fases 5 a 7).
  */
 export default function Inicio() {
   return (
@@ -48,7 +48,9 @@ export default function Inicio() {
         </div>
       </section>
 
-      {/* TODO (fases 4 a 7): secciones reales de Nosotros, Plataformas, Webs y Contacto. */}
+      <Nosotros />
+
+      {/* TODO (fases 5 a 7): secciones reales de Plataformas, Webs y Contacto. */}
       {EN_CONSTRUCCION.map((seccion) => (
         <section key={seccion.id} id={seccion.id} className="border-t border-profundo">
           <div className="contenedor py-24 md:py-32">
