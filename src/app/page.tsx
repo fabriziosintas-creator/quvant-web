@@ -1,6 +1,7 @@
 import { QCromoDiferido } from "@/componentes/3d/QCromoDiferido";
 import { TextoTipeado } from "@/componentes/estructura/TextoTipeado";
 import { Nosotros } from "@/componentes/secciones/Nosotros";
+import { Plataformas } from "@/componentes/secciones/Plataformas";
 import { EN_CONSTRUCCION, HERO } from "@/datos/textos";
 
 /**
@@ -49,8 +50,9 @@ export default function Inicio() {
       </section>
 
       <Nosotros />
+      <Plataformas />
 
-      {/* TODO (fases 5 a 7): secciones reales de Plataformas, Webs y Contacto. */}
+      {/* TODO (fases 6 y 7): secciones reales de Webs y Contacto. */}
       {EN_CONSTRUCCION.map((seccion) => (
         <section key={seccion.id} id={seccion.id} className="border-t border-profundo">
           <div className="contenedor py-24 md:py-32">

@@ -38,13 +38,164 @@ export const HERO = {
 
 /**
  * Marcadores de las secciones que todavía no se construyeron.
- * Se reemplazan por las secciones reales en las fases 5 a 7.
+ * Se reemplazan por las secciones reales en las fases 6 y 7.
  */
 export const EN_CONSTRUCCION = [
-  { id: "plataformas", numero: "03", titulo: "Plataformas" },
   { id: "webs", numero: "04", titulo: "Webs" },
   { id: "contacto", numero: "05", titulo: "Contacto" },
 ] as const;
+
+export const PLATAFORMAS = {
+  numero: "03",
+  etiqueta: "Plataformas",
+  titulo: "El mismo núcleo, un sistema para cada rubro.",
+  bajada:
+    "Quvant es el sistema de gestión: un núcleo común que ya funciona y, arriba, una plantilla pensada para cada rubro. Cada producto lleva su nombre y la firma de la casa.",
+  nucleo: {
+    etiqueta: "El núcleo común",
+    modulos: ["Usuarios y roles", "Sucursales", "Caja", "Ventas", "Stock", "Reportes"],
+  },
+  hoy: {
+    etiqueta: "Lo que hace hoy",
+    etiquetaResto: "Y además",
+    destacadas: [
+      {
+        id: "margen",
+        titulo: "El margen, antes de tocar un precio",
+        texto: "Ves el margen antes de aplicar un aumento masivo de precios.",
+      },
+      {
+        id: "offline",
+        titulo: "Sin internet, se sigue vendiendo",
+        texto: "Se sigue vendiendo sin internet en el mostrador.",
+      },
+      {
+        id: "tablero",
+        titulo: "Cada rol ve lo suyo",
+        texto: "Tablero por rol con «Para atender hoy»; el dueño ve todo desde el celular.",
+      },
+      {
+        id: "stock",
+        titulo: "El stock, sucursal por sucursal",
+        texto: "Stock por sucursal y conteo con la cámara del teléfono.",
+      },
+      {
+        id: "compras",
+        titulo: "Compras que se sugieren solas",
+        texto: "Compras sugeridas según el stock mínimo.",
+      },
+    ],
+    resto: [
+      "Presupuestos que pasan a venta en un clic",
+      "Cuentas corrientes con límite",
+      "Taller de servicio técnico",
+      "Hoja de ruta de reparto",
+      "Reportes exportables",
+      "Importación desde Excel",
+      "Permisos por rol y doble factor para el dueño",
+    ],
+  },
+  rubros: {
+    etiqueta: "Rubros",
+    notaVacio: "Estamos entrando en este rubro. Si es el tuyo, hablemos.",
+    items: [
+      {
+        id: "industria",
+        nombre: "Industria",
+        estado: "disponible",
+        descripcion: "Fábricas, ferreterías industriales y empresas con depósito.",
+        productos: [
+          {
+            nombre: "Yunque",
+            firma: "by Quvant",
+            rol: "El sistema de gestión e inventario para empresas industriales: stock por sucursal, compras y ventas en un solo lugar.",
+          },
+          {
+            nombre: "Forja",
+            firma: "by Quvant",
+            rol: "El complemento de Yunque que muestra el inventario y las sucursales en 3D.",
+          },
+        ],
+      },
+      {
+        id: "gimnasios",
+        nombre: "Gimnasios y fitness",
+        estado: "disponible",
+        descripcion: "Gimnasios, boxes y estudios de entrenamiento.",
+        productos: [
+          {
+            nombre: "Quvant Gimnasios",
+            firma: "",
+            rol: "La administración del gimnasio, armada sobre el núcleo Quvant.",
+          },
+          {
+            nombre: "HackFit",
+            firma: "by Quvant",
+            rol: "La app para los socios: rutinas basadas en evidencia y dietas personalizadas. Gratis para los socios del gimnasio.",
+          },
+        ],
+      },
+      {
+        id: "holistica",
+        nombre: "Holística",
+        estado: "proximamente",
+        descripcion: "Centros y profesionales del bienestar.",
+        productos: [],
+      },
+      {
+        id: "pymes",
+        nombre: "Pymes",
+        estado: "en-diseno",
+        descripcion: "Comercios y empresas chicas de cualquier rubro.",
+        productos: [
+          {
+            nombre: "Crisol",
+            firma: "by Quvant",
+            rol: "La gestión completa para pymes, del presupuesto al reporte.",
+          },
+        ],
+      },
+      {
+        id: "inmobiliarias",
+        nombre: "Inmobiliarias",
+        estado: "en-diseno",
+        descripcion: "Venta, alquileres y administración de propiedades.",
+        productos: [
+          {
+            nombre: "Cimiento",
+            firma: "by Quvant",
+            rol: "Cartera de propiedades, contratos y cobranzas para inmobiliarias.",
+          },
+        ],
+      },
+      {
+        id: "supermercados",
+        nombre: "Supermercados",
+        estado: "en-diseno",
+        descripcion: "Cadenas con muchas cajas y mucho movimiento.",
+        productos: [
+          {
+            nombre: "Góndola",
+            firma: "by Quvant",
+            rol: "Para cadenas con muchas cajas: venta rápida, stock y sucursales.",
+          },
+        ],
+      },
+    ],
+  },
+  estados: {
+    disponible: "Disponible hoy",
+    proximamente: "Próximamente",
+    "en-diseno": "En diseño",
+  },
+  ilustracionEjemplo: "Ilustración de ejemplo",
+  forjaVentana: "Forja · El depósito en 3D",
+  integraciones: {
+    etiqueta: "Integraciones en camino",
+    items: ["Facturación con ARCA", "Cobros con Mercado Pago", "Avisos por WhatsApp"],
+    nota: "Están en desarrollo: las anunciamos cuando funcionen, no antes.",
+  },
+} as const;
 
 export const NOSOTROS = {
   numero: "02",
