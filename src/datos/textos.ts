@@ -38,12 +38,24 @@ export const HERO = {
 
 /**
  * Marcadores de las secciones que todavía no se construyeron.
- * Se reemplazan por las secciones reales en las fases 6 y 7.
+ * Se reemplaza por la sección real en la fase 7.
  */
-export const EN_CONSTRUCCION = [
-  { id: "webs", numero: "04", titulo: "Webs" },
-  { id: "contacto", numero: "05", titulo: "Contacto" },
-] as const;
+export const EN_CONSTRUCCION = [{ id: "contacto", numero: "05", titulo: "Contacto" }] as const;
+
+export const WEBS = {
+  numero: "04",
+  etiqueta: "Webs",
+  titulo: "Páginas web para nuestros clientes.",
+  bajada:
+    "Desde cero o renovando la que quedó vieja, con migración segura de los datos sensibles. Así se trabaja: con una propuesta concreta sobre la mesa.",
+  etiquetaAntes: "Antes",
+  etiquetaDespues: "Después",
+  ayudaDeslizador: "Comparar la web actual con la propuesta (arrastrá o usá las flechas)",
+  etiquetaCelular: "La propuesta en el celular",
+  notaCelular: "Con el scroll, el teléfono gira: de la web actual a la propuesta.",
+  etiquetaDemo: "La demo, paso a paso",
+  etiquetaQueCambio: "Qué cambió",
+} as const;
 
 export const PLATAFORMAS = {
   numero: "03",
