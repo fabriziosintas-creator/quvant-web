@@ -76,8 +76,8 @@ export function QCromo({ animarEntrada = true, alProgresar }: Props) {
       new THREE.MeshStandardMaterial({
         color: 0xffffff,
         metalness: 1,
-        roughness: 0.06,
-        envMapIntensity: 1.35,
+        roughness: 0.05,
+        envMapIntensity: 1.45,
       }),
     [],
   );

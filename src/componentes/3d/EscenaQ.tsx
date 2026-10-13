@@ -26,44 +26,67 @@ export default function EscenaQ() {
         style={{ pointerEvents: "none" }}
       >
         <QCromo alProgresar={setProgreso} />
-        {/* Estudio propio: tiras de luz sobre fondo oscuro, el contraste que
-            necesita el cromo. Se renderiza una sola vez (frames={1}). */}
+        {/* Estudio propio con la lógica del degradado del manual: casi todo
+            plateado claro y una sola veta oscura. Se renderiza una vez. */}
         <Environment resolution={256} frames={1}>
+          {/* Base gris plata: es lo que el cromo refleja donde no hay luces,
+              en lugar de negro. De acá sale el "plateado" general. */}
+          <color attach="background" args={["#7c7f85"]} />
+          {/* Cielo blanco amplio (las zonas #FFFFFF / #F2F4F6 del degradado). */}
           <Lightformer
             form="rect"
-            intensity={2.4}
-            position={[0, 5, 1]}
+            intensity={2.6}
+            position={[0, 6, 0]}
             rotation-x={Math.PI / 2}
-            scale={[10, 5, 1]}
+            scale={[16, 12, 1]}
           />
+          {/* Tiras laterales claras. */}
           <Lightformer
             form="rect"
-            intensity={1.2}
-            position={[-5, 0, 2]}
+            intensity={1.4}
+            position={[-6, 1, 2]}
             rotation-y={Math.PI / 2}
-            scale={[6, 1.6, 1]}
+            scale={[7, 2, 1]}
           />
           <Lightformer
             form="rect"
-            intensity={0.7}
-            position={[5, 1, 2]}
+            intensity={1}
+            position={[6, 2, 2]}
             rotation-y={-Math.PI / 2}
-            scale={[6, 1.2, 1]}
+            scale={[7, 1.6, 1]}
+          />
+          {/* Piso claro, para que la panza del aro no quede apagada. */}
+          <Lightformer
+            form="rect"
+            intensity={0.9}
+            position={[0, -5, 2]}
+            rotation-x={-Math.PI / 2}
+            scale={[14, 10, 1]}
+          />
+          {/* La única veta oscura (la vena #3A3D42 del degradado): una banda
+              angosta al frente y otra atrás, no un fondo entero. */}
+          <Lightformer
+            form="rect"
+            color="#26262b"
+            intensity={1}
+            position={[0, -0.6, 5]}
+            rotation-y={Math.PI}
+            scale={[18, 1.3, 1]}
           />
           <Lightformer
             form="rect"
-            intensity={0.45}
-            position={[0, -4, 3]}
-            rotation-x={-Math.PI / 2.4}
-            scale={[9, 2, 1]}
+            color="#3a3d42"
+            intensity={1}
+            position={[-3, 3.4, -5]}
+            scale={[12, 1, 1]}
           />
-          {/* La veta diagonal fina, firma clásica del cromo pulido. */}
+          {/* La veta diagonal brillante, firma clásica del cromo pulido. */}
           <Lightformer
             form="rect"
-            intensity={3}
+            intensity={3.2}
             position={[2, 3, 4]}
             rotation={[Math.PI / 2.6, 0.4, 0]}
-            scale={[7, 0.5, 1]}
+            scale={[8, 0.6, 1]}
           />
         </Environment>
       </Canvas>
