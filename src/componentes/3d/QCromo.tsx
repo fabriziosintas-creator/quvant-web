@@ -103,8 +103,9 @@ export function QCromo({ animarEntrada = true, alProgresar }: Props) {
       new THREE.MeshStandardMaterial({
         color: 0xffffff,
         metalness: 1,
-        roughness: 0.05,
-        envMapIntensity: 1.45,
+        // Parámetros de la variante D del laboratorio (degradado del manual).
+        roughness: 0.04,
+        envMapIntensity: 1.3,
       }),
     [],
   );

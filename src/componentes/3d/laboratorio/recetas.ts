@@ -26,22 +26,11 @@ export type RecetaCromo = {
   paneles?: Panel[];
 };
 
-/** Paradas exactas del degradado de cromo del manual, de arriba hacia abajo. */
-export const PARADAS_MANUAL: Array<[number, string]> = [
-  [0, "#FFFFFF"],
-  [0.1667, "#D9DCE0"],
-  [0.3333, "#3A3D42"],
-  [0.5, "#F2F4F6"],
-  [0.6667, "#6C7076"],
-  [0.8333, "#FFFFFF"],
-  [1, "#9DA1A7"],
-];
-
 export const VARIANTES: RecetaCromo[] = [
   {
     letra: "A",
-    nombre: "La actual",
-    descripcion: "Base gris plata, cielo blanco y una veta oscura. Lo que está hoy en la portada.",
+    nombre: "Estudio plata",
+    descripcion: "Base gris plata, cielo blanco y una veta oscura. Fue la primera propuesta.",
     rugosidad: 0.05,
     intensidadReflejo: 1.45,
     fondo: "#7c7f85",

@@ -4,7 +4,8 @@ import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Lightformer } from "@react-three/drei";
 import * as THREE from "three";
-import { PARADAS_MANUAL, VARIANTES, type RecetaCromo } from "./recetas";
+import { obtenerEntornoManual } from "../entornoManual";
+import { VARIANTES, type RecetaCromo } from "./recetas";
 
 /**
  * Grilla del laboratorio: la misma Q del sitio repetida con distintas
@@ -104,35 +105,9 @@ function QFigura({ receta }: { receta: RecetaCromo }) {
   );
 }
 
-/**
- * Entorno literal del manual: un degradado equirectangular con sus 7 paradas.
- * La textura se crea una sola vez por pestaña, fuera de React, y la comparten
- * todas las muestras que la usen.
- */
-let texturaManual: THREE.CanvasTexture | null = null;
-
-function obtenerTexturaManual(): THREE.CanvasTexture {
-  if (texturaManual) return texturaManual;
-  const lienzo = document.createElement("canvas");
-  lienzo.width = 1024;
-  lienzo.height = 512;
-  const contexto = lienzo.getContext("2d");
-  if (contexto) {
-    const degradado = contexto.createLinearGradient(0, 0, 0, lienzo.height);
-    for (const [posicion, color] of PARADAS_MANUAL) {
-      degradado.addColorStop(posicion, color);
-    }
-    contexto.fillStyle = degradado;
-    contexto.fillRect(0, 0, lienzo.width, lienzo.height);
-  }
-  texturaManual = new THREE.CanvasTexture(lienzo);
-  texturaManual.mapping = THREE.EquirectangularReflectionMapping;
-  texturaManual.colorSpace = THREE.SRGBColorSpace;
-  return texturaManual;
-}
-
+/** Entorno literal del manual (compartido con la portada): ver entornoManual.ts. */
 function EntornoDegradadoManual() {
-  return <Environment map={obtenerTexturaManual()} />;
+  return <Environment map={obtenerEntornoManual()} />;
 }
 
 function EntornoReceta({ receta }: { receta: RecetaCromo }) {

@@ -2,14 +2,17 @@
 
 import { useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Environment, Lightformer } from "@react-three/drei";
+import { Environment } from "@react-three/drei";
+import { obtenerEntornoManual } from "./entornoManual";
 import { QCromo } from "./QCromo";
 
 /**
- * Lienzo 3D de la portada: la Q de cromo flotando sobre negro, con un
- * entorno de estudio generado por código (sin HDRI descargado, 256 px:
- * muy por debajo del presupuesto de 1k del estudio de referencia) y el
- * contador 000 → 100 en Michroma mientras la Q se arma, estilo Lusion.
+ * Lienzo 3D fijo de la página: la Q de cromo flotando sobre negro, con el
+ * contador 000 → 100 en Michroma mientras se arma, estilo Lusion.
+ *
+ * El cromo refleja el entorno "degradado del manual" (variante D elegida
+ * por fabrizio en /laboratorio-cromo): las siete paradas del degradado
+ * oficial del logo como cielo equirectangular. Sin HDRI descargado.
  *
  * El lienzo no recibe clics (pointer-events: none): el texto y los botones
  * de la portada quedan siempre usables por encima.
@@ -26,69 +29,7 @@ export default function EscenaQ() {
         style={{ pointerEvents: "none" }}
       >
         <QCromo alProgresar={setProgreso} />
-        {/* Estudio propio con la lógica del degradado del manual: casi todo
-            plateado claro y una sola veta oscura. Se renderiza una vez. */}
-        <Environment resolution={256} frames={1}>
-          {/* Base gris plata: es lo que el cromo refleja donde no hay luces,
-              en lugar de negro. De acá sale el "plateado" general. */}
-          <color attach="background" args={["#7c7f85"]} />
-          {/* Cielo blanco amplio (las zonas #FFFFFF / #F2F4F6 del degradado). */}
-          <Lightformer
-            form="rect"
-            intensity={2.6}
-            position={[0, 6, 0]}
-            rotation-x={Math.PI / 2}
-            scale={[16, 12, 1]}
-          />
-          {/* Tiras laterales claras. */}
-          <Lightformer
-            form="rect"
-            intensity={1.4}
-            position={[-6, 1, 2]}
-            rotation-y={Math.PI / 2}
-            scale={[7, 2, 1]}
-          />
-          <Lightformer
-            form="rect"
-            intensity={1}
-            position={[6, 2, 2]}
-            rotation-y={-Math.PI / 2}
-            scale={[7, 1.6, 1]}
-          />
-          {/* Piso claro, para que la panza del aro no quede apagada. */}
-          <Lightformer
-            form="rect"
-            intensity={0.9}
-            position={[0, -5, 2]}
-            rotation-x={-Math.PI / 2}
-            scale={[14, 10, 1]}
-          />
-          {/* La única veta oscura (la vena #3A3D42 del degradado): una banda
-              angosta al frente y otra atrás, no un fondo entero. */}
-          <Lightformer
-            form="rect"
-            color="#26262b"
-            intensity={1}
-            position={[0, -0.6, 5]}
-            rotation-y={Math.PI}
-            scale={[18, 1.3, 1]}
-          />
-          <Lightformer
-            form="rect"
-            color="#3a3d42"
-            intensity={1}
-            position={[-3, 3.4, -5]}
-            scale={[12, 1, 1]}
-          />
-          {/* La veta diagonal brillante, firma clásica del cromo pulido. */}
-          <Lightformer
-            form="rect"
-            intensity={3.2}
-            position={[2, 3, 4]}
-            rotation={[Math.PI / 2.6, 0.4, 0]}
-            scale={[8, 0.6, 1]}
-          />
-        </Environment>
+        <Environment map={obtenerEntornoManual()} />
       </Canvas>
 
       {/* Contador del armado, abajo a la izquierda (recomendación del estudio). */}
