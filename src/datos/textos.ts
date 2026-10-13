@@ -36,11 +36,35 @@ export const HERO = {
   botonSecundario: { texto: "Hablemos", destino: "#contacto" },
 } as const;
 
-/**
- * Marcadores de las secciones que todavía no se construyeron.
- * Se reemplaza por la sección real en la fase 7.
- */
-export const EN_CONSTRUCCION = [{ id: "contacto", numero: "05", titulo: "Contacto" }] as const;
+export const CONTACTO_SECCION = {
+  numero: "05",
+  etiqueta: "Contacto",
+  titulo: "Contanos qué necesitás.",
+  bajada:
+    "Completá estos datos y el mensaje te queda armado: lo mandás por WhatsApp o por email, como prefieras.",
+  campos: {
+    nombre: { etiqueta: "Nombre", marcador: "¿Cómo te llamás?" },
+    empresa: { etiqueta: "Empresa (opcional)", marcador: "El nombre de tu empresa" },
+    rubro: { etiqueta: "Rubro", marcador: "Ferretería, gimnasio, inmobiliaria…" },
+    necesidad: {
+      etiqueta: "Qué necesitás",
+      opciones: [
+        { id: "sistema", texto: "Un sistema listo para mi rubro" },
+        { id: "app", texto: "Una app a medida" },
+        { id: "web", texto: "Una web nueva o renovada" },
+      ],
+    },
+    mensaje: { etiqueta: "Mensaje", marcador: "Contanos tu situación en dos líneas." },
+  },
+  botones: { whatsapp: "Enviar por WhatsApp", email: "Prefiero por email" },
+  nota: "El mensaje se abre en tu WhatsApp o tu email, listo para mandar. No guardamos nada en ningún servidor.",
+  directo: {
+    etiqueta: "Directo",
+    titulo: "¿Ya sabés lo que querés?",
+    filas: { whatsapp: "WhatsApp", email: "Email", instagram: "Instagram" },
+  },
+  asuntoEmail: "Consulta desde la web de Quvant",
+} as const;
 
 export const WEBS = {
   numero: "04",

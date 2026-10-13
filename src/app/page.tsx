@@ -1,14 +1,12 @@
 import { QCromoDiferido } from "@/componentes/3d/QCromoDiferido";
 import { TextoTipeado } from "@/componentes/estructura/TextoTipeado";
+import { Contacto } from "@/componentes/secciones/Contacto";
 import { Nosotros } from "@/componentes/secciones/Nosotros";
 import { Plataformas } from "@/componentes/secciones/Plataformas";
 import { Webs } from "@/componentes/secciones/Webs";
-import { EN_CONSTRUCCION, HERO } from "@/datos/textos";
+import { HERO } from "@/datos/textos";
 
-/**
- * Página única del sitio: portada con la Q de cromo, Nosotros, y los
- * marcadores anclados de las secciones que faltan (fases 5 a 7).
- */
+/** Página única del sitio: portada con la Q de cromo y las cinco secciones. */
 export default function Inicio() {
   return (
     <>
@@ -53,21 +51,7 @@ export default function Inicio() {
       <Nosotros />
       <Plataformas />
       <Webs />
-
-      {/* TODO (fase 7): sección real de Contacto. */}
-      {EN_CONSTRUCCION.map((seccion) => (
-        <section key={seccion.id} id={seccion.id} className="border-t border-profundo">
-          <div className="contenedor py-24 md:py-32">
-            <p className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
-              {seccion.numero} · {seccion.titulo}
-            </p>
-            <p className="mt-5 flex items-center gap-3 font-plex text-sm text-acero">
-              <span aria-hidden className="inline-block size-1 bg-profundo" />
-              Sección en construcción.
-            </p>
-          </div>
-        </section>
-      ))}
+      <Contacto />
     </>
   );
 }
