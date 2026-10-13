@@ -20,7 +20,8 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Quvant · Software a la vanguardia de cada nicho.",
+  // Título con la búsqueda real en español y con lugar (estudio de referencia, 9.1).
+  title: "Quvant | Desarrollo de software y sistemas de gestión en Argentina",
   description:
     "Sistemas de gestión listos para cada rubro, aplicaciones a medida y páginas web. Entramos en tu rubro, entendemos cómo trabaja y construimos el sistema que todavía no tiene.",
 };
@@ -31,7 +32,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${michroma.variable} ${plexMono.variable} antialiased`}>
+    <html lang="es-AR" className={`${michroma.variable} ${plexMono.variable} antialiased`}>
       <body className="flex min-h-svh flex-col">
         <a
           href="#contenido"

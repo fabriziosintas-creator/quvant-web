@@ -1,17 +1,21 @@
+import { QCromoDiferido } from "@/componentes/3d/QCromoDiferido";
 import { EN_CONSTRUCCION, HERO } from "@/datos/textos";
 
 /**
- * Página única del sitio. En esta fase, la portada es una versión estática
- * (la Q de cromo en 3D y la animación de tipeo llegan en las fases 2 y 3)
- * y las demás secciones son marcadores anclados para que el menú ya navegue.
+ * Página única del sitio. La portada ya tiene la Q de cromo en 3D (fase 2);
+ * la animación de tipeo y el punto que avanza con el scroll llegan en la
+ * fase 3, y las demás secciones son marcadores anclados.
  */
 export default function Inicio() {
   return (
     <>
-      <section id="inicio" className="flex min-h-svh flex-col justify-center pt-16">
-        <div className="contenedor">
-          {/* TODO (fase 2 y 3): la Q de cromo en 3D y el punto que avanza con el scroll. */}
-          <h1 className="font-michroma text-[clamp(2.5rem,12.5vw,9rem)] leading-none tracking-marca text-blanco">
+      <section
+        id="inicio"
+        className="relative flex min-h-svh flex-col justify-end overflow-hidden pb-24 pt-16 md:justify-center md:pb-0"
+      >
+        <QCromoDiferido />
+        <div className="contenedor relative z-10">
+          <h1 className="font-michroma text-[clamp(2.5rem,13vw,4.75rem)] leading-none tracking-marca text-blanco md:text-[clamp(4.75rem,8vw,8.5rem)]">
             {HERO.titulo}
           </h1>
           <p className="mt-7 max-w-xl font-plex text-sm text-acero md:text-base">
