@@ -63,5 +63,12 @@ export function QCromoDiferido() {
     );
   }
 
-  return <EscenaQ />;
+  // Un solo lienzo 3D fijo detrás de toda la página (recomendación del
+  // estudio): la Q y el punto viajero viven acá y acompañan el scroll.
+  // El z negativo lo deja arriba del fondo del body y debajo del contenido.
+  return (
+    <div aria-hidden className="fixed inset-0 -z-10">
+      <EscenaQ />
+    </div>
+  );
 }

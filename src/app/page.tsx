@@ -1,4 +1,5 @@
 import { QCromoDiferido } from "@/componentes/3d/QCromoDiferido";
+import { TextoTipeado } from "@/componentes/estructura/TextoTipeado";
 import { EN_CONSTRUCCION, HERO } from "@/datos/textos";
 
 /**
@@ -19,7 +20,7 @@ export default function Inicio() {
             {HERO.titulo}
           </h1>
           <p className="mt-7 max-w-xl font-plex text-sm text-acero md:text-base">
-            {HERO.bajada}
+            <TextoTipeado texto={HERO.bajada} />
           </p>
           <div className="mt-11 flex flex-wrap gap-4">
             <a
@@ -34,6 +35,15 @@ export default function Inicio() {
             >
               {HERO.botonSecundario.texto}
             </a>
+          </div>
+        </div>
+
+        {/* Pista de scroll: el punto cuadrado bajando por un riel fino. */}
+        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-9 z-10">
+          <div className="contenedor flex justify-end">
+            <div className="relative h-9 w-px bg-profundo">
+              <span className="absolute -left-[2.5px] top-0 size-1.5 bg-blanco motion-safe:animate-[desliz_2.2s_ease-in-out_infinite]" />
+            </div>
           </div>
         </div>
       </section>

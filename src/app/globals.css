@@ -55,6 +55,33 @@ body {
   color: var(--color-negro);
 }
 
+/* Cursor de terminal: el punto cuadrado de la marca parpadeando. */
+@keyframes parpadeo {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* El punto que baja por el riel de la pista de scroll de la portada. */
+@keyframes desliz {
+  0% {
+    transform: translateY(-0.125rem);
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(1.875rem);
+    opacity: 0;
+  }
+}
+
 :focus-visible {
   outline: 2px solid var(--color-blanco);
   outline-offset: 3px;

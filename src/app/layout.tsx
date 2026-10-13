@@ -3,6 +3,7 @@ import { IBM_Plex_Mono, Michroma } from "next/font/google";
 import "./globals.css";
 import { Encabezado } from "@/componentes/estructura/Encabezado";
 import { Pie } from "@/componentes/estructura/Pie";
+import { ScrollSuave } from "@/componentes/estructura/ScrollSuave";
 import { ACCESIBILIDAD } from "@/datos/textos";
 
 const michroma = Michroma({
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
           {ACCESIBILIDAD.saltarAlContenido}
         </a>
+        <ScrollSuave />
         <Encabezado />
         <main id="contenido" className="flex-1">
           {children}
