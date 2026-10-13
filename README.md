@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Quvant — sitio web
 
-## Getting Started
+Sitio de una sola página de **Quvant** («kúvant»): _Software a la vanguardia de cada nicho._
 
-First, run the development server:
+## Stack
+
+- Next.js (App Router) + TypeScript + Tailwind CSS v4
+- 3D: three + @react-three/fiber + @react-three/drei (desde la fase 2)
+- Tipografías: Michroma e IBM Plex Mono vía `next/font/google`
+
+## Comandos
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev     # desarrollo (http://localhost:3000)
+npm run build   # build de producción
+npm run lint    # ESLint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Para probar desde el celular en la misma red:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev -- -H 0.0.0.0
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+y abrir `http://<IP-de-la-PC>:3000` en el teléfono.
 
-## Learn More
+## Estructura
 
-To learn more about Next.js, take a look at the following resources:
+- `src/datos/textos.ts` — **todos los textos del sitio** (editá acá, no en los componentes).
+- `src/datos/contacto.ts` — WhatsApp, email e Instagram (**TODO: completar con datos reales**).
+- `src/componentes/marca/` — isotipo Q y firma horizontal en SVG, según el manual de identidad.
+- `src/componentes/estructura/` — menú fijo y pie de página.
+- `src/componentes/3d/` — la Q de cromo en React Three Fiber (fase 2).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Reglas de marca (resumen)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Colores: negro `#0D0D0F`, blanco `#ECECEE`, gris acero `#9C9CA3`, gris profundo `#26262B`. Sin otros colores ni degradados; la única excepción es el cromado oficial de la Q.
+- Michroma siempre en mayúsculas y con tracking amplio; IBM Plex Mono para todo el resto.
+- No prometer integraciones que todavía no existen.

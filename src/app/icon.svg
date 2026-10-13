@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 105 105">
+  <defs>
+    <linearGradient id="cromo" gradientUnits="userSpaceOnUse" x1="8" y1="20" x2="97" y2="85">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="0.1667" stop-color="#D9DCE0"/>
+      <stop offset="0.3333" stop-color="#3A3D42"/>
+      <stop offset="0.5" stop-color="#F2F4F6"/>
+      <stop offset="0.6667" stop-color="#6C7076"/>
+      <stop offset="0.8333" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#9DA1A7"/>
+    </linearGradient>
+  </defs>
+  <circle cx="44" cy="44" r="31" fill="none" stroke="url(#cromo)" stroke-width="10"/>
+  <line x1="63" y1="63" x2="80" y2="80" stroke="url(#cromo)" stroke-width="10"/>
+  <rect x="86" y="86" width="11" height="11" fill="url(#cromo)"/>
+</svg>
