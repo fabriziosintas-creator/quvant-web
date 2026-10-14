@@ -8,6 +8,7 @@
   "dependencies": {
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.1",
+    "@react-three/postprocessing": "^3.2.0",
     "@remotion/cli": "4.0.535",
     "@remotion/three": "^4.0.535",
     "react": "19.2.3",
@@ -17,12 +18,18 @@
   },
   "devDependencies": {
     "@remotion/eslint-config-flat": "4.0.535",
+    "@types/pngjs": "^6.0.5",
     "@types/react": "19.2.7",
     "@types/three": "^0.186.0",
     "@types/web": "0.0.166",
+    "dotenv": "^18.0.8",
     "eslint": "9.39.5",
+    "pixelmatch": "^8.0.0",
+    "playwright": "^1.64.1",
+    "pngjs": "^7.0.0",
     "prettier": "3.8.1",
     "sharp": "^0.35.5",
+    "tsx": "^4.23.15",
     "typescript": "5.9.3"
   },
   "scripts": {
@@ -31,6 +38,7 @@
     "upgrade": "remotion upgrade",
     "lint": "eslint src && tsc",
     "pantallas": "node scripts/preparar-pantallas.mjs",
-    "estudio": "remotion studio"
+    "estudio": "remotion studio",
+    "grabar": "tsx scripts/record-products.ts"
   }
 }

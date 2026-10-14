@@ -9,3 +9,10 @@ out
 # Renders de prueba y salidas
 salida/
 out/
+
+# Material pesado que no va al repo (se regenera con los scripts)
+assets/stock/*
+!assets/stock/CREDITS.md
+assets/products/
+out/
+.env
