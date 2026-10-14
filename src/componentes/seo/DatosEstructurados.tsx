@@ -1,3 +1,4 @@
+import { urlInstagram } from "@/datos/contacto";
 import { SITIO } from "@/datos/sitio";
 import { MARCA, PLATAFORMAS } from "@/datos/textos";
 
@@ -25,7 +26,8 @@ const GRAFO = {
       slogan: MARCA.bajada,
       description: SITIO.descripcion,
       areaServed: { "@type": "Country", name: "Argentina" },
-      // TODO: sumar sameAs (Instagram, LinkedIn) cuando contacto.ts tenga los datos reales.
+      sameAs: [urlInstagram],
+      // TODO: sumar LinkedIn a sameAs cuando haya perfil de empresa.
     },
     {
       "@type": "WebSite",

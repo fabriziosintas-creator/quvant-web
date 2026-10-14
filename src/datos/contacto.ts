@@ -2,8 +2,8 @@
  * Datos de contacto reales de Quvant.
  *
  * ┌─────────────────────────────────────────────────────────────┐
- * │  TODO: completar con los datos reales antes de publicar.    │
- * │  Los tres valores de abajo son EJEMPLOS y no funcionan.     │
+ * │  TODO: completar WhatsApp y email reales antes de difundir. │
+ * │  Esos dos valores son EJEMPLOS y no funcionan.              │
  * └─────────────────────────────────────────────────────────────┘
  */
 
@@ -14,8 +14,8 @@ export const CONTACTO = {
   /** TODO: email real de contacto. */
   email: "contacto@tudominio.com",
 
-  /** TODO: usuario de Instagram, sin la arroba. */
-  instagram: "tu.instagram",
+  /** Usuario de Instagram, sin la arroba. */
+  instagram: "quvant.ar",
 } as const;
 
 export const urlInstagram = `https://www.instagram.com/${CONTACTO.instagram}/`;
