@@ -355,7 +355,7 @@ export const NOSOTROS = {
       nombre: "Michel",
       iniciales: "M",
       rol: "Fuerza de desarrollo",
-      cargo: "Developer principal",
+      cargo: "Co-founder · Developer principal",
       bajada: "El encargado de darle vida y forma a todas las ideas.",
       titulo: "", // TODO: título o formación de Michel.
       linkedin: "", // TODO: URL del perfil de LinkedIn de Michel.
@@ -365,7 +365,7 @@ export const NOSOTROS = {
       nombre: "Fabrizio",
       iniciales: "F",
       rol: "Fuerza comercial",
-      cargo: "Área comercial",
+      cargo: "Co-founder · Área comercial",
       bajada:
         "Entiende el negocio de cada cliente y busca soluciones que simplifiquen el trabajo adentro de las empresas.",
       titulo: "", // TODO: título o formación de Fabrizio.
