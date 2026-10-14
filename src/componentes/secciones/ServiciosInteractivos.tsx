@@ -4,6 +4,7 @@ import { useRef, useState, type KeyboardEvent } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { GrillaYSalto } from "@/componentes/estructura/GrillaYSalto";
 import { TarjetaInclinada } from "@/componentes/estructura/TarjetaInclinada";
 import { NOSOTROS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
@@ -43,7 +44,12 @@ function armarLinea(id: IdServicio, linea: gsap.core.Timeline) {
       })
       .from(
         '[data-pieza="union"]',
-        { scaleY: 0, transformOrigin: "center top", duration: 0.3, stagger: 0.05 },
+        {
+          scaleY: 0,
+          transformOrigin: "center top",
+          duration: 0.3,
+          stagger: 0.05,
+        },
         "-=0.12",
       )
       // La plantilla baja y encastra.
@@ -77,12 +83,23 @@ function armarLinea(id: IdServicio, linea: gsap.core.Timeline) {
       )
       .from(
         '[data-pieza="nodo"]',
-        { scale: 0, opacity: 0, duration: 0.3, stagger: 0.14, ease: "back.out(2)" },
+        {
+          scale: 0,
+          opacity: 0,
+          duration: 0.3,
+          stagger: 0.14,
+          ease: "back.out(2)",
+        },
         "<0.08",
       )
       // El punto de la marca recorriendo las fases, de la primera a la última
       // (donde el SVG ya lo tiene dibujado, así que termina en su lugar).
-      .fromTo('[data-pieza="viajero"]', { x: -324 }, { x: 0, duration: 1.2, ease: "none" }, 0.35);
+      .fromTo(
+        '[data-pieza="viajero"]',
+        { x: -324 },
+        { x: 0, duration: 1.2, ease: "none" },
+        0.35,
+      );
     return;
   }
 
@@ -92,7 +109,8 @@ function armarLinea(id: IdServicio, linea: gsap.core.Timeline) {
     y: (indice: number) => DESORDEN[indice]?.y ?? 0,
     scaleX: (indice: number) => DESORDEN[indice]?.sx ?? 1,
     scaleY: (indice: number) => DESORDEN[indice]?.sy ?? 1,
-    transformOrigin: (indice: number) => (indice === 4 ? "left center" : "50% 50%"),
+    transformOrigin: (indice: number) =>
+      indice === 4 ? "left center" : "50% 50%",
     duration: 0.65,
     stagger: 0.08,
     ease: "power3.out",
@@ -134,11 +152,17 @@ export function ServiciosInteractivos() {
       if (!figura) return;
       const caja = figura.getBoundingClientRect();
       if (caja.top < window.innerHeight - 120) return;
-      figura.scrollIntoView({ behavior: vista === "3d" ? "smooth" : "auto", block: "center" });
+      figura.scrollIntoView({
+        behavior: vista === "3d" ? "smooth" : "auto",
+        block: "center",
+      });
     });
   };
 
-  const alTeclear = (evento: KeyboardEvent<HTMLButtonElement>, indice: number) => {
+  const alTeclear = (
+    evento: KeyboardEvent<HTMLButtonElement>,
+    indice: number,
+  ) => {
     const ultimo = items.length - 1;
     let destino: number | null = null;
     if (evento.key === "ArrowRight" || evento.key === "ArrowDown")
@@ -159,7 +183,9 @@ export function ServiciosInteractivos() {
         <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
           {NOSOTROS.servicios.etiqueta}
         </p>
-        <p className="font-plex text-xs text-acero">{NOSOTROS.servicios.ayuda}</p>
+        <p className="font-plex text-xs text-acero">
+          {NOSOTROS.servicios.ayuda}
+        </p>
       </div>
 
       <div
@@ -183,31 +209,36 @@ export function ServiciosInteractivos() {
                 tabIndex={seleccionado ? 0 : -1}
                 onClick={() => alElegir(item.id)}
                 onKeyDown={(evento) => alTeclear(evento, indice)}
-                className={`flex h-full w-full flex-col border bg-negro p-7 text-left transition-colors md:p-8 ${
-                  seleccionado ? "border-acero" : "border-profundo hover:border-acero"
+                className={`relative flex h-full w-full flex-col overflow-hidden border bg-negro p-7 text-left transition-colors md:p-8 ${
+                  seleccionado
+                    ? "border-acero"
+                    : "border-profundo hover:border-acero"
                 }`}
               >
-                <span className="flex items-center justify-between">
-                  <span className="font-michroma text-xs tracking-etiqueta text-acero">
-                    0{indice + 1}
+                <GrillaYSalto />
+                <span className="relative flex h-full flex-col">
+                  <span className="flex items-center justify-between">
+                    <span className="font-michroma text-xs tracking-etiqueta text-acero">
+                      0{indice + 1}
+                    </span>
+                    {/* El punto de la marca marca el elegido. */}
+                    <span
+                      aria-hidden
+                      className={`size-1.5 transition-colors ${
+                        seleccionado ? "bg-blanco" : "bg-profundo"
+                      }`}
+                    />
                   </span>
-                  {/* El punto de la marca marca el elegido. */}
                   <span
-                    aria-hidden
-                    className={`size-1.5 transition-colors ${
-                      seleccionado ? "bg-blanco" : "bg-profundo"
+                    className={`mt-14 font-plex text-lg font-bold leading-snug transition-colors ${
+                      seleccionado ? "text-blanco" : "text-acero"
                     }`}
-                  />
-                </span>
-                <span
-                  className={`mt-14 font-plex text-lg font-bold leading-snug transition-colors ${
-                    seleccionado ? "text-blanco" : "text-acero"
-                  }`}
-                >
-                  {item.nombre}
-                </span>
-                <span className="mt-3 font-plex text-sm leading-relaxed text-acero">
-                  {item.texto}
+                  >
+                    {item.nombre}
+                  </span>
+                  <span className="mt-3 font-plex text-sm leading-relaxed text-acero">
+                    {item.texto}
+                  </span>
                 </span>
               </button>
             </TarjetaInclinada>
