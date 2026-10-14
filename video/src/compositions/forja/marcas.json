@@ -1,0 +1,38 @@
+[
+  {
+    "momento": "intro",
+    "segundo": 2.44
+  },
+  {
+    "momento": "red",
+    "segundo": 14.84
+  },
+  {
+    "momento": "constelacion",
+    "segundo": 29.65
+  },
+  {
+    "momento": "entrar",
+    "segundo": 34.13
+  },
+  {
+    "momento": "3d",
+    "segundo": 38.17
+  },
+  {
+    "momento": "faltantes",
+    "segundo": 43.68
+  },
+  {
+    "momento": "deposito",
+    "segundo": 71.06
+  },
+  {
+    "momento": "sala",
+    "segundo": 78.99
+  },
+  {
+    "momento": "fin",
+    "segundo": 87.46
+  }
+]

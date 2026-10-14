@@ -11,3 +11,13 @@ Config.setRspack(true);
 Config.setVideoImageFormat("jpeg");
 Config.setOverwriteOutput(true);
 Config.setDefaultPremountInSeconds(2);
+
+// Los shaders viven en archivos .glsl/.vert/.frag propios (src/shaders/) y
+// se importan como texto.
+Config.overrideBundlerConfig((config) => ({
+  ...config,
+  module: {
+    ...config.module,
+    rules: [...(config.module?.rules ?? []), { test: /\.(glsl|vert|frag)$/, type: "asset/source" }],
+  },
+}));

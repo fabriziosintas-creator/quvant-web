@@ -24,6 +24,7 @@
     "@types/web": "0.0.166",
     "dotenv": "^18.0.8",
     "eslint": "9.39.5",
+    "ffmpeg-static": "^5.3.0",
     "pixelmatch": "^8.0.0",
     "playwright": "^1.64.1",
     "pngjs": "^7.0.0",
@@ -39,6 +40,10 @@
     "lint": "eslint src && tsc",
     "pantallas": "node scripts/preparar-pantallas.mjs",
     "estudio": "remotion studio",
-    "grabar": "tsx scripts/record-products.ts"
+    "grabar": "tsx scripts/record-products.ts",
+    "stock": "tsx scripts/fetch-stock.ts",
+    "normalizar": "tsx scripts/normalize-stock.ts",
+    "grabar-forja": "tsx scripts/record-forja-video.ts",
+    "web-forja": "tsx scripts/encode-forja-web.ts"
   }
 }

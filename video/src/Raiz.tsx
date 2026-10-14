@@ -1,5 +1,6 @@
 import React from "react";
-import { Still } from "remotion";
+import { Composition, Still } from "remotion";
+import { ALTO, ANCHO, DURACION, FPS, ForjaRecorrido } from "./compositions/ForjaRecorrido";
 import { MuestraPantalla } from "./muestras/MuestraPantalla";
 
 /**
@@ -12,6 +13,14 @@ import { MuestraPantalla } from "./muestras/MuestraPantalla";
 export const Raiz: React.FC = () => {
   return (
     <>
+      <Composition
+        id="ForjaRecorrido"
+        component={ForjaRecorrido}
+        durationInFrames={DURACION}
+        fps={FPS}
+        width={ANCHO}
+        height={ALTO}
+      />
       <Still
         id="MuestraMono"
         component={MuestraPantalla}

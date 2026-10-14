@@ -16,3 +16,6 @@ assets/stock/*
 assets/products/
 out/
 .env
+
+# La grabación de Forja pesa: se regenera con npm run grabar-forja
+public/forja/
