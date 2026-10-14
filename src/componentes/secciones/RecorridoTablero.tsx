@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
   type KeyboardEvent,
+  type ReactNode,
 } from "react";
 import gsap from "gsap";
 import { CAPTURAS, PARADAS, type Parada } from "@/datos/sistema";
@@ -18,6 +19,10 @@ import { useVista } from "@/estado/vista";
  * Recorrido por el tablero real del sistema. Una sola ventana con la
  * captura; cada función de la lista mueve la "cámara" (traslación y zoom
  * de la imagen) hasta el lugar exacto donde eso pasa y lo enmarca.
+ *
+ * Las funciones son fichas en una rueda con perspectiva: la activa viene
+ * al frente, plana y blanca; las demás se inclinan y retroceden según la
+ * distancia. Cada vez que el recorrido avanza, la rueda gira.
  *
  * Se recorre solo cada pocos segundos y se frena cuando el puntero o el
  * foco están encima, o cuando la ventana no está a la vista. En vista
@@ -74,6 +79,67 @@ function calcularEncuadre(parada: Parada, anchoVentana: number, altoVentana: num
 
   return { escala, x, y, marco };
 }
+
+/**
+ * Los glifos de cada parada: líneas finas, como el resto del sitio. Cada
+ * trazo lleva pathLength=1 para que el dibujado (keyframe `dibujar`) sea
+ * el mismo sin importar su largo.
+ */
+const TRAZO = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.5,
+  strokeLinecap: "square" as const,
+  strokeLinejoin: "miter" as const,
+  pathLength: 1,
+};
+
+const GLIFOS: Record<string, ReactNode> = {
+  inicio: (
+    <>
+      <rect x="3" y="3" width="7" height="7" {...TRAZO} />
+      <rect x="14" y="3" width="7" height="7" {...TRAZO} />
+      <rect x="3" y="14" width="7" height="7" {...TRAZO} />
+      <rect x="14" y="14" width="7" height="7" {...TRAZO} />
+    </>
+  ),
+  margen: (
+    <>
+      <path d="M3 20h18" {...TRAZO} />
+      <path d="M5 16V9M10 16V5M15 16v-5M20 16V7" {...TRAZO} />
+      <rect x="18" y="3" width="4" height="4" fill="currentColor" stroke="none" />
+    </>
+  ),
+  offline: (
+    <>
+      <path d="M4 15a5 5 0 0 1 1-9.9A6 6 0 0 1 16.5 7 4 4 0 0 1 18 15" {...TRAZO} />
+      <path d="M8 19h8" {...TRAZO} />
+      <path d="M3 21 21 3" {...TRAZO} />
+    </>
+  ),
+  tablero: (
+    <>
+      <rect x="3" y="4" width="18" height="16" {...TRAZO} />
+      <path d="M3 9h18" {...TRAZO} />
+      <path d="M7 13h6M7 16.5h4" {...TRAZO} />
+      <rect x="15" y="12.5" width="3" height="3" fill="currentColor" stroke="none" />
+    </>
+  ),
+  stock: (
+    <>
+      <rect x="3" y="14" width="8" height="7" {...TRAZO} />
+      <rect x="13" y="14" width="8" height="7" {...TRAZO} />
+      <rect x="8" y="6" width="8" height="7" {...TRAZO} />
+    </>
+  ),
+  compras: (
+    <>
+      <rect x="4" y="10" width="16" height="11" {...TRAZO} />
+      <path d="M12 3v11" {...TRAZO} />
+      <path d="M8.5 10.5 12 14l3.5-3.5" {...TRAZO} />
+    </>
+  ),
+};
 
 export function RecorridoTablero() {
   const { recorrido, destacadas } = PLATAFORMAS.hoy;
@@ -151,6 +217,27 @@ export function RecorridoTablero() {
     encuadrar(activa, vista === "3d");
   }, [activa, vista, encuadrar]);
 
+  // La rueda de fichas: cada una se inclina y retrocede según la distancia
+  // a la activa. En vista texto quedan planas.
+  useEffect(() => {
+    const en3d = vista === "3d";
+    botones.current.forEach((ficha, indice) => {
+      if (!ficha) return;
+      const d = indice - activa;
+      const lejos = Math.min(Math.abs(d), 3);
+      gsap.to(ficha, {
+        rotateX: en3d ? -d * 7 : 0,
+        z: en3d ? -lejos * 38 : 0,
+        scale: en3d ? 1 - lejos * 0.03 : 1,
+        opacity: en3d ? 1 - lejos * 0.2 : 1,
+        transformOrigin: "50% 50%",
+        duration: en3d ? 0.85 : 0,
+        ease: "power3.out",
+        overwrite: true,
+      });
+    });
+  }, [activa, vista]);
+
   // Solo se recorre solo cuando está a la vista.
   useEffect(() => {
     const elemento = ventana.current;
@@ -191,16 +278,21 @@ export function RecorridoTablero() {
 
   return (
     <div
-      className="mt-8 grid gap-6 lg:grid-cols-[0.78fr_1.35fr] lg:gap-10"
+      className="mt-8 grid gap-6 lg:grid-cols-[0.82fr_1.3fr] lg:gap-10"
       onPointerEnter={() => setEnPausa(true)}
       onPointerLeave={() => setEnPausa(false)}
       onFocus={() => setEnPausa(true)}
       onBlur={() => setEnPausa(false)}
     >
-      {/* Las paradas: una por función. */}
+      {/* La rueda de fichas: una por función. */}
       <div className="order-2 min-w-0 lg:order-1">
         <p className="mb-4 font-plex text-xs text-acero">{recorrido.ayuda}</p>
-        <div role="tablist" aria-label={PLATAFORMAS.hoy.etiqueta} aria-orientation="vertical">
+        <div
+          role="tablist"
+          aria-label={PLATAFORMAS.hoy.etiqueta}
+          aria-orientation="vertical"
+          className="flex flex-col gap-2 [perspective:1100px] [transform-style:preserve-3d]"
+        >
           {PARADAS.map((parada, indice) => {
             const seleccionada = indice === activa;
             const texto = textoDe(parada);
@@ -218,32 +310,56 @@ export function RecorridoTablero() {
                 tabIndex={seleccionada ? 0 : -1}
                 onClick={() => setActiva(indice)}
                 onKeyDown={(evento) => alTeclear(evento, indice)}
-                className="group relative block w-full border-b border-profundo py-4 text-left first:border-t"
+                className={`ficha-parada group relative block w-full border px-4 py-3.5 text-left will-change-transform transition-colors md:px-5 ${
+                  seleccionada
+                    ? "border-acero bg-[#131316]"
+                    : "border-profundo bg-negro hover:border-acero/70"
+                }`}
               >
-                <span className="flex items-baseline gap-4">
-                  <span className="font-plex text-xs text-acero">0{indice + 1}</span>
-                  <span
-                    className={`font-plex text-base font-bold leading-snug transition-colors group-hover:text-blanco ${
+                <span className="flex items-start gap-4">
+                  {/* El glifo: se dibuja cuando la ficha pasa al frente. */}
+                  <svg
+                    aria-hidden
+                    viewBox="0 0 24 24"
+                    className={`glifo mt-0.5 size-6 shrink-0 transition-colors ${
                       seleccionada ? "text-blanco" : "text-acero"
                     }`}
                   >
-                    {texto.titulo}
+                    {GLIFOS[parada.id]}
+                  </svg>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-baseline gap-3">
+                      <span className="font-plex text-[11px] text-acero">0{indice + 1}</span>
+                      <span
+                        className={`font-plex text-base font-bold leading-snug transition-colors group-hover:text-blanco md:text-[17px] ${
+                          seleccionada ? "text-blanco" : "text-acero"
+                        }`}
+                      >
+                        {texto.titulo}
+                      </span>
+                    </span>
+                    {/* El texto solo se despliega en la parada activa. */}
+                    <span
+                      className={`block overflow-hidden font-plex text-sm leading-relaxed text-acero transition-[max-height,opacity,margin] duration-500 ${
+                        seleccionada ? "mt-2 max-h-24 opacity-100" : "mt-0 max-h-0 opacity-0"
+                      }`}
+                    >
+                      {texto.texto}
+                    </span>
                   </span>
-                </span>
-                {/* El texto solo se despliega en la parada activa. */}
-                <span
-                  className={`block overflow-hidden pl-9 font-plex text-sm leading-relaxed text-acero transition-[max-height,opacity,margin] duration-500 ${
-                    seleccionada ? "mt-2 max-h-24 opacity-100" : "mt-0 max-h-0 opacity-0"
-                  }`}
-                >
-                  {texto.texto}
+                  <span
+                    aria-hidden
+                    className={`mt-2 size-1.5 shrink-0 transition-colors ${
+                      seleccionada ? "bg-blanco" : "bg-profundo"
+                    }`}
+                  />
                 </span>
                 {/* El tiempo que queda antes de la próxima parada. */}
                 {seleccionada && recorriendo ? (
                   <span
                     key={activa}
                     aria-hidden
-                    className="absolute bottom-[-1px] left-0 h-px bg-blanco"
+                    className="absolute bottom-0 left-0 h-px bg-blanco"
                     style={{ animation: `avance ${SEGUNDOS_POR_PARADA}s linear forwards` }}
                   />
                 ) : null}

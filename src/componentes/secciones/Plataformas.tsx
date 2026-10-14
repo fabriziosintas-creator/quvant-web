@@ -1,5 +1,6 @@
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { PLATAFORMAS } from "@/datos/textos";
+import { NucleoInteractivo } from "./NucleoInteractivo";
 import { RecorridoTablero } from "./RecorridoTablero";
 import { SelectorRubros } from "./SelectorRubros";
 
@@ -31,17 +32,13 @@ export function Plataformas() {
           <p data-revelar className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
             {PLATAFORMAS.nucleo.etiqueta}
           </p>
-          <ul data-revelar="grupo" className="mt-5 flex flex-wrap gap-3">
-            {PLATAFORMAS.nucleo.modulos.map((modulo) => (
-              <li
-                key={modulo}
-                className="flex items-center gap-2.5 border border-profundo px-4 py-2.5 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco"
-              >
-                <span aria-hidden className="size-1 bg-acero" />
-                {modulo}
-              </li>
-            ))}
-          </ul>
+          <h3
+            data-revelar
+            className="mt-4 max-w-2xl font-plex text-xl font-bold leading-snug text-blanco md:text-2xl"
+          >
+            {PLATAFORMAS.nucleo.titulo}
+          </h3>
+          <NucleoInteractivo />
         </div>
 
         {/* Lo que hace hoy */}

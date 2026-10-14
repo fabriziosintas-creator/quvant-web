@@ -173,3 +173,25 @@ html[data-cursor="si"] :where(input, textarea, [contenteditable]) {
 .cursor-propio[data-modo="oculto"] .cursor-marco {
   opacity: 0;
 }
+
+/* Los glifos de las fichas del recorrido se dibujan al pasar al frente. */
+@keyframes dibujar {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.ficha-parada[aria-selected="true"] .glifo :is(path, rect, circle) {
+  stroke-dasharray: 1;
+  animation: dibujar 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ficha-parada .glifo :is(path, rect, circle) {
+    animation: none;
+    stroke-dasharray: none;
+  }
+}

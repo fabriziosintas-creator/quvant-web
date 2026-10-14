@@ -97,6 +97,18 @@ export const PLATAFORMAS = {
   nucleo: {
     etiqueta: "El núcleo común",
     modulos: ["Usuarios y roles", "Sucursales", "Caja", "Ventas", "Stock", "Reportes"],
+    titulo: "Un núcleo que ya funciona. Una plantilla por nicho.",
+    texto:
+      "Quvant es el núcleo: usuarios y roles, sucursales, caja, ventas, stock y reportes, hechos y probados. De ahí salen las ramas: cada nicho tiene su plantilla, con los widgets y las funciones que ese rubro necesita.",
+    personalizable:
+      "La plantilla se ajusta para cada cliente: se suman o se sacan widgets según cómo trabaja.",
+    ventana: "Quvant · El núcleo y sus plantillas",
+    ayuda: "Tocá un nicho y mirá qué le suma su plantilla.",
+    etiquetaNucleo: "Núcleo",
+    etiquetaModulos: "Módulos del núcleo",
+    etiquetaWidgets: "Widgets de la plantilla · ejemplos",
+    estadoNucleo: "Funcionando hoy",
+    nota: "Ilustración de ejemplo: los widgets son ejemplos de lo que lleva cada plantilla.",
   },
   hoy: {
     etiqueta: "Lo que hace hoy",
