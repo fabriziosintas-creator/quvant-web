@@ -4,6 +4,7 @@ import { CintaRubros } from "@/componentes/estructura/CintaRubros";
 import { TextoTipeado } from "@/componentes/estructura/TextoTipeado";
 import { Contacto } from "@/componentes/secciones/Contacto";
 import { Nosotros } from "@/componentes/secciones/Nosotros";
+import { Objetivo } from "@/componentes/secciones/Objetivo";
 import { Plataformas } from "@/componentes/secciones/Plataformas";
 import { Webs } from "@/componentes/secciones/Webs";
 import { DatosEstructurados } from "@/componentes/seo/DatosEstructurados";
@@ -54,6 +55,7 @@ export default function Inicio() {
         </div>
       </section>
 
+      <Objetivo />
       <Nosotros />
       <Plataformas />
       <Webs />

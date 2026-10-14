@@ -26,6 +26,7 @@ export type IdNicho = keyof typeof ACENTO_NICHO;
 
 /** Un acento por sección: tiñe el punto, el número y los bordes al pasar. */
 export const ACENTO_SECCION = {
+  objetivo: "#F26B5B",
   nosotros: "#F0A33A",
   plataformas: "#4FD1C5",
   webs: "#6C8CFF",

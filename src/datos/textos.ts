@@ -15,10 +15,11 @@ export const MARCA = {
 
 /** Secciones ancladas. El número es el contador que acompaña toda la página (la portada es 01). */
 export const NAV = [
-  { id: "nosotros", numero: "02", etiqueta: "Nosotros" },
-  { id: "plataformas", numero: "03", etiqueta: "Plataformas" },
-  { id: "webs", numero: "04", etiqueta: "Webs" },
-  { id: "contacto", numero: "05", etiqueta: "Contacto" },
+  { id: "objetivo", numero: "02", etiqueta: "Objetivo" },
+  { id: "nosotros", numero: "03", etiqueta: "Nosotros" },
+  { id: "plataformas", numero: "04", etiqueta: "Plataformas" },
+  { id: "webs", numero: "05", etiqueta: "Webs" },
+  { id: "contacto", numero: "06", etiqueta: "Contacto" },
 ] as const;
 
 /** Interruptor fijo abajo al centro: apaga o prende el 3D de todo el sitio. */
@@ -44,7 +45,7 @@ export const HERO = {
 } as const;
 
 export const CONTACTO_SECCION = {
-  numero: "05",
+  numero: "06",
   etiqueta: "Contacto",
   titulo: "Contanos qué necesitás.",
   bajada:
@@ -74,7 +75,7 @@ export const CONTACTO_SECCION = {
 } as const;
 
 export const WEBS = {
-  numero: "04",
+  numero: "05",
   etiqueta: "Webs",
   titulo: "Páginas web para nuestros clientes.",
   bajada:
@@ -89,7 +90,7 @@ export const WEBS = {
 } as const;
 
 export const PLATAFORMAS = {
-  numero: "03",
+  numero: "04",
   etiqueta: "Plataformas",
   titulo: "El mismo núcleo, un sistema para cada rubro.",
   bajada:
@@ -264,8 +265,55 @@ export const PLATAFORMAS = {
   },
 } as const;
 
-export const NOSOTROS = {
+/**
+ * Sección 02 · Objetivo: el manifiesto. Primero escuchar, después construir.
+ * Cuatro etapas que se recorren con el scroll; cada una con su comentario.
+ */
+export const OBJETIVO = {
   numero: "02",
+  etiqueta: "Nuestro objetivo",
+  titulo: "Vos soñás en grande. Nosotros lo bajamos a tierra.",
+  bajada:
+    "Nuestro objetivo no es venderte un sistema: es entender tu negocio y construir lo que de verdad te hace falta. En ese orden.",
+  ayuda: "Bajá despacio: el recorrido avanza con el scroll.",
+  etapas: [
+    {
+      id: "escuchar",
+      nombre: "Escuchar",
+      titular: "Primero escuchamos.",
+      texto:
+        "Antes de proponer nada, entendemos cómo trabajás hoy: qué te traba, qué hacés a mano, qué te gustaría que pase solo. No llegamos con una solución armada; llegamos con preguntas.",
+      marca: "Nada de soluciones enlatadas.",
+    },
+    {
+      id: "sonar",
+      nombre: "Soñar en grande",
+      titular: "Queremos que sueñes en grande.",
+      texto:
+        "Contanos la idea completa, sin recortarla por miedo a que sea mucho. La versión ambiciosa es la que nos interesa: ahí está lo que tu negocio podría ser.",
+      marca: "La idea entera, sin recortes.",
+    },
+    {
+      id: "bajar",
+      nombre: "Bajar a tierra",
+      titular: "Nosotros la bajamos a tierra.",
+      texto:
+        "Convertimos esa idea en pasos concretos: qué va primero, qué puede esperar, cuánto lleva cada parte. Lo ambicioso se vuelve un plan que se puede empezar el lunes.",
+      marca: "Un plan que se empieza el lunes.",
+    },
+    {
+      id: "construir",
+      nombre: "Construir y acompañar",
+      titular: "Lo construimos por fases.",
+      texto:
+        "Cada fase se prueba antes de seguir, con vos adentro. Y cuando el sistema está andando no nos vamos: seguimos cerca, porque tu negocio cambia y el sistema tiene que cambiar con él.",
+      marca: "Cada fase se prueba antes de seguir.",
+    },
+  ],
+} as const;
+
+export const NOSOTROS = {
+  numero: "03",
   etiqueta: "Nosotros",
   titulo: "Dos amigos, dos fuerzas, una sola marca.",
   origen:
