@@ -86,3 +86,13 @@ body {
   outline: 2px solid var(--color-blanco);
   outline-offset: 3px;
 }
+
+/* La línea que avanza bajo la parada activa del recorrido del tablero. */
+@keyframes avance {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}

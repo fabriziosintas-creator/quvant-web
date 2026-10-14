@@ -101,6 +101,17 @@ export const PLATAFORMAS = {
   hoy: {
     etiqueta: "Lo que hace hoy",
     etiquetaResto: "Y además",
+    recorrido: {
+      ventana: "Quvant · Tablero del dueño · Empresa demo",
+      ayuda: "Tocá una función y la pantalla te lleva a donde pasa.",
+      nota: "Pantallas reales del sistema, con los datos de la empresa demo.",
+      inicio: {
+        titulo: "Todos tus negocios en una pantalla",
+        texto: "El tablero del dueño: lo que se vendió hoy, el mes, el margen y lo que hay que atender.",
+      },
+      reproduciendo: "Recorrido automático",
+      pausado: "Recorrido en pausa",
+    },
     destacadas: [
       {
         id: "margen",
