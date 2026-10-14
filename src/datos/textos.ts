@@ -386,8 +386,8 @@ export const NOSOTROS = {
         nombre: "Sistemas listos para tu nicho",
         texto:
           "Gestión y administración ya armadas para rubros específicos. Se contratan por mes y se usan desde el primer día.",
-        ventana: "El núcleo y la plantilla de tu rubro",
-        pie: "Un núcleo común que ya funciona y, encima, la plantilla pensada para tu rubro.",
+        ventana: "Núcleos Quvant · Multi núcleo",
+        pie: "Construí tu propio núcleo: cada empresa con su sistema y un panel para seguirlas a todas.",
       },
       {
         id: "app",
@@ -407,6 +407,39 @@ export const NOSOTROS = {
       },
     ],
     nota: "Ilustraciones de cómo trabajamos, no capturas de un sistema.",
+    /** La escena de Núcleos Quvant (servicio 01). Empresas y cifras: src/datos/multinucleo.ts. */
+    multinucleo: {
+      panel: "Panel multi núcleo",
+      datosEjemplo: "Datos de ejemplo",
+      resumen: "4 empresas · 4 núcleos · 1 panel",
+      capitulos: [
+        {
+          titulo: "Cada empresa, su núcleo",
+          texto: "Cada una tiene su propio sistema y su administración, independientes.",
+        },
+        {
+          titulo: "Todas, en un panel",
+          texto: "El Multi núcleo conecta todas tus empresas en un solo panel.",
+        },
+        {
+          titulo: "Seguimiento en vivo",
+          texto: "Ventas, stock y estadísticas de todas, en el mismo lugar.",
+        },
+        {
+          titulo: "Cada una, por su lado",
+          texto: "Entrás a cualquiera y ves cómo está corriendo, sola.",
+        },
+      ],
+      capitulo: "Capítulo",
+      reproducir: "Reproducir el recorrido",
+      pausar: "Pausar el recorrido",
+      verTodas: "Todas las empresas",
+      ayuda: "Tocá una empresa para entrar a su núcleo.",
+      suAdministracion: "Su núcleo y su administración, por separado.",
+      ultimos12: "Ventas, últimos 12 días",
+      escena:
+        "Escena 3D: cuatro empresas, cada una con su núcleo de color, conectadas por haces de datos a un panel central con sus estadísticas.",
+    },
   },
 } as const;
 

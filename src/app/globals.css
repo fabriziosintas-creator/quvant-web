@@ -261,3 +261,8 @@ html[data-vista="texto"] .ficha-servicio .foto-servicio {
 }
 .charla-burbuja { animation: burbuja 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 @media (prefers-reduced-motion: reduce) { .charla-burbuja { animation: none; } }
+
+/* El panel multi núcleo: la lista o la empresa elegida entran subiendo. */
+.panel-entra { animation: burbuja 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+html[data-vista="texto"] .panel-entra { animation: none; }
+@media (prefers-reduced-motion: reduce) { .panel-entra { animation: none; } }

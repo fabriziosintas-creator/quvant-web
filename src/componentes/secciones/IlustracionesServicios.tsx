@@ -1,7 +1,7 @@
 /**
- * Las tres ilustraciones de los servicios: wireframes de línea sobre negro,
- * en el mismo idioma gráfico que el depósito de Forja. No son capturas de
- * ningún sistema: son esquemas de cómo trabajamos.
+ * Las ilustraciones de los servicios 02 y 03: wireframes de línea sobre
+ * negro. No son capturas de ningún sistema: son esquemas de cómo
+ * trabajamos. El servicio 01 tiene su propia escena (NucleosQuvant).
  *
  * Cada pieza lleva un `data-pieza` para que ServiciosInteractivos la anime.
  * El SVG queda dibujado en su estado final: la animación es siempre un
@@ -36,67 +36,6 @@ function LineasInternas({
         />
       ))}
     </>
-  );
-}
-
-/** 01 · El núcleo común y la plantilla del rubro que encaja encima. */
-export function IlustracionSistemas() {
-  const modulos = [
-    { x: 48, y: 142 },
-    { x: 192, y: 142 },
-    { x: 336, y: 142 },
-    { x: 48, y: 206 },
-    { x: 192, y: 206 },
-    { x: 336, y: 206 },
-  ];
-
-  return (
-    <svg viewBox={LIENZO} className="h-full w-full" aria-hidden>
-      {/* La plantilla del rubro: lo que cambia de un cliente a otro. */}
-      <g data-pieza="plantilla">
-        <rect
-          x={130}
-          y={26}
-          width={220}
-          height={68}
-          className="fill-negro stroke-blanco"
-          strokeWidth={1.5}
-        />
-        <line x1={148} y1={50} x2={248} y2={50} className="stroke-blanco" strokeWidth={2} />
-        <line x1={148} y1={68} x2={300} y2={68} className="stroke-acero" strokeWidth={2} />
-        <rect x={320} y={44} width={10} height={10} className="fill-blanco" />
-      </g>
-
-      {/* Los puntos de encastre con el núcleo. */}
-      {[180, 240, 300].map((x) => (
-        <line
-          key={x}
-          data-pieza="union"
-          x1={x}
-          y1={94}
-          x2={x}
-          y2={142}
-          className="stroke-acero"
-          strokeWidth={1.5}
-          strokeDasharray="4 6"
-        />
-      ))}
-
-      {/* El núcleo común: los módulos que ya funcionan en todos los rubros. */}
-      {modulos.map((modulo) => (
-        <g key={`${modulo.x}-${modulo.y}`} data-pieza="modulo">
-          <rect
-            x={modulo.x}
-            y={modulo.y}
-            width={96}
-            height={44}
-            className="fill-negro stroke-acero"
-            strokeWidth={1.5}
-          />
-          <LineasInternas x={modulo.x + 14} y={modulo.y + 17} anchos={[44, 28]} />
-        </g>
-      ))}
-    </svg>
   );
 }
 
@@ -217,7 +156,6 @@ export function IlustracionWeb() {
 }
 
 export const ILUSTRACIONES = {
-  sistemas: IlustracionSistemas,
   app: IlustracionApp,
   web: IlustracionWeb,
 } as const;

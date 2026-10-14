@@ -11,6 +11,7 @@ import { SERVICIOS_VISUAL, type IdServicio } from "@/datos/servicios";
 import { NOSOTROS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
 import { ILUSTRACIONES } from "./IlustracionesServicios";
+import { NucleosQuvant } from "./NucleosQuvant";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -39,30 +40,7 @@ const DESORDEN = [
   { x: 0, y: 0, sx: 0.3, sy: 1 },
 ];
 
-function armarLinea(id: IdServicio, linea: gsap.core.Timeline) {
-  if (id === "sistemas") {
-    linea
-      .from('[data-pieza="modulo"]', {
-        opacity: 0,
-        y: 16,
-        duration: 0.45,
-        stagger: 0.06,
-        ease: "power2.out",
-      })
-      .from(
-        '[data-pieza="union"]',
-        { scaleY: 0, transformOrigin: "center top", duration: 0.3, stagger: 0.05 },
-        "-=0.12",
-      )
-      // La plantilla baja y encastra.
-      .from(
-        '[data-pieza="plantilla"]',
-        { opacity: 0, y: -38, duration: 0.55, ease: "back.out(1.6)" },
-        "-=0.08",
-      );
-    return;
-  }
-
+function armarLinea(id: Exclude<IdServicio, "sistemas">, linea: gsap.core.Timeline) {
   if (id === "app") {
     linea
       .from('[data-pieza="riel"]', {
@@ -114,7 +92,6 @@ export function ServiciosInteractivos() {
   const ventana = useRef<HTMLDivElement>(null);
   const vista = useVista();
 
-  const Ilustracion = ILUSTRACIONES[activo];
   const servicio: Servicio = items.find((item) => item.id === activo) ?? items[0];
   const visualActivo = SERVICIOS_VISUAL[activo];
 
@@ -122,7 +99,8 @@ export function ServiciosInteractivos() {
     () => {
       // En vista texto la ilustración queda quieta y completa: el SVG ya
       // está dibujado en su estado final y acá solo se anima el "desde".
-      if (vista !== "3d") return;
+      // Los sistemas tienen su propia escena (Núcleos Quvant), que se anima sola.
+      if (vista !== "3d" || activo === "sistemas") return;
       const linea = gsap.timeline({
         scrollTrigger: { trigger: ventana.current, start: "top 85%" },
       });
@@ -279,11 +257,15 @@ export function ServiciosInteractivos() {
         </figcaption>
         {/* Medida pensada para que la ventana entre en pantalla junto con
             las tarjetas: al elegir un servicio, el dibujo se ve sin bajar. */}
-        <div className="bg-negro px-6 py-6 md:px-10 md:py-7">
-          <div className="mx-auto max-w-lg">
-            <Ilustracion />
+        {activo === "sistemas" ? (
+          <NucleosQuvant />
+        ) : (
+          <div className="bg-negro px-6 py-6 md:px-10 md:py-7">
+            <div className="mx-auto max-w-lg">
+              {activo === "app" ? <ILUSTRACIONES.app /> : <ILUSTRACIONES.web />}
+            </div>
           </div>
-        </div>
+        )}
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-t border-profundo px-4 py-2.5">
           <p className="font-plex text-[11px] text-acero">{servicio.pie}</p>
           {/* Aclaración de honestidad: tiene que leerse, no ser un susurro. */}
