@@ -353,12 +353,6 @@ export const NOSOTROS = {
       titulo: "", // TODO: título o formación de Michel.
       linkedin: "", // TODO: URL del perfil de LinkedIn de Michel.
       foto: "", // TODO: guardar la foto en public/equipo/michel.jpg y poner acá "/equipo/michel.jpg".
-      habilidades: [
-        // TODO: confirmar los niveles de Michel con fabrizio (solo Desarrollo 5 es seguro).
-        { nombre: "Desarrollo", nivel: 5 },
-        { nombre: "Creatividad", nivel: 4 },
-        { nombre: "Comercialización", nivel: 2 },
-      ],
     },
     {
       nombre: "Fabrizio",
@@ -370,11 +364,6 @@ export const NOSOTROS = {
       titulo: "", // TODO: título o formación de Fabrizio.
       linkedin: "", // TODO: URL del perfil de LinkedIn de Fabrizio.
       foto: "", // TODO: guardar la foto en public/equipo/fabrizio.jpg y poner acá "/equipo/fabrizio.jpg".
-      habilidades: [
-        { nombre: "Desarrollo", nivel: 2 },
-        { nombre: "Creatividad", nivel: 4 },
-        { nombre: "Comercialización", nivel: 5 },
-      ],
     },
   ],
   mision: {

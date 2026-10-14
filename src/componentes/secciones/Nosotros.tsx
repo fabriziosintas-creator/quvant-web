@@ -8,26 +8,6 @@ import { ServiciosInteractivos } from "./ServiciosInteractivos";
 
 type Persona = (typeof NOSOTROS.equipo)[number];
 
-function Habilidad({ nombre, nivel }: { nombre: string; nivel: number }) {
-  return (
-    <div
-      className="flex items-center justify-between gap-4"
-      role="img"
-      aria-label={`${nombre}: ${nivel} de 5`}
-    >
-      <span className="font-plex text-xs uppercase tracking-etiqueta text-acero">{nombre}</span>
-      <span aria-hidden data-revelar-barras className="flex gap-[5px]">
-        {[1, 2, 3, 4, 5].map((marca) => (
-          <span
-            key={marca}
-            className={`h-3.5 w-[3px] ${marca <= nivel ? "bg-blanco" : "bg-profundo"}`}
-          />
-        ))}
-      </span>
-    </div>
-  );
-}
-
 function PerfilEquipo({ persona }: { persona: Persona }) {
   return (
     <TarjetaViva className="border border-profundo" data-revelar>
@@ -60,12 +40,9 @@ function PerfilEquipo({ persona }: { persona: Persona }) {
           ) : null}
         </div>
       </div>
-      <p className="px-7 font-plex text-sm leading-relaxed text-acero md:px-8">{persona.bajada}</p>
-      <div className="mt-auto flex flex-col gap-3 px-7 py-7 md:px-8">
-        {persona.habilidades.map((habilidad) => (
-          <Habilidad key={habilidad.nombre} nombre={habilidad.nombre} nivel={habilidad.nivel} />
-        ))}
-      </div>
+      <p className="px-7 pb-7 font-plex text-sm leading-relaxed text-acero md:px-8 md:pb-8">
+        {persona.bajada}
+      </p>
       {persona.linkedin ? (
         <div className="border-t border-profundo px-7 py-4 md:px-8">
           <a

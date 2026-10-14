@@ -76,7 +76,12 @@ export function SelectorRubros() {
 
   return (
     <div className="mt-8 grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
-      <div role="tablist" aria-label={PLATAFORMAS.rubros.etiqueta} aria-orientation="vertical">
+      <div
+        role="tablist"
+        aria-label={PLATAFORMAS.rubros.etiqueta}
+        aria-orientation="vertical"
+        className="min-w-0"
+      >
         {rubros.map((item, indice) => {
           const seleccionado = item.id === activo;
           return (
@@ -120,7 +125,7 @@ export function SelectorRubros() {
 
       {/* Todos los paneles existen en el HTML del servidor (el texto de cada
           producto es indexable); solo el activo se muestra. */}
-      <div>
+      <div className="min-w-0">
         {rubros.map((item) => (
           <div
             key={item.id}

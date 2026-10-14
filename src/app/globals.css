@@ -50,6 +50,16 @@ body {
   @apply bg-negro font-plex text-blanco;
 }
 
+/*
+ * La página solo se desplaza hacia arriba y hacia abajo: nada puede
+ * empujarla de costado en el celular. "clip" y no "hidden": hidden crea un
+ * contenedor de scroll y rompe las secciones fijas (position: sticky).
+ */
+html,
+body {
+  overflow-x: clip;
+}
+
 ::selection {
   background: var(--color-blanco);
   color: var(--color-negro);
