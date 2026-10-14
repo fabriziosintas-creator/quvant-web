@@ -4,8 +4,8 @@ import Image from "next/image";
 import { useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import { ACENTO_NICHO, type IdNicho } from "@/datos/colores";
 import { NICHOS } from "@/datos/nucleo";
-import { DepositoForjaDiferido } from "@/componentes/3d/DepositoForjaDiferido";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
+import { VideoForja } from "@/componentes/secciones/VideoForja";
 import { PLATAFORMAS } from "@/datos/textos";
 
 type Rubro = (typeof PLATAFORMAS.rubros.items)[number];
@@ -94,7 +94,9 @@ export function SelectorRubros() {
               role="tab"
               id={`pestania-${item.id}`}
               aria-selected={seleccionado}
-              aria-controls={`panel-${item.id}`}
+              aria-controls={
+                item.id === "industria" ? `panel-${item.id} panel-industria-recorrido` : `panel-${item.id}`
+              }
               tabIndex={seleccionado ? 0 : -1}
               onClick={() => setActivo(item.id)}
               onKeyDown={(evento) => alTeclear(evento, indice)}
@@ -167,14 +169,15 @@ export function SelectorRubros() {
               </div>
             )}
 
-            {item.id === "industria" ? (
-              <div className="mt-6">
-                {/* El lienzo 3D solo corre cuando este panel está a la vista. */}
-                <DepositoForjaDiferido activo={activo === "industria"} />
-              </div>
-            ) : null}
           </div>
         ))}
+      </div>
+
+      {/* El recorrido de Forja va en su propia fila, a todo el ancho: la
+          interfaz grabada necesita lugar para leerse. Es parte de Industria
+          (la pestaña lo declara en aria-controls) y solo corre con ella elegida. */}
+      <div id="panel-industria-recorrido" className="min-w-0 lg:col-span-2" hidden={activo !== "industria"}>
+        <VideoForja activo={activo === "industria"} />
       </div>
     </div>
   );

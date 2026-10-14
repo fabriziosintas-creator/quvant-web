@@ -110,6 +110,7 @@ export const PLATAFORMAS = {
     etiquetaWidgets: "Widgets de la plantilla · ejemplos",
     estadoNucleo: "Funcionando hoy",
     nota: "Ilustración de ejemplo: los widgets son ejemplos de lo que lleva cada plantilla.",
+    apagado: "La escena 3D está apagada en la vista texto.",
   },
   hoy: {
     etiqueta: "Lo que hace hoy",
@@ -256,8 +257,14 @@ export const PLATAFORMAS = {
     "en-diseno": "En diseño",
   },
   ilustracionEjemplo: "Ilustración de ejemplo",
-  forjaVentana: "Forja · El depósito en 3D",
-  forjaApagado: "El depósito en 3D está apagado en la vista texto.",
+  forja: {
+    ventana: "Forja · Recorrido real",
+    nota: "Grabado en la demo · datos de ejemplo",
+    descripcion:
+      "Recorrido por Forja: la red con todas las sucursales, la entrada a Casa Central en 3D, los racks con lo que falta, la lista de productos críticos y la sala de control.",
+    pausar: "Pausar el video",
+    reproducir: "Reproducir el video",
+  },
   integraciones: {
     etiqueta: "Integraciones en camino",
     items: ["Facturación con ARCA", "Cobros con Mercado Pago", "Avisos por WhatsApp"],

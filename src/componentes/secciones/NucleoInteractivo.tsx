@@ -92,7 +92,7 @@ export function NucleoInteractivo() {
             ) : null}
             {vista === "texto" ? (
               <p className="absolute inset-0 flex items-center justify-center px-6 text-center font-plex text-xs text-acero">
-                {PLATAFORMAS.forjaApagado}
+                {PLATAFORMAS.nucleo.apagado}
               </p>
             ) : null}
             <p className="pointer-events-none absolute bottom-3 right-4 font-plex text-[10px] uppercase tracking-etiqueta text-acero">
