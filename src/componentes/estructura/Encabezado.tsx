@@ -29,7 +29,7 @@ export function Encabezado() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-profundo bg-negro">
       <div className="contenedor flex h-16 items-center justify-between md:h-20">
         <a href="#inicio" aria-label={ACCESIBILIDAD.irAlInicio} onClick={cerrar}>
-          <Logotipo idGradiente="q-encabezado" className="text-[13px] md:text-[15px]" />
+          <Logotipo idGradiente="q-encabezado" className="text-[14px] md:text-[18px]" />
         </a>
 
         {/* Navegación de escritorio */}
