@@ -1,6 +1,6 @@
 # Quvant
 
-> Software a la vanguardia de cada nicho. Quvant (se pronuncia «kúvant») es una empresa argentina de desarrollo de software: sistemas de gestión listos para rubros específicos, aplicaciones a medida y páginas web. Fundada por dos amigos con más de siete años de experiencia en desarrollo.
+> Software a la vanguardia de cada nicho. Quvant (se pronuncia «kúvant») es una empresa argentina de desarrollo de software: sistemas de gestión listos para rubros específicos, aplicaciones a medida y páginas web. Fundada por dos amigos con más de diez años construyendo software.
 
 ## Qué hacemos
 

@@ -237,3 +237,17 @@ html[data-vista="texto"] .aurora span { animation: none; }
 html[data-vista="texto"] .ficha-servicio .foto-servicio {
   animation: none;
 }
+
+/* Los puntos de "escribiendo" de la charla comercial. */
+@keyframes latido {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-2px); }
+}
+
+/* Cada burbuja de la charla entra subiendo. */
+@keyframes burbuja {
+  from { opacity: 0; transform: translateY(6px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+.charla-burbuja { animation: burbuja 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@media (prefers-reduced-motion: reduce) { .charla-burbuja { animation: none; } }

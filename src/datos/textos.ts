@@ -317,17 +317,29 @@ export const NOSOTROS = {
   etiqueta: "Nosotros",
   titulo: "Dos amigos, dos fuerzas, una sola marca.",
   origen:
-    "Quvant nace del sueño de dos amigos apasionados por el desarrollo de aplicaciones, con más de siete años de experiencia.",
+    "Quvant nace del sueño de dos amigos apasionados por el desarrollo de aplicaciones, con más de diez años de experiencia.",
   fuerzas: {
     desarrollo: {
       etiqueta: "Fuerza de desarrollo",
-      texto:
-        "Muchos años programando. Construimos sistemas que funcionan todos los días, para empresas de primer nivel.",
+      titular: "Más de 10 años construyendo software.",
+      parrafos: [
+        "Desarrollamos sistemas y sitios web para startups y empresas de primer nivel. Lo que mejor hacemos es escuchar: entendemos cómo trabaja tu empresa, tomamos tus ideas y las convertimos en un sistema que tu equipo usa desde el primer día. Es simple, completo y no hace falta un manual.",
+        "Trabajamos con las tecnologías más nuevas y usamos inteligencia artificial para construir más rápido y con más precisión. Así ponemos tu empresa a la vanguardia de su nicho.",
+      ],
+      puntos: ["Sistemas y sitios web", "Tecnologías nuevas", "IA para construir mejor"],
+      dato: { numero: 10, prefijo: "+", etiqueta: "años construyendo software" },
+      ventana: "quvant · construir.ts",
     },
     comercial: {
       etiqueta: "Fuerza comercial",
-      texto:
-        "Entender al cliente. Conocer el negocio, el rubro y a la gente que lo mueve antes de escribir una línea de código.",
+      titular: "Entendemos tu negocio antes de escribir una línea de código.",
+      parrafos: [
+        "Conocemos el negocio, el rubro y a la gente que lo mueve. Escuchamos cómo vendés, cómo cobrás y qué te frena hoy, y lo traducimos en un pedido claro para el equipo de desarrollo: nada se pierde entre lo que necesitás y lo que se construye.",
+        "Te acompañamos desde la primera charla hasta que el sistema está andando en tu empresa. Y después también: si tu negocio cambia, el sistema cambia con él.",
+      ],
+      puntos: ["Escuchar primero", "Propuestas concretas", "Acompañamiento después"],
+      dato: { numero: 4, prefijo: "", etiqueta: "etapas, de la idea al sistema andando" },
+      ventana: "Así arranca una charla",
     },
     resultado: "QUVANT",
   },
