@@ -4,6 +4,7 @@ import "./globals.css";
 import { Encabezado } from "@/componentes/estructura/Encabezado";
 import { InterruptorVista } from "@/componentes/estructura/InterruptorVista";
 import { Pie } from "@/componentes/estructura/Pie";
+import { Revelar } from "@/componentes/estructura/Revelar";
 import { ScrollSuave } from "@/componentes/estructura/ScrollSuave";
 import { SITIO } from "@/datos/sitio";
 import { ACCESIBILIDAD, MARCA } from "@/datos/textos";
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {ACCESIBILIDAD.saltarAlContenido}
         </a>
         <ScrollSuave />
+        <Revelar />
         <Encabezado />
         <main id="contenido" className="flex-1">
           {children}

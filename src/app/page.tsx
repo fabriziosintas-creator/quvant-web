@@ -1,4 +1,5 @@
 import { QCromoDiferido } from "@/componentes/3d/QCromoDiferido";
+import { CintaRubros } from "@/componentes/estructura/CintaRubros";
 import { TextoTipeado } from "@/componentes/estructura/TextoTipeado";
 import { Contacto } from "@/componentes/secciones/Contacto";
 import { Nosotros } from "@/componentes/secciones/Nosotros";
@@ -38,6 +39,7 @@ export default function Inicio() {
               {HERO.botonSecundario.texto}
             </a>
           </div>
+          <CintaRubros />
         </div>
 
         {/* Pista de scroll: el punto cuadrado bajando por un riel fino. */}

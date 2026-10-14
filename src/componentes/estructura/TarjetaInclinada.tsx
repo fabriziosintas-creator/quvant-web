@@ -1,12 +1,12 @@
 "use client";
 
-import { useRef, type PointerEvent, type ReactNode } from "react";
+import { useRef, type HTMLAttributes, type PointerEvent, type ReactNode } from "react";
 import { PASO_GRILLA } from "./GrillaYSalto";
 
 type Props = {
   children: ReactNode;
   className?: string;
-};
+} & Omit<HTMLAttributes<HTMLDivElement>, "className" | "children">;
 
 /**
  * Tarjeta que reacciona al puntero: se inclina en 3D y, de paso, publica
@@ -17,7 +17,7 @@ type Props = {
  * prefers-reduced-motion; en táctil o con movimiento reducido es una
  * tarjeta común, con la grilla quieta.
  */
-export function TarjetaInclinada({ children, className }: Props) {
+export function TarjetaInclinada({ children, className, ...resto }: Props) {
   const tarjeta = useRef<HTMLDivElement>(null);
 
   const puedeInclinar = () =>
@@ -55,6 +55,7 @@ export function TarjetaInclinada({ children, className }: Props) {
   return (
     <div
       ref={tarjeta}
+      {...resto}
       onPointerMove={alMover}
       onPointerLeave={alSalir}
       className={`will-change-transform ${className ?? ""}`}

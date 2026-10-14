@@ -2,6 +2,7 @@
 
 import { useRef, useState, type KeyboardEvent } from "react";
 import { DepositoForjaDiferido } from "@/componentes/3d/DepositoForjaDiferido";
+import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { PLATAFORMAS } from "@/datos/textos";
 
 type Rubro = (typeof PLATAFORMAS.rubros.items)[number];
@@ -100,10 +101,8 @@ export function SelectorRubros() {
             {item.productos.length > 0 ? (
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {item.productos.map((producto) => (
-                  <article
-                    key={producto.nombre}
-                    className="flex flex-col gap-3 border border-profundo p-6"
-                  >
+                  <TarjetaViva key={producto.nombre} className="border border-profundo p-6">
+                    <article className="flex flex-col gap-3">
                     <div>
                       <h4 className="font-michroma text-base uppercase tracking-marca text-blanco md:text-lg">
                         {producto.nombre}
@@ -115,7 +114,8 @@ export function SelectorRubros() {
                       ) : null}
                     </div>
                     <p className="font-plex text-sm leading-relaxed text-acero">{producto.rol}</p>
-                  </article>
+                    </article>
+                  </TarjetaViva>
                 ))}
               </div>
             ) : (

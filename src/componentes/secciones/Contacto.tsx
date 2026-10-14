@@ -1,4 +1,5 @@
 import { CONTACTO, urlEmail, urlInstagram, urlWhatsApp } from "@/datos/contacto";
+import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { CONTACTO_SECCION, MARCA } from "@/datos/textos";
 import { FormularioContacto } from "./FormularioContacto";
 
@@ -31,20 +32,26 @@ export function Contacto() {
   return (
     <section id="contacto" className="border-t border-profundo">
       <div className="contenedor py-24 md:py-32">
-        <p className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
+        <p data-revelar className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
           {CONTACTO_SECCION.numero} · {CONTACTO_SECCION.etiqueta}
         </p>
-        <h2 className="mt-6 max-w-3xl font-plex text-3xl font-bold leading-tight text-blanco md:text-5xl">
+        <h2
+          data-revelar
+          className="mt-6 max-w-3xl font-plex text-3xl font-bold leading-tight text-blanco md:text-5xl"
+        >
           {CONTACTO_SECCION.titulo}
         </h2>
-        <p className="mt-6 max-w-2xl font-plex text-sm leading-relaxed text-acero md:text-base">
+        <p
+          data-revelar
+          className="mt-6 max-w-2xl font-plex text-sm leading-relaxed text-acero md:text-base"
+        >
           {CONTACTO_SECCION.bajada}
         </p>
 
         <div className="mt-12 grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16 md:mt-16">
           <FormularioContacto />
 
-          <aside className="h-fit border border-profundo p-7 md:p-9">
+          <TarjetaViva estirar={false} className="border border-profundo p-7 md:p-9" data-revelar>
             <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
               {CONTACTO_SECCION.directo.etiqueta}
             </p>
@@ -72,7 +79,7 @@ export function Contacto() {
               <span aria-hidden className="inline-block size-1.5 bg-blanco" />
               {MARCA.bajada}
             </p>
-          </aside>
+          </TarjetaViva>
         </div>
       </div>
     </section>

@@ -1,5 +1,6 @@
 import { TelefonoCasoDiferido } from "@/componentes/3d/TelefonoCasoDiferido";
 import { CASOS, CASO_PROXIMO, type CasoWeb } from "@/datos/casos";
+import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { WEBS } from "@/datos/textos";
 import { DeslizadorAntesDespues } from "./DeslizadorAntesDespues";
 
@@ -108,13 +109,19 @@ export function Webs() {
   return (
     <section id="webs" className="border-t border-profundo">
       <div className="contenedor py-24 md:py-32">
-        <p className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
+        <p data-revelar className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
           {WEBS.numero} · {WEBS.etiqueta}
         </p>
-        <h2 className="mt-6 max-w-3xl font-plex text-3xl font-bold leading-tight text-blanco md:text-5xl">
+        <h2
+          data-revelar
+          className="mt-6 max-w-3xl font-plex text-3xl font-bold leading-tight text-blanco md:text-5xl"
+        >
           {WEBS.titulo}
         </h2>
-        <p className="mt-6 max-w-2xl font-plex text-sm leading-relaxed text-acero md:text-base">
+        <p
+          data-revelar
+          className="mt-6 max-w-2xl font-plex text-sm leading-relaxed text-acero md:text-base"
+        >
           {WEBS.bajada}
         </p>
 
@@ -123,19 +130,24 @@ export function Webs() {
         ))}
 
         {/* El hueco honesto para el caso que viene. */}
-        <div className="mt-16 border border-dashed border-profundo p-10 text-center md:p-14">
-          <p className="font-michroma text-lg uppercase tracking-marca text-blanco md:text-xl">
-            {CASO_PROXIMO.titulo}
-          </p>
-          <p className="mt-3 font-plex text-sm text-acero">{CASO_PROXIMO.texto}</p>
-          <div className="mt-6 flex justify-center">
-            <a
-              href={CASO_PROXIMO.accion.destino}
-              className="inline-flex h-11 items-center justify-center bg-blanco px-6 font-plex text-[12px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero"
-            >
-              {CASO_PROXIMO.accion.texto}
-            </a>
-          </div>
+        <div className="mt-16">
+          <TarjetaViva
+            className="border border-dashed border-profundo p-10 text-center md:p-14"
+            data-revelar
+          >
+            <p className="font-michroma text-lg uppercase tracking-marca text-blanco md:text-xl">
+              {CASO_PROXIMO.titulo}
+            </p>
+            <p className="mt-3 font-plex text-sm text-acero">{CASO_PROXIMO.texto}</p>
+            <div className="mt-6 flex justify-center">
+              <a
+                href={CASO_PROXIMO.accion.destino}
+                className="inline-flex h-11 items-center justify-center bg-blanco px-6 font-plex text-[12px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero"
+              >
+                {CASO_PROXIMO.accion.texto}
+              </a>
+            </div>
+          </TarjetaViva>
         </div>
       </div>
     </section>

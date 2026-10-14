@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { NOSOTROS } from "@/datos/textos";
 import { FuerzasQueSeJuntan } from "./FuerzasQueSeJuntan";
 import { ServiciosInteractivos } from "./ServiciosInteractivos";
@@ -13,7 +14,7 @@ function Habilidad({ nombre, nivel }: { nombre: string; nivel: number }) {
       aria-label={`${nombre}: ${nivel} de 5`}
     >
       <span className="font-plex text-xs uppercase tracking-etiqueta text-acero">{nombre}</span>
-      <span aria-hidden className="flex gap-[5px]">
+      <span aria-hidden data-revelar-barras className="flex gap-[5px]">
         {[1, 2, 3, 4, 5].map((marca) => (
           <span
             key={marca}
@@ -27,7 +28,7 @@ function Habilidad({ nombre, nivel }: { nombre: string; nivel: number }) {
 
 function PerfilEquipo({ persona }: { persona: Persona }) {
   return (
-    <article className="flex flex-col border border-profundo">
+    <TarjetaViva className="border border-profundo" data-revelar>
       <div className="flex items-start gap-6 p-7 md:p-8">
         <div className="relative size-24 shrink-0 border border-profundo md:size-28">
           {persona.foto ? (
@@ -79,7 +80,7 @@ function PerfilEquipo({ persona }: { persona: Persona }) {
           </a>
         </div>
       ) : null}
-    </article>
+    </TarjetaViva>
   );
 }
 
@@ -89,13 +90,19 @@ export function Nosotros() {
   return (
     <section id="nosotros" className="border-t border-profundo">
       <div className="contenedor py-24 md:py-32">
-        <p className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
+        <p data-revelar className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
           {NOSOTROS.numero} · {NOSOTROS.etiqueta}
         </p>
-        <h2 className="mt-6 max-w-3xl font-plex text-3xl font-bold leading-tight text-blanco md:text-5xl">
+        <h2
+          data-revelar
+          className="mt-6 max-w-3xl font-plex text-3xl font-bold leading-tight text-blanco md:text-5xl"
+        >
           {NOSOTROS.titulo}
         </h2>
-        <p className="mt-6 max-w-2xl font-plex text-sm leading-relaxed text-acero md:text-base">
+        <p
+          data-revelar
+          className="mt-6 max-w-2xl font-plex text-sm leading-relaxed text-acero md:text-base"
+        >
           {NOSOTROS.origen}
         </p>
 
@@ -107,13 +114,15 @@ export function Nosotros() {
           ))}
         </div>
 
-        <div className="mt-20 border border-profundo p-8 md:mt-28 md:p-12">
-          <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
-            {NOSOTROS.mision.etiqueta}
-          </p>
-          <p className="mt-5 max-w-3xl font-plex text-xl font-bold leading-snug text-blanco md:text-2xl">
-            {NOSOTROS.mision.texto}
-          </p>
+        <div className="mt-20 md:mt-28">
+          <TarjetaViva className="border border-profundo p-8 md:p-12" data-revelar>
+            <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+              {NOSOTROS.mision.etiqueta}
+            </p>
+            <p className="mt-5 max-w-3xl font-plex text-xl font-bold leading-snug text-blanco md:text-2xl">
+              {NOSOTROS.mision.texto}
+            </p>
+          </TarjetaViva>
         </div>
 
         <div className="mt-20 md:mt-28">

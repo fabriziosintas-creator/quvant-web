@@ -47,8 +47,16 @@ function decidirVistaInicial(): Vista {
   return hayWebGL() ? "3d" : "texto";
 }
 
+/** El CSS también necesita saberlo (cinta, cursor): va en <html data-vista>. */
+function reflejarEnDocumento(vista: Vista) {
+  document.documentElement.dataset.vista = vista;
+}
+
 export function obtenerVista(): VistaSnapshot {
-  if (vistaActual === null) vistaActual = decidirVistaInicial();
+  if (vistaActual === null) {
+    vistaActual = decidirVistaInicial();
+    reflejarEnDocumento(vistaActual);
+  }
   return vistaActual;
 }
 
@@ -58,6 +66,7 @@ export function fijarVista(vista: Vista) {
   if (vista === "3d" && !hayWebGL()) return;
   if (vista === vistaActual) return;
   vistaActual = vista;
+  reflejarEnDocumento(vista);
   try {
     localStorage.setItem("quvant-vista", vista);
   } catch {

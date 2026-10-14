@@ -96,3 +96,29 @@ body {
     width: 100%;
   }
 }
+
+/* La cinta de rubros de la portada: dos copias, se corre media pista. */
+@keyframes desplazar {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.cinta-pista {
+  animation: desplazar 42s linear infinite;
+}
+
+.cinta:hover .cinta-pista {
+  animation-play-state: paused;
+}
+
+/* Sin movimiento: ni por preferencia del sistema ni en vista texto. */
+@media (prefers-reduced-motion: reduce) {
+  .cinta-pista {
+    animation: none;
+  }
+}
+
+html[data-vista="texto"] .cinta-pista {
+  animation: none;
+}
