@@ -22,3 +22,6 @@ public/forja/
 
 # Capturas de los productos para las texturas (se regeneran con npm run grabar)
 public/capturas/
+
+# Material del hero-loop (se regenera con npm run preparar-hero)
+public/hero/

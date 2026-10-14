@@ -11,6 +11,8 @@ uniform float uTiempo;         // segundos
 uniform float uPeriodo;        // segundos del ciclo completo
 uniform vec2 uDesplazamiento;  // parallax, en px (< 2 % del cuadro)
 uniform float uOpacidad;       // 1 = la grilla del manual; menos, más tenue
+uniform float uIzquierda;      // opacidad a la izquierda (el hero-loop: 0.6); 1 = pareja
+uniform vec2 uTransicion;      // dónde pasa de uIzquierda a 1, en fracción del ancho
 uniform vec3 uFondo;
 uniform vec3 uPunto;
 
@@ -27,5 +29,6 @@ void main() {
   vec3 lectura = vec3(px / (uPaso * 9.0) + vec2(cos(angulo), sin(angulo)) * 1.5, 0.37);
   float respira = 0.9 + 0.1 * (0.5 + 0.5 * simplex(lectura));
 
-  gl_FragColor = vec4(mix(uFondo, uPunto, punto * respira * uOpacidad), 1.0);
+  float tramo = mix(uIzquierda, 1.0, smoothstep(uTransicion.x, uTransicion.y, vUv.x));
+  gl_FragColor = vec4(mix(uFondo, uPunto, punto * respira * uOpacidad * tramo), 1.0);
 }

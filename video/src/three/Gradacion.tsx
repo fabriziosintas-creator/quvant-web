@@ -50,11 +50,13 @@ export const CadenaPost: React.FC<{
   /** Largo del loop en cuadros: el grano se repite exacto. */
   periodo?: number;
   saturacion?: number;
-}> = ({ ancho, alto, cuadro, periodo = 1e9, saturacion = 1 }) => {
+  /** Antialias de la pasada de escena (la Q necesita bordes limpios). */
+  multisampling?: number;
+}> = ({ ancho, alto, cuadro, periodo = 1e9, saturacion = 1, multisampling = 4 }) => {
   const { gl, scene, camera } = useThree();
 
   const cadena = useMemo(() => {
-    const compositor = new EffectComposer(gl, { frameBufferType: HalfFloatType, multisampling: 0 });
+    const compositor = new EffectComposer(gl, { frameBufferType: HalfFloatType, multisampling });
     compositor.addPass(new RenderPass(scene, camera));
     const bloom = new BloomEffect({
       luminanceThreshold: 0.82,
@@ -74,7 +76,7 @@ export const CadenaPost: React.FC<{
     compositor.addPass(new EffectPass(camera, gradacion));
     compositor.setSize(ancho, alto, false);
     return { compositor, gradacion };
-  }, [gl, scene, camera, ancho, alto]);
+  }, [gl, scene, camera, ancho, alto, multisampling]);
 
   useEffect(() => () => cadena.compositor.dispose(), [cadena]);
 

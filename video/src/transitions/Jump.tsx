@@ -49,14 +49,35 @@ export const Salto3D: React.FC<{
   escenaB: React.ReactNode;
   camaraA: Camara;
   camaraB: Camara;
-}> = ({ ancho, alto, progreso, corte, origen, destino, lado, escenaA, escenaB, camaraA, camaraB }) => {
+  /** Desenfoque de profundidad de las dos escenas, en px (0 = nítido). */
+  desenfoque?: number;
+  /** El contenido se funde hacia la izquierda, de [0] a [1] del ancho. */
+  mascaraX?: [number, number];
+  /** Antialias de las texturas de las escenas. Desenfocadas no hace falta, y a 4K pesa. */
+  muestras?: number;
+}> = ({
+  ancho,
+  alto,
+  progreso,
+  corte,
+  origen,
+  destino,
+  lado,
+  escenaA,
+  escenaB,
+  camaraA,
+  camaraB,
+  desenfoque = 0,
+  mascaraX = [0, 0],
+  muestras = 4,
+}) => {
   const aspecto = ancho / alto;
   const [mundoA] = useState(() => new THREE.Scene());
   const [mundoB] = useState(() => new THREE.Scene());
   const camA = useCamara(camaraA, aspecto);
   const camB = useCamara(camaraB, aspecto);
-  const texturaA = useFBO(ancho, alto, { samples: 4 });
-  const texturaB = useFBO(ancho, alto, { samples: 4 });
+  const texturaA = useFBO(ancho, alto, { samples: muestras });
+  const texturaB = useFBO(ancho, alto, { samples: muestras });
 
   const material = useMemo(
     () =>
@@ -65,6 +86,9 @@ export const Salto3D: React.FC<{
         fragmentShader: frag,
         depthTest: false,
         depthWrite: false,
+        // Las escenas pueden traer fondo transparente: se compone premultiplicado.
+        transparent: true,
+        premultipliedAlpha: true,
         uniforms: {
           uSceneA: { value: texturaA.texture },
           uSceneB: { value: texturaB.texture },
@@ -75,6 +99,8 @@ export const Salto3D: React.FC<{
           uResolucion: { value: new THREE.Vector2(ancho, alto) },
           uLado: { value: 16 },
           uColorPunto: { value: new THREE.Vector3(...hexVec3(COLOR.blanco)) },
+          uDesenfoque: { value: 0 },
+          uMascaraX: { value: new THREE.Vector2() },
         },
       }),
     [texturaA, texturaB, corte, ancho, alto],
@@ -87,6 +113,8 @@ export const Salto3D: React.FC<{
     u.uJumpOrigin.value.set(...origen);
     u.uJumpTarget.value.set(...destino);
     u.uLado.value = lado ?? Math.round((16 * ancho) / 1600);
+    u.uDesenfoque.value = desenfoque;
+    u.uMascaraX.value.set(...mascaraX);
     const anterior = gl.getRenderTarget();
     if (progreso < 1) {
       gl.setRenderTarget(texturaA);
@@ -103,7 +131,7 @@ export const Salto3D: React.FC<{
     <>
       {createPortal(escenaA, mundoA)}
       {createPortal(escenaB, mundoB)}
-      <mesh frustumCulled={false} material={material}>
+      <mesh frustumCulled={false} material={material} renderOrder={-10}>
         <planeGeometry args={[2, 2]} />
       </mesh>
     </>

@@ -43,6 +43,11 @@ export type PropsQChrome = {
   softboxAzimut?: number;
   armado?: { aro: number; cola: number; punto: number };
   adelanto?: number;
+  /**
+   * Con un fondo transparente encima de la grilla (el salto del hero-loop),
+   * la Q tiene que dibujarse después: va a la lista transparente con este orden.
+   */
+  orden?: number;
 };
 
 export const QChrome: React.FC<PropsQChrome> = ({
@@ -53,6 +58,7 @@ export const QChrome: React.FC<PropsQChrome> = ({
   softboxAzimut = 0.6,
   armado = { aro: 1, cola: 1, punto: 1 },
   adelanto = 0,
+  orden,
 }) => {
   const material = useMemo(
     () =>
@@ -68,9 +74,11 @@ export const QChrome: React.FC<PropsQChrome> = ({
           uSoftbox: { value: 1.6 },
           uSoftboxAzimut: { value: softboxAzimut },
         },
+        transparent: orden !== undefined,
       }),
-    [rugosidad, softboxAzimut],
+    [rugosidad, softboxAzimut, orden],
   );
+  const encima = orden ?? 0;
 
   const geometriaPunto = useMemo(() => {
     const mitad = Q.punto.lado / 2;
@@ -100,14 +108,20 @@ export const QChrome: React.FC<PropsQChrome> = ({
   return (
     <group position={posicion} rotation={[rotacion[0], rotacion[1], 0]} scale={escala}>
       {aro > 0 ? (
-        <mesh position={ARO} scale={Math.max(0.0001, aro)} rotation={[0, 0, (1 - aro) * -0.9]} material={material}>
+        <mesh
+          position={ARO}
+          scale={Math.max(0.0001, aro)}
+          rotation={[0, 0, (1 - aro) * -0.9]}
+          material={material}
+          renderOrder={encima}
+        >
           <torusGeometry args={[Q.aro.radio, RADIO_TRAZO, 48, 220]} />
         </mesh>
       ) : null}
       {cola > 0 ? (
         // El grupo nace en el aro y apunta a 45° abajo-derecha; escalar Y la hace crecer.
         <group position={COLA_DESDE} rotation={[0, 0, -Math.PI * 0.75]} scale={[1, Math.max(0.0001, cola), 1]}>
-          <mesh position={[0, COLA_LARGO / 2, 0]} material={material}>
+          <mesh position={[0, COLA_LARGO / 2, 0]} material={material} renderOrder={encima}>
             <cylinderGeometry args={[RADIO_TRAZO, RADIO_TRAZO, COLA_LARGO, 48]} />
           </mesh>
         </group>
@@ -118,6 +132,7 @@ export const QChrome: React.FC<PropsQChrome> = ({
           position={posicionPunto}
           scale={0.4 + 0.6 * punto}
           material={material}
+          renderOrder={encima}
         />
       ) : null}
     </group>

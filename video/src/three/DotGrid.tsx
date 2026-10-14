@@ -24,12 +24,24 @@ type Props = {
   /** Px entre puntos (48 a 4K; se escala con el cuadro). */
   paso?: number;
   periodo: number;
-  /** 1 = la grilla del manual; el hero-loop la usa al 60 % a la izquierda. */
+  /** 1 = la grilla del manual. */
   opacidad?: number;
+  /** Opacidad en el lado izquierdo (el hero-loop: 0.6 en el tercio del texto). */
+  izquierda?: number;
+  /** Dónde pasa de `izquierda` a la opacidad plena, en fracción del ancho. */
+  transicion?: [number, number];
 };
 
 /** La grilla como pieza de cualquier escena R3F: detrás de todo, a pantalla completa. */
-export const GrillaDePuntos: React.FC<Props> = ({ ancho, alto, paso, periodo, opacidad = 1 }) => {
+export const GrillaDePuntos: React.FC<Props> = ({
+  ancho,
+  alto,
+  paso,
+  periodo,
+  opacidad = 1,
+  izquierda = 1,
+  transicion = [0.33, 0.45],
+}) => {
   const cuadro = useCurrentFrame();
   const { fps } = useVideoConfig();
   const pasoPx = paso ?? Math.round((48 * ancho) / 3840);
@@ -44,12 +56,14 @@ export const GrillaDePuntos: React.FC<Props> = ({ ancho, alto, paso, periodo, op
     uPeriodo: { value: periodo },
     uDesplazamiento: { value: [Math.cos(angulo) * ancho * 0.008, Math.sin(angulo) * alto * 0.008] },
     uOpacidad: { value: opacidad },
+    uIzquierda: { value: izquierda },
+    uTransicion: { value: transicion },
     uFondo: { value: colorVec3("negro") },
     uPunto: { value: colorVec3("profundo") },
   };
 
   return (
-    <mesh frustumCulled={false} renderOrder={-10}>
+    <mesh frustumCulled={false} renderOrder={-20}>
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
         vertexShader={vert}

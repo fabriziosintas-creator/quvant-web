@@ -44,6 +44,8 @@
     "stock": "tsx scripts/fetch-stock.ts",
     "normalizar": "tsx scripts/normalize-stock.ts",
     "grabar-forja": "tsx scripts/record-forja-video.ts",
-    "web-forja": "tsx scripts/encode-forja-web.ts"
+    "web-forja": "tsx scripts/encode-forja-web.ts",
+    "preparar-hero": "tsx scripts/preparar-hero.ts",
+    "verificar-loop": "tsx scripts/verify-loop.ts"
   }
 }
