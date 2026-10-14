@@ -1,0 +1,111 @@
+import { useFBO } from "@react-three/drei";
+import { createPortal, useFrame } from "@react-three/fiber";
+import React, { useMemo, useState } from "react";
+import * as THREE from "three";
+import { COLOR, TIEMPO, hexVec3 } from "../brand/tokens";
+import frag from "../shaders/jump.frag";
+import vert from "../shaders/jump.vert";
+
+/**
+ * "El salto" en 3D: la única transición del video, como pase de
+ * postproceso (jump.vert + jump.frag). Las dos escenas se dibujan cada una
+ * en su textura (con su cámara) y el pase las combina: el punto vuela sobre
+ * A y, al aterrizar, B se abre desde ese punto.
+ *
+ * Va dentro de un <ThreeCanvas>; el resto de la cadena (bloom, aberración,
+ * gradación) se aplica encima con <EffectComposer>.
+ */
+
+export type Camara = { posicion: [number, number, number]; mira?: [number, number, number]; fov?: number };
+
+/** Cuántos cuadros vuela el punto (420 ms) y cuántos dura el revelado. */
+export function cuadrosDelSalto(fps: number) {
+  const vuelo = Math.round((TIEMPO.saltoMs / 1000) * fps);
+  const revelado = Math.round(0.53 * fps);
+  return { vuelo, revelado, total: vuelo + revelado, corte: vuelo / (vuelo + revelado) };
+}
+
+function useCamara(c: Camara, aspecto: number) {
+  return useMemo(() => {
+    const camara = new THREE.PerspectiveCamera(c.fov ?? 40, aspecto, 0.1, 200);
+    camara.position.set(...c.posicion);
+    camara.lookAt(new THREE.Vector3(...(c.mira ?? [0, 0, 0])));
+    camara.updateProjectionMatrix();
+    return camara;
+  }, [c.fov, c.posicion, c.mira, aspecto]);
+}
+
+export const Salto3D: React.FC<{
+  ancho: number;
+  alto: number;
+  /** 0..1: vuelo y revelado. Con 0 se ve solo A; con 1, solo B. */
+  progreso: number;
+  corte: number;
+  /** Px, origen arriba-izquierda. */
+  origen: [number, number];
+  destino: [number, number];
+  lado?: number;
+  escenaA: React.ReactNode;
+  escenaB: React.ReactNode;
+  camaraA: Camara;
+  camaraB: Camara;
+}> = ({ ancho, alto, progreso, corte, origen, destino, lado, escenaA, escenaB, camaraA, camaraB }) => {
+  const aspecto = ancho / alto;
+  const [mundoA] = useState(() => new THREE.Scene());
+  const [mundoB] = useState(() => new THREE.Scene());
+  const camA = useCamara(camaraA, aspecto);
+  const camB = useCamara(camaraB, aspecto);
+  const texturaA = useFBO(ancho, alto, { samples: 4 });
+  const texturaB = useFBO(ancho, alto, { samples: 4 });
+
+  const material = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        vertexShader: vert,
+        fragmentShader: frag,
+        depthTest: false,
+        depthWrite: false,
+        uniforms: {
+          uSceneA: { value: texturaA.texture },
+          uSceneB: { value: texturaB.texture },
+          uProgress: { value: 0 },
+          uCorte: { value: corte },
+          uJumpOrigin: { value: new THREE.Vector2() },
+          uJumpTarget: { value: new THREE.Vector2() },
+          uResolucion: { value: new THREE.Vector2(ancho, alto) },
+          uLado: { value: 16 },
+          uColorPunto: { value: new THREE.Vector3(...hexVec3(COLOR.blanco)) },
+        },
+      }),
+    [texturaA, texturaB, corte, ancho, alto],
+  );
+
+  // Las dos escenas a sus texturas, antes del cuadro final (prioridad negativa).
+  useFrame(({ gl }) => {
+    const u = material.uniforms;
+    u.uProgress.value = Math.min(1, Math.max(0, progreso));
+    u.uJumpOrigin.value.set(...origen);
+    u.uJumpTarget.value.set(...destino);
+    u.uLado.value = lado ?? Math.round((16 * ancho) / 1600);
+    const anterior = gl.getRenderTarget();
+    if (progreso < 1) {
+      gl.setRenderTarget(texturaA);
+      gl.render(mundoA, camA);
+    }
+    if (progreso > corte * 0.98) {
+      gl.setRenderTarget(texturaB);
+      gl.render(mundoB, camB);
+    }
+    gl.setRenderTarget(anterior);
+  }, -1);
+
+  return (
+    <>
+      {createPortal(escenaA, mundoA)}
+      {createPortal(escenaB, mundoB)}
+      <mesh frustumCulled={false} material={material}>
+        <planeGeometry args={[2, 2]} />
+      </mesh>
+    </>
+  );
+};

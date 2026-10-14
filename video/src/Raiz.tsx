@@ -2,6 +2,7 @@ import React from "react";
 import { Composition, Still } from "remotion";
 import { ALTO, ANCHO, DURACION, FPS, ForjaRecorrido } from "./compositions/ForjaRecorrido";
 import { MuestraPantalla } from "./muestras/MuestraPantalla";
+import { PRUEBA, PruebaShaders, QSola } from "./compositions/PruebaShaders";
 
 /**
  * Composiciones del video de portada.
@@ -13,6 +14,15 @@ import { MuestraPantalla } from "./muestras/MuestraPantalla";
 export const Raiz: React.FC = () => {
   return (
     <>
+      <Composition
+        id="PruebaShaders"
+        component={PruebaShaders}
+        durationInFrames={PRUEBA.duracion}
+        fps={PRUEBA.fps}
+        width={PRUEBA.ancho}
+        height={PRUEBA.alto}
+      />
+      <Still id="QSola4K" component={QSola} width={3840} height={2160} />
       <Composition
         id="ForjaRecorrido"
         component={ForjaRecorrido}

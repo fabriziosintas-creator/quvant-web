@@ -4,22 +4,32 @@ import { useCurrentFrame, useVideoConfig } from "remotion";
 import { colorVec3 } from "../brand/tokens";
 import frag from "../shaders/grid.frag";
 import vert from "../shaders/pantalla-completa.vert";
+import ruido from "../shaders/ruido.glsl";
 
 /**
  * La grilla de puntos del manual, dibujada por un shader propio
- * (src/shaders/grid.frag) sobre un plano que cubre todo el cuadro.
+ * (src/shaders/grid.frag, con el ruido simplex de ruido.glsl) sobre un
+ * plano que cubre todo el cuadro.
  *
  * El tiempo sale del cuadro de Remotion, nunca de un reloj de three.js:
  * cada render es idéntico. `periodo` es el largo del loop, para que el
  * respirar de la grilla cierre exacto.
  */
-export const DotGrid: React.FC<{
+
+const FRAGMENTO = `${ruido}\n${frag}`;
+
+type Props = {
   ancho: number;
   alto: number;
   /** Px entre puntos (48 a 4K; se escala con el cuadro). */
   paso?: number;
   periodo: number;
-}> = ({ ancho, alto, paso, periodo }) => {
+  /** 1 = la grilla del manual; el hero-loop la usa al 60 % a la izquierda. */
+  opacidad?: number;
+};
+
+/** La grilla como pieza de cualquier escena R3F: detrás de todo, a pantalla completa. */
+export const GrillaDePuntos: React.FC<Props> = ({ ancho, alto, paso, periodo, opacidad = 1 }) => {
   const cuadro = useCurrentFrame();
   const { fps } = useVideoConfig();
   const pasoPx = paso ?? Math.round((48 * ancho) / 3840);
@@ -33,16 +43,28 @@ export const DotGrid: React.FC<{
     uTiempo: { value: segundos },
     uPeriodo: { value: periodo },
     uDesplazamiento: { value: [Math.cos(angulo) * ancho * 0.008, Math.sin(angulo) * alto * 0.008] },
+    uOpacidad: { value: opacidad },
     uFondo: { value: colorVec3("negro") },
     uPunto: { value: colorVec3("profundo") },
   };
 
   return (
-    <ThreeCanvas width={ancho} height={alto} flat linear gl={{ antialias: false }}>
-      <mesh frustumCulled={false}>
-        <planeGeometry args={[2, 2]} />
-        <shaderMaterial vertexShader={vert} fragmentShader={frag} uniforms={uniforms} depthTest={false} />
-      </mesh>
-    </ThreeCanvas>
+    <mesh frustumCulled={false} renderOrder={-10}>
+      <planeGeometry args={[2, 2]} />
+      <shaderMaterial
+        vertexShader={vert}
+        fragmentShader={FRAGMENTO}
+        uniforms={uniforms}
+        depthTest={false}
+        depthWrite={false}
+      />
+    </mesh>
   );
 };
+
+/** La grilla sola, en su propio lienzo (la usa el salto en CSS de ForjaRecorrido). */
+export const DotGrid: React.FC<Props> = (props) => (
+  <ThreeCanvas width={props.ancho} height={props.alto} flat linear gl={{ antialias: false }}>
+    <GrillaDePuntos {...props} />
+  </ThreeCanvas>
+);

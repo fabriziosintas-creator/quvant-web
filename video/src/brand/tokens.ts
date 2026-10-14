@@ -17,6 +17,19 @@ export const COLOR = {
   plata: "#B9BBBF",
 } as const;
 
+/**
+ * El degradado oficial del cromo (manual, y el mismo que refleja la Q del
+ * sitio): siete paradas de arriba hacia abajo. Es el entorno que refleja la
+ * Q; no es un color de capa.
+ */
+export const CROMO = ["#FFFFFF", "#D9DCE0", "#3A3D42", "#F2F4F6", "#6C7076", "#FFFFFF", "#9DA1A7"] as const;
+
+/** Un hex cualquiera de esta hoja como vec3 0..1 (sRGB, sin convertir). */
+export function hexVec3(hex: string): [number, number, number] {
+  const n = parseInt(hex.slice(1), 16);
+  return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
+}
+
 /** El mismo color como vec3 0..1, listo para un uniform de shader. */
 export function colorVec3(nombre: keyof typeof COLOR): [number, number, number] {
   const n = parseInt(COLOR[nombre].slice(1), 16);

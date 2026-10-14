@@ -19,3 +19,6 @@ out/
 
 # La grabación de Forja pesa: se regenera con npm run grabar-forja
 public/forja/
+
+# Capturas de los productos para las texturas (se regeneran con npm run grabar)
+public/capturas/
