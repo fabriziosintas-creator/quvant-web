@@ -39,7 +39,7 @@ export const ACCESIBILIDAD = {
 export const HERO = {
   titulo: "QUVANT",
   bajada: MARCA.bajada,
-  botonPrimario: { texto: "Ver lo que hacemos", destino: "#plataformas" },
+  botonPrimario: { texto: "Nuestros servicios", destino: "#servicios" },
   botonSecundario: { texto: "Hablemos", destino: "#contacto" },
 } as const;
 
@@ -298,25 +298,36 @@ export const NOSOTROS = {
     etiqueta: "Misión",
     texto: "Entrar en cada rubro, entender cómo trabaja y construir el sistema que todavía no tiene.",
   },
-  comoTrabajamos: {
-    etiqueta: "Cómo trabajamos",
-    servicios: [
+  servicios: {
+    etiqueta: "Nuestros servicios",
+    ayuda: "Elegí uno y mirá cómo lo armamos.",
+    items: [
       {
+        id: "sistemas",
         nombre: "Sistemas listos para tu nicho",
         texto:
           "Gestión y administración ya armadas para rubros específicos. Se contratan por mes y se usan desde el primer día.",
+        ventana: "El núcleo y la plantilla de tu rubro",
+        pie: "Un núcleo común que ya funciona y, encima, la plantilla pensada para tu rubro.",
       },
       {
+        id: "app",
         nombre: "Tu aplicación, de punta a punta",
         texto:
           "La app de tu empresa desde cero: stock, gestión, administración, seguimiento de ventas. Por fases, y cada fase se prueba antes de seguir.",
+        ventana: "Fase por fase",
+        pie: "Cada fase suma una parte usable y se prueba antes de arrancar la siguiente.",
       },
       {
+        id: "web",
         nombre: "Tu web, nueva o renovada",
         texto:
           "Desde cero o renovando la que quedó vieja, con migración segura de los datos sensibles.",
+        ventana: "De la web vieja a una con jerarquía",
+        pie: "Lo que estaba amontonado se ordena: primero lo importante, después el resto.",
       },
     ],
+    nota: "Ilustraciones de cómo trabajamos, no capturas de un sistema.",
   },
 } as const;
 

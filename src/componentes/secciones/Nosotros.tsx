@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { TarjetaInclinada } from "@/componentes/estructura/TarjetaInclinada";
 import { NOSOTROS } from "@/datos/textos";
 import { FuerzasQueSeJuntan } from "./FuerzasQueSeJuntan";
+import { ServiciosInteractivos } from "./ServiciosInteractivos";
 
 type Persona = (typeof NOSOTROS.equipo)[number];
 
@@ -117,27 +117,7 @@ export function Nosotros() {
         </div>
 
         <div className="mt-20 md:mt-28">
-          <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
-            {NOSOTROS.comoTrabajamos.etiqueta}
-          </p>
-          <div className="mt-8 grid gap-5 md:grid-cols-3 md:gap-6">
-            {NOSOTROS.comoTrabajamos.servicios.map((servicio, indice) => (
-              <TarjetaInclinada
-                key={servicio.nombre}
-                className="h-full border border-profundo bg-negro p-7 transition-colors hover:border-acero md:p-8"
-              >
-                <p className="font-michroma text-xs tracking-etiqueta text-acero">
-                  0{indice + 1}
-                </p>
-                <h3 className="mt-14 font-plex text-lg font-bold leading-snug text-blanco">
-                  {servicio.nombre}
-                </h3>
-                <p className="mt-3 font-plex text-sm leading-relaxed text-acero">
-                  {servicio.texto}
-                </p>
-              </TarjetaInclinada>
-            ))}
-          </div>
+          <ServiciosInteractivos />
         </div>
       </div>
     </section>
