@@ -198,7 +198,7 @@ export function RecorridoTablero() {
       onBlur={() => setEnPausa(false)}
     >
       {/* Las paradas: una por función. */}
-      <div className="order-2 lg:order-1">
+      <div className="order-2 min-w-0 lg:order-1">
         <p className="mb-4 font-plex text-xs text-acero">{recorrido.ayuda}</p>
         <div role="tablist" aria-label={PLATAFORMAS.hoy.etiqueta} aria-orientation="vertical">
           {PARADAS.map((parada, indice) => {
@@ -265,11 +265,11 @@ export function RecorridoTablero() {
       </div>
 
       {/* La ventana con la pantalla real. */}
-      <figure className="order-1 lg:order-2">
+      <figure className="order-1 min-w-0 lg:order-2">
         <div className="overflow-hidden rounded-[8px] border border-profundo">
           <figcaption className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
             <span aria-hidden className="size-1.5 bg-acero" />
-            <span className="truncate font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
+            <span className="min-w-0 truncate font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
               {recorrido.ventana}
             </span>
           </figcaption>
