@@ -1,28 +1,31 @@
-import { useThree } from "@react-three/fiber";
-import React, { useLayoutEffect } from "react";
+import { PerspectiveCamera } from "@react-three/drei";
+import React, { useMemo } from "react";
 import * as THREE from "three";
 
 /**
- * Encuadre explícito. R3F deja la cámara mirando al eje -Z del mundo, no
- * al objeto: si no se apunta a mano, la escena queda corrida. Acá se fija
- * posición y objetivo por cuadro, que además es lo que después anima el
- * travelling de cada escena.
+ * Encuadre de la escena.
+ *
+ * R3F deja la cámara mirando al eje -Z del mundo, no al objeto: si no se
+ * apunta, la escena queda corrida. En vez de girarla a mano (mutar algo
+ * que devuelve un hook), se calcula acá la rotación que mira al objetivo
+ * y se pasa como propiedad: declarativo y, sobre todo, idéntico en cada
+ * render, que es lo que pide Remotion.
  */
 export const Camara: React.FC<{
   posicion: [number, number, number];
   objetivo?: [number, number, number];
   fov?: number;
-}> = ({ posicion, objetivo = [0, 0, 0], fov = 30 }) => {
-  const camara = useThree((estado) => estado.camera);
+  cerca?: number;
+  lejos?: number;
+}> = ({ posicion, objetivo = [0, 0, 0], fov = 30, cerca = 0.1, lejos = 1200 }) => {
+  const rotacion = useMemo(() => {
+    const desde = new THREE.Vector3(...posicion);
+    const hacia = new THREE.Vector3(...objetivo);
+    const matriz = new THREE.Matrix4().lookAt(desde, hacia, new THREE.Vector3(0, 1, 0));
+    return new THREE.Euler().setFromRotationMatrix(matriz);
+  }, [posicion, objetivo]);
 
-  useLayoutEffect(() => {
-    camara.position.set(...posicion);
-    camara.lookAt(new THREE.Vector3(...objetivo));
-    if (camara instanceof THREE.PerspectiveCamera) {
-      camara.fov = fov;
-    }
-    camara.updateProjectionMatrix();
-  });
-
-  return null;
+  return (
+    <PerspectiveCamera makeDefault position={posicion} rotation={rotacion} fov={fov} near={cerca} far={lejos} />
+  );
 };

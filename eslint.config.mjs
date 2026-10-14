@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // El showreel es un proyecto aparte, con su propio ESLint y su propio
+    // tsconfig: lo revisa `npm run lint` adentro de video/.
+    "video/**",
   ]),
 ]);
 

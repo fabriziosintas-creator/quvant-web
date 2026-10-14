@@ -33,7 +33,7 @@ const CENTRO = 128;
 const PISO = [13, 13, 15];
 const ESCALA = PISO.map((piso) => ((255 - piso) / 255) * CONTRASTE);
 const DESPLAZAMIENTO = PISO.map(
-  (piso, i) => ((255 - piso) / 255) * (-CENTRO * (CONTRASTE - 1)) + piso,
+  (piso) => ((255 - piso) / 255) * (-CENTRO * (CONTRASTE - 1)) + piso,
 );
 
 const ORIGENES = [
