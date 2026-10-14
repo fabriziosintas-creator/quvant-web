@@ -79,17 +79,18 @@ const FRAG_RAMA = /* glsl */ `
   uniform float uDesfase;
   uniform float uActivo;
   uniform vec3 uAcero;
-  uniform vec3 uBlanco;
+  uniform vec3 uColor;
   varying vec2 vUv;
   void main() {
-    // Un pulso recorre el tubo del núcleo (u = 0) a la plantilla (u = 1).
+    // Un pulso del color del nicho recorre el tubo del núcleo (u = 0) a la plantilla (u = 1).
     float velocidad = 0.26 + 0.24 * uActivo;
     float p = fract(uTime * velocidad + uDesfase);
     float d = abs(vUv.x - p);
     float ancho = 0.05 + 0.07 * uActivo;
     float brillo = smoothstep(ancho, 0.0, d);
     float base = 0.16 + 0.4 * uActivo;
-    vec3 col = mix(uAcero, uBlanco, brillo);
+    vec3 reposo = mix(uAcero, uColor, 0.35 + 0.45 * uActivo);
+    vec3 col = mix(reposo, uColor, brillo);
     gl_FragColor = vec4(col, base + brillo * 0.9);
   }
 `;
@@ -205,10 +206,12 @@ function Rama({
   hacia,
   desfase,
   activo,
+  color,
 }: {
   hacia: THREE.Vector3;
   desfase: number;
   activo: boolean;
+  color: string;
 }) {
   const material = useRef<THREE.ShaderMaterial>(null);
   const geometria = useMemo(() => {
@@ -224,9 +227,9 @@ function Rama({
       uDesfase: { value: desfase },
       uActivo: { value: 0 },
       uAcero: { value: new THREE.Color(ACERO) },
-      uBlanco: { value: new THREE.Color(BLANCO) },
+      uColor: { value: new THREE.Color(color) },
     }),
-    [desfase],
+    [desfase, color],
   );
 
   useFrame((estado, delta) => {
@@ -265,15 +268,15 @@ function Plantilla({
   const lineas = useRef<THREE.LineBasicMaterial>(null);
   const punto = useRef<THREE.MeshBasicMaterial>(null);
   const geometria = useMemo(() => geometriaPlantilla(), []);
-  const colorActivo = useMemo(() => new THREE.Color(BLANCO), []);
-  const colorQuieto = useMemo(() => new THREE.Color(ACERO), []);
+  const colorActivo = useMemo(() => new THREE.Color(nicho.color), [nicho.color]);
+  const colorQuieto = useMemo(() => new THREE.Color(nicho.color).lerp(new THREE.Color(ACERO), 0.45), [nicho.color]);
 
   useFrame((_, delta) => {
     if (!grupo.current || !lineas.current || !punto.current) return;
     const escala = THREE.MathUtils.damp(grupo.current.scale.x, activo ? 1.22 : 1, 5, delta);
     grupo.current.scale.setScalar(escala);
     lineas.current.color.lerp(activo ? colorActivo : colorQuieto, 1 - Math.exp(-5 * delta));
-    lineas.current.opacity = THREE.MathUtils.damp(lineas.current.opacity, activo ? 1 : 0.55, 5, delta);
+    lineas.current.opacity = THREE.MathUtils.damp(lineas.current.opacity, activo ? 1 : 0.6, 5, delta);
     punto.current.color.lerp(activo ? colorActivo : colorQuieto, 1 - Math.exp(-5 * delta));
   });
 
@@ -307,7 +310,7 @@ function Plantilla({
           font={FUENTE_MICHROMA}
           fontSize={0.19}
           letterSpacing={0.14}
-          color={activo ? BLANCO : ACERO}
+          color={activo ? nicho.color : ACERO}
           anchorX="center"
           anchorY="top"
           position={[0, -0.42, 0]}
@@ -383,7 +386,12 @@ function Escena({ activo, onElegir }: { activo: string; onElegir: (id: string) =
       <Esfera activo={activo === "nucleo"} />
       {NICHOS.map((nicho, i) => (
         <group key={nicho.id}>
-          <Rama hacia={posiciones[i]} desfase={i * 0.23} activo={activo === nicho.id} />
+          <Rama
+            hacia={posiciones[i]}
+            desfase={i * 0.23}
+            activo={activo === nicho.id}
+            color={nicho.color}
+          />
           <Plantilla
             nicho={nicho}
             posicion={posiciones[i]}

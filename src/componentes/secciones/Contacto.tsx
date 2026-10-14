@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+import { ACENTO_SECCION } from "@/datos/colores";
 import { CONTACTO, urlEmail, urlInstagram, urlWhatsApp } from "@/datos/contacto";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { CONTACTO_SECCION, MARCA } from "@/datos/textos";
@@ -30,9 +32,17 @@ function FilaDirecta({ url, etiqueta, valor }: { url: string; etiqueta: string; 
 /** Sección 05 · Contacto: el formulario sin servidor y las vías directas. */
 export function Contacto() {
   return (
-    <section id="contacto" className="border-t border-profundo">
+    <section
+      id="contacto"
+      className="border-t border-profundo"
+      style={{ "--acento": ACENTO_SECCION.contacto } as CSSProperties}
+    >
       <div className="contenedor py-24 md:py-32">
-        <p data-revelar className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
+        <p
+          data-revelar
+          className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-acero"
+        >
+          <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           {CONTACTO_SECCION.numero} · {CONTACTO_SECCION.etiqueta}
         </p>
         <h2

@@ -1,8 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { NICHOS } from "@/datos/nucleo";
+import { CAPTURAS } from "@/datos/sistema";
 import { PLATAFORMAS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
 
@@ -51,6 +53,9 @@ export function NucleoInteractivo() {
   }, [recorriendo, activo]);
 
   const nicho = NICHOS.find((n) => n.id === activo) ?? null;
+  // El núcleo no tiene color propio: es neutro, el color lo ponen los nichos.
+  const acento = nicho ? nicho.color : "#ececee";
+  const foto = nicho ? nicho.foto : { src: CAPTURAS.tablero.src, alt: CAPTURAS.tablero.alt };
 
   return (
     <div
@@ -104,7 +109,9 @@ export function NucleoInteractivo() {
         <div role="tablist" aria-label={nucleo.etiqueta} className="mt-4 flex flex-wrap gap-2">
           {ORDEN.map((id) => {
             const seleccionado = id === activo;
-            const nombre = id === "nucleo" ? nucleo.etiquetaNucleo : NICHOS.find((n) => n.id === id)?.nombre;
+            const dato = NICHOS.find((n) => n.id === id);
+            const nombre = id === "nucleo" ? nucleo.etiquetaNucleo : dato?.nombre;
+            const colorFicha = dato ? dato.color : "#ececee";
             return (
               <button
                 key={id}
@@ -114,13 +121,17 @@ export function NucleoInteractivo() {
                 aria-selected={seleccionado}
                 aria-controls="panel-nicho"
                 onClick={() => setActivo(id)}
+                style={{ "--acento": colorFicha } as CSSProperties}
                 className={`flex items-center gap-2 border px-3 py-1.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta transition-colors ${
                   seleccionado
-                    ? "border-blanco bg-blanco text-negro"
-                    : "border-profundo text-acero hover:border-acero hover:text-blanco"
+                    ? "border-[var(--acento)] bg-[var(--acento)] text-negro"
+                    : "border-profundo text-acero hover:border-[var(--acento)] hover:text-blanco"
                 }`}
               >
-                {id === "nucleo" ? <span aria-hidden className="size-1.5 bg-current" /> : null}
+                <span
+                  aria-hidden
+                  className={`size-1.5 ${seleccionado ? "bg-negro" : "bg-[var(--acento)]"}`}
+                />
                 {nombre}
               </button>
             );
@@ -131,39 +142,62 @@ export function NucleoInteractivo() {
           id="panel-nicho"
           role="tabpanel"
           aria-labelledby={`nicho-${activo}`}
-          className="mt-6 border border-profundo p-6 md:p-7"
+          style={{ "--acento": acento } as CSSProperties}
+          className="mt-6 overflow-hidden rounded-[8px] border border-profundo"
         >
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="font-michroma text-base uppercase tracking-marca text-blanco md:text-lg">
-              {nicho ? nicho.nombre : `Quvant · ${nucleo.etiquetaNucleo}`}
-            </p>
-            <span
-              className={`border px-2 py-1 font-plex text-[10px] font-medium uppercase tracking-etiqueta ${
-                !nicho || nicho.estado === "disponible"
-                  ? "border-acero text-blanco"
-                  : "border-profundo text-acero"
-              }`}
-            >
-              {nicho ? PLATAFORMAS.estados[nicho.estado] : nucleo.estadoNucleo}
-            </span>
-          </div>
-          <p className="mt-4 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
-            {nicho ? nucleo.etiquetaWidgets : nucleo.etiquetaModulos}
-          </p>
-          <ul className="mt-3 grid gap-2 sm:grid-cols-2">
-            {(nicho ? nicho.widgets : nucleo.modulos).map((item) => (
-              <li
-                key={item}
-                className="flex items-center gap-2.5 border border-profundo px-3 py-2 font-plex text-xs text-blanco"
+          {/* La foto de ambiente, teñida con el acento: las nueve se ven como una sola serie. */}
+          <div className="relative aspect-[21/9] bg-negro">
+            <Image
+              key={foto.src}
+              src={foto.src}
+              alt={foto.alt}
+              fill
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              className="object-cover"
+            />
+            <div
+              aria-hidden
+              className="absolute inset-0 mix-blend-color"
+              style={{ background: acento, opacity: 0.45 }}
+            />
+            <div
+              aria-hidden
+              className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,13,15,0.05),rgba(13,13,15,0.82))]"
+            />
+            <div className="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-3 p-5">
+              <p className="font-michroma text-base uppercase tracking-marca text-blanco md:text-lg">
+                {nicho ? nicho.nombre : `Quvant · ${nucleo.etiquetaNucleo}`}
+              </p>
+              <span
+                className={`border px-2 py-1 font-plex text-[10px] font-medium uppercase tracking-etiqueta ${
+                  !nicho || nicho.estado === "disponible"
+                    ? "border-[var(--acento)] bg-negro/60 text-blanco"
+                    : "border-acero/60 bg-negro/60 text-acero"
+                }`}
               >
-                <span aria-hidden className="size-1 shrink-0 bg-acero" />
-                {item}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-5 font-plex text-sm leading-relaxed text-acero">
-            {nicho ? nucleo.personalizable : nucleo.texto}
-          </p>
+                {nicho ? PLATAFORMAS.estados[nicho.estado] : nucleo.estadoNucleo}
+              </span>
+            </div>
+          </div>
+          <div className="p-6 md:p-7">
+            <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+              {nicho ? nucleo.etiquetaWidgets : nucleo.etiquetaModulos}
+            </p>
+            <ul className="mt-3 grid gap-2 sm:grid-cols-2">
+              {(nicho ? nicho.widgets : nucleo.modulos).map((item) => (
+                <li
+                  key={item}
+                  className="flex items-center gap-2.5 border border-profundo px-3 py-2 font-plex text-xs text-blanco"
+                >
+                  <span aria-hidden className="size-1 shrink-0 bg-[var(--acento)]" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <p className="mt-5 font-plex text-sm leading-relaxed text-acero">
+              {nicho ? nucleo.personalizable : nucleo.texto}
+            </p>
+          </div>
         </div>
       </div>
     </div>

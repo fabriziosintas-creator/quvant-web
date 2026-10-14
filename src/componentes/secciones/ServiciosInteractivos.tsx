@@ -1,11 +1,13 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent } from "react";
+import Image from "next/image";
+import { useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { GrillaYSalto } from "@/componentes/estructura/GrillaYSalto";
 import { TarjetaInclinada } from "@/componentes/estructura/TarjetaInclinada";
+import { SERVICIOS_VISUAL, type IdServicio } from "@/datos/servicios";
 import { NOSOTROS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
 import { ILUSTRACIONES } from "./IlustracionesServicios";
@@ -15,12 +17,17 @@ if (typeof window !== "undefined") {
 }
 
 type Servicio = (typeof NOSOTROS.servicios.items)[number];
-type IdServicio = Servicio["id"];
 
 /**
- * Cada servicio tiene su propio movimiento, y el movimiento cuenta de qué
- * se trata: los sistemas se arman encastrando, la app crece por fases y la
- * web pasa del amontonamiento al orden.
+ * Los tres servicios como pósters: arriba, la imagen de lo que se ofrece
+ * (la pantalla real del sistema, una foto de ambiente, la propuesta real
+ * de Ferremix) teñida con el acento del servicio; abajo, el título y el
+ * texto. La elegida deriva despacio (zoom lento, keyframe `deriva`), su
+ * imagen se destiñe menos y una línea del acento la subraya.
+ *
+ * Debajo, la ventana con la ilustración de cómo se arma cada uno, con un
+ * movimiento distinto por servicio: los sistemas encastran, la app crece
+ * por fases y la web pasa del amontonamiento al orden.
  */
 
 /** De dónde sale cada bloque de la web antes de acomodarse. */
@@ -44,12 +51,7 @@ function armarLinea(id: IdServicio, linea: gsap.core.Timeline) {
       })
       .from(
         '[data-pieza="union"]',
-        {
-          scaleY: 0,
-          transformOrigin: "center top",
-          duration: 0.3,
-          stagger: 0.05,
-        },
+        { scaleY: 0, transformOrigin: "center top", duration: 0.3, stagger: 0.05 },
         "-=0.12",
       )
       // La plantilla baja y encastra.
@@ -83,23 +85,12 @@ function armarLinea(id: IdServicio, linea: gsap.core.Timeline) {
       )
       .from(
         '[data-pieza="nodo"]',
-        {
-          scale: 0,
-          opacity: 0,
-          duration: 0.3,
-          stagger: 0.14,
-          ease: "back.out(2)",
-        },
+        { scale: 0, opacity: 0, duration: 0.3, stagger: 0.14, ease: "back.out(2)" },
         "<0.08",
       )
       // El punto de la marca recorriendo las fases, de la primera a la última
       // (donde el SVG ya lo tiene dibujado, así que termina en su lugar).
-      .fromTo(
-        '[data-pieza="viajero"]',
-        { x: -324 },
-        { x: 0, duration: 1.2, ease: "none" },
-        0.35,
-      );
+      .fromTo('[data-pieza="viajero"]', { x: -324 }, { x: 0, duration: 1.2, ease: "none" }, 0.35);
     return;
   }
 
@@ -109,8 +100,7 @@ function armarLinea(id: IdServicio, linea: gsap.core.Timeline) {
     y: (indice: number) => DESORDEN[indice]?.y ?? 0,
     scaleX: (indice: number) => DESORDEN[indice]?.sx ?? 1,
     scaleY: (indice: number) => DESORDEN[indice]?.sy ?? 1,
-    transformOrigin: (indice: number) =>
-      indice === 4 ? "left center" : "50% 50%",
+    transformOrigin: (indice: number) => (indice === 4 ? "left center" : "50% 50%"),
     duration: 0.65,
     stagger: 0.08,
     ease: "power3.out",
@@ -125,7 +115,8 @@ export function ServiciosInteractivos() {
   const vista = useVista();
 
   const Ilustracion = ILUSTRACIONES[activo];
-  const servicio = items.find((item) => item.id === activo) ?? items[0];
+  const servicio: Servicio = items.find((item) => item.id === activo) ?? items[0];
+  const visualActivo = SERVICIOS_VISUAL[activo];
 
   useGSAP(
     () => {
@@ -152,17 +143,11 @@ export function ServiciosInteractivos() {
       if (!figura) return;
       const caja = figura.getBoundingClientRect();
       if (caja.top < window.innerHeight - 120) return;
-      figura.scrollIntoView({
-        behavior: vista === "3d" ? "smooth" : "auto",
-        block: "center",
-      });
+      figura.scrollIntoView({ behavior: vista === "3d" ? "smooth" : "auto", block: "center" });
     });
   };
 
-  const alTeclear = (
-    evento: KeyboardEvent<HTMLButtonElement>,
-    indice: number,
-  ) => {
+  const alTeclear = (evento: KeyboardEvent<HTMLButtonElement>, indice: number) => {
     const ultimo = items.length - 1;
     let destino: number | null = null;
     if (evento.key === "ArrowRight" || evento.key === "ArrowDown")
@@ -183,9 +168,7 @@ export function ServiciosInteractivos() {
         <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
           {NOSOTROS.servicios.etiqueta}
         </p>
-        <p className="font-plex text-xs text-acero">
-          {NOSOTROS.servicios.ayuda}
-        </p>
+        <p className="font-plex text-xs text-acero">{NOSOTROS.servicios.ayuda}</p>
       </div>
 
       <div
@@ -195,8 +178,13 @@ export function ServiciosInteractivos() {
       >
         {items.map((item, indice) => {
           const seleccionado = item.id === activo;
+          const visual = SERVICIOS_VISUAL[item.id];
           return (
-            <TarjetaInclinada key={item.id} className="h-full">
+            <TarjetaInclinada
+              key={item.id}
+              className="h-full"
+              style={{ "--acento": visual.color } as CSSProperties}
+            >
               <button
                 ref={(elemento) => {
                   botones.current[indice] = elemento;
@@ -209,28 +197,48 @@ export function ServiciosInteractivos() {
                 tabIndex={seleccionado ? 0 : -1}
                 onClick={() => alElegir(item.id)}
                 onKeyDown={(evento) => alTeclear(evento, indice)}
-                className={`relative flex h-full w-full flex-col overflow-hidden border bg-negro p-7 text-left transition-colors md:p-8 ${
-                  seleccionado
-                    ? "border-acero"
-                    : "border-profundo hover:border-acero"
+                className={`ficha-servicio group relative flex h-full w-full flex-col overflow-hidden border bg-negro text-left transition-colors ${
+                  seleccionado ? "border-[var(--acento)]" : "border-profundo hover:border-acero"
                 }`}
               >
                 <GrillaYSalto />
-                <span className="relative flex h-full flex-col">
-                  <span className="flex items-center justify-between">
-                    <span className="font-michroma text-xs tracking-etiqueta text-acero">
-                      0{indice + 1}
-                    </span>
-                    {/* El punto de la marca marca el elegido. */}
-                    <span
-                      aria-hidden
-                      className={`size-1.5 transition-colors ${
-                        seleccionado ? "bg-blanco" : "bg-profundo"
-                      }`}
-                    />
+
+                {/* La imagen de lo que se ofrece, teñida con el acento del servicio. */}
+                <span className="relative block aspect-[16/10] overflow-hidden border-b border-profundo bg-negro">
+                  <Image
+                    src={visual.imagen.src}
+                    alt={visual.imagen.alt}
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className={`foto-servicio object-cover object-top transition-[transform,filter] duration-[1400ms] ease-out group-hover:scale-[1.04] ${
+                      seleccionado ? "saturate-100" : "saturate-[0.6]"
+                    }`}
+                  />
+                  <span
+                    aria-hidden
+                    className={`absolute inset-0 mix-blend-color transition-opacity duration-700 ${
+                      seleccionado ? "opacity-25" : "opacity-55"
+                    }`}
+                    style={{ background: "var(--acento)" }}
+                  />
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,13,15,0.05)_40%,rgba(13,13,15,0.75))]"
+                  />
+                  <span className="absolute left-4 top-4 font-michroma text-xs tracking-etiqueta text-blanco">
+                    0{indice + 1}
                   </span>
                   <span
-                    className={`mt-14 font-plex text-lg font-bold leading-snug transition-colors ${
+                    aria-hidden
+                    className={`absolute right-4 top-4 size-1.5 transition-colors ${
+                      seleccionado ? "bg-[var(--acento)]" : "bg-blanco/50"
+                    }`}
+                  />
+                </span>
+
+                <span className="relative flex flex-1 flex-col p-6 md:p-7">
+                  <span
+                    className={`font-plex text-lg font-bold leading-snug transition-colors group-hover:text-blanco ${
                       seleccionado ? "text-blanco" : "text-acero"
                     }`}
                   >
@@ -240,6 +248,14 @@ export function ServiciosInteractivos() {
                     {item.texto}
                   </span>
                 </span>
+
+                {/* La línea del acento subraya la elegida. */}
+                <span
+                  aria-hidden
+                  className={`absolute bottom-0 left-0 h-[2px] w-full origin-left bg-[var(--acento)] transition-transform duration-700 ease-out ${
+                    seleccionado ? "scale-x-100" : "scale-x-0"
+                  }`}
+                />
               </button>
             </TarjetaInclinada>
           );
@@ -252,10 +268,11 @@ export function ServiciosInteractivos() {
         role="tabpanel"
         id="panel-servicio"
         aria-labelledby={`servicio-${activo}`}
+        style={{ "--acento": visualActivo.color } as CSSProperties}
         className="mt-6 overflow-hidden rounded-[8px] border border-profundo md:mt-8"
       >
         <figcaption className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
-          <span aria-hidden className="size-1.5 bg-acero" />
+          <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           <span className="font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
             {servicio.ventana}
           </span>

@@ -1,4 +1,5 @@
 import { QCromoDiferido } from "@/componentes/3d/QCromoDiferido";
+import { AuroraFondo } from "@/componentes/estructura/AuroraFondo";
 import { CintaRubros } from "@/componentes/estructura/CintaRubros";
 import { TextoTipeado } from "@/componentes/estructura/TextoTipeado";
 import { Contacto } from "@/componentes/secciones/Contacto";
@@ -18,6 +19,7 @@ export default function Inicio() {
         className="relative flex min-h-svh flex-col justify-end overflow-hidden pb-24 pt-16 md:justify-center md:pb-0"
       >
         <QCromoDiferido />
+        <AuroraFondo />
         <div className="contenedor relative z-10">
           <h1 className="font-michroma text-[clamp(2.5rem,13vw,4.75rem)] leading-none tracking-marca text-blanco md:text-[clamp(4.75rem,8vw,8.5rem)]">
             {HERO.titulo}

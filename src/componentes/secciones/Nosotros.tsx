@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+import { ACENTO_SECCION } from "@/datos/colores";
 import Image from "next/image";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { NOSOTROS } from "@/datos/textos";
@@ -88,9 +90,17 @@ function PerfilEquipo({ persona }: { persona: Persona }) {
  *  y los tres servicios con tarjetas que se inclinan en 3D. */
 export function Nosotros() {
   return (
-    <section id="nosotros" className="border-t border-profundo">
+    <section
+      id="nosotros"
+      className="border-t border-profundo"
+      style={{ "--acento": ACENTO_SECCION.nosotros } as CSSProperties}
+    >
       <div className="contenedor py-24 md:py-32">
-        <p data-revelar className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
+        <p
+          data-revelar
+          className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-acero"
+        >
+          <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           {NOSOTROS.numero} · {NOSOTROS.etiqueta}
         </p>
         <h2

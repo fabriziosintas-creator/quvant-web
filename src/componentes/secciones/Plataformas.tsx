@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+import { ACENTO_SECCION } from "@/datos/colores";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { PLATAFORMAS } from "@/datos/textos";
 import { NucleoInteractivo } from "./NucleoInteractivo";
@@ -9,9 +11,17 @@ import { SelectorRubros } from "./SelectorRubros";
  *  integraciones que todavía no están, dichas como lo que son. */
 export function Plataformas() {
   return (
-    <section id="plataformas" className="border-t border-profundo">
+    <section
+      id="plataformas"
+      className="border-t border-profundo"
+      style={{ "--acento": ACENTO_SECCION.plataformas } as CSSProperties}
+    >
       <div className="contenedor py-24 md:py-32">
-        <p data-revelar className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
+        <p
+          data-revelar
+          className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-acero"
+        >
+          <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           {PLATAFORMAS.numero} · {PLATAFORMAS.etiqueta}
         </p>
         <h2
@@ -58,7 +68,7 @@ export function Plataformas() {
                 key={item}
                 className="flex items-center gap-2.5 border border-profundo px-3.5 py-2 font-plex text-xs text-acero"
               >
-                <span aria-hidden className="size-1 bg-profundo" />
+                <span aria-hidden className="size-1 bg-[var(--acento)]" />
                 {item}
               </span>
             ))}
@@ -88,7 +98,7 @@ export function Plataformas() {
                   {/* El punto late: está en camino, todavía no llegó. */}
                   <span
                     aria-hidden
-                    className="size-1 bg-acero motion-safe:animate-[parpadeo_1.8s_steps(2,end)_infinite]"
+                    className="size-1 bg-[var(--acento)] motion-safe:animate-[parpadeo_1.8s_steps(2,end)_infinite]"
                     style={{ animationDelay: `${indice * 0.6}s` }}
                   />
                   {item}

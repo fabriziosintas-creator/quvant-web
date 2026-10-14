@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+import { ACENTO_SECCION } from "@/datos/colores";
 import { TelefonoCasoDiferido } from "@/componentes/3d/TelefonoCasoDiferido";
 import { CASOS, CASO_PROXIMO, type CasoWeb } from "@/datos/casos";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
@@ -107,9 +109,17 @@ function Caso({ caso }: { caso: CasoWeb }) {
  *  paso a paso) más el lugar reservado para el próximo caso. */
 export function Webs() {
   return (
-    <section id="webs" className="border-t border-profundo">
+    <section
+      id="webs"
+      className="border-t border-profundo"
+      style={{ "--acento": ACENTO_SECCION.webs } as CSSProperties}
+    >
       <div className="contenedor py-24 md:py-32">
-        <p data-revelar className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
+        <p
+          data-revelar
+          className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-acero"
+        >
+          <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           {WEBS.numero} · {WEBS.etiqueta}
         </p>
         <h2

@@ -195,3 +195,45 @@ html[data-cursor="si"] :where(input, textarea, [contenteditable]) {
     stroke-dasharray: none;
   }
 }
+
+/* El brillo de fondo (AuroraFondo): tres manchas que derivan despacio. */
+@keyframes aurora-a {
+  0%, 100% { transform: translate(-6%, -4%) scale(1); }
+  50% { transform: translate(10%, 8%) scale(1.18); }
+}
+@keyframes aurora-b {
+  0%, 100% { transform: translate(4%, 6%) scale(1.1); }
+  50% { transform: translate(-12%, -6%) scale(0.92); }
+}
+@keyframes aurora-c {
+  0%, 100% { transform: translate(0, 4%) scale(0.95); }
+  50% { transform: translate(8%, -10%) scale(1.15); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aurora span { animation: none; }
+}
+html[data-vista="texto"] .aurora span { animation: none; }
+
+/* La imagen del servicio elegido deriva despacio (zoom lento y leve paneo). */
+@keyframes deriva {
+  from {
+    transform: scale(1.02) translate(0, 0);
+  }
+  to {
+    transform: scale(1.1) translate(-1.5%, -2%);
+  }
+}
+
+.ficha-servicio[aria-selected="true"] .foto-servicio {
+  animation: deriva 16s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ficha-servicio .foto-servicio {
+    animation: none;
+  }
+}
+
+html[data-vista="texto"] .ficha-servicio .foto-servicio {
+  animation: none;
+}

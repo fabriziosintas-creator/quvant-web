@@ -312,7 +312,7 @@ export function RecorridoTablero() {
                 onKeyDown={(evento) => alTeclear(evento, indice)}
                 className={`ficha-parada group relative block w-full border px-4 py-3.5 text-left will-change-transform transition-colors md:px-5 ${
                   seleccionada
-                    ? "border-acero bg-[#131316]"
+                    ? "border-[var(--acento)] bg-[#131316]"
                     : "border-profundo bg-negro hover:border-acero/70"
                 }`}
               >
@@ -350,7 +350,7 @@ export function RecorridoTablero() {
                   <span
                     aria-hidden
                     className={`mt-2 size-1.5 shrink-0 transition-colors ${
-                      seleccionada ? "bg-blanco" : "bg-profundo"
+                      seleccionada ? "bg-[var(--acento)]" : "bg-profundo"
                     }`}
                   />
                 </span>
@@ -359,7 +359,7 @@ export function RecorridoTablero() {
                   <span
                     key={activa}
                     aria-hidden
-                    className="absolute bottom-0 left-0 h-px bg-blanco"
+                    className="absolute bottom-0 left-0 h-px bg-[var(--acento)]"
                     style={{ animation: `avance ${SEGUNDOS_POR_PARADA}s linear forwards` }}
                   />
                 ) : null}

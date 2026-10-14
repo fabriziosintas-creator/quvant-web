@@ -1,3 +1,4 @@
+import { AuroraFondo } from "@/componentes/estructura/AuroraFondo";
 import { Logotipo } from "@/componentes/marca/Logotipo";
 import { urlInstagram, CONTACTO } from "@/datos/contacto";
 import { MARCA, NAV, PIE } from "@/datos/textos";
@@ -12,9 +13,10 @@ export function Pie() {
   const letras = Array.from(MARCA.logotipo);
 
   return (
-    <footer className="border-t border-profundo">
+    <footer className="relative overflow-hidden border-t border-profundo">
+      <AuroraFondo intensidad={0.4} />
       {/* El cierre: la marca a todo lo ancho. */}
-      <div className="contenedor overflow-hidden pt-20 md:pt-28">
+      <div className="contenedor relative overflow-hidden pt-20 md:pt-28">
         <p
           aria-label={MARCA.logotipo}
           data-revelar="grupo"

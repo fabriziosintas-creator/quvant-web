@@ -42,8 +42,9 @@ export function GrillaYSalto() {
 
       {/* El que salta: se para en el nodo más cercano al puntero. */}
       <span
-        className="absolute size-[5px] bg-blanco motion-reduce:hidden"
+        className="absolute size-[5px] motion-reduce:hidden"
         style={{
+          background: "var(--acento, #ececee)",
           left: "var(--salto-x, -20px)",
           top: "var(--salto-y, -20px)",
           // El punto de la grilla mide 2 px: esto centra el blanco encima.
