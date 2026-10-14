@@ -4,12 +4,14 @@ import { Contacto } from "@/componentes/secciones/Contacto";
 import { Nosotros } from "@/componentes/secciones/Nosotros";
 import { Plataformas } from "@/componentes/secciones/Plataformas";
 import { Webs } from "@/componentes/secciones/Webs";
+import { DatosEstructurados } from "@/componentes/seo/DatosEstructurados";
 import { HERO } from "@/datos/textos";
 
 /** Página única del sitio: portada con la Q de cromo y las cinco secciones. */
 export default function Inicio() {
   return (
     <>
+      <DatosEstructurados />
       <section
         id="inicio"
         className="relative flex min-h-svh flex-col justify-end overflow-hidden pb-24 pt-16 md:justify-center md:pb-0"

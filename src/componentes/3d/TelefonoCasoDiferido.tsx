@@ -2,31 +2,11 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useSyncExternalStore } from "react";
 import type { CasoWeb } from "@/datos/casos";
 import { WEBS } from "@/datos/textos";
+import { useVista } from "@/estado/vista";
 
 const TelefonoCaso = dynamic(() => import("./TelefonoCaso"), { ssr: false });
-
-// Sin WebGL o con movimiento reducido, nada de teléfono que gira: las dos
-// pantallas lado a lado, que es el mismo contenido sin el truco.
-let decidido: boolean | null = null;
-const conviene3d = (): boolean => {
-  if (decidido !== null) return decidido;
-  try {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      decidido = false;
-      return decidido;
-    }
-    const lienzo = document.createElement("canvas");
-    decidido = Boolean(lienzo.getContext("webgl2") || lienzo.getContext("webgl"));
-  } catch {
-    decidido = false;
-  }
-  return decidido;
-};
-const enServidor = () => false;
-const suscribir = () => () => {};
 
 function MarcoCelular({
   src,
@@ -56,9 +36,11 @@ function MarcoCelular({
   );
 }
 
-/** La ventana del teléfono: 3D cuando se puede, dos capturas cuando no. */
+/** La ventana del teléfono: 3D en vista 3D, dos capturas en vista texto.
+ *  Las dos variantes comparten el mismo marco 4:5 para que nada salte al
+ *  decidirse la vista (CLS, estudio 9.5). */
 export function TelefonoCasoDiferido({ caso }: { caso: CasoWeb }) {
-  const con3d = useSyncExternalStore(suscribir, conviene3d, enServidor);
+  const vista = useVista();
 
   return (
     <figure className="flex h-full flex-col overflow-hidden rounded-[8px] border border-profundo">
@@ -68,12 +50,12 @@ export function TelefonoCasoDiferido({ caso }: { caso: CasoWeb }) {
           {WEBS.etiquetaCelular}
         </span>
       </figcaption>
-      {con3d ? (
+      {vista === "3d" ? (
         <div className="relative aspect-[4/5] flex-1" aria-hidden>
           <TelefonoCaso srcAntes={caso.celular.antes.src} srcDespues={caso.celular.despues.src} />
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4 p-6">
+        <div className="grid aspect-[4/5] flex-1 grid-cols-2 content-center gap-4 p-6">
           <MarcoCelular
             src={caso.celular.antes.src}
             alt={caso.celular.antes.alt}

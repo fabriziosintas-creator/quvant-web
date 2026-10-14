@@ -5,6 +5,7 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect } from "react";
+import { useVista } from "@/estado/vista";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -13,17 +14,19 @@ if (typeof window !== "undefined") {
 /**
  * Scroll suave con Lenis, sincronizado con ScrollTrigger según la receta
  * oficial del README de Lenis (Lenis corre dentro del ticker de GSAP).
- * - Con prefers-reduced-motion no se inicializa: queda el scroll nativo y
- *   las animaciones de scroll tampoco se crean (gsap.matchMedia en cada
- *   componente).
+ * - Solo corre en vista 3D: la vista texto (que ya cubre el caso de
+ *   prefers-reduced-motion) deja el scroll nativo, y al cambiar de vista
+ *   se prende o se apaga en el momento.
  * - Los clics en anclas internas pasan por lenis.scrollTo, que ya respeta
  *   el scroll-padding-top del CSS (el aire debajo del menú fijo).
  * - El salto al contenido (#contenido) queda nativo a propósito: su razón
  *   de ser es mover el foco, y eso lo hace el navegador.
  */
 export function ScrollSuave() {
+  const vista = useVista();
+
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (vista !== "3d") return;
 
     const lenis = new Lenis();
     lenis.on("scroll", ScrollTrigger.update);
@@ -50,7 +53,7 @@ export function ScrollSuave() {
       gsap.ticker.remove(tic);
       lenis.destroy();
     };
-  }, []);
+  }, [vista]);
 
   return null;
 }

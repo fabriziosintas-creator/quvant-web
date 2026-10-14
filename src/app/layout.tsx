@@ -2,9 +2,11 @@ import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Michroma } from "next/font/google";
 import "./globals.css";
 import { Encabezado } from "@/componentes/estructura/Encabezado";
+import { InterruptorVista } from "@/componentes/estructura/InterruptorVista";
 import { Pie } from "@/componentes/estructura/Pie";
 import { ScrollSuave } from "@/componentes/estructura/ScrollSuave";
-import { ACCESIBILIDAD } from "@/datos/textos";
+import { SITIO } from "@/datos/sitio";
+import { ACCESIBILIDAD, MARCA } from "@/datos/textos";
 
 const michroma = Michroma({
   weight: "400",
@@ -22,9 +24,23 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   // Título con la búsqueda real en español y con lugar (estudio de referencia, 9.1).
-  title: "Quvant | Desarrollo de software y sistemas de gestión en Argentina",
-  description:
-    "Sistemas de gestión listos para cada rubro, aplicaciones a medida y páginas web. Entramos en tu rubro, entendemos cómo trabaja y construimos el sistema que todavía no tiene.",
+  title: SITIO.titulo,
+  description: SITIO.descripcion,
+  metadataBase: new URL(SITIO.url),
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: "/",
+    siteName: MARCA.nombre,
+    title: SITIO.titulo,
+    description: SITIO.descripcion,
+    locale: "es_AR",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITIO.titulo,
+    description: SITIO.descripcion,
+  },
 };
 
 export const viewport: Viewport = {
@@ -47,6 +63,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Pie />
+        <InterruptorVista />
       </body>
     </html>
   );

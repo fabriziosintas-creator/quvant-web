@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { NOSOTROS } from "@/datos/textos";
+import { useVista } from "@/estado/vista";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -14,14 +15,16 @@ if (typeof window !== "undefined") {
  * Las dos fuerzas que se juntan con el scroll: desarrollo desde la
  * izquierda, comercial desde la derecha, y al encontrarse aparece
  * "= QUVANT". Atado al avance del scroll (scrub), no a un disparo.
- * Sin animación con prefers-reduced-motion; en el celular las tarjetas
- * suben en vez de cruzarse.
+ * Solo anima en vista 3D (que ya respeta prefers-reduced-motion); en
+ * el celular las tarjetas suben en vez de cruzarse.
  */
 export function FuerzasQueSeJuntan() {
   const raiz = useRef<HTMLDivElement>(null);
+  const vista = useVista();
 
   useGSAP(
     () => {
+      if (vista !== "3d") return;
       const mm = gsap.matchMedia();
       mm.add(
         {
@@ -58,7 +61,9 @@ export function FuerzasQueSeJuntan() {
         },
       );
     },
-    { scope: raiz },
+    // Al cambiar la vista se revierte todo: en vista texto el contenido
+    // queda quieto y completo, sin estados a medio animar.
+    { scope: raiz, dependencies: [vista], revertOnUpdate: true },
   );
 
   return (

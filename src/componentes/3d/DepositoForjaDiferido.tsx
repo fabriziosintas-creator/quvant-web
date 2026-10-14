@@ -1,30 +1,16 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useSyncExternalStore } from "react";
 import { PLATAFORMAS } from "@/datos/textos";
+import { useVista } from "@/estado/vista";
 
 const DepositoForja = dynamic(() => import("./DepositoForja"), { ssr: false });
 
-// Misma decisión que la portada: sin WebGL no hay pantalla rota, hay texto.
-let soporteDecidido: boolean | null = null;
-const haySoporte = (): boolean => {
-  if (soporteDecidido !== null) return soporteDecidido;
-  try {
-    const lienzo = document.createElement("canvas");
-    soporteDecidido = Boolean(lienzo.getContext("webgl2") || lienzo.getContext("webgl"));
-  } catch {
-    soporteDecidido = false;
-  }
-  return soporteDecidido;
-};
-const enServidor = () => false;
-const suscribir = () => () => {};
-
 /** La ventana con el depósito 3D de Forja y su etiqueta de honestidad.
+ *  Sigue la vista elegida del sitio: en vista texto el marco queda vacío.
  *  `activo` apaga el lienzo cuando el panel del rubro no está a la vista. */
 export function DepositoForjaDiferido({ activo = true }: { activo?: boolean }) {
-  const conWebGL = useSyncExternalStore(suscribir, haySoporte, enServidor);
+  const conWebGL = useVista() === "3d";
 
   return (
     <figure className="overflow-hidden rounded-[8px] border border-profundo">
@@ -35,7 +21,13 @@ export function DepositoForjaDiferido({ activo = true }: { activo?: boolean }) {
         </span>
       </figcaption>
       <div className="relative aspect-[16/10] bg-negro">
-        {conWebGL && activo ? <DepositoForja /> : null}
+        {conWebGL && activo ? (
+          <DepositoForja />
+        ) : (
+          <p className="absolute inset-0 flex items-center justify-center px-6 text-center font-plex text-xs text-acero">
+            {PLATAFORMAS.forjaApagado}
+          </p>
+        )}
         <p className="pointer-events-none absolute bottom-3 right-4 font-plex text-[10px] uppercase tracking-etiqueta text-acero">
           {PLATAFORMAS.ilustracionEjemplo}
         </p>

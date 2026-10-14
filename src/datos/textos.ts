@@ -21,6 +21,13 @@ export const NAV = [
   { id: "contacto", numero: "05", etiqueta: "Contacto" },
 ] as const;
 
+/** Interruptor fijo abajo al centro: apaga o prende el 3D de todo el sitio. */
+export const INTERRUPTOR_VISTA = {
+  etiqueta: "Elegir cómo ver el sitio",
+  opcion3d: "Vista 3D",
+  opcionTexto: "Vista texto",
+} as const;
+
 export const ACCESIBILIDAD = {
   saltarAlContenido: "Saltar al contenido",
   irAlInicio: "Quvant — ir al inicio",
@@ -226,6 +233,7 @@ export const PLATAFORMAS = {
   },
   ilustracionEjemplo: "Ilustración de ejemplo",
   forjaVentana: "Forja · El depósito en 3D",
+  forjaApagado: "El depósito en 3D está apagado en la vista texto.",
   integraciones: {
     etiqueta: "Integraciones en camino",
     items: ["Facturación con ARCA", "Cobros con Mercado Pago", "Avisos por WhatsApp"],

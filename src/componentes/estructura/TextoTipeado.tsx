@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useVista } from "@/estado/vista";
 
 type Props = {
   texto: string;
@@ -17,16 +18,21 @@ type Props = {
  * El texto completo viaja siempre en el HTML del servidor: una copia
  * invisible reserva el espacio exacto (cero salto de diseño) y una copia
  * solo para lectores de pantalla y buscadores lo mantiene legible. La capa
- * tipeada es puro decorado (aria-hidden). Con prefers-reduced-motion se
- * muestra todo de una, sin animación.
+ * tipeada es puro decorado (aria-hidden). En vista texto (que ya cubre
+ * prefers-reduced-motion) se muestra todo de una, sin animación.
  */
 export function TextoTipeado({ texto, retardoMs = 600, velocidadMs = 32, className }: Props) {
   const [cantidad, setCantidad] = useState(0);
+  const vista = useVista();
   const completo = cantidad >= texto.length;
 
   useEffect(() => {
+    // Hasta que la vista no se decide, no se tipea nada (evita arrancar
+    // con la decisión del servidor y pisarla un render después).
+    if (vista === "decidiendo") return;
     let intervalo: ReturnType<typeof setInterval> | undefined;
-    const reducido = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reducido =
+      vista !== "3d" || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const demora = setTimeout(
       () => {
         if (reducido) {
@@ -49,7 +55,7 @@ export function TextoTipeado({ texto, retardoMs = 600, velocidadMs = 32, classNa
       clearTimeout(demora);
       if (intervalo) clearInterval(intervalo);
     };
-  }, [texto, retardoMs, velocidadMs]);
+  }, [texto, retardoMs, velocidadMs, vista]);
 
   return (
     <span className={`relative inline-block ${className ?? ""}`}>

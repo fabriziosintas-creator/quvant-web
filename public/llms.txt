@@ -1,0 +1,29 @@
+# Quvant
+
+> Software a la vanguardia de cada nicho. Quvant (se pronuncia «kúvant») es una empresa argentina de desarrollo de software: sistemas de gestión listos para rubros específicos, aplicaciones a medida y páginas web. Fundada por dos amigos con más de siete años de experiencia en desarrollo.
+
+## Qué hacemos
+
+- **Sistemas listos para tu nicho**: gestión y administración ya armadas para rubros específicos. Se contratan por mes y se usan desde el primer día.
+- **Tu aplicación, de punta a punta**: la app de tu empresa desde cero (stock, gestión, administración, seguimiento de ventas), por fases, y cada fase se prueba antes de seguir.
+- **Tu web, nueva o renovada**: desde cero o renovando la que quedó vieja, con migración segura de los datos sensibles.
+
+## Productos
+
+El sistema de gestión Quvant es un núcleo común (usuarios y roles, sucursales, caja, ventas, stock, reportes) con una plantilla para cada rubro. Cada producto lleva su nombre y la firma de la casa:
+
+- **Yunque by Quvant** (disponible hoy): sistema de gestión e inventario para empresas industriales, ferreterías y empresas con depósito. Stock por sucursal, compras y ventas en un solo lugar; se sigue vendiendo sin internet en el mostrador.
+- **Forja by Quvant** (disponible hoy): complemento de Yunque que muestra el inventario y las sucursales en 3D.
+- **Quvant Gimnasios** (disponible hoy): la administración del gimnasio, armada sobre el núcleo Quvant.
+- **HackFit by Quvant** (disponible hoy): app para los socios del gimnasio, con rutinas basadas en evidencia y dietas personalizadas. Gratis para los socios.
+- **Crisol by Quvant** (en diseño): gestión completa para pymes.
+- **Cimiento by Quvant** (en diseño): cartera de propiedades, contratos y cobranzas para inmobiliarias.
+- **Góndola by Quvant** (en diseño): venta rápida, stock y sucursales para supermercados.
+- Rubro holística (próximamente): centros y profesionales del bienestar.
+
+Integraciones en camino (en desarrollo, todavía no disponibles): facturación con ARCA, cobros con Mercado Pago, avisos por WhatsApp.
+
+## Páginas
+
+- [Portada](/): quiénes somos, plataformas por rubro, propuestas de webs y contacto.
+- [Nosotros](/#nosotros) · [Plataformas](/#plataformas) · [Webs](/#webs) · [Contacto](/#contacto)
