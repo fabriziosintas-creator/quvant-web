@@ -2,17 +2,46 @@ import { Logotipo } from "@/componentes/marca/Logotipo";
 import { urlInstagram, CONTACTO } from "@/datos/contacto";
 import { MARCA, NAV, PIE } from "@/datos/textos";
 
-/** Pie de página: firma, bajada oficial, secciones, Instagram y derechos. */
+/**
+ * Pie de página. Arriba, el cierre: QUVANT gigante en Michroma a todo el
+ * ancho, letra por letra en cascada al llegar (la Q vuelve como trofeo,
+ * como pedía el estudio). Abajo, la firma, las secciones, Instagram y los
+ * derechos.
+ */
 export function Pie() {
+  const letras = Array.from(MARCA.logotipo);
+
   return (
     <footer className="border-t border-profundo">
-      <div className="contenedor grid gap-12 py-14 md:grid-cols-[1.5fr_1fr_1fr] md:py-20">
-        <div>
+      {/* El cierre: la marca a todo lo ancho. */}
+      <div className="contenedor overflow-hidden pt-20 md:pt-28">
+        <p
+          aria-label={MARCA.logotipo}
+          data-revelar="grupo"
+          className="flex justify-between font-michroma text-[clamp(2.6rem,14.5vw,11.5rem)] leading-none text-blanco"
+        >
+          {letras.map((letra, indice) => (
+            <span key={indice} aria-hidden className="inline-block">
+              {letra}
+            </span>
+          ))}
+        </p>
+        <p
+          data-revelar
+          className="mt-6 flex items-center gap-3 font-plex text-sm text-acero md:text-base"
+        >
+          <span aria-hidden className="inline-block size-1.5 bg-blanco" />
+          {MARCA.bajada}
+        </p>
+      </div>
+
+      <div className="contenedor grid gap-12 py-16 md:grid-cols-[1.5fr_1fr_1fr] md:py-20">
+        <div data-revelar>
           <Logotipo idGradiente="q-pie" className="text-[14px]" />
-          <p className="mt-6 max-w-xs text-sm text-acero">{MARCA.bajada}</p>
+          <p className="mt-6 max-w-xs text-sm text-acero">{MARCA.pronunciacion}</p>
         </div>
 
-        <nav aria-label={PIE.etiquetaSecciones}>
+        <nav aria-label={PIE.etiquetaSecciones} data-revelar>
           <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
             {PIE.etiquetaSecciones}
           </p>
@@ -35,7 +64,7 @@ export function Pie() {
           </ul>
         </nav>
 
-        <div>
+        <div data-revelar>
           <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
             {PIE.etiquetaSeguinos}
           </p>

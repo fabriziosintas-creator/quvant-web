@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Michroma } from "next/font/google";
 import "./globals.css";
+import { Cursor } from "@/componentes/estructura/Cursor";
 import { Encabezado } from "@/componentes/estructura/Encabezado";
 import { InterruptorVista } from "@/componentes/estructura/InterruptorVista";
 import { Pie } from "@/componentes/estructura/Pie";
@@ -66,6 +67,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <Pie />
         <InterruptorVista />
+        <Cursor />
       </body>
     </html>
   );

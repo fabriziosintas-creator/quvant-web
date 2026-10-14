@@ -122,3 +122,54 @@ body {
 html[data-vista="texto"] .cinta-pista {
   animation: none;
 }
+
+/*
+ * El cursor propio (Cursor.tsx). Mientras esta activo, <html data-cursor>
+ * apaga el del sistema salvo donde se escribe. El punto y el marco se
+ * centran sobre la posicion real con transform; los tamaños cambian
+ * segun data-modo y la transicion hace el "abrirse" sobre lo tocable.
+ */
+html[data-cursor="si"],
+html[data-cursor="si"] * {
+  cursor: none;
+}
+
+html[data-cursor="si"] :where(input, textarea, [contenteditable]) {
+  cursor: auto;
+}
+
+.cursor-propio .cursor-punto,
+.cursor-propio .cursor-marco {
+  transform: translate(-50%, -50%);
+  transition:
+    width 180ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    height 180ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    opacity 180ms linear;
+}
+
+.cursor-propio .cursor-punto {
+  width: 8px;
+  height: 8px;
+}
+
+.cursor-propio .cursor-marco {
+  width: 8px;
+  height: 8px;
+  opacity: 0;
+}
+
+.cursor-propio[data-modo="marco"] .cursor-punto {
+  width: 4px;
+  height: 4px;
+}
+
+.cursor-propio[data-modo="marco"] .cursor-marco {
+  width: 34px;
+  height: 34px;
+  opacity: 1;
+}
+
+.cursor-propio[data-modo="oculto"] .cursor-punto,
+.cursor-propio[data-modo="oculto"] .cursor-marco {
+  opacity: 0;
+}
