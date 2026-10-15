@@ -3,8 +3,8 @@ import { AURORA } from "@/datos/colores";
 /**
  * El brillo de fondo: tres manchas de color muy desenfocadas que se mueven
  * despacio detrás del contenido (portada y cierre). Van en mix-blend-mode
- * screen: sobre el negro no cambian nada, y a la Q de cromo le prestan
- * color en los reflejos. Sin movimiento con prefers-reduced-motion ni en
+ * screen: sobre el negro casi no cambian nada, y al video de la portada
+ * (la Q de cromo) le prestan un poco de color. Sin movimiento con prefers-reduced-motion ni en
  * vista texto (ver .aurora en globals.css).
  */
 export function AuroraFondo({ intensidad = 0.55 }: { intensidad?: number }) {

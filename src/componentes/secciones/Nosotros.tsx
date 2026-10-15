@@ -5,6 +5,7 @@ import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { NOSOTROS } from "@/datos/textos";
 import { FuerzasQueSeJuntan } from "./FuerzasQueSeJuntan";
 import { ServiciosInteractivos } from "./ServiciosInteractivos";
+import { SpotQuvant } from "./SpotQuvant";
 
 type Persona = (typeof NOSOTROS.equipo)[number];
 
@@ -63,8 +64,8 @@ function PerfilEquipo({ persona }: { persona: Persona }) {
   );
 }
 
-/** Sección 02 · Nosotros: origen, las dos fuerzas, el equipo, la misión
- *  y los tres servicios con tarjetas que se inclinan en 3D. */
+/** Sección 03 · Nosotros: origen, las dos fuerzas, el equipo, la misión,
+ *  el spot de 45 s y los tres servicios con tarjetas que se inclinan en 3D. */
 export function Nosotros() {
   return (
     <section
@@ -110,6 +111,10 @@ export function Nosotros() {
               {NOSOTROS.mision.texto}
             </p>
           </TarjetaViva>
+        </div>
+
+        <div className="mt-10 md:mt-14">
+          <SpotQuvant />
         </div>
 
         <div className="mt-20 md:mt-28">

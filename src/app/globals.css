@@ -266,3 +266,31 @@ html[data-vista="texto"] .ficha-servicio .foto-servicio {
 .panel-entra { animation: burbuja 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 html[data-vista="texto"] .panel-entra { animation: none; }
 @media (prefers-reduced-motion: reduce) { .panel-entra { animation: none; } }
+
+/*
+ * El video de la portada en pantallas anchas: una ventana 16:9 a la
+ * derecha del título, del tamaño justo para que la Q quede entre el final
+ * de "QUVANT" y el borde de la pantalla. El título mide 7,11 em de
+ * Michroma (con el tracking de la marca) con un cuerpo de min(8vw, 8.5rem)
+ * y arranca en el borde del contenedor (72rem, 2rem de margen): ver la h1
+ * en app/page.tsx. La Q está al 69 % del ancho del video y su aro mide el
+ * 45 % del alto. Los bordes se funden a negro.
+ */
+@media (min-width: 64rem) {
+  .portada-video {
+    --fin-titulo: calc(max(0px, (100vw - 72rem) / 2) + 2rem + 7.11 * min(8vw, 8.5rem));
+    --espacio: calc(100vw - var(--fin-titulo));
+    inset: auto;
+    left: calc(var(--fin-titulo) - 1.136 * var(--espacio));
+    top: calc(45% - 0.64 * var(--espacio));
+    width: calc(2.37 * var(--espacio));
+    height: auto;
+    aspect-ratio: 16 / 9;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 30%),
+      linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 30%),
+      linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+}

@@ -105,7 +105,7 @@ function QFigura({ receta }: { receta: RecetaCromo }) {
   );
 }
 
-/** Entorno literal del manual (compartido con la portada): ver entornoManual.ts. */
+/** Entorno literal del manual (el que refleja la Q del video de la portada): ver entornoManual.ts. */
 function EntornoDegradadoManual() {
   return <Environment map={obtenerEntornoManual()} />;
 }

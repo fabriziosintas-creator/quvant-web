@@ -70,9 +70,9 @@ El texto de la portada tiene que quedar por encima (`position: relative; z-index
 
 El brief pedía `mix-blend-mode: screen`, pero eso solo funde si el negro del video es negro puro (#000). El negro de este video es el de la marca, #0D0D0F, igual al del sitio, y `screen` de #0D0D0F sobre #0D0D0F da #191A1D: el video se vería como un rectángulo más claro. Con `lighten` (el máximo de los dos, canal por canal) donde el video es negro gana el fondo del sitio, aunque algún navegador decodifique el negro un punto más oscuro, y donde hay imagen gana el video. Sin modo de mezcla también funciona: el negro del video mide #0D0D0F exacto.
 
-## En quvant-web (Next)
+## En quvant-web (Next): ya está integrado
 
-- Los archivos van a `public/hero/`.
-- Hoy la portada tiene la Q cromada en 3D (`QCromoDiferido` en `src/app/page.tsx`). El video la reemplaza en ese lugar, o queda detrás y la Q encima: hay que elegir uno de los dos (las dos Q juntas compiten).
-- Que respete el interruptor VISTA 3D / VISTA TEXTO (`useVista` de `src/estado/vista.ts`), como `VideoForja.tsx`: en vista texto, solo el póster.
-- Como `VideoForja`, pausarlo cuando sale de pantalla (IntersectionObserver): no hace falta decodificar 4K detrás del resto de la página.
+- `npm run entregas -- web` (en video/) deja los archivos en `public/hero/` y `public/spot/`.
+- `src/componentes/estructura/VideoPortada.tsx` reemplazó a la Q 3D de la portada. Respeta el interruptor VISTA 3D / VISTA TEXTO y "menos movimiento" (en los dos casos queda el póster), se pausa fuera de pantalla y usa `lighten`.
+- Desde 1024 px el video es una ventana 16:9 a la derecha del título, calculada para que la Q no choque con "QUVANT" (`.portada-video` en `src/app/globals.css`); en celular y tablet va arriba, sobre el título.
+- El spot está en Nosotros, después de la misión (`SpotQuvant.tsx`), con play a pedido y sonido.

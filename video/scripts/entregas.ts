@@ -1,5 +1,5 @@
 /**
- * npm run entregas -- hero | hero-1080 | hero-4k | unir-spot | spot | prueba-1080 | docs
+ * npm run entregas -- hero | hero-1080 | hero-4k | unir-spot | spot | prueba-1080 | web | docs
  *
  * Arma las entregas finales en out/ a partir de los renders de Remotion:
  *
@@ -27,6 +27,10 @@
  *  prueba-1080: spot-prueba-1080.mp4, la copia de revisión: el spot final
  *   bajado a 1080p con el segundo y el cuadro arriba a la derecha.
  *
+ *  web: lo que usa el sitio (quvant-web/public/): el hero-loop en AV1
+ *   1080p y 4K más el MP4 1080p, el póster en WebP; el spot en 1080p (AV1
+ *   con Opus y H.264 con AAC) y su póster (la firma del cierre).
+ *
  *  docs (también al final de hero y spot): CREDITS.md e INTEGRACION.md de
  *  entregas/ a out/, con los pesos reales de los archivos.
  *
@@ -34,7 +38,7 @@
  * Remotion entrega rango completo BT.601 y acá se convierte bien.
  */
 import { execFileSync, spawnSync } from "node:child_process";
-import { copyFileSync, existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import ffmpeg from "ffmpeg-static";
 import sharp from "sharp";
@@ -141,6 +145,42 @@ function pruebaSpot() {
   );
 }
 
+/** Las versiones para el sitio, en quvant-web/public/hero y quvant-web/public/spot. */
+async function web() {
+  const sitio = path.join(RAIZ, "..", "public");
+  const hero = path.join(sitio, "hero");
+  const spotWeb = path.join(sitio, "spot");
+  mkdirSync(hero, { recursive: true });
+  mkdirSync(spotWeb, { recursive: true });
+  for (const archivo of ["hero-loop-1080.webm", "hero-loop-1080.mp4", "hero-loop-4k.webm"]) {
+    const origen = path.join(OUT, archivo);
+    if (!existsSync(origen)) throw new Error(`Falta out/${archivo}: npm run entregas -- hero`);
+    copyFileSync(origen, path.join(hero, archivo));
+  }
+  await sharp(path.join(OUT, "revision", "hero-poster.png")).resize({ width: 1920 }).webp({ quality: 82 }).toFile(path.join(hero, "hero-poster.webp"));
+  console.log("hero → public/hero");
+
+  const fuente = path.join(OUT, "spot-completo-4k.mp4");
+  if (!existsSync(fuente)) throw new Error("Falta out/spot-completo-4k.mp4: npm run entregas -- spot");
+  const png = path.join(OUT, "revision", "spot-poster.png");
+  ff(["-loglevel", "error", "-ss", "44", "-i", fuente, "-frames:v", "1", "-vf", "scale=in_range=pc:in_color_matrix=bt601,format=rgb24", png]);
+  await sharp(png).resize({ width: 1600 }).webp({ quality: 82 }).toFile(path.join(spotWeb, "spot-poster.webp"));
+  paso("spot-1080.mp4", () =>
+    ff([
+      "-loglevel", "error", "-i", fuente, "-vf", aWeb(1920),
+      "-c:v", "libx264", "-preset", "slow", "-crf", "23", "-profile:v", "high", ...BANDERAS_709,
+      "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", path.join(spotWeb, "spot-1080.mp4"),
+    ]),
+  );
+  paso("spot-1080.webm (AV1)", () =>
+    ff([
+      "-loglevel", "error", "-i", fuente, "-vf", aWeb(1920),
+      "-c:v", "libaom-av1", "-cpu-used", "6", "-row-mt", "1", "-tiles", "2x2", "-crf", "36", "-b:v", "0", ...BANDERAS_709,
+      "-c:a", "libopus", "-b:a", "128k", path.join(spotWeb, "spot-1080.webm"),
+    ]),
+  );
+}
+
 /** La música elegida: una de Pixabay Music si está, si no la compuesta en código. */
 function musica() {
   for (const nombre of ["musica.wav", "musica.mp3", "musica-quvant.wav"]) {
@@ -227,7 +267,8 @@ async function main() {
   else if (que === "unir-spot") unirSpot();
   else if (que === "spot") spot();
   else if (que === "prueba-1080") pruebaSpot();
-  else if (que !== "docs") throw new Error("Uso: npm run entregas -- hero | hero-1080 | hero-4k | unir-spot | spot | prueba-1080 | docs");
+  else if (que === "web") await web();
+  else if (que !== "docs") throw new Error("Uso: npm run entregas -- hero | hero-1080 | hero-4k | unir-spot | spot | prueba-1080 | web | docs");
   documentos();
 }
 

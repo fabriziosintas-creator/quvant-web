@@ -377,6 +377,15 @@ export const NOSOTROS = {
     etiqueta: "Misión",
     texto: "Entrar en cada rubro, entender cómo trabaja y construir el sistema que todavía no tiene.",
   },
+  /** El spot de 45 s (video/ en este repo), con play a pedido y sonido. */
+  spot: {
+    ventana: "Quvant en 45 segundos",
+    nota: "Con sonido",
+    reproducir: "Ver el video",
+    duracion: "0:45",
+    descripcion:
+      "Video de Quvant: cómo programamos y diseñamos, Yunque y Forja por dentro con pantallas reales, cómo trabajamos por fases y la firma de la marca.",
+  },
   servicios: {
     etiqueta: "Nuestros servicios",
     ayuda: "Elegí uno y mirá cómo lo armamos.",

@@ -1,7 +1,7 @@
-import { QCromoDiferido } from "@/componentes/3d/QCromoDiferido";
 import { AuroraFondo } from "@/componentes/estructura/AuroraFondo";
 import { CintaRubros } from "@/componentes/estructura/CintaRubros";
 import { TextoTipeado } from "@/componentes/estructura/TextoTipeado";
+import { VideoPortada } from "@/componentes/estructura/VideoPortada";
 import { Contacto } from "@/componentes/secciones/Contacto";
 import { Nosotros } from "@/componentes/secciones/Nosotros";
 import { Objetivo } from "@/componentes/secciones/Objetivo";
@@ -10,16 +10,16 @@ import { Webs } from "@/componentes/secciones/Webs";
 import { DatosEstructurados } from "@/componentes/seo/DatosEstructurados";
 import { HERO } from "@/datos/textos";
 
-/** Página única del sitio: portada con la Q de cromo y las cinco secciones. */
+/** Página única del sitio: portada con el video de la Q de cromo y las cinco secciones. */
 export default function Inicio() {
   return (
     <>
       <DatosEstructurados />
       <section
         id="inicio"
-        className="relative flex min-h-svh flex-col justify-end overflow-hidden pb-24 pt-16 md:justify-center md:pb-0"
+        className="relative flex min-h-svh flex-col justify-end overflow-hidden pb-24 pt-16 lg:justify-center lg:pb-0"
       >
-        <QCromoDiferido />
+        <VideoPortada />
         <AuroraFondo />
         <div className="contenedor relative z-10">
           <h1 className="font-michroma text-[clamp(2.5rem,13vw,4.75rem)] leading-none tracking-marca text-blanco md:text-[clamp(4.75rem,8vw,8.5rem)]">

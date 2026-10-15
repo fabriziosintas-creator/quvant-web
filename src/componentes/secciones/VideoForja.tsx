@@ -1,27 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PLATAFORMAS } from "@/datos/textos";
+import { usePrefiereQuieto } from "@/estado/quieto";
 import { useVista } from "@/estado/vista";
 
 const { forja } = PLATAFORMAS;
-
-const CONSULTA_QUIETO = "(prefers-reduced-motion: reduce)";
-
-function suscribirQuieto(aviso: () => void) {
-  const consulta = window.matchMedia(CONSULTA_QUIETO);
-  consulta.addEventListener("change", aviso);
-  return () => consulta.removeEventListener("change", aviso);
-}
-
-/** Si la persona pidió menos movimiento en su sistema. */
-function usePrefiereQuieto() {
-  return useSyncExternalStore(
-    suscribirQuieto,
-    () => window.matchMedia(CONSULTA_QUIETO).matches,
-    () => false,
-  );
-}
 
 /**
  * La ventana de Forja: un recorrido real grabado en la demo pública
