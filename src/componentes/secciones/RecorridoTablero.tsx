@@ -7,6 +7,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  type FocusEvent,
   type KeyboardEvent,
   type ReactNode,
 } from "react";
@@ -24,9 +25,12 @@ import { useVista } from "@/estado/vista";
  * al frente, plana y blanca; las demás se inclinan y retroceden según la
  * distancia. Cada vez que el recorrido avanza, la rueda gira.
  *
- * Se recorre solo cada pocos segundos y se frena cuando el puntero o el
- * foco están encima, o cuando la ventana no está a la vista. En vista
- * texto no hay recorrido automático ni animación: el cambio es directo.
+ * Se recorre solo cada pocos segundos, aunque el puntero esté encima
+ * (antes se frenaba con el puntero y, como el bloque es ancho, parecía
+ * trabado). Se frena con el botón de pausa, mientras alguien lo recorre
+ * con el teclado, o cuando la ventana no está a la vista. Tocar una
+ * función salta ahí y sigue desde esa. En vista texto no hay recorrido
+ * automático ni animación: el cambio es directo.
  */
 
 const SEGUNDOS_POR_PARADA = 4.6;
@@ -145,7 +149,10 @@ export function RecorridoTablero() {
   const { recorrido, destacadas } = PLATAFORMAS.hoy;
   const vista = useVista();
   const [activa, setActiva] = useState(0);
+  /** La pausa que pidió la persona con el botón. */
   const [enPausa, setEnPausa] = useState(false);
+  /** Alguien recorre las fichas con el teclado: se espera a que termine. */
+  const [conTeclado, setConTeclado] = useState(false);
   const [aLaVista, setALaVista] = useState(false);
   const ventana = useRef<HTMLDivElement>(null);
   const capas = useRef<Record<string, HTMLDivElement | null>>({});
@@ -250,7 +257,7 @@ export function RecorridoTablero() {
     return () => observador.disconnect();
   }, []);
 
-  const recorriendo = vista === "3d" && aLaVista && !enPausa;
+  const recorriendo = vista === "3d" && aLaVista && !enPausa && !conTeclado;
 
   useEffect(() => {
     if (!recorriendo) return;
@@ -279,10 +286,8 @@ export function RecorridoTablero() {
   return (
     <div
       className="mt-8 grid gap-6 lg:grid-cols-[0.82fr_1.3fr] lg:gap-10"
-      onPointerEnter={() => setEnPausa(true)}
-      onPointerLeave={() => setEnPausa(false)}
-      onFocus={() => setEnPausa(true)}
-      onBlur={() => setEnPausa(false)}
+      onFocus={(evento: FocusEvent<HTMLDivElement>) => setConTeclado(evento.target.matches(":focus-visible"))}
+      onBlur={() => setConTeclado(false)}
     >
       {/* La rueda de fichas: una por función. */}
       <div className="order-2 min-w-0 lg:order-1">
@@ -367,17 +372,35 @@ export function RecorridoTablero() {
             );
           })}
         </div>
-        <p className="mt-4 flex items-center gap-2 font-plex text-[11px] uppercase tracking-etiqueta text-acero">
-          <span
-            aria-hidden
-            className={`size-1.5 ${
-              recorriendo
-                ? "bg-blanco motion-safe:animate-[parpadeo_1.4s_steps(2,end)_infinite]"
-                : "bg-profundo"
-            }`}
-          />
-          {recorriendo ? recorrido.reproduciendo : recorrido.pausado}
-        </p>
+        {/* El estado del recorrido, que también es el botón para pausarlo. */}
+        {vista === "3d" ? (
+          <button
+            type="button"
+            onClick={() => setEnPausa((pausa) => !pausa)}
+            aria-label={enPausa ? recorrido.seguir : recorrido.pausar}
+            className="mt-4 flex items-center gap-2 font-plex text-[11px] uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco"
+          >
+            <span
+              aria-hidden
+              className={`size-1.5 ${
+                recorriendo
+                  ? "bg-blanco motion-safe:animate-[parpadeo_1.4s_steps(2,end)_infinite]"
+                  : "bg-profundo"
+              }`}
+            />
+            {recorriendo ? recorrido.reproduciendo : recorrido.pausado}
+            <svg aria-hidden viewBox="0 0 12 12" className="ml-1 size-2.5 fill-current">
+              {enPausa ? (
+                <path d="M3 1.5 10.5 6 3 10.5Z" />
+              ) : (
+                <>
+                  <rect x="2" y="1.5" width="3" height="9" />
+                  <rect x="7" y="1.5" width="3" height="9" />
+                </>
+              )}
+            </svg>
+          </button>
+        ) : null}
       </div>
 
       {/* La ventana con la pantalla real. */}

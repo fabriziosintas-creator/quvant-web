@@ -125,6 +125,8 @@ export const PLATAFORMAS = {
       },
       reproduciendo: "Recorrido automático",
       pausado: "Recorrido en pausa",
+      pausar: "Pausar el recorrido automático",
+      seguir: "Seguir con el recorrido automático",
     },
     destacadas: [
       {
