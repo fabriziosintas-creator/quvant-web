@@ -18,8 +18,8 @@ import { Salto3D, cuadrosDelSalto } from "../transitions/Jump";
  *   es lo que el brief pide para el texto.
  * - La Q cromada es la protagonista: una vuelta completa en 24 s sobre el
  *   eje vertical, con ±12° de inclinación.
- * - Detrás, al 25–35 % y desenfocadas, pasan capturas de Yunque y Forja en
- *   planos de vidrio y fragmentos de stock de código y diseño.
+ * - Detrás, desenfocadas, pasan capturas de Yunque y Forja en planos de
+ *   vidrio (al 50 %) y fragmentos de stock de código y diseño (al 40 %).
  * - Cada 6 s, un salto del punto cambia lo que hay detrás. Los saltos
  *   terminan exactamente en 6, 12, 18 y 24 s.
  * - Nada de texto.
@@ -32,8 +32,10 @@ export const HERO = { segundos: TIEMPO.heroLoopSegundos, fps: TIEMPO.fps };
 export const HERO_CUADROS = HERO.segundos * HERO.fps;
 
 const TRAMO = 6;
-const OPACIDAD_CAPTURA = 0.32;
-const OPACIDAD_STOCK = 0.26;
+// El brief pedía 25–35 %; en el sitio, como ventana al lado del título, se
+// veía muy apagado y fabrizio pidió que lo de atrás se note más (oct 2026).
+const OPACIDAD_CAPTURA = 0.5;
+const OPACIDAD_STOCK = 0.4;
 const CUADROS_STOCK = 105; // 7 s a 15 fps (scripts/preparar-hero.ts)
 
 type Plano =
@@ -77,7 +79,7 @@ const TRAMOS: Tramo[] = [
     planos: [
       { tipo: "captura", nombre: "yunque-10-mostrador", ancho: 9, posicion: [4.2, -0.6, -6.8], giro: -0.26 },
       { tipo: "captura", nombre: "forja-08-sucursal-estanterias", ancho: 6.8, posicion: [6.5, 2.4, -4.4], giro: -0.34 },
-      { tipo: "stock", clip: "teclado-44423", ancho: 4.8, posicion: [1.2, 2.7, -4.2], giro: 0.24, opacidad: 0.12 },
+      { tipo: "stock", clip: "teclado-44423", ancho: 4.8, posicion: [1.2, 2.7, -4.2], giro: 0.24, opacidad: 0.2 },
     ],
     salto: { origen: [0.5, 0.82], destino: [0.95, 0.3] },
   },
@@ -193,7 +195,7 @@ export const HeroLoop: React.FC = () => {
           escenaB={<Escena indice={b} local={tiempoDelTramo(b, t, duracionSalto)} />}
           camaraA={{ posicion: [0, 0, 9], fov: 40 }}
           camaraB={{ posicion: [0, 0, 9], fov: 40 }}
-          desenfoque={(7 * width) / 1920}
+          desenfoque={(5 * width) / 1920}
           mascaraX={[0.18, 0.5]}
           muestras={0}
         />

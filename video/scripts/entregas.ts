@@ -1,5 +1,5 @@
 /**
- * npm run entregas -- hero | hero-1080 | hero-4k | unir-spot | spot | prueba-1080 | web | docs
+ * npm run entregas -- hero | hero-1080 | hero-4k | unir-spot | spot | prueba-1080 | web | web-hero | web-spot | docs
  *
  * Arma las entregas finales en out/ a partir de los renders de Remotion:
  *
@@ -29,7 +29,8 @@
  *
  *  web: lo que usa el sitio (quvant-web/public/): el hero-loop en AV1
  *   1080p y 4K más el MP4 1080p, el póster en WebP; el spot en 1080p (AV1
- *   con Opus y H.264 con AAC) y su póster (la firma del cierre).
+ *   con Opus y H.264 con AAC) y su póster (la firma del cierre). web-hero y
+ *   web-spot hacen cada mitad.
  *
  *  docs (también al final de hero y spot): CREDITS.md e INTEGRACION.md de
  *  entregas/ a out/, con los pesos reales de los archivos.
@@ -145,13 +146,12 @@ function pruebaSpot() {
   );
 }
 
-/** Las versiones para el sitio, en quvant-web/public/hero y quvant-web/public/spot. */
-async function web() {
-  const sitio = path.join(RAIZ, "..", "public");
-  const hero = path.join(sitio, "hero");
-  const spotWeb = path.join(sitio, "spot");
+const SITIO = path.join(RAIZ, "..", "public");
+
+/** El hero-loop para el sitio, en quvant-web/public/hero. */
+async function webHero() {
+  const hero = path.join(SITIO, "hero");
   mkdirSync(hero, { recursive: true });
-  mkdirSync(spotWeb, { recursive: true });
   for (const archivo of ["hero-loop-1080.webm", "hero-loop-1080.mp4", "hero-loop-4k.webm"]) {
     const origen = path.join(OUT, archivo);
     if (!existsSync(origen)) throw new Error(`Falta out/${archivo}: npm run entregas -- hero`);
@@ -159,7 +159,12 @@ async function web() {
   }
   await sharp(path.join(OUT, "revision", "hero-poster.png")).resize({ width: 1920 }).webp({ quality: 82 }).toFile(path.join(hero, "hero-poster.webp"));
   console.log("hero → public/hero");
+}
 
+/** El spot para el sitio, en quvant-web/public/spot. */
+async function webSpot() {
+  const spotWeb = path.join(SITIO, "spot");
+  mkdirSync(spotWeb, { recursive: true });
   const fuente = path.join(OUT, "spot-completo-4k.mp4");
   if (!existsSync(fuente)) throw new Error("Falta out/spot-completo-4k.mp4: npm run entregas -- spot");
   const png = path.join(OUT, "revision", "spot-poster.png");
@@ -267,8 +272,12 @@ async function main() {
   else if (que === "unir-spot") unirSpot();
   else if (que === "spot") spot();
   else if (que === "prueba-1080") pruebaSpot();
-  else if (que === "web") await web();
-  else if (que !== "docs") throw new Error("Uso: npm run entregas -- hero | hero-1080 | hero-4k | unir-spot | spot | prueba-1080 | web | docs");
+  else if (que === "web") {
+    await webHero();
+    await webSpot();
+  } else if (que === "web-hero") await webHero();
+  else if (que === "web-spot") await webSpot();
+  else if (que !== "docs") throw new Error("Uso: npm run entregas -- hero | hero-1080 | hero-4k | unir-spot | spot | prueba-1080 | web | web-hero | web-spot | docs");
   documentos();
 }
 
