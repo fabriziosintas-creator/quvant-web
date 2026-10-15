@@ -38,9 +38,11 @@ export function colorVec3(nombre: keyof typeof COLOR): [number, number, number] 
 
 export const FUENTE = {
   /** Solo QUVANT, YUNQUE, FORJA y BY QUVANT. Siempre mayúsculas. */
-  michroma: { familia: "Michroma", archivo: "fonts/Michroma-Regular.ttf" },
+  michroma: { familia: "Michroma", archivo: "fonts/Michroma-Regular.ttf", peso: 400 },
   /** Todo lo demás. Etiquetas en mayúsculas con tracking +200. */
-  plex: { familia: "IBM Plex Mono", archivo: "fonts/IBMPlexMono-Regular.ttf" },
+  plex: { familia: "IBM Plex Mono", archivo: "fonts/IBMPlexMono-Regular.ttf", peso: 400 },
+  /** Los titulares (manual: Plex Mono Bold con punto final). */
+  plexBold: { familia: "IBM Plex Mono", archivo: "fonts/IBMPlexMono-Bold.ttf", peso: 700 },
 } as const;
 
 /** Tracking del manual, en em (+160 a +200). */

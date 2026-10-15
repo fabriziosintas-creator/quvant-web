@@ -25,3 +25,13 @@ public/capturas/
 
 # Material del hero-loop (se regenera con npm run preparar-hero)
 public/hero/
+
+# Material del spot (se regenera con npm run preparar-spot)
+public/spot/
+
+# Paquete de Remotion para renders sueltos (npx remotion bundle)
+build/
+
+# Música y tic generados (npm run musica). Un tema elegido a mano (assets/audio/musica.mp3) sí se versiona.
+assets/audio/musica-quvant.wav
+assets/audio/tic.wav

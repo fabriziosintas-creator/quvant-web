@@ -4,13 +4,11 @@ import { ALTO, ANCHO, DURACION, FPS, ForjaRecorrido } from "./compositions/Forja
 import { MuestraPantalla } from "./muestras/MuestraPantalla";
 import { PRUEBA, PruebaShaders, QSola } from "./compositions/PruebaShaders";
 import { HERO, HERO_CUADROS, HeroLoop } from "./compositions/HeroLoop";
+import { SPOT, SPOT_CUADROS, SpotCompleto } from "./compositions/SpotCompleto";
 
 /**
- * Composiciones del video de portada.
- *
- * Por ahora están solo las dos muestras para elegir el tratamiento de las
- * capturas. PortadaCorta, PortadaCortaCelular y PortadaLarga se registran
- * acá cuando estén las capturas del sistema.
+ * Composiciones del video: el hero-loop y el spot-completo (las dos piezas
+ * del brief 4K), el recorrido de Forja para la web y las pruebas.
  */
 export const Raiz: React.FC = () => {
   return (
@@ -31,6 +29,24 @@ export const Raiz: React.FC = () => {
         fps={HERO.fps}
         width={1920}
         height={1080}
+      />
+      {/* El spot de 45 s: 4K/60 y la prueba a 1080p con marca de tiempo. */}
+      <Composition
+        id="SpotCompleto"
+        component={SpotCompleto}
+        durationInFrames={SPOT_CUADROS}
+        fps={SPOT.fps}
+        width={3840}
+        height={2160}
+      />
+      <Composition
+        id="SpotPrueba1080"
+        component={SpotCompleto}
+        durationInFrames={SPOT_CUADROS}
+        fps={SPOT.fps}
+        width={1920}
+        height={1080}
+        defaultProps={{ marcaDeTiempo: true }}
       />
       {/* Un cuadro más: el 1440 tiene que ser idéntico al 0 (npm run verificar-loop). */}
       <Composition

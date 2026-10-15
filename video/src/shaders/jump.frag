@@ -7,8 +7,10 @@
 // Las escenas pueden tener fondo transparente (el hero-loop pone la grilla
 // aparte): todo se trabaja premultiplicado. Opcional:
 // - uDesenfoque: desenfoque de profundidad de las dos escenas, en px.
-// - uMascaraX: el contenido se funde hacia la izquierda (de .x a .y del
-//   ancho), para dejar limpio el lugar del texto.
+// - uMascaraX / uMascaraXB: el contenido de A / de B se funde hacia la
+//   izquierda (de .x a .y del ancho), para dejar limpio el lugar del texto.
+// - uAntes: el punto ya está en el origen antes de saltar (el parpadeo de
+//   la apertura del spot), redondo y con esa opacidad.
 
 uniform sampler2D uSceneA;
 uniform sampler2D uSceneB;
@@ -17,6 +19,9 @@ uniform vec2 uJumpTarget;   // px, origen arriba-izquierda
 uniform vec3 uColorPunto;
 uniform float uDesenfoque;
 uniform vec2 uMascaraX;
+uniform vec2 uMascaraXB;
+uniform float uAntes;
+uniform float uProgress;
 
 varying vec2 vUv;
 varying vec2 vCentro;
@@ -49,6 +54,8 @@ void main() {
 
   vec4 a = leer(uSceneA, vUv);
   vec4 b = leer(uSceneB, vUv);
+  if (uMascaraX.y > uMascaraX.x) a *= smoothstep(uMascaraX.x, uMascaraX.y, vUv.x);
+  if (uMascaraXB.y > uMascaraXB.x) b *= smoothstep(uMascaraXB.x, uMascaraXB.y, vUv.x);
 
   // La ventana: crece desde el aterrizaje hasta cubrir la esquina más lejana.
   vec2 t = uJumpTarget;
@@ -59,12 +66,11 @@ void main() {
   float d = caja(px - t, vec2(medio), radio);
   float dentro = (1.0 - smoothstep(-0.5, 0.5, d)) * step(0.0001, vRevelado);
   vec4 color = mix(a, b, dentro);
-  if (uMascaraX.y > uMascaraX.x) color *= smoothstep(uMascaraX.x, uMascaraX.y, vUv.x);
 
   // El punto en vuelo, encima: de círculo a cuadrado.
   float mitad = vTam * 0.5;
   float dp = caja(px - vCentro, vec2(mitad), mitad * (1.0 - vForma));
-  float punto = (1.0 - smoothstep(-0.5, 0.5, dp)) * vVolando;
+  float punto = (1.0 - smoothstep(-0.5, 0.5, dp)) * max(vVolando, uAntes * (1.0 - step(0.0001, uProgress)));
   color = mix(color, vec4(uColorPunto, 1.0), punto);
 
   gl_FragColor = color;

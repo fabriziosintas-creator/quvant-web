@@ -46,6 +46,11 @@
     "grabar-forja": "tsx scripts/record-forja-video.ts",
     "web-forja": "tsx scripts/encode-forja-web.ts",
     "preparar-hero": "tsx scripts/preparar-hero.ts",
-    "verificar-loop": "tsx scripts/verify-loop.ts"
+    "verificar-loop": "tsx scripts/verify-loop.ts",
+    "preparar-spot": "tsx scripts/preparar-spot.ts",
+    "musica": "tsx scripts/componer-musica.ts",
+    "entregas": "tsx scripts/entregas.ts",
+    "verificar-entregas": "tsx scripts/verificar-entregas.ts",
+    "unir-spot": "tsx scripts/entregas.ts unir-spot"
   }
 }

@@ -30,7 +30,32 @@ type Props = {
   izquierda?: number;
   /** Dónde pasa de `izquierda` a la opacidad plena, en fracción del ancho. */
   transicion?: [number, number];
+  /** El tiempo de la grilla, si no es el del cuadro (el cierre del spot la deja quieta). */
+  segundos?: number;
 };
+
+/**
+ * El centro del punto de la grilla más cercano a (fx, fy), en px con origen
+ * arriba-izquierda: de ahí sale el salto. Usa el mismo paso y el mismo
+ * parallax que el shader.
+ */
+export function puntoDeGrilla(
+  [fx, fy]: [number, number],
+  ancho: number,
+  alto: number,
+  segundos: number,
+  periodo: number,
+): [number, number] {
+  const paso = Math.round((48 * ancho) / 3840);
+  const angulo = (2 * Math.PI * segundos) / periodo;
+  const dx = Math.cos(angulo) * ancho * 0.008;
+  const dy = Math.sin(angulo) * alto * 0.008;
+  const x = fx * ancho;
+  const y = (1 - fy) * alto; // la grilla cuenta desde abajo
+  const sx = Math.round((x + dx - paso / 2) / paso) * paso + paso / 2 - dx;
+  const sy = Math.round((y + dy - paso / 2) / paso) * paso + paso / 2 - dy;
+  return [sx, alto - sy];
+}
 
 /** La grilla como pieza de cualquier escena R3F: detrás de todo, a pantalla completa. */
 export const GrillaDePuntos: React.FC<Props> = ({
@@ -41,11 +66,12 @@ export const GrillaDePuntos: React.FC<Props> = ({
   opacidad = 1,
   izquierda = 1,
   transicion = [0.33, 0.45],
+  segundos: segundosFijos,
 }) => {
   const cuadro = useCurrentFrame();
   const { fps } = useVideoConfig();
   const pasoPx = paso ?? Math.round((48 * ancho) / 3840);
-  const segundos = cuadro / fps;
+  const segundos = segundosFijos ?? cuadro / fps;
   // Parallax muy suave: menos del 2 % del cuadro, también periódico.
   const angulo = (2 * Math.PI * segundos) / periodo;
   const uniforms = {

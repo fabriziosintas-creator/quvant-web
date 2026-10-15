@@ -1,6 +1,6 @@
 import { useTexture } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
-import React, { useLayoutEffect, useMemo, useState } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { cancelRender, continueRender, delayRender } from "remotion";
 import * as THREE from "three";
 import { COLOR, hexVec3 } from "../brand/tokens";
@@ -24,7 +24,7 @@ type PropsPlano = {
 };
 
 /** El plano con su vidrio, para cualquier textura. */
-const PlanoDeVidrio: React.FC<PropsPlano & { textura: THREE.Texture; aspecto: number }> = ({
+export const PlanoDeVidrio: React.FC<PropsPlano & { textura: THREE.Texture; aspecto: number }> = ({
   textura,
   aspecto,
   ancho,
@@ -57,6 +57,8 @@ const PlanoDeVidrio: React.FC<PropsPlano & { textura: THREE.Texture; aspecto: nu
     material.uniforms.uSaturacion.value = saturacion;
   }, [material, opacidad, saturacion]);
 
+  useEffect(() => () => material.dispose(), [material]);
+
   return (
     <mesh position={posicion} rotation={rotacion} material={material}>
       <planeGeometry args={[ancho, ancho / aspecto]} />
@@ -67,9 +69,14 @@ const PlanoDeVidrio: React.FC<PropsPlano & { textura: THREE.Texture; aspecto: nu
 /**
  * Una imagen fija (una captura). La textura suspende (useTexture):
  * ThreeCanvas retiene el cuadro hasta que carga.
+ *
+ * Al dejar de usarla se libera de la GPU (si vuelve a hacer falta, three la
+ * sube de nuevo): con muchas capturas 4K por pestaña, la memoria de la GPU
+ * se llena y los cuadros salen en blanco.
  */
 export const GlassScreen: React.FC<PropsPlano & { src: string }> = ({ src, ...plano }) => {
   const textura = useTexture(src);
+  useEffect(() => () => textura.dispose(), [textura]);
 
   useLayoutEffect(() => {
     textura.colorSpace = THREE.NoColorSpace;
@@ -121,6 +128,8 @@ function useTexturaDeSecuencia(url: string) {
       soltar();
     };
   }, [url, textura, avanzar]);
+
+  useEffect(() => () => textura.dispose(), [textura]);
 
   return textura;
 }
