@@ -95,5 +95,5 @@ export const CASOS: readonly CasoWeb[] = [
 export const CASO_PROXIMO = {
   titulo: "Tu empresa puede ser la próxima",
   texto: "Contanos qué tenés hoy y te mostramos qué puede ser.",
-  accion: { texto: "Hablemos", destino: "#contacto" },
+  accion: { texto: "Hablemos", destino: "/contacto" },
 } as const;

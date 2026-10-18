@@ -183,7 +183,7 @@ export function NucleosQuvant() {
             {T.datosEjemplo}
           </span>
         </div>
-        <p className="mt-3 min-h-[2.75rem] font-plex text-sm leading-relaxed text-acero">{cap.texto}</p>
+        <p className="mt-3 min-h-[2.75rem] font-lectura text-[15px] leading-relaxed text-acero">{cap.texto}</p>
 
         <div className="mt-4 flex-1 lg:min-h-[17rem]">
           {mostrada ? (

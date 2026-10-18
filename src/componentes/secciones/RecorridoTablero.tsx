@@ -36,6 +36,7 @@ import { useVista } from "@/estado/vista";
 const SEGUNDOS_POR_PARADA = 4.6;
 const AIRE = 0.86; // cuánto de la ventana ocupa la zona en modo "encajar"
 const ZOOM_MAXIMO = 2.7; // más que esto y la captura se ve pixelada
+const ANCHO_PARA_CUBRIR = 560; // por debajo, la vista general se encaja en vez de cubrir
 
 type Encuadre = {
   escala: number;
@@ -53,11 +54,13 @@ function calcularEncuadre(parada: Parada, anchoVentana: number, altoVentana: num
   const zy = parada.zona.y * altoBase;
   const zw = parada.zona.w * anchoVentana;
   const zh = parada.zona.h * altoBase;
+  // En una ventana angosta (celular), "cubrir" recortaba los costados del
+  // tablero ("…enas noches, Martín"): ahí la zona se encaja entera.
+  const cubrir = parada.modo === "cubrir" && anchoVentana >= ANCHO_PARA_CUBRIR;
 
-  let escala =
-    parada.modo === "cubrir"
-      ? Math.max(anchoVentana / zw, altoVentana / zh)
-      : Math.min(anchoVentana / zw, altoVentana / zh) * AIRE;
+  let escala = cubrir
+    ? Math.max(anchoVentana / zw, altoVentana / zh)
+    : Math.min(anchoVentana / zw, altoVentana / zh) * (parada.modo === "cubrir" ? 1 : AIRE);
   escala = Math.min(escala, ZOOM_MAXIMO);
 
   const anchoEscalado = anchoVentana * escala;
@@ -345,7 +348,7 @@ export function RecorridoTablero() {
                     </span>
                     {/* El texto solo se despliega en la parada activa. */}
                     <span
-                      className={`block overflow-hidden font-plex text-sm leading-relaxed text-acero transition-[max-height,opacity,margin] duration-500 ${
+                      className={`block overflow-hidden font-lectura text-[15px] leading-relaxed text-acero transition-[max-height,opacity,margin] duration-500 ${
                         seleccionada ? "mt-2 max-h-24 opacity-100" : "mt-0 max-h-0 opacity-0"
                       }`}
                     >
@@ -417,7 +420,7 @@ export function RecorridoTablero() {
             id="ventana-tablero"
             role="tabpanel"
             aria-labelledby={`parada-${PARADAS[activa].id}`}
-            className="relative aspect-[4/3] overflow-hidden bg-negro sm:aspect-[16/10] lg:aspect-[16/9]"
+            className="relative aspect-[16/10] overflow-hidden bg-negro lg:aspect-[16/9]"
           >
             {(Object.keys(CAPTURAS) as Array<keyof typeof CAPTURAS>).map((clave) => {
               const captura = CAPTURAS[clave];

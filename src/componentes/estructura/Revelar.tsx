@@ -3,6 +3,7 @@
 import { useLayoutEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { usePathname } from "next/navigation";
 import { useVista } from "@/estado/vista";
 
 if (typeof window !== "undefined") {
@@ -19,10 +20,12 @@ if (typeof window !== "undefined") {
  * El HTML del servidor llega con todo visible: sin JavaScript, o en vista
  * texto, no falta nada. Solo en vista 3D se ocultan los bloques (antes de
  * pintar, en un layout effect) y se van mostrando a medida que entran.
- * Cada bloque aparece una sola vez.
+ * Cada bloque aparece una sola vez. Al cambiar de canal (otra página) se
+ * vuelve a armar con los bloques nuevos.
  */
 export function Revelar() {
   const vista = useVista();
+  const ruta = usePathname();
 
   useLayoutEffect(() => {
     if (vista !== "3d") return;
@@ -67,7 +70,7 @@ export function Revelar() {
       window.removeEventListener("load", alCargar);
       contexto.revert();
     };
-  }, [vista]);
+  }, [vista, ruta]);
 
   return null;
 }

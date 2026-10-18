@@ -1,9 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Mono, Michroma } from "next/font/google";
+import { IBM_Plex_Mono, IBM_Plex_Sans, Michroma } from "next/font/google";
 import "./globals.css";
 import { Cursor } from "@/componentes/estructura/Cursor";
+import { DockCanales } from "@/componentes/estructura/DockCanales";
 import { Encabezado } from "@/componentes/estructura/Encabezado";
-import { InterruptorVista } from "@/componentes/estructura/InterruptorVista";
 import { Pie } from "@/componentes/estructura/Pie";
 import { Revelar } from "@/componentes/estructura/Revelar";
 import { ScrollSuave } from "@/componentes/estructura/ScrollSuave";
@@ -21,6 +21,14 @@ const plexMono = IBM_Plex_Mono({
   weight: ["400", "500", "700"],
   subsets: ["latin"],
   variable: "--fuente-plex",
+  display: "swap",
+});
+
+/** Para los párrafos: la misma familia Plex, sin el ancho fijo que cansa en textos largos. */
+const plexSans = IBM_Plex_Sans({
+  weight: ["400", "500"],
+  subsets: ["latin"],
+  variable: "--fuente-lectura",
   display: "swap",
 });
 
@@ -51,8 +59,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es-AR" className={`${michroma.variable} ${plexMono.variable} antialiased`}>
-      <body className="flex min-h-svh flex-col">
+    <html
+      lang="es-AR"
+      className={`${michroma.variable} ${plexMono.variable} ${plexSans.variable} antialiased`}
+    >
+      {/* En el celular, aire abajo para la barra de canales. */}
+      <body className="flex min-h-svh flex-col pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:pb-0">
         <a
           href="#contenido"
           className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-60 focus:bg-blanco focus:px-4 focus:py-2 focus:font-plex focus:text-sm focus:text-negro"
@@ -66,7 +78,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Pie />
-        <InterruptorVista />
+        <DockCanales />
         <Cursor />
       </body>
     </html>

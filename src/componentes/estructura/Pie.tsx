@@ -1,13 +1,15 @@
+import Link from "next/link";
 import { AuroraFondo } from "@/componentes/estructura/AuroraFondo";
+import { InterruptorVista } from "@/componentes/estructura/InterruptorVista";
 import { Logotipo } from "@/componentes/marca/Logotipo";
 import { urlInstagram, CONTACTO } from "@/datos/contacto";
-import { MARCA, NAV, PIE } from "@/datos/textos";
+import { CANALES, MARCA, PIE } from "@/datos/textos";
 
 /**
  * Pie de página. Arriba, el cierre: QUVANT gigante en Michroma a todo el
  * ancho, letra por letra en cascada al llegar (la Q vuelve como trofeo,
- * como pedía el estudio). Abajo, la firma, las secciones, Instagram y los
- * derechos.
+ * como pedía el estudio). Abajo, la firma, los canales, Instagram y los
+ * derechos. En pantallas sin el interruptor 3D / texto arriba, va acá.
  */
 export function Pie() {
   const letras = Array.from(MARCA.logotipo);
@@ -48,10 +50,10 @@ export function Pie() {
             {PIE.etiquetaSecciones}
           </p>
           <ul className="mt-5 flex flex-col gap-3">
-            {NAV.map((item) => (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
+            {CANALES.map((canal) => (
+              <li key={canal.id}>
+                <Link
+                  href={canal.ruta}
                   className="group inline-flex items-center gap-3 text-sm text-blanco transition-colors hover:text-acero"
                 >
                   {/* El punto cuadrado reemplaza a la viñeta redonda (manual, sección 09). */}
@@ -59,8 +61,8 @@ export function Pie() {
                     aria-hidden
                     className="inline-block size-1 bg-profundo transition-colors group-hover:bg-blanco"
                   />
-                  {item.etiqueta}
-                </a>
+                  {canal.nombre}
+                </Link>
               </li>
             ))}
           </ul>
@@ -90,9 +92,10 @@ export function Pie() {
       </div>
 
       <div className="border-t border-profundo">
-        <div className="contenedor flex items-center justify-between py-5">
+        <div className="contenedor flex items-center justify-between gap-4 py-5">
           <p className="font-plex text-xs text-acero">{PIE.derechos}</p>
-          <span aria-hidden className="inline-block size-1.5 bg-acero" />
+          <InterruptorVista className="lg:hidden" />
+          <span aria-hidden className="hidden size-1.5 bg-acero lg:inline-block" />
         </div>
       </div>
     </footer>

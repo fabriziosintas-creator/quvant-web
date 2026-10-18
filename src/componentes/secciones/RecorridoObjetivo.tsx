@@ -15,7 +15,7 @@ if (typeof window !== "undefined") {
 /**
  * El recorrido de "Nuestro objetivo", atado al scroll.
  *
- * La sección se queda fija mientras el visitante baja (cuatro pantallas
+ * La sección se queda fija mientras el visitante baja (tres pantallas
  * de scroll) y el tiempo lo maneja el scroll: la línea se dibuja de nodo
  * en nodo cambiando de color, el punto cuadrado de la marca salta de una
  * etapa a la siguiente (se vuelve redondo en el aire y cae cuadrado, como
@@ -108,7 +108,7 @@ export function RecorridoObjetivo() {
                 0{i + 1} · {etapa.nombre}
               </p>
               <h3 className="mt-3 font-plex text-xl font-bold text-blanco">{etapa.titular}</h3>
-              <p className="mt-3 font-plex text-sm leading-relaxed text-acero">{etapa.texto}</p>
+              <p className="mt-3 font-lectura text-[15px] leading-relaxed text-acero">{etapa.texto}</p>
             </li>
           ))}
         </ol>
@@ -117,7 +117,7 @@ export function RecorridoObjetivo() {
   }
 
   return (
-    <div ref={exterior} className="relative" style={{ height: `${CANTIDAD * 100}svh` }}>
+    <div ref={exterior} className="relative" style={{ height: `${CANTIDAD * 75}svh` }}>
       <div
         className="sticky top-0 flex h-svh flex-col justify-center overflow-hidden pt-16 md:pt-20"
         style={{ "--acento": color } as CSSProperties}
@@ -161,7 +161,13 @@ export function RecorridoObjetivo() {
                 className="nodo-objetivo absolute top-1/2 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border bg-negro font-plex text-[11px] font-medium transition-colors duration-500 data-[estado=pasado]:border-[var(--nodo)] data-[estado=pasado]:text-[var(--nodo)] data-[estado=pendiente]:border-profundo data-[estado=pendiente]:text-acero md:size-9 md:text-xs"
               >
                 {i + 1}
-                <span className="pointer-events-none absolute top-full mt-2 hidden whitespace-nowrap font-plex text-[10px] uppercase tracking-etiqueta text-acero sm:block">
+                {/* En celular solo se nombra la etapa activa, en su color; las
+                    de las puntas se alinean hacia adentro para no cortarse. */}
+                <span
+                  className={`pointer-events-none absolute top-full mt-2 whitespace-nowrap font-plex text-[10px] uppercase tracking-etiqueta text-acero sm:block ${
+                    i === activa ? "max-sm:text-[var(--nodo)]" : "hidden"
+                  } ${i === 0 ? "max-sm:left-0" : ""} ${i === CANTIDAD - 1 ? "max-sm:right-0" : ""}`}
+                >
                   {etapa.nombre}
                 </span>
               </button>
@@ -195,7 +201,7 @@ export function RecorridoObjetivo() {
                     <h3 className="mt-3 font-plex text-xl font-bold leading-tight text-blanco md:text-3xl">
                       {etapa.titular}
                     </h3>
-                    <p className="mt-3 max-w-xl font-plex text-sm leading-relaxed text-acero md:text-[15px]">
+                    <p className="mt-3 max-w-xl font-lectura text-[15px] leading-relaxed text-acero md:text-base">
                       {etapa.texto}
                     </p>
                     <p className="mt-4 flex items-center gap-3 font-plex text-sm font-bold text-blanco">
@@ -250,12 +256,12 @@ function Cabecera() {
     <>
       <p className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-acero">
         <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-        {OBJETIVO.numero} · {OBJETIVO.etiqueta}
+        {OBJETIVO.etiqueta}
       </p>
       <h2 className="mt-3 max-w-3xl font-plex text-xl font-bold leading-tight text-blanco md:mt-4 md:text-3xl lg:text-4xl">
         {OBJETIVO.titulo}
       </h2>
-      <p className="mt-2 hidden max-w-2xl font-plex text-xs leading-relaxed text-acero sm:block md:mt-3 md:text-sm">
+      <p className="mt-2 hidden max-w-2xl font-lectura text-sm leading-relaxed text-acero sm:block md:mt-3 md:text-base">
         {OBJETIVO.bajada}
       </p>
     </>

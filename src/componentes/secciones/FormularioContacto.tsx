@@ -161,7 +161,7 @@ export function FormularioContacto() {
           {botones.email}
         </button>
       </div>
-      <p className="font-plex text-xs leading-relaxed text-acero">{nota}</p>
+      <p className="font-lectura text-xs leading-relaxed text-acero">{nota}</p>
     </form>
   );
 }

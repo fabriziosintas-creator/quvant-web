@@ -39,7 +39,7 @@ const GRAFO = {
     {
       "@type": "SoftwareApplication",
       name: MARCA.nombre,
-      description: PLATAFORMAS.bajada,
+      description: PLATAFORMAS.descripcion,
       applicationCategory: "BusinessApplication",
       operatingSystem: "Web",
       inLanguage: "es-AR",

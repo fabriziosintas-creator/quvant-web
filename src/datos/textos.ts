@@ -13,43 +13,146 @@ export const MARCA = {
   pronunciacion: "«kúvant»",
 } as const;
 
-/** Secciones ancladas. El número es el contador que acompaña toda la página (la portada es 01). */
-export const NAV = [
-  { id: "objetivo", numero: "02", etiqueta: "Objetivo" },
-  { id: "nosotros", numero: "03", etiqueta: "Nosotros" },
-  { id: "plataformas", numero: "04", etiqueta: "Plataformas" },
-  { id: "webs", numero: "05", etiqueta: "Webs" },
-  { id: "contacto", numero: "06", etiqueta: "Contacto" },
+/**
+ * Los canales: el sitio dividido en segmentos, cada uno con su página.
+ * La portada los conecta (src/componentes/canales) y cada página termina
+ * con la línea que lleva al siguiente. El orden de esta lista es el orden
+ * del recorrido. Los capítulos son los bloques de cada página (el riel
+ * lateral y la barra de capítulos los listan). `corto` es el nombre que
+ * entra en la barra de canales del celular.
+ */
+export const CANALES = [
+  {
+    id: "trabajos",
+    ruta: "/trabajos",
+    nombre: "Trabajos",
+    corto: "Trabajos",
+    frase: "Webs, sistemas y apps que ya están andando. Entrá y recorrelos.",
+    titulo: "Webs y sistemas que ya hicimos.",
+    bajada: "Entrá a cualquiera y recorrela acá mismo, sin salir de la página.",
+    metaTitulo: "Trabajos: webs, sistemas y apps que ya hicimos",
+    capitulos: [
+      { id: "portfolio", nombre: "Portfolio" },
+      { id: "caso", nombre: "Un caso de cerca" },
+    ],
+  },
+  {
+    id: "servicios",
+    ruta: "/servicios",
+    nombre: "Servicios",
+    corto: "Servicios",
+    frase: "Sistemas para tu rubro, apps a medida y webs. Y cómo los hacemos.",
+    titulo: "Qué hacemos y cómo lo hacemos.",
+    bajada: "Tres formas de trabajar con nosotros y un solo método: primero entender, después construir.",
+    metaTitulo: "Servicios: software de gestión, apps a medida y páginas web",
+    capitulos: [
+      { id: "que-hacemos", nombre: "Qué hacemos" },
+      { id: "como-trabajamos", nombre: "Cómo trabajamos" },
+    ],
+  },
+  {
+    id: "plataformas",
+    ruta: "/plataformas",
+    nombre: "Plataformas",
+    corto: "Sistemas",
+    frase: "Un núcleo que ya funciona y un sistema para cada rubro.",
+    titulo: "El mismo núcleo, un sistema para cada rubro.",
+    bajada:
+      "Quvant es el sistema de gestión: un núcleo común que ya funciona y, arriba, una plantilla pensada para cada rubro. Cada producto lleva su nombre y la firma de la casa.",
+    metaTitulo: "Sistemas de gestión por rubro: industria, gimnasios y más",
+    capitulos: [
+      { id: "hoy", nombre: "Lo que hace hoy" },
+      { id: "rubros", nombre: "Rubros" },
+      { id: "integraciones", nombre: "Integraciones" },
+    ],
+  },
+  {
+    id: "nosotros",
+    ruta: "/nosotros",
+    nombre: "Nosotros",
+    corto: "Nosotros",
+    frase: "Dos amigos, dos fuerzas, una sola marca.",
+    titulo: "Dos amigos, dos fuerzas, una sola marca.",
+    bajada:
+      "Quvant nace del sueño de dos amigos apasionados por el desarrollo de aplicaciones, con más de diez años de experiencia.",
+    metaTitulo: "Nosotros: el equipo detrás de Quvant",
+    capitulos: [
+      { id: "fuerzas", nombre: "Las dos fuerzas" },
+      { id: "equipo", nombre: "El equipo" },
+      { id: "video", nombre: "En 45 segundos" },
+    ],
+  },
+  {
+    id: "contacto",
+    ruta: "/contacto",
+    nombre: "Contacto",
+    corto: "Contacto",
+    frase: "Contanos qué necesitás y te respondemos con una propuesta.",
+    titulo: "Contanos qué necesitás.",
+    bajada: "Completá estos datos y el mensaje te queda armado: lo mandás por WhatsApp o por email.",
+    metaTitulo: "Contacto: contanos qué necesitás",
+    capitulos: [],
+  },
 ] as const;
 
-/** Interruptor fijo abajo al centro: apaga o prende el 3D de todo el sitio. */
+export type Canal = (typeof CANALES)[number];
+
+/** Lo que acompaña a los canales en todas las páginas. */
+export const NAVEGACION = {
+  canal: "Canal",
+  inicio: "Inicio",
+  hablemos: "Hablemos",
+  siguiente: "Seguí por",
+  anterior: "Volver a",
+  capitulos: "En esta página",
+  navPrincipal: "Canales del sitio",
+  navCelular: "Barra de canales",
+} as const;
+
+/** Interruptor 3D / texto: arriba en la computadora, en el pie en el celular. */
 export const INTERRUPTOR_VISTA = {
   etiqueta: "Elegir cómo ver el sitio",
   opcion3d: "Vista 3D",
   opcionTexto: "Vista texto",
+  corto3d: "3D",
+  cortoTexto: "Texto",
 } as const;
 
 export const ACCESIBILIDAD = {
   saltarAlContenido: "Saltar al contenido",
   irAlInicio: "Quvant — ir al inicio",
-  abrirMenu: "Abrir menú",
-  cerrarMenu: "Cerrar menú",
-  navPrincipal: "Secciones del sitio",
 } as const;
 
 export const HERO = {
   titulo: "QUVANT",
-  bajada: MARCA.bajada,
-  botonPrimario: { texto: "Nuestros servicios", destino: "#servicios" },
-  botonSecundario: { texto: "Hablemos", destino: "#contacto" },
+  propuesta: "Software de gestión, apps y webs para pymes y empresas de primer nivel.",
+  botonPrimario: { texto: "Ver trabajos", destino: "/trabajos" },
+  botonSecundario: { texto: "Hablemos", destino: "/contacto" },
+} as const;
+
+/** La portada, después del video: los canales, los trabajos destacados y el cierre. */
+export const INICIO = {
+  canales: {
+    etiqueta: "Canales",
+    titulo: "Elegí por dónde seguir.",
+    entrar: "Entrar",
+    enVivo: "En vivo",
+    pausar: "Pausar el recorrido de canales",
+    seguir: "Seguir con el recorrido de canales",
+  },
+  destacados: {
+    etiqueta: "Trabajos",
+    titulo: "Algunos que ya están andando.",
+    verTodos: "Ver todos los trabajos",
+  },
+  cierre: {
+    titulo: "¿Tenés un proyecto en mente?",
+    texto: "Contanos qué necesitás y te respondemos con una propuesta concreta.",
+    boton: "Hablemos",
+  },
 } as const;
 
 export const CONTACTO_SECCION = {
-  numero: "06",
-  etiqueta: "Contacto",
-  titulo: "Contanos qué necesitás.",
-  bajada:
-    "Completá estos datos y el mensaje te queda armado: lo mandás por WhatsApp o por email, como prefieras.",
   campos: {
     nombre: { etiqueta: "Nombre", marcador: "¿Cómo te llamás?" },
     empresa: { etiqueta: "Empresa (opcional)", marcador: "El nombre de tu empresa" },
@@ -74,12 +177,43 @@ export const CONTACTO_SECCION = {
   asuntoEmail: "Consulta desde la web de Quvant",
 } as const;
 
+/** El canal Trabajos: la vitrina, el visor y el caso Ferremix. */
 export const WEBS = {
-  numero: "05",
-  etiqueta: "Webs",
-  titulo: "Páginas web para nuestros clientes.",
-  bajada:
-    "Desde cero o renovando la que quedó vieja, con migración segura de los datos sensibles. Así se trabaja: con una propuesta concreta sobre la mesa.",
+  /** La vitrina del portfolio (datos en src/datos/portfolio.ts). */
+  vitrina: {
+    filtros: "Filtrar por tipo",
+    todo: "Todo",
+    proyectos: "proyectos",
+    enVivo: "para probar en vivo",
+    ayudaMouse: "Pasá el mouse para verla moverse. Clic para entrar.",
+    ayudaTactil: "Deslizá para ver más. Tocá una para entrar.",
+    entrar: "Entrar",
+    posicion: "Proyecto",
+    de: "de",
+  },
+  visor: {
+    etiqueta: "Visor de proyectos",
+    cerrar: "Cerrar el visor",
+    anterior: "Proyecto anterior",
+    siguiente: "Proyecto siguiente",
+    dispositivo: "Ver como",
+    escritorio: "Escritorio",
+    celular: "Celular",
+    modo: "Mostrar",
+    captura: "Captura",
+    enVivo: "En vivo",
+    abrir: "Abrir el sitio",
+    recorrer: "Recorrer sola",
+    detener: "Detener",
+    paginas: "Páginas del proyecto",
+    queTiene: "Qué tiene",
+    sobre: "Sobre el proyecto",
+    cargando: "Cargando el sitio en vivo…",
+    notaCaptura: "Captura de la página completa: bajá para recorrerla. Para usarla, abrila en una pestaña nueva.",
+    notaEnVivo: "Es el sitio de verdad, funcionando acá adentro.",
+    teclas: "Flechas ← → para cambiar · Esc para cerrar",
+  },
+  etiquetaCaso: "Un caso de cerca",
   etiquetaAntes: "Antes",
   etiquetaDespues: "Después",
   ayudaDeslizador: "Comparar la web actual con la propuesta (arrastrá o usá las flechas)",
@@ -89,29 +223,11 @@ export const WEBS = {
   etiquetaQueCambio: "Qué cambió",
 } as const;
 
+/** El canal Plataformas (título y bajada en CANALES). */
 export const PLATAFORMAS = {
-  numero: "04",
-  etiqueta: "Plataformas",
-  titulo: "El mismo núcleo, un sistema para cada rubro.",
-  bajada:
-    "Quvant es el sistema de gestión: un núcleo común que ya funciona y, arriba, una plantilla pensada para cada rubro. Cada producto lleva su nombre y la firma de la casa.",
-  nucleo: {
-    etiqueta: "El núcleo común",
-    modulos: ["Usuarios y roles", "Sucursales", "Caja", "Ventas", "Stock", "Reportes"],
-    titulo: "Un núcleo que ya funciona. Una plantilla por nicho.",
-    texto:
-      "Quvant es el núcleo: usuarios y roles, sucursales, caja, ventas, stock y reportes, hechos y probados. De ahí salen las ramas: cada nicho tiene su plantilla, con los widgets y las funciones que ese rubro necesita.",
-    personalizable:
-      "La plantilla se ajusta para cada cliente: se suman o se sacan widgets según cómo trabaja.",
-    ventana: "Quvant · El núcleo y sus plantillas",
-    ayuda: "Tocá un nicho y mirá qué le suma su plantilla.",
-    etiquetaNucleo: "Núcleo",
-    etiquetaModulos: "Módulos del núcleo",
-    etiquetaWidgets: "Widgets de la plantilla · ejemplos",
-    estadoNucleo: "Funcionando hoy",
-    nota: "Ilustración de ejemplo: los widgets son ejemplos de lo que lleva cada plantilla.",
-    apagado: "La escena 3D está apagada en la vista texto.",
-  },
+  /** Para los datos estructurados: qué es Quvant como producto. */
+  descripcion:
+    "Quvant es el sistema de gestión: un núcleo común que ya funciona y, arriba, una plantilla pensada para cada rubro.",
   hoy: {
     etiqueta: "Lo que hace hoy",
     etiquetaResto: "Y además",
@@ -279,11 +395,9 @@ export const PLATAFORMAS = {
  * Cuatro etapas que se recorren con el scroll; cada una con su comentario.
  */
 export const OBJETIVO = {
-  numero: "02",
-  etiqueta: "Nuestro objetivo",
+  etiqueta: "Cómo trabajamos",
   titulo: "Vos soñás en grande. Nosotros lo bajamos a tierra.",
-  bajada:
-    "Nuestro objetivo no es venderte un sistema: es entender tu negocio y construir lo que de verdad te hace falta. En ese orden.",
+  bajada: "Primero entender tu negocio, después construir. En ese orden.",
   ayuda: "Bajá despacio: el recorrido avanza con el scroll.",
   etapas: [
     {
@@ -291,49 +405,40 @@ export const OBJETIVO = {
       nombre: "Escuchar",
       titular: "Primero escuchamos.",
       texto:
-        "Antes de proponer nada, entendemos cómo trabajás hoy: qué te traba, qué hacés a mano, qué te gustaría que pase solo. No llegamos con una solución armada; llegamos con preguntas.",
+        "Antes de proponer nada, entendemos cómo trabajás hoy: qué te traba y qué hacés a mano. Llegamos con preguntas, no con una solución armada.",
       marca: "Nada de soluciones enlatadas.",
     },
     {
       id: "sonar",
       nombre: "Soñar en grande",
       titular: "Queremos que sueñes en grande.",
-      texto:
-        "Contanos la idea completa, sin recortarla por miedo a que sea mucho. La versión ambiciosa es la que nos interesa: ahí está lo que tu negocio podría ser.",
+      texto: "Contanos la idea completa, sin recortarla. La versión ambiciosa es la que nos interesa.",
       marca: "La idea entera, sin recortes.",
     },
     {
       id: "bajar",
       nombre: "Bajar a tierra",
       titular: "Nosotros la bajamos a tierra.",
-      texto:
-        "Convertimos esa idea en pasos concretos: qué va primero, qué puede esperar, cuánto lleva cada parte. Lo ambicioso se vuelve un plan que se puede empezar el lunes.",
+      texto: "La convertimos en pasos concretos: qué va primero, qué puede esperar y cuánto lleva cada parte.",
       marca: "Un plan que se empieza el lunes.",
     },
     {
       id: "construir",
       nombre: "Construir y acompañar",
       titular: "Lo construimos por fases.",
-      texto:
-        "Cada fase se prueba antes de seguir, con vos adentro. Y cuando el sistema está andando no nos vamos: seguimos cerca, porque tu negocio cambia y el sistema tiene que cambiar con él.",
+      texto: "Cada fase se prueba con vos adentro. Y cuando el sistema está andando, seguimos cerca.",
       marca: "Cada fase se prueba antes de seguir.",
     },
   ],
 } as const;
 
 export const NOSOTROS = {
-  numero: "03",
-  etiqueta: "Nosotros",
-  titulo: "Dos amigos, dos fuerzas, una sola marca.",
-  origen:
-    "Quvant nace del sueño de dos amigos apasionados por el desarrollo de aplicaciones, con más de diez años de experiencia.",
   fuerzas: {
     desarrollo: {
       etiqueta: "Fuerza de desarrollo",
       titular: "Más de 10 años construyendo software.",
       parrafos: [
-        "Desarrollamos sistemas y sitios web para startups y empresas de primer nivel. Lo que mejor hacemos es escuchar: entendemos cómo trabaja tu empresa, tomamos tus ideas y las convertimos en un sistema que tu equipo usa desde el primer día. Es simple, completo y no hace falta un manual.",
-        "Trabajamos con las tecnologías más nuevas y usamos inteligencia artificial para construir más rápido y con más precisión. Así ponemos tu empresa a la vanguardia de su nicho.",
+        "Sistemas y sitios web para startups y empresas de primer nivel, simples de usar desde el primer día. Con las tecnologías más nuevas e inteligencia artificial para construir más rápido y con más precisión.",
       ],
       puntos: ["Sistemas y sitios web", "Tecnologías nuevas", "IA para construir mejor"],
       dato: { numero: 10, prefijo: "+", etiqueta: "años construyendo software" },
@@ -343,8 +448,7 @@ export const NOSOTROS = {
       etiqueta: "Fuerza comercial",
       titular: "Entendemos tu negocio antes de escribir una línea de código.",
       parrafos: [
-        "Conocemos el negocio, el rubro y a la gente que lo mueve. Escuchamos cómo vendés, cómo cobrás y qué te frena hoy, y lo traducimos en un pedido claro para el equipo de desarrollo: nada se pierde entre lo que necesitás y lo que se construye.",
-        "Te acompañamos desde la primera charla hasta que el sistema está andando en tu empresa. Y después también: si tu negocio cambia, el sistema cambia con él.",
+        "Conocemos el negocio y a la gente que lo mueve. Lo que necesitás se vuelve un pedido claro para desarrollo, y te acompañamos hasta que el sistema anda en tu empresa. Y después también.",
       ],
       puntos: ["Escuchar primero", "Propuestas concretas", "Acompañamiento después"],
       dato: { numero: 4, prefijo: "", etiqueta: "etapas, de la idea al sistema andando" },
@@ -455,7 +559,7 @@ export const NOSOTROS = {
 } as const;
 
 export const PIE = {
-  etiquetaSecciones: "Secciones",
+  etiquetaSecciones: "Canales",
   etiquetaSeguinos: "Seguinos",
   derechos: "© 2026 Quvant",
 } as const;

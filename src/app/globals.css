@@ -21,6 +21,8 @@
 @theme inline {
   --font-michroma: var(--fuente-michroma), sans-serif;
   --font-plex: var(--fuente-plex), ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Párrafos largos: Plex Sans (decisión del 18-oct-2026: la mono cansaba al leer). */
+  --font-lectura: var(--fuente-lectura), system-ui, sans-serif;
 }
 
 /* Ancho de lectura del sitio: una sola medida para todas las secciones. */
@@ -36,8 +38,8 @@
 }
 
 html {
-  /* Deja aire debajo del menú fijo al navegar por anclas. */
-  scroll-padding-top: 6.5rem;
+  /* Deja aire debajo del encabezado fijo (y de la barra de capítulos) al navegar por anclas. */
+  scroll-padding-top: 8.5rem;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -180,8 +182,48 @@ html[data-cursor="si"] :where(input, textarea, [contenteditable]) {
 }
 
 .cursor-propio[data-modo="oculto"] .cursor-punto,
-.cursor-propio[data-modo="oculto"] .cursor-marco {
+.cursor-propio[data-modo="oculto"] .cursor-marco,
+.cursor-propio[data-modo="texto"] .cursor-punto,
+.cursor-propio[data-modo="texto"] .cursor-marco {
   opacity: 0;
+}
+
+/* La etiqueta del cursor sobre las tarjetas del portfolio ("Entrar"). */
+.cursor-etiqueta {
+  margin: 0;
+  padding: 0.5rem 0.8rem;
+  background: var(--color-blanco);
+  color: var(--color-negro);
+  font-family: var(--font-plex);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-etiqueta);
+  text-transform: uppercase;
+  white-space: nowrap;
+  translate: -50% -50%;
+  scale: 0.4;
+  visibility: hidden;
+  transition:
+    scale 220ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    visibility 0s linear 220ms;
+}
+
+.cursor-etiqueta[data-visible="si"] {
+  scale: 1;
+  visibility: visible;
+  transition:
+    scale 220ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    visibility 0s;
+}
+
+.cursor-etiqueta::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 0.5rem;
+  vertical-align: 1px;
+  background: currentColor;
 }
 
 /* Los glifos de las fichas del recorrido se dibujan al pasar al frente. */
@@ -266,6 +308,297 @@ html[data-vista="texto"] .ficha-servicio .foto-servicio {
 .panel-entra { animation: burbuja 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 html[data-vista="texto"] .panel-entra { animation: none; }
 @media (prefers-reduced-motion: reduce) { .panel-entra { animation: none; } }
+
+/*
+ * La vitrina del portfolio (secciones/vitrina).
+ *
+ * La pantalla de cada tarjeta es un contenedor de tamaño: la captura larga
+ * baja hasta que su borde inferior toca el de la pantalla
+ * (-100% de la imagen + 100cqh de la pantalla), sin medir nada en JS.
+ * Con mouse se recorre al pasar; en el celular, la tarjeta que queda al
+ * frente del carrusel se recorre sola.
+ */
+.ficha-web .pantalla-web {
+  container-type: size;
+}
+
+.ficha-web .desliz-web {
+  transform: translateY(0);
+  transition: transform 1.1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .ficha-web:hover .desliz-web {
+    transform: translateY(calc(-100% + 100cqh));
+    transition: transform var(--recorrido, 9s) cubic-bezier(0.45, 0, 0.55, 1);
+  }
+}
+
+.ficha-web[data-al-frente="si"] .desliz-web {
+  animation: recorrer-web var(--recorrido, 9s) cubic-bezier(0.45, 0, 0.55, 1) 0.6s infinite alternate;
+}
+
+@keyframes recorrer-web {
+  to {
+    transform: translateY(calc(-100% + 100cqh));
+  }
+}
+
+/* El celular que asoma por la esquina al pasar (o al quedar al frente). */
+.ficha-web .telefono-web {
+  transform: translateY(58%) rotate(4deg);
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ficha-web:hover .telefono-web,
+.ficha-web:focus-visible .telefono-web,
+.ficha-web[data-al-frente="si"] .telefono-web {
+  transform: translateY(14%) rotate(0deg);
+}
+
+/* El carrusel del celular: sin barra visible, se desliza con el dedo. */
+.carrusel-web {
+  scrollbar-width: none;
+}
+
+.carrusel-web::-webkit-scrollbar {
+  display: none;
+}
+
+/* La captura del visor: la barra de progreso sigue al scroll de la página mostrada. */
+.visor-progreso {
+  transform: scaleX(var(--progreso, 0));
+  transform-origin: left;
+}
+
+html.visor-abierto {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ficha-web .desliz-web,
+  .ficha-web .telefono-web {
+    transition: none;
+    animation: none;
+  }
+}
+
+html[data-vista="texto"] .ficha-web .desliz-web,
+html[data-vista="texto"] .ficha-web .telefono-web {
+  transition: none;
+  animation: none;
+}
+
+/*
+ * Transiciones de vista (React <ViewTransition>, ver el visor).
+ *  - morph-web: la pantalla de la tarjeta se convierte en la del visor.
+ *  - visor-*: el fondo del visor entra y sale fundiéndose.
+ *  - paso-adelante / paso-atras: cambiar de proyecto dentro del visor.
+ *  - ficha-*: las tarjetas que entran y salen al filtrar.
+ */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-group(.morph-web) {
+  animation-duration: 520ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+::view-transition-image-pair(.morph-web) {
+  animation-name: via-desenfoque;
+}
+
+@keyframes via-desenfoque {
+  35% {
+    filter: blur(4px);
+  }
+}
+
+::view-transition-new(.visor-entra) {
+  animation: 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both aparecer;
+}
+
+::view-transition-old(.visor-sale) {
+  animation: 220ms ease-in both aparecer reverse;
+}
+
+::view-transition-old(.paso-adelante) {
+  --desplazo: -48px;
+  animation:
+    160ms ease-in both aparecer reverse,
+    380ms ease-in-out both deslizar reverse;
+}
+
+::view-transition-new(.paso-adelante) {
+  --desplazo: 48px;
+  animation:
+    220ms ease-out 140ms both aparecer,
+    380ms ease-in-out both deslizar;
+}
+
+::view-transition-old(.paso-atras) {
+  --desplazo: 48px;
+  animation:
+    160ms ease-in both aparecer reverse,
+    380ms ease-in-out both deslizar reverse;
+}
+
+::view-transition-new(.paso-atras) {
+  --desplazo: -48px;
+  animation:
+    220ms ease-out 140ms both aparecer,
+    380ms ease-in-out both deslizar;
+}
+
+::view-transition-new(.ficha-entra) {
+  animation: 300ms cubic-bezier(0.2, 0.8, 0.2, 1) 80ms both aparecer-escala;
+}
+
+::view-transition-old(.ficha-sale) {
+  animation: 180ms ease-in both aparecer-escala reverse;
+}
+
+::view-transition-group(.ficha-mueve) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes deslizar {
+  from {
+    translate: var(--desplazo);
+  }
+  to {
+    translate: 0;
+  }
+}
+
+@keyframes aparecer-escala {
+  from {
+    opacity: 0;
+    scale: 0.94;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+/*
+ * Al cambiar de canal la página se desliza (paso-adelante / paso-atras,
+ * ver componentes/canales/navegacion.ts), pero el encabezado y la barra de
+ * canales del celular quedan quietos: son el punto fijo que dice "se movió
+ * el contenido, no todo".
+ */
+::view-transition-group(encabezado),
+::view-transition-group(dock) {
+  animation: none;
+  z-index: 100;
+}
+
+::view-transition-old(encabezado),
+::view-transition-old(dock) {
+  display: none;
+}
+
+::view-transition-new(encabezado),
+::view-transition-new(dock) {
+  animation: none;
+}
+
+/* Sin movimiento: los cambios pasan, pero sin viajar por la pantalla. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/* La vista texto también es "sin movimiento", aunque el sistema no lo pida. */
+html[data-vista="texto"]::view-transition-old(*),
+html[data-vista="texto"]::view-transition-new(*),
+html[data-vista="texto"]::view-transition-group(*) {
+  animation-duration: 0s !important;
+  animation-delay: 0s !important;
+}
+
+/* Los canales de la portada: el pulso que corre por el cable encendido. */
+.cable-flujo {
+  animation: flujo 0.9s linear infinite;
+}
+
+@keyframes flujo {
+  to {
+    stroke-dashoffset: -18;
+  }
+}
+
+/* En el celular, la línea que une los canales se llena con el scroll. */
+@supports (animation-timeline: view()) {
+  .linea-canales {
+    animation: llenar-linea linear both;
+    animation-timeline: view();
+    animation-range: entry 30% cover 75%;
+  }
+}
+
+@keyframes llenar-linea {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* El pulso que baja por la línea hacia el canal siguiente. */
+.pulso-canal {
+  animation: bajar-pulso 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+@keyframes bajar-pulso {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    top: calc(100% - 5px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cable-flujo,
+  .pulso-canal,
+  .linea-canales {
+    animation: none;
+  }
+}
+
+html[data-vista="texto"] .cable-flujo,
+html[data-vista="texto"] .pulso-canal,
+html[data-vista="texto"] .linea-canales {
+  animation: none;
+}
 
 /*
  * El video de la portada en pantallas anchas: una ventana 16:9 a la

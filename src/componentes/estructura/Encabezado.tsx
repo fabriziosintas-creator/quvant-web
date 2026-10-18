@@ -1,108 +1,105 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import type { CSSProperties } from "react";
+import { tipoTransicion } from "@/componentes/canales/navegacion";
 import { Logotipo } from "@/componentes/marca/Logotipo";
-import { ACCESIBILIDAD, MARCA, NAV } from "@/datos/textos";
+import { ACENTO_CANAL } from "@/datos/colores";
+import { PROYECTOS } from "@/datos/portfolio";
+import { ACCESIBILIDAD, CANALES, NAVEGACION } from "@/datos/textos";
+import { InterruptorVista } from "./InterruptorVista";
+
+/** Contacto va aparte, como botón: el resto son los canales de la píldora. */
+const EN_LA_PILDORA = CANALES.filter((canal) => canal.id !== "contacto");
+const CONTACTO = CANALES.find((canal) => canal.id === "contacto")!;
+
+/** Al lado de cada canal, cuánto hay adentro (como los contadores de basement). */
+const CONTADOR: Partial<Record<string, number>> = { trabajos: PROYECTOS.length };
 
 /**
- * Menú fijo: firma horizontal a la izquierda, secciones a la derecha.
- * En pantallas chicas, botón hamburguesa con menú a pantalla completa.
+ * El encabezado fijo, translúcido.
+ *
+ * Computadora: la firma a la izquierda, los canales en una píldora al
+ * centro (el actual en blanco, con su color) y a la derecha el interruptor
+ * 3D / texto y "Hablemos".
+ * Celular: la firma y "Hablemos". Los canales están en la barra de abajo
+ * (DockCanales), al alcance del pulgar.
+ *
+ * Lleva su propio nombre de transición: al cambiar de canal la página se
+ * desliza y el encabezado queda quieto (ver globals.css).
  */
 export function Encabezado() {
-  const [abierto, setAbierto] = useState(false);
-  const cerrar = () => setAbierto(false);
-
-  useEffect(() => {
-    if (!abierto) return;
-    const alTeclear = (evento: KeyboardEvent) => {
-      if (evento.key === "Escape") setAbierto(false);
-    };
-    document.addEventListener("keydown", alTeclear);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", alTeclear);
-      document.body.style.overflow = "";
-    };
-  }, [abierto]);
+  const ruta = usePathname();
+  const enContacto = ruta === CONTACTO.ruta;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-profundo bg-negro">
-      <div className="contenedor flex h-16 items-center justify-between md:h-20">
-        <a href="#inicio" aria-label={ACCESIBILIDAD.irAlInicio} onClick={cerrar}>
-          <Logotipo idGradiente="q-encabezado" className="text-[14px] md:text-[18px]" />
-        </a>
+    <header
+      style={{ viewTransitionName: "encabezado" }}
+      className="fixed inset-x-0 top-0 z-50 border-b border-profundo/70 bg-negro/80 backdrop-blur-md"
+    >
+      <div className="contenedor flex h-16 items-center justify-between gap-4 md:h-20">
+        <Link
+          href="/"
+          aria-label={ACCESIBILIDAD.irAlInicio}
+          transitionTypes={[tipoTransicion(ruta, "/")]}
+          className="shrink-0"
+        >
+          <Logotipo idGradiente="q-encabezado" className="text-[13px] lg:text-[16px]" />
+        </Link>
 
-        {/* Navegación de escritorio */}
-        <nav aria-label={ACCESIBILIDAD.navPrincipal} className="hidden md:block">
-          <ul className="flex items-center gap-9">
-            {NAV.map((item) => (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  className="group font-plex text-xs font-medium uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco focus-visible:text-blanco"
-                >
-                  <span className="mr-2 opacity-50 transition-opacity group-hover:opacity-100">
-                    {item.numero}
-                  </span>
-                  {item.etiqueta}
-                </a>
-              </li>
-            ))}
+        <nav aria-label={NAVEGACION.navPrincipal} className="hidden md:block">
+          <ul className="flex items-center gap-0.5 rounded-full border border-profundo bg-profundo/30 p-1">
+            {EN_LA_PILDORA.map((canal) => {
+              const activo = ruta === canal.ruta;
+              const cantidad = CONTADOR[canal.id];
+              return (
+                <li key={canal.id}>
+                  <Link
+                    href={canal.ruta}
+                    aria-current={activo ? "page" : undefined}
+                    transitionTypes={[tipoTransicion(ruta, canal.ruta)]}
+                    style={{ "--acento": ACENTO_CANAL[canal.id] } as CSSProperties}
+                    className={`group flex items-center gap-2 rounded-full px-3 py-2 font-plex text-[11px] font-medium uppercase tracking-etiqueta transition-colors lg:px-4 ${
+                      activo ? "bg-blanco text-negro" : "text-acero hover:text-blanco"
+                    }`}
+                  >
+                    <span
+                      aria-hidden
+                      className={`size-1.5 transition-colors ${
+                        activo ? "bg-[var(--acento)]" : "bg-profundo group-hover:bg-[var(--acento)]"
+                      }`}
+                    />
+                    {canal.nombre}
+                    {cantidad ? (
+                      <span className={`hidden lg:inline ${activo ? "text-negro/50" : "text-acero/60"}`}>
+                        {cantidad}
+                      </span>
+                    ) : null}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
-        {/* Botón hamburguesa (solo en el celular) */}
-        <button
-          type="button"
-          onClick={() => setAbierto(!abierto)}
-          aria-expanded={abierto}
-          aria-controls="menu-movil"
-          className="relative -mr-2 h-10 w-10 md:hidden"
-        >
-          <span className="sr-only">
-            {abierto ? ACCESIBILIDAD.cerrarMenu : ACCESIBILIDAD.abrirMenu}
-          </span>
-          <span
-            aria-hidden
-            className={`absolute left-1/2 top-1/2 h-px w-6 -translate-x-1/2 bg-blanco transition-transform duration-200 ${
-              abierto ? "rotate-45" : "-translate-y-[4px]"
+        <div className="flex shrink-0 items-center gap-3">
+          <InterruptorVista corto className="hidden lg:flex" />
+          <Link
+            href={CONTACTO.ruta}
+            aria-current={enContacto ? "page" : undefined}
+            transitionTypes={[tipoTransicion(ruta, CONTACTO.ruta)]}
+            className={`inline-flex h-9 items-center gap-2 px-4 font-plex text-[11px] font-medium uppercase tracking-[0.14em] transition-colors md:h-10 md:px-5 ${
+              enContacto
+                ? "border border-blanco text-blanco"
+                : "bg-blanco text-negro hover:bg-acero"
             }`}
-          />
-          <span
-            aria-hidden
-            className={`absolute left-1/2 top-1/2 h-px w-6 -translate-x-1/2 bg-blanco transition-transform duration-200 ${
-              abierto ? "-rotate-45" : "translate-y-[4px]"
-            }`}
-          />
-        </button>
-      </div>
-
-      {/* Menú móvil a pantalla completa */}
-      {abierto ? (
-        <div id="menu-movil" className="fixed inset-x-0 bottom-0 top-16 z-40 bg-negro md:hidden">
-          <nav
-            aria-label={ACCESIBILIDAD.navPrincipal}
-            className="contenedor flex h-full flex-col justify-between pb-10 pt-12"
           >
-            <ul className="flex flex-col gap-8">
-              {NAV.map((item) => (
-                <li key={item.id}>
-                  <a href={`#${item.id}`} onClick={cerrar} className="group block">
-                    <span className="block font-plex text-xs text-acero">{item.numero}</span>
-                    <span className="mt-1 block font-michroma text-2xl uppercase tracking-marca text-blanco transition-colors group-hover:text-acero">
-                      {item.etiqueta}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <p className="flex items-center gap-3 font-plex text-xs text-acero">
-              <span aria-hidden className="inline-block size-1.5 bg-blanco" />
-              {MARCA.bajada}
-            </p>
-          </nav>
+            <span aria-hidden className="size-1.5" style={{ background: ACENTO_CANAL.contacto }} />
+            {NAVEGACION.hablemos}
+          </Link>
         </div>
-      ) : null}
+      </div>
     </header>
   );
 }

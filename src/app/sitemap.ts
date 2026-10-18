@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
 import { SITIO } from "@/datos/sitio";
+import { CANALES } from "@/datos/textos";
 
 /**
- * Por ahora el sitio es una sola página; las subpáginas SEO del estudio
- * (sistemas por rubro, casos, preguntas frecuentes) se suman acá cuando
- * existan. /laboratorio-cromo es una herramienta interna y no se lista.
+ * La portada y la página de cada canal. /laboratorio-cromo es una
+ * herramienta interna y no se lista.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -14,5 +14,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     },
+    ...CANALES.map((canal) => ({
+      url: `${SITIO.url}${canal.ruta}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: canal.id === "trabajos" || canal.id === "servicios" ? 0.9 : 0.7,
+    })),
   ];
 }

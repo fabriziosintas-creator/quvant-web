@@ -1,5 +1,4 @@
-import type { CSSProperties } from "react";
-import { ACENTO_SECCION } from "@/datos/colores";
+import Link from "next/link";
 import { TelefonoCasoDiferido } from "@/componentes/3d/TelefonoCasoDiferido";
 import { CASOS, CASO_PROXIMO, type CasoWeb } from "@/datos/casos";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
@@ -25,7 +24,7 @@ function EnlaceExterno({ url, texto }: { url: string; texto: string }) {
 
 function Caso({ caso }: { caso: CasoWeb }) {
   return (
-    <article className="mt-14 md:mt-16">
+    <article>
       <div className="flex flex-wrap items-center gap-3">
         <span className="border border-acero px-2.5 py-1 font-plex text-[10px] font-medium uppercase tracking-etiqueta text-blanco">
           {caso.etiqueta}
@@ -37,7 +36,7 @@ function Caso({ caso }: { caso: CasoWeb }) {
       <h3 className="mt-5 max-w-3xl font-plex text-xl font-bold leading-snug text-blanco md:text-2xl">
         {caso.titulo}
       </h3>
-      <p className="mt-3 max-w-2xl font-plex text-sm leading-relaxed text-acero">
+      <p className="mt-3 max-w-2xl font-lectura text-[15px] leading-relaxed text-acero">
         {caso.descripcionCliente}
       </p>
 
@@ -88,7 +87,7 @@ function Caso({ caso }: { caso: CasoWeb }) {
             ) : (
               <div className="flex flex-1 flex-col justify-center gap-4 p-7 md:p-8">
                 <p className="font-plex text-base font-bold text-blanco">{caso.demo.titulo}</p>
-                <p className="font-plex text-sm leading-relaxed text-acero">{caso.demo.nota}</p>
+                <p className="font-lectura text-[15px] leading-relaxed text-acero">{caso.demo.nota}</p>
                 <div className="mt-2">
                   <EnlaceExterno url={caso.enlaces.demo.url} texto={caso.enlaces.demo.texto} />
                 </div>
@@ -105,61 +104,37 @@ function Caso({ caso }: { caso: CasoWeb }) {
   );
 }
 
-/** Sección 04 · Webs: el caso Ferremix (deslizador, teléfono 3D y la demo
- *  paso a paso) más el lugar reservado para el próximo caso. */
-export function Webs() {
+/** El capítulo "Un caso de cerca" del canal Trabajos: la propuesta de
+ *  Ferremix (deslizador, teléfono 3D y la demo paso a paso) y el lugar
+ *  reservado para el próximo caso. */
+export function CasoFerremix() {
   return (
-    <section
-      id="webs"
-      className="border-t border-profundo"
-      style={{ "--acento": ACENTO_SECCION.webs } as CSSProperties}
-    >
-      <div className="contenedor py-24 md:py-32">
-        <p
-          data-revelar
-          className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-acero"
-        >
-          <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-          {WEBS.numero} · {WEBS.etiqueta}
-        </p>
-        <h2
-          data-revelar
-          className="mt-6 max-w-3xl font-plex text-3xl font-bold leading-tight text-blanco md:text-5xl"
-        >
-          {WEBS.titulo}
-        </h2>
-        <p
-          data-revelar
-          className="mt-6 max-w-2xl font-plex text-sm leading-relaxed text-acero md:text-base"
-        >
-          {WEBS.bajada}
-        </p>
+    <>
+      {CASOS.map((caso) => (
+        <Caso key={caso.id} caso={caso} />
+      ))}
 
-        {CASOS.map((caso) => (
-          <Caso key={caso.id} caso={caso} />
-        ))}
-
-        {/* El hueco honesto para el caso que viene. */}
-        <div className="mt-16">
-          <TarjetaViva
-            className="border border-dashed border-profundo p-10 text-center md:p-14"
-            data-revelar
-          >
-            <p className="font-michroma text-lg uppercase tracking-marca text-blanco md:text-xl">
-              {CASO_PROXIMO.titulo}
-            </p>
-            <p className="mt-3 font-plex text-sm text-acero">{CASO_PROXIMO.texto}</p>
-            <div className="mt-6 flex justify-center">
-              <a
-                href={CASO_PROXIMO.accion.destino}
-                className="inline-flex h-11 items-center justify-center bg-blanco px-6 font-plex text-[12px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero"
-              >
-                {CASO_PROXIMO.accion.texto}
-              </a>
-            </div>
-          </TarjetaViva>
-        </div>
+      {/* El hueco honesto para el caso que viene. */}
+      <div className="mt-16">
+        <TarjetaViva
+          className="border border-dashed border-profundo p-10 text-center md:p-14"
+          data-revelar
+        >
+          <p className="font-michroma text-lg uppercase tracking-marca text-blanco md:text-xl">
+            {CASO_PROXIMO.titulo}
+          </p>
+          <p className="mt-3 font-lectura text-sm text-acero md:text-base">{CASO_PROXIMO.texto}</p>
+          <div className="mt-6 flex justify-center">
+            <Link
+              href={CASO_PROXIMO.accion.destino}
+              transitionTypes={["canal-adelante"]}
+              className="inline-flex h-11 items-center justify-center bg-blanco px-6 font-plex text-[12px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero"
+            >
+              {CASO_PROXIMO.accion.texto}
+            </Link>
+          </div>
+        </TarjetaViva>
       </div>
-    </section>
+    </>
   );
 }

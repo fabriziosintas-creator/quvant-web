@@ -24,14 +24,16 @@ export const ACENTO_NICHO = {
 
 export type IdNicho = keyof typeof ACENTO_NICHO;
 
-/** Un acento por sección: tiñe el punto, el número y los bordes al pasar. */
-export const ACENTO_SECCION = {
-  objetivo: "#F26B5B",
-  nosotros: "#F0A33A",
+/** Un acento por canal (cada segmento del sitio): tiñe el punto, el número, la línea que lo conecta y los bordes al pasar. */
+export const ACENTO_CANAL = {
+  trabajos: "#6C8CFF",
+  servicios: "#F26B5B",
   plataformas: "#4FD1C5",
-  webs: "#6C8CFF",
+  nosotros: "#F0A33A",
   contacto: "#7BD389",
 } as const;
+
+export type IdCanal = keyof typeof ACENTO_CANAL;
 
 /** Los tres colores del brillo de fondo (portada y cierre). */
 export const AURORA = ["#4FD1C5", "#6C8CFF", "#F0A33A"] as const;

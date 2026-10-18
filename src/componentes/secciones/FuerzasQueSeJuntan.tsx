@@ -274,7 +274,7 @@ function TarjetaFuerza({
           {fuerza.titular}
         </h3>
         {fuerza.parrafos.map((parrafo) => (
-          <p key={parrafo.slice(0, 20)} className="relative mt-4 font-plex text-sm leading-relaxed text-acero">
+          <p key={parrafo.slice(0, 20)} className="relative mt-4 font-lectura text-[15px] leading-relaxed text-acero">
             {parrafo}
           </p>
         ))}
@@ -345,7 +345,7 @@ export function FuerzasQueSeJuntan() {
   );
 
   return (
-    <div ref={raiz} className="mt-16 md:mt-24">
+    <div ref={raiz}>
       <div className="grid gap-5 md:grid-cols-2 md:gap-8">
         <TarjetaFuerza
           fuerza={desarrollo}

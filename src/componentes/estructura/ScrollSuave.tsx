@@ -4,7 +4,8 @@ import "lenis/dist/lenis.css";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { useVista } from "@/estado/vista";
 
 if (typeof window !== "undefined") {
@@ -21,14 +22,25 @@ if (typeof window !== "undefined") {
  *   el scroll-padding-top del CSS (el aire debajo del menú fijo).
  * - El salto al contenido (#contenido) queda nativo a propósito: su razón
  *   de ser es mover el foco, y eso lo hace el navegador.
+ * - Al cambiar de canal (otra página) se vuelve arriba de una, sin
+ *   deslizar, y ScrollTrigger se recalcula con el contenido nuevo.
  */
 export function ScrollSuave() {
   const vista = useVista();
+  const ruta = usePathname();
+  const instancia = useRef<Lenis | null>(null);
+
+  useEffect(() => {
+    instancia.current?.scrollTo(0, { immediate: true, force: true });
+    const cuadro = requestAnimationFrame(() => ScrollTrigger.refresh());
+    return () => cancelAnimationFrame(cuadro);
+  }, [ruta]);
 
   useEffect(() => {
     if (vista !== "3d") return;
 
     const lenis = new Lenis();
+    instancia.current = lenis;
     lenis.on("scroll", ScrollTrigger.update);
     const tic = (tiempo: number) => lenis.raf(tiempo * 1000);
     gsap.ticker.add(tic);
@@ -52,6 +64,7 @@ export function ScrollSuave() {
       document.removeEventListener("click", alClickear);
       gsap.ticker.remove(tic);
       lenis.destroy();
+      instancia.current = null;
     };
   }, [vista]);
 

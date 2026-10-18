@@ -103,10 +103,11 @@ export function SelectorRubros() {
               style={{ "--acento": ACENTO_NICHO[item.id as IdNicho] } as CSSProperties}
               className="group flex w-full items-center justify-between gap-4 border-b border-profundo py-4 text-left first:border-t md:py-5"
             >
-              <span className="flex min-w-0 items-baseline gap-4">
+              {/* El nombre baja de renglón en vez de cortarse ("INDUSTRI…", "GIMNASIOS Y FIT…"). */}
+              <span className="flex min-w-0 items-baseline gap-3 sm:gap-4">
                 <span className="font-plex text-xs text-acero">0{indice + 1}</span>
                 <span
-                  className={`truncate font-michroma text-base uppercase tracking-marca transition-colors group-hover:text-blanco md:text-xl ${
+                  className={`min-w-0 font-michroma text-sm uppercase leading-snug tracking-[0.12em] transition-colors group-hover:text-blanco sm:text-base sm:tracking-marca lg:text-lg ${
                     seleccionado ? "text-blanco" : "text-acero"
                   }`}
                 >
@@ -138,7 +139,7 @@ export function SelectorRubros() {
             style={{ "--acento": ACENTO_NICHO[item.id as IdNicho] } as CSSProperties}
           >
             <FotoRubro id={item.id} />
-            <p className="font-plex text-sm leading-relaxed text-acero">{item.descripcion}</p>
+            <p className="font-lectura text-[15px] leading-relaxed text-acero">{item.descripcion}</p>
 
             {item.productos.length > 0 ? (
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -155,7 +156,7 @@ export function SelectorRubros() {
                         </p>
                       ) : null}
                     </div>
-                    <p className="font-plex text-sm leading-relaxed text-acero">{producto.rol}</p>
+                    <p className="font-lectura text-[15px] leading-relaxed text-acero">{producto.rol}</p>
                     </article>
                   </TarjetaViva>
                 ))}

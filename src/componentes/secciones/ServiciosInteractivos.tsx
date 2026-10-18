@@ -141,13 +141,8 @@ export function ServiciosInteractivos() {
   };
 
   return (
-    <div id="servicios" className="scroll-mt-28">
-      <div className="flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
-        <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
-          {NOSOTROS.servicios.etiqueta}
-        </p>
-        <p className="font-plex text-xs text-acero">{NOSOTROS.servicios.ayuda}</p>
-      </div>
+    <div>
+      <p className="font-plex text-xs text-acero">{NOSOTROS.servicios.ayuda}</p>
 
       <div
         role="tablist"
@@ -222,7 +217,7 @@ export function ServiciosInteractivos() {
                   >
                     {item.nombre}
                   </span>
-                  <span className="mt-3 font-plex text-sm leading-relaxed text-acero">
+                  <span className="mt-3 font-lectura text-[15px] leading-relaxed text-acero">
                     {item.texto}
                   </span>
                 </span>

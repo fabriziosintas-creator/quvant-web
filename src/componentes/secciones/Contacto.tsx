@@ -1,5 +1,3 @@
-import type { CSSProperties } from "react";
-import { ACENTO_SECCION } from "@/datos/colores";
 import { CONTACTO, urlEmail, urlInstagram, urlWhatsApp } from "@/datos/contacto";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { CONTACTO_SECCION, MARCA } from "@/datos/textos";
@@ -29,36 +27,12 @@ function FilaDirecta({ url, etiqueta, valor }: { url: string; etiqueta: string; 
   );
 }
 
-/** Sección 05 · Contacto: el formulario sin servidor y las vías directas. */
+/** El canal Contacto: el formulario sin servidor y las vías directas. */
 export function Contacto() {
   return (
-    <section
-      id="contacto"
-      className="border-t border-profundo"
-      style={{ "--acento": ACENTO_SECCION.contacto } as CSSProperties}
-    >
-      <div className="contenedor py-24 md:py-32">
-        <p
-          data-revelar
-          className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-acero"
-        >
-          <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-          {CONTACTO_SECCION.numero} · {CONTACTO_SECCION.etiqueta}
-        </p>
-        <h2
-          data-revelar
-          className="mt-6 max-w-3xl font-plex text-3xl font-bold leading-tight text-blanco md:text-5xl"
-        >
-          {CONTACTO_SECCION.titulo}
-        </h2>
-        <p
-          data-revelar
-          className="mt-6 max-w-2xl font-plex text-sm leading-relaxed text-acero md:text-base"
-        >
-          {CONTACTO_SECCION.bajada}
-        </p>
-
-        <div className="mt-12 grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16 md:mt-16">
+    <section className="border-t border-profundo">
+      <div className="contenedor py-16 md:py-24">
+        <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
           <FormularioContacto />
 
           <TarjetaViva estirar={false} className="border border-profundo p-7 md:p-9" data-revelar>
