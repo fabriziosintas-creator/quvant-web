@@ -558,6 +558,109 @@ export const NOSOTROS = {
   },
 } as const;
 
+/**
+ * El chat "Hablemos ahora" (abajo a la derecha en todo el sitio). Responde
+ * el asistente de Quvant y, si alguien del equipo toma la charla desde el
+ * panel, esa persona. Nunca dice "en vivo" si responde un bot.
+ */
+export const CHAT = {
+  lanzador: "Hablemos ahora",
+  abrir: "Abrir el chat con Quvant",
+  cerrar: "Cerrar el chat",
+  invitacion: {
+    titulo: "¿Qué querés armar?",
+    texto: "Contanos y te ayudamos ahora mismo.",
+    cerrar: "Cerrar la invitación",
+  },
+  titulo: "Quvant",
+  estados: {
+    bot: "Asistente · responde al instante",
+    "espera-humano": "Ya avisamos al equipo",
+    humano: "Te está escribiendo {nombre}",
+    cerrada: "Charla terminada",
+  },
+  bienvenida:
+    "Hola, soy el asistente de Quvant. Te cuento lo que hacemos o te ayudo a armar tu pedido. ¿Qué te trae por acá?",
+  sugerencias: [
+    "Quiero un sistema para mi rubro",
+    "Necesito una app a medida",
+    "Quiero una web nueva o renovada",
+    "¿Qué es Quvant?",
+    "Hablar con una persona",
+  ],
+  marcador: "Escribí tu mensaje…",
+  enviar: "Enviar",
+  escribiendo: "El asistente está escribiendo",
+  privacidad: "Guardamos esta charla para poder responderte. No la compartimos con nadie.",
+  error: "No se pudo enviar. Probá de nuevo.",
+  equipo: "Equipo de Quvant",
+  sinLeer: "mensajes nuevos",
+  pedido: {
+    titulo: "Tu pedido",
+    nombre: "Nombre",
+    necesita: "Necesitás",
+    contacto: "Te contactamos por",
+  },
+  necesidades: {
+    sistema: "Un sistema para tu rubro",
+    app: "Una app a medida",
+    web: "Una web nueva o renovada",
+    otro: "Otra cosa",
+  },
+  abrirDesdeContacto: "Hablar ahora por el chat",
+} as const;
+
+/** El panel de mensajes del equipo (/panel). */
+export const PANEL = {
+  titulo: "Panel de mensajes",
+  ingreso: {
+    quien: "¿Quién sos?",
+    clave: "Clave",
+    entrar: "Entrar",
+    claveDePrueba: "En esta computadora la clave de prueba es «quvant». En producción se define con PANEL_CLAVE.",
+    sinConfigurar: "Falta configurar PANEL_CLAVE en el servidor.",
+  },
+  salir: "Salir",
+  bandeja: "Bandeja",
+  filtros: {
+    todas: "Todas",
+    nuevas: "Sin leer",
+    pedidos: "Con pedido",
+    esperan: "Esperan persona",
+    cerradas: "Cerradas",
+  },
+  vacio: "Todavía no hay conversaciones. Cuando alguien escriba en el chat de la web, aparece acá.",
+  elegi: "Elegí una conversación de la bandeja.",
+  visitante: "Visitante",
+  estados: {
+    bot: "Asistente",
+    "espera-humano": "Espera persona",
+    humano: "Atiende {nombre}",
+    cerrada: "Cerrada",
+  },
+  acciones: {
+    tomar: "Tomar la charla",
+    devolver: "Devolver al asistente",
+    cerrar: "Cerrar",
+    reabrir: "Reabrir",
+    whatsapp: "WhatsApp",
+    email: "Email",
+    volver: "Bandeja",
+  },
+  responder: "Escribile al visitante…",
+  enviar: "Enviar",
+  notaTomar: "Al responder, la charla pasa a ser tuya y el asistente deja de contestar.",
+  desde: "Escribió desde",
+  pedido: "Pedido",
+  avisos: {
+    memoria: "Las conversaciones se guardan en memoria y se pierden al reiniciar: conectá Upstash Redis en Vercel.",
+    archivo: "Modo prueba: las conversaciones se guardan en .datos/chat.json de esta computadora.",
+    sinIA: "Sin clave de Anthropic: el chat responde en modo guiado (preguntas fijas). Cargá ANTHROPIC_API_KEY para que responda Claude.",
+    sinWhatsApp: "Los avisos por WhatsApp están apagados: configurá CallMeBot o WhatsApp Business (ver .env.example).",
+  },
+  autores: { visitante: "Visitante", bot: "Asistente", humano: "Equipo", sistema: "Aviso" },
+} as const;
+
 export const PIE = {
   etiquetaSecciones: "Canales",
   etiquetaSeguinos: "Seguinos",

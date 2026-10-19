@@ -1,3 +1,4 @@
+import { BotonAbrirChat } from "@/componentes/chat/BotonAbrirChat";
 import { CONTACTO, urlEmail, urlInstagram, urlWhatsApp } from "@/datos/contacto";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { CONTACTO_SECCION, MARCA } from "@/datos/textos";
@@ -42,6 +43,7 @@ export function Contacto() {
             <p className="mt-4 font-plex text-lg font-bold text-blanco">
               {CONTACTO_SECCION.directo.titulo}
             </p>
+            <BotonAbrirChat className="mt-5 w-full" />
             <ul className="mt-5">
               <FilaDirecta
                 url={urlWhatsApp()}

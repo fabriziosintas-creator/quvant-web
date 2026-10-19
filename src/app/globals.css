@@ -375,6 +375,17 @@ html.visor-abierto {
   overflow: hidden;
 }
 
+/* El chat: con el visor abierto, el botón no aparece encima; en el celular, chat abierto = página quieta. */
+html.visor-abierto .chat-lanzador {
+  display: none;
+}
+
+@media (max-width: 47.99rem) {
+  html.chat-abierto {
+    overflow: hidden;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ficha-web .desliz-web,
   .ficha-web .telefono-web {

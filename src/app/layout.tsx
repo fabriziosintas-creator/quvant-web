@@ -1,14 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Michroma } from "next/font/google";
 import "./globals.css";
-import { Cursor } from "@/componentes/estructura/Cursor";
-import { DockCanales } from "@/componentes/estructura/DockCanales";
-import { Encabezado } from "@/componentes/estructura/Encabezado";
-import { Pie } from "@/componentes/estructura/Pie";
-import { Revelar } from "@/componentes/estructura/Revelar";
-import { ScrollSuave } from "@/componentes/estructura/ScrollSuave";
 import { SITIO } from "@/datos/sitio";
-import { ACCESIBILIDAD, MARCA } from "@/datos/textos";
+import { MARCA } from "@/datos/textos";
 
 const michroma = Michroma({
   weight: "400",
@@ -57,29 +51,20 @@ export const viewport: Viewport = {
   themeColor: "#0D0D0F",
 };
 
+/**
+ * La raíz: fuentes y metadatos, nada más. El sitio público (encabezado,
+ * pie, barra de canales, cursor y chat) vive en app/(sitio)/layout.tsx;
+ * el panel de mensajes (app/panel) usa solo esta raíz.
+ */
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es-AR"
       className={`${michroma.variable} ${plexMono.variable} ${plexSans.variable} antialiased`}
     >
-      {/* En el celular, aire abajo para la barra de canales. */}
-      <body className="flex min-h-svh flex-col pb-[calc(5.5rem+env(safe-area-inset-bottom))] md:pb-0">
-        <a
-          href="#contenido"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-60 focus:bg-blanco focus:px-4 focus:py-2 focus:font-plex focus:text-sm focus:text-negro"
-        >
-          {ACCESIBILIDAD.saltarAlContenido}
-        </a>
-        <ScrollSuave />
-        <Revelar />
-        <Encabezado />
-        <main id="contenido" className="flex-1">
-          {children}
-        </main>
-        <Pie />
-        <DockCanales />
-        <Cursor />
+      {/* En el celular, aire abajo para la barra de canales (solo donde la hay). */}
+      <body className="flex min-h-svh flex-col max-md:has-[[data-dock]]:pb-[calc(5.5rem+env(safe-area-inset-bottom))]">
+        {children}
       </body>
     </html>
   );

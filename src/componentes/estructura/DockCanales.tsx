@@ -55,6 +55,7 @@ export function DockCanales() {
   return (
     <nav
       aria-label={NAVEGACION.navCelular}
+      data-dock
       style={{ viewTransitionName: "dock" }}
       className="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-50 md:hidden"
     >
