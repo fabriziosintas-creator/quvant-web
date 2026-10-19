@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { CSSProperties } from "react";
+import { useEffect, type CSSProperties } from "react";
 import { tipoTransicion } from "@/componentes/canales/navegacion";
 import { Logotipo } from "@/componentes/marca/Logotipo";
 import { ACENTO_CANAL } from "@/datos/colores";
@@ -28,15 +28,52 @@ const CONTADOR: Partial<Record<string, number>> = { trabajos: PROYECTOS.length }
  *
  * Lleva su propio nombre de transición: al cambiar de canal la página se
  * desliza y el encabezado queda quieto (ver globals.css).
+ *
+ * En el celular se va al bajar y vuelve apenas se sube (con la barra de
+ * capítulos, que sube a ocupar su lugar): así no hay tres barras fijas
+ * comiéndose la pantalla. Arriba de todo, con el chat o el visor abiertos,
+ * o con el foco adentro, está siempre.
  */
 export function Encabezado() {
   const ruta = usePathname();
   const enContacto = ruta === CONTACTO.ruta;
 
+  useEffect(() => {
+    const raiz = document.documentElement;
+    const celular = window.matchMedia("(max-width: 47.99rem)");
+    let ancla = window.scrollY;
+    let cuadro = 0;
+    raiz.dataset.encabezado = "visible";
+    const medir = () => {
+      cuadro = 0;
+      const y = window.scrollY;
+      const delta = y - ancla;
+      const fijo = !celular.matches || y < 80 || raiz.classList.contains("chat-abierto") || raiz.classList.contains("visor-abierto");
+      if (fijo) {
+        raiz.dataset.encabezado = "visible";
+        ancla = y;
+        return;
+      }
+      // Un margen chico para que un temblor del dedo no lo haga ir y venir.
+      if (Math.abs(delta) < 8) return;
+      raiz.dataset.encabezado = delta > 0 ? "oculto" : "visible";
+      ancla = y;
+    };
+    const alDesplazar = () => {
+      if (!cuadro) cuadro = requestAnimationFrame(medir);
+    };
+    window.addEventListener("scroll", alDesplazar, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", alDesplazar);
+      cancelAnimationFrame(cuadro);
+      raiz.dataset.encabezado = "visible";
+    };
+  }, [ruta]);
+
   return (
     <header
       style={{ viewTransitionName: "encabezado" }}
-      className="fixed inset-x-0 top-0 z-50 border-b border-profundo/70 bg-negro/80 backdrop-blur-md"
+      className="encabezado-fijo fixed inset-x-0 top-0 z-50 border-b border-profundo/70 bg-negro/80 backdrop-blur-md"
     >
       <div className="contenedor flex h-16 items-center justify-between gap-4 md:h-20">
         <Link

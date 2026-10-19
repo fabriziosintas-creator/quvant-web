@@ -62,7 +62,6 @@ export const CANALES = [
     capitulos: [
       { id: "hoy", nombre: "Lo que hace hoy" },
       { id: "rubros", nombre: "Rubros" },
-      { id: "integraciones", nombre: "Integraciones" },
     ],
   },
   {

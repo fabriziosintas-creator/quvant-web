@@ -6,8 +6,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Grano } from "@/componentes/estructura/Grano";
-import { GrillaYSalto } from "@/componentes/estructura/GrillaYSalto";
-import { TarjetaInclinada } from "@/componentes/estructura/TarjetaInclinada";
 import { SERVICIOS_VISUAL, type IdServicio } from "@/datos/servicios";
 import { NOSOTROS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
@@ -22,11 +20,13 @@ if (typeof window !== "undefined") {
 type Servicio = (typeof NOSOTROS.servicios.items)[number];
 
 /**
- * Los tres servicios como pósters: arriba, la imagen de lo que se ofrece
- * (la pantalla real del sistema, una foto de ambiente, la propuesta real
- * de Ferremix) teñida con el acento del servicio; abajo, el título y el
- * texto. La elegida deriva despacio (zoom lento, keyframe `deriva`), su
- * imagen se destiñe menos y una línea del acento la subraya.
+ * Los tres servicios como filas grandes a todo el ancho, separadas por una
+ * línea fina (sin tarjetas: el borde queda para lo que es una ventana): el
+ * número enorme, el título y el texto, y al costado la imagen de lo que se
+ * ofrece (la pantalla real del sistema, una foto de ambiente, la propuesta
+ * real de Ferremix). La elegida enciende su número con el acento, su
+ * imagen deriva despacio (keyframe `deriva`) y una línea la subraya. En el
+ * celular, la imagen se ve solo en la elegida.
  *
  * Debajo, la ventana con la ilustración de cómo se arma cada uno, con un
  * movimiento distinto por servicio: los sistemas encastran, la app crece
@@ -145,93 +145,85 @@ export function ServiciosInteractivos() {
     <div>
       <p className="font-plex text-xs text-acero">{NOSOTROS.servicios.ayuda}</p>
 
-      <div
-        role="tablist"
-        aria-label={NOSOTROS.servicios.etiqueta}
-        className="mt-8 grid gap-5 md:grid-cols-3 md:gap-6"
-      >
+      <div role="tablist" aria-label={NOSOTROS.servicios.etiqueta} className="mt-8 border-t border-profundo">
         {items.map((item, indice) => {
           const seleccionado = item.id === activo;
           const visual = SERVICIOS_VISUAL[item.id];
           return (
-            <TarjetaInclinada key={item.id} className="h-full">
-              <button
-                ref={(elemento) => {
-                  botones.current[indice] = elemento;
-                }}
-                type="button"
-                role="tab"
-                id={`servicio-${item.id}`}
-                aria-selected={seleccionado}
-                aria-controls="panel-servicio"
-                tabIndex={seleccionado ? 0 : -1}
-                onClick={() => alElegir(item.id)}
-                onKeyDown={(evento) => alTeclear(evento, indice)}
-                className={`ficha-servicio group relative flex h-full w-full flex-col overflow-hidden border bg-negro text-left transition-colors ${
-                  seleccionado ? "border-[var(--acento)]" : "border-profundo hover:border-acero"
-                }`}
-              >
-                <GrillaYSalto />
-
-                {/* La imagen de lo que se ofrece: la pantalla real (teñida con el acento) o la foto de ambiente (en blanco y negro). */}
-                <span className="relative block aspect-[16/10] overflow-hidden border-b border-profundo bg-negro">
-                  <Image
-                    src={visual.imagen.src}
-                    alt={visual.imagen.alt}
-                    fill
-                    sizes="(min-width: 768px) 33vw, 100vw"
-                    className={`foto-servicio object-cover object-top transition-[transform,filter] duration-[1400ms] ease-quvant group-hover:scale-[1.04] ${
-                      "foto" in visual ? "foto-bn" : seleccionado ? "saturate-100" : "saturate-[0.6]"
-                    }`}
-                  />
-                  {"foto" in visual ? (
-                    <Grano />
-                  ) : (
-                    <span
-                      aria-hidden
-                      className={`absolute inset-0 mix-blend-color transition-opacity duration-(--duracion-lenta) ${
-                        seleccionado ? "opacity-25" : "opacity-55"
-                      }`}
-                      style={{ background: "var(--acento)" }}
-                    />
-                  )}
-                  <span
-                    aria-hidden
-                    className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,13,15,0.05)_40%,rgba(13,13,15,0.75))]"
-                  />
-                  <span className="absolute left-4 top-4 font-michroma text-xs tracking-etiqueta text-blanco">
-                    0{indice + 1}
-                  </span>
-                  <span
-                    aria-hidden
-                    className={`absolute right-4 top-4 size-1.5 transition-colors ${
-                      seleccionado ? "bg-[var(--acento)]" : "bg-blanco/50"
-                    }`}
-                  />
+            <button
+              key={item.id}
+              ref={(elemento) => {
+                botones.current[indice] = elemento;
+              }}
+              type="button"
+              role="tab"
+              id={`servicio-${item.id}`}
+              aria-selected={seleccionado}
+              aria-controls="panel-servicio"
+              tabIndex={seleccionado ? 0 : -1}
+              onClick={() => alElegir(item.id)}
+              onKeyDown={(evento) => alTeclear(evento, indice)}
+              className="ficha-servicio group relative grid w-full items-center gap-x-6 gap-y-5 border-b border-profundo py-7 text-left md:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] md:gap-x-12 md:py-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)]"
+            >
+              <span className="flex min-w-0 items-start gap-5 md:gap-8">
+                <span
+                  aria-hidden
+                  className={`shrink-0 font-michroma text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.85] transition-colors duration-(--duracion-media) ${
+                    seleccionado ? "text-[var(--acento)]" : "text-profundo group-hover:text-acero"
+                  }`}
+                >
+                  0{indice + 1}
                 </span>
-
-                <span className="relative flex flex-1 flex-col p-6 md:p-7">
+                <span className="min-w-0 pt-1">
                   <span
-                    className={`titulo text-lg leading-snug transition-colors group-hover:text-blanco ${
+                    className={`block titulo text-2xl leading-tight transition-colors group-hover:text-blanco md:text-4xl ${
                       seleccionado ? "text-blanco" : "text-acero"
                     }`}
                   >
                     {item.nombre}
                   </span>
-                  <span className="mt-3 font-lectura text-[15px] leading-relaxed text-acero">
+                  <span className="mt-3 block max-w-xl font-lectura text-[15px] leading-relaxed text-acero md:text-base">
                     {item.texto}
                   </span>
                 </span>
+              </span>
 
-                {/* La línea del acento subraya la elegida. */}
-                <span
-                  aria-hidden
-                  className={`absolute bottom-0 left-0 h-[2px] w-full origin-left bg-[var(--acento)] transition-transform duration-(--duracion-lenta) ease-quvant ${
-                    seleccionado ? "scale-x-100" : "scale-x-0"
+              {/* La imagen de lo que se ofrece: la pantalla real (teñida con el acento) o la foto de ambiente (en blanco y negro). */}
+              <span
+                className={`relative aspect-[16/10] overflow-hidden rounded-[10px] bg-negro transition-opacity duration-(--duracion-media) ${
+                  seleccionado ? "block opacity-100" : "hidden opacity-45 group-hover:opacity-75 md:block"
+                }`}
+              >
+                <Image
+                  src={visual.imagen.src}
+                  alt={visual.imagen.alt}
+                  fill
+                  sizes="(min-width: 1024px) 24rem, (min-width: 768px) 20rem, 100vw"
+                  className={`foto-servicio object-cover object-top ${
+                    "foto" in visual ? "foto-bn" : seleccionado ? "saturate-100" : "saturate-[0.6]"
                   }`}
                 />
-              </button>
-            </TarjetaInclinada>
+                {"foto" in visual ? (
+                  <Grano />
+                ) : (
+                  <span
+                    aria-hidden
+                    className={`absolute inset-0 mix-blend-color transition-opacity duration-(--duracion-lenta) ${
+                      seleccionado ? "opacity-25" : "opacity-55"
+                    }`}
+                    style={{ background: "var(--acento)" }}
+                  />
+                )}
+              </span>
+
+              {/* La línea del acento subraya la elegida. */}
+              <span
+                aria-hidden
+                className={`absolute -bottom-px left-0 h-[2px] w-full origin-left bg-[var(--acento)] transition-transform duration-(--duracion-lenta) ease-quvant ${
+                  seleccionado ? "scale-x-100" : "scale-x-0"
+                }`}
+              />
+            </button>
           );
         })}
       </div>

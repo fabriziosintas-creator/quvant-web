@@ -117,28 +117,32 @@ export default function Inicio() {
           </div>
         </section>
 
-        {/* El cierre: una sola pregunta y un botón. */}
-        <section className="border-t border-profundo" style={{ "--acento": ACENTO_CANAL.contacto } as CSSProperties}>
-          <div className="contenedor py-20 md:py-28">
-            <div className="relative overflow-hidden rounded-[16px] border border-profundo px-7 py-12 md:px-14 md:py-20">
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  background:
-                    "radial-gradient(ellipse 60% 90% at 90% 100%, color-mix(in srgb, var(--acento) 18%, transparent), transparent 70%)",
-                }}
-              />
-              <h2 data-revelar className="relative max-w-2xl titulo text-3xl leading-tight text-blanco md:text-5xl">
-                {INICIO.cierre.titulo}
-              </h2>
-              <p data-revelar className="relative mt-5 max-w-xl font-lectura text-base leading-relaxed text-acero md:text-lg">
+        {/* El cierre: una sola pregunta, grande y a todo el ancho (sin caja), con
+            el verde de Contacto subiendo desde abajo, y un botón. */}
+        <section
+          className="relative overflow-hidden border-t border-profundo"
+          style={{ "--acento": ACENTO_CANAL.contacto } as CSSProperties}
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse 75% 85% at 50% 115%, color-mix(in srgb, var(--acento) 20%, transparent), transparent 70%)",
+            }}
+          />
+          <div className="contenedor relative py-24 md:py-36">
+            <h2 data-revelar className="max-w-5xl titulo text-[clamp(2.5rem,7.5vw,6.5rem)] leading-[1.02] text-blanco">
+              {INICIO.cierre.titulo}
+            </h2>
+            <div className="mt-8 flex flex-col gap-8 md:mt-10 md:flex-row md:items-end md:justify-between">
+              <p data-revelar className="max-w-xl font-lectura text-base leading-relaxed text-acero md:text-xl">
                 {INICIO.cierre.texto}
               </p>
               <Link
                 href="/contacto"
                 transitionTypes={["canal-adelante"]}
-                className="relative mt-9 inline-flex h-12 items-center justify-center gap-3 bg-blanco px-7 font-plex text-[13px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero"
+                className="inline-flex h-14 shrink-0 items-center justify-center gap-3 self-start bg-blanco px-9 font-plex text-[13px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero md:self-auto"
               >
                 <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
                 {INICIO.cierre.boton}

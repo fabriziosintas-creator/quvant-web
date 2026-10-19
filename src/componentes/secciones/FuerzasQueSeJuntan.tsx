@@ -5,7 +5,6 @@ import { useEffect, useRef, useState, type CSSProperties, type RefObject } from 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { NOSOTROS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
 import { CURVA, DURACION } from "@/componentes/estructura/movimiento";
@@ -15,9 +14,10 @@ if (typeof window !== "undefined") {
 }
 
 /**
- * Las dos fuerzas que se juntan con el scroll: desarrollo desde la
- * izquierda, comercial desde la derecha, y al encontrarse aparece
- * "= QUVANT". Cada fuerza tiene su color, un dato que cuenta solo y una
+ * Las dos fuerzas que se juntan: la pantalla partida en dos mitades a todo
+ * el ancho (sin tarjetas), cada una con su color de fondo y su número
+ * gigante. Desarrollo entra desde la izquierda, comercial desde la derecha,
+ * y al encontrarse aparece "= QUVANT". Cada fuerza tiene su color, un dato que cuenta solo y una
  * ventana viva: el código que se escribe solo (desarrollo) y una charla
  * que se va armando (comercial). En vista texto todo aparece completo y
  * quieto.
@@ -253,32 +253,42 @@ function TarjetaFuerza({
 }) {
   // Cada fuerza tiene su persona: la del equipo con ese mismo rol.
   const persona = NOSOTROS.equipo.find((p) => p.rol === fuerza.etiqueta);
+  const izquierda = lado === "izquierda";
   return (
-    <div data-fuerza={lado} className="h-full min-w-0" style={{ "--acento": color } as CSSProperties}>
-      <TarjetaViva className="border border-profundo bg-negro p-7 md:p-9">
-        {/* El resplandor del color de la fuerza, arriba. */}
-        <span
-          aria-hidden
-          className="pointer-events-none absolute -top-24 left-1/2 h-48 w-3/4 -translate-x-1/2 rounded-full opacity-30 blur-3xl"
-          style={{ background: color }}
-        />
-        <div className="relative flex items-start justify-between gap-4">
-          <p className="flex items-center gap-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-[var(--acento)]">
-            <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-            {fuerza.etiqueta}
-          </p>
-          <p className="text-right">
-            <span className="block font-michroma text-3xl leading-none text-blanco md:text-4xl">
-              <Contador numero={fuerza.dato.numero} prefijo={fuerza.dato.prefijo} />
-            </span>
-            <span className="mt-1 block max-w-[11rem] font-plex text-xs uppercase leading-snug tracking-etiqueta text-acero">
-              {fuerza.dato.etiqueta}
-            </span>
-          </p>
-        </div>
+    <div
+      data-fuerza={lado}
+      className={`relative min-w-0 overflow-hidden ${izquierda ? "" : "border-t border-profundo md:border-l md:border-t-0"}`}
+      style={{ "--acento": color } as CSSProperties}
+    >
+      {/* El color de la fuerza, de fondo: sube desde la esquina de afuera. */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: `radial-gradient(ellipse 85% 65% at ${izquierda ? "0%" : "100%"} 0%, color-mix(in srgb, ${color} 20%, transparent), transparent 72%)`,
+        }}
+      />
+      {/* El contenido se alinea con el ancho del sitio: cada mitad, contra la línea del medio. */}
+      <div
+        className={`relative flex h-full w-full flex-col px-[clamp(1.25rem,4vw,2rem)] py-12 md:max-w-[36rem] md:py-16 ${
+          izquierda ? "md:ml-auto md:pr-10 lg:pr-14" : "md:mr-auto md:pl-10 lg:pl-14"
+        }`}
+      >
+        <p className="flex items-center gap-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-[var(--acento)]">
+          <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
+          {fuerza.etiqueta}
+        </p>
+        <p className="mt-6">
+          <span className="block font-michroma text-[clamp(4.5rem,11vw,9rem)] leading-[0.9] text-blanco">
+            <Contador numero={fuerza.dato.numero} prefijo={fuerza.dato.prefijo} />
+          </span>
+          <span className="mt-3 block max-w-[18rem] font-plex text-xs uppercase leading-snug tracking-etiqueta text-acero">
+            {fuerza.dato.etiqueta}
+          </span>
+        </p>
         {/* Quién lleva esta fuerza. La foto, cuando esté, en blanco y negro como todas las del sitio. */}
         {persona ? (
-          <div className="relative mt-5 flex items-center gap-4">
+          <div className="mt-8 flex items-center gap-4">
             {persona.foto ? (
               <span className="relative block size-14 shrink-0 overflow-hidden border border-profundo">
                 <Image src={persona.foto} alt={`Foto de ${persona.nombre}`} fill sizes="56px" className="foto-bn object-cover" />
@@ -290,15 +300,13 @@ function TarjetaFuerza({
             </p>
           </div>
         ) : null}
-        <h3 className="relative mt-5 titulo text-xl leading-snug text-blanco md:text-2xl">
-          {fuerza.titular}
-        </h3>
+        <h3 className="mt-6 titulo text-2xl leading-snug text-blanco md:text-3xl">{fuerza.titular}</h3>
         {fuerza.parrafos.map((parrafo) => (
-          <p key={parrafo.slice(0, 20)} className="relative mt-4 font-lectura text-[15px] leading-relaxed text-acero">
+          <p key={parrafo.slice(0, 20)} className="mt-4 font-lectura text-[15px] leading-relaxed text-acero md:text-base">
             {parrafo}
           </p>
         ))}
-        <ul className="relative mt-5 flex flex-wrap gap-2">
+        <ul className="mt-6 flex flex-wrap gap-2">
           {fuerza.puntos.map((punto) => (
             <li
               key={punto}
@@ -309,8 +317,8 @@ function TarjetaFuerza({
             </li>
           ))}
         </ul>
-        <div className="relative mt-auto pt-6">{panel}</div>
-      </TarjetaViva>
+        <div className="mt-auto pt-8">{panel}</div>
+      </div>
     </div>
   );
 }
@@ -364,7 +372,8 @@ export function FuerzasQueSeJuntan() {
 
   return (
     <div ref={raiz}>
-      <div className="grid gap-5 md:grid-cols-2 md:gap-8">
+      {/* A todo el ancho de la pantalla: se sale del contenedor del capítulo. */}
+      <div className="mx-[calc(50%-50vw)] grid border-y border-profundo md:grid-cols-2">
         <TarjetaFuerza
           fuerza={desarrollo}
           color={COLOR_DESARROLLO}

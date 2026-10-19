@@ -1,17 +1,18 @@
-import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { PLATAFORMAS } from "@/datos/textos";
 import { RecorridoTablero } from "./RecorridoTablero";
 
 /**
- * Los capítulos del canal Plataformas que no son un componente entero:
- * "Lo que hace hoy" (el recorrido por el tablero real y, abajo, lo que no
- * entró en el recorrido) y las integraciones que todavía no están, dichas
- * como lo que son. Los rubros son SelectorRubros.
+ * "Lo que hace hoy", el primer capítulo del canal Plataformas: el
+ * recorrido por el tablero real y, abajo, lo que no entró en el recorrido
+ * y las integraciones que todavía no están, dichas como lo que son (una
+ * línea, sin caja: el 19-oct-2026 dejaron de ser un capítulo aparte). Los
+ * rubros son SelectorRubros.
  *
  * (El bloque "El núcleo común" se sacó el 18-oct-2026: el núcleo ya lo
  * explica la bajada del canal.)
  */
 export function LoQueHaceHoy() {
+  const { integraciones } = PLATAFORMAS;
   return (
     <>
       <RecorridoTablero />
@@ -31,30 +32,24 @@ export function LoQueHaceHoy() {
           </span>
         ))}
       </div>
-    </>
-  );
-}
 
-export function Integraciones() {
-  return (
-    <TarjetaViva className="border border-profundo p-7 md:p-9" data-revelar>
-      <ul className="flex flex-wrap gap-3">
-        {PLATAFORMAS.integraciones.items.map((item, indice) => (
-          <li
-            key={item}
-            className="flex items-center gap-2.5 border border-profundo px-4 py-2.5 font-plex text-xs uppercase tracking-etiqueta text-acero"
-          >
-            {/* El punto late: está en camino, todavía no llegó. */}
-            <span
-              aria-hidden
-              className="size-1 bg-[var(--acento)] motion-safe:animate-[parpadeo_1.8s_steps(2,end)_infinite]"
-              style={{ animationDelay: `${indice * 0.6}s` }}
-            />
-            {item}
-          </li>
-        ))}
-      </ul>
-      <p className="mt-5 font-lectura text-[15px] text-acero">{PLATAFORMAS.integraciones.nota}</p>
-    </TarjetaViva>
+      {/* Lo que viene: una línea, con el punto que late (está en camino, todavía no llegó). */}
+      <div data-revelar className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-profundo pt-6">
+        <h3 className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">{integraciones.etiqueta}</h3>
+        <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
+          {integraciones.items.map((item, indice) => (
+            <li key={item} className="flex items-center gap-2.5 font-plex text-xs uppercase tracking-etiqueta text-blanco">
+              <span
+                aria-hidden
+                className="size-1.5 bg-[var(--acento)] motion-safe:animate-[parpadeo_1.8s_steps(2,end)_infinite]"
+                style={{ animationDelay: `${indice * 0.6}s` }}
+              />
+              {item}
+            </li>
+          ))}
+        </ul>
+        <p className="font-lectura text-sm text-acero">{integraciones.nota}</p>
+      </div>
+    </>
   );
 }

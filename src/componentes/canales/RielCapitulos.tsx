@@ -77,7 +77,7 @@ export function RielCapitulos({ capitulos }: { capitulos: readonly Capitulo[] })
       {/* Celular y pantallas medianas: la barra de capítulos. */}
       <nav
         aria-label={NAVEGACION.capitulos}
-        className="sticky top-16 z-30 border-y border-profundo bg-negro/85 backdrop-blur-md md:top-20 min-[1360px]:hidden"
+        className="barra-capitulos sticky top-16 z-30 border-y border-profundo bg-negro/85 backdrop-blur-md md:top-20 min-[1360px]:hidden"
       >
         <ul className="carrusel-web contenedor flex gap-2 overflow-x-auto py-2.5">
           {capitulos.map((capitulo, indice) => {

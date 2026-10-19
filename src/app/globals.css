@@ -307,6 +307,26 @@ html[data-liviano="si"] [class*="backdrop-blur"] {
   -webkit-backdrop-filter: none !important;
 }
 
+/*
+ * Celular: el encabezado se va al bajar y vuelve al subir (Encabezado.tsx),
+ * y la barra de capítulos sube a ocupar su lugar (4rem = el alto del encabezado).
+ */
+@media (prefers-reduced-motion: no-preference) {
+  .encabezado-fijo,
+  .barra-capitulos {
+    transition: transform var(--duracion-media) var(--ease-quvant);
+  }
+}
+
+@media (max-width: 47.99rem) {
+  html[data-encabezado="oculto"] .encabezado-fijo:not(:focus-within) {
+    transform: translateY(-100%);
+  }
+  html[data-encabezado="oculto"] .barra-capitulos {
+    transform: translateY(-4rem);
+  }
+}
+
 /* Lo que se mueve en bucle y no se ve, en pausa (PausaFueraDeVista). */
 [data-pausa="si"],
 [data-pausa="si"] * {
