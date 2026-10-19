@@ -13,9 +13,10 @@ type Props = {
  * dónde está el puntero en variables CSS para que GrillaYSalto encienda la
  * grilla y mueva el punto que salta (una sola escucha para las dos cosas).
  *
- * Solo actúa con mouse de verdad (hover + pointer fine) y sin
- * prefers-reduced-motion; en táctil o con movimiento reducido es una
- * tarjeta común, con la grilla quieta.
+ * La inclinación es solo con mouse de verdad (hover + pointer fine) y sin
+ * prefers-reduced-motion. En táctil, el toque hace lo que el mouse en la
+ * computadora: la grilla se enciende donde está el dedo y el punto salta
+ * ahí; al soltar, se apaga.
  */
 export function TarjetaInclinada({ children, className, ...resto }: Props) {
   const tarjeta = useRef<HTMLDivElement>(null);
@@ -47,9 +48,29 @@ export function TarjetaInclinada({ children, className, ...resto }: Props) {
   const alSalir = () => {
     const elemento = tarjeta.current;
     if (!elemento) return;
-    elemento.style.transition = "transform 450ms cubic-bezier(0.22, 1, 0.36, 1)";
+    elemento.style.transition = "transform var(--duracion-media) var(--ease-quvant)";
     elemento.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
     elemento.style.setProperty("--cerca", "0");
+  };
+
+  /** Táctil: la grilla y el punto van a donde tocó el dedo (sin inclinar). */
+  const alTocar = (evento: PointerEvent<HTMLDivElement>) => {
+    const elemento = tarjeta.current;
+    if (!elemento || evento.pointerType !== "touch") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const caja = elemento.getBoundingClientRect();
+    const x = evento.clientX - caja.left;
+    const y = evento.clientY - caja.top;
+    elemento.style.setProperty("--puntero-x", `${x}px`);
+    elemento.style.setProperty("--puntero-y", `${y}px`);
+    elemento.style.setProperty("--salto-x", `${Math.round(x / PASO_GRILLA) * PASO_GRILLA}px`);
+    elemento.style.setProperty("--salto-y", `${Math.round(y / PASO_GRILLA) * PASO_GRILLA}px`);
+    elemento.style.setProperty("--cerca", "1");
+  };
+
+  const alSoltar = (evento: PointerEvent<HTMLDivElement>) => {
+    if (evento.pointerType !== "touch") return;
+    tarjeta.current?.style.setProperty("--cerca", "0");
   };
 
   return (
@@ -58,7 +79,12 @@ export function TarjetaInclinada({ children, className, ...resto }: Props) {
       {...resto}
       onPointerMove={alMover}
       onPointerLeave={alSalir}
-      className={`will-change-transform ${className ?? ""}`}
+      onPointerDown={alTocar}
+      onPointerUp={alSoltar}
+      onPointerCancel={alSoltar}
+      // La capa propia solo hace falta donde se inclina (con mouse): en el
+      // celular serían quince capas de más en memoria.
+      className={`[@media(hover:hover)_and_(pointer:fine)]:will-change-transform ${className ?? ""}`}
     >
       {children}
     </div>

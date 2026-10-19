@@ -90,7 +90,7 @@ export function RielCapitulos({ capitulos }: { capitulos: readonly Capitulo[] })
                   }}
                   href={`#${capitulo.id}`}
                   aria-current={activo ? "location" : undefined}
-                  className={`flex items-center gap-2 border px-3 py-1.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta transition-colors ${
+                  className={`flex items-center gap-2 border px-3 py-1.5 font-plex text-xs font-medium uppercase tracking-etiqueta transition-colors ${
                     activo
                       ? "border-[var(--acento)] text-blanco"
                       : "border-profundo text-acero hover:text-blanco"
@@ -141,7 +141,7 @@ export function RielCapitulos({ capitulos }: { capitulos: readonly Capitulo[] })
                       }`}
                     />
                     <span
-                      className={`font-plex text-[11px] font-medium uppercase tracking-etiqueta transition-colors ${
+                      className={`font-plex text-xs font-medium uppercase tracking-etiqueta transition-colors ${
                         activo ? "text-blanco" : "text-acero"
                       }`}
                     >

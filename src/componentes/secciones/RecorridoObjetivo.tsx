@@ -157,13 +157,13 @@ export function RecorridoObjetivo() {
                 aria-label={`Ir a la etapa ${i + 1}: ${etapa.nombre}`}
                 onClick={() => irA(i)}
                 style={{ left: `${(i / (CANTIDAD - 1)) * 100}%`, "--nodo": color } as CSSProperties}
-                className="nodo-objetivo absolute top-1/2 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border bg-negro font-plex text-[11px] font-medium transition-colors duration-500 data-[estado=pasado]:border-[var(--nodo)] data-[estado=pasado]:text-[var(--nodo)] data-[estado=pendiente]:border-profundo data-[estado=pendiente]:text-acero md:size-9 md:text-xs"
+                className="nodo-objetivo absolute top-1/2 flex size-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border bg-negro font-plex text-xs font-medium transition-colors duration-(--duracion-media) data-[estado=pasado]:border-[var(--nodo)] data-[estado=pasado]:text-[var(--nodo)] data-[estado=pendiente]:border-profundo data-[estado=pendiente]:text-acero md:size-9"
               >
                 {i + 1}
                 {/* En celular solo se nombra la etapa activa, en su color; las
                     de las puntas se alinean hacia adentro para no cortarse. */}
                 <span
-                  className={`pointer-events-none absolute top-full mt-2 whitespace-nowrap font-plex text-[11px] uppercase tracking-etiqueta text-acero sm:block ${
+                  className={`pointer-events-none absolute top-full mt-2 whitespace-nowrap font-plex text-xs uppercase tracking-etiqueta text-acero sm:block ${
                     i === activa ? "max-sm:text-[var(--nodo)]" : "hidden"
                   } ${i === 0 ? "max-sm:left-0" : ""} ${i === CANTIDAD - 1 ? "max-sm:right-0" : ""}`}
                 >
@@ -189,7 +189,7 @@ export function RecorridoObjetivo() {
                   <div
                     key={etapa.id}
                     aria-hidden={!visible}
-                    className={`col-start-1 row-start-1 transition-[opacity,transform] duration-700 ease-out ${
+                    className={`col-start-1 row-start-1 transition-[opacity,transform] duration-(--duracion-lenta) ease-quvant ${
                       visible ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-3"
                     }`}
                   >
@@ -222,7 +222,7 @@ export function RecorridoObjetivo() {
                     alt={visual.foto.alt}
                     fill
                     sizes="(min-width: 1024px) 45vw, 100vw"
-                    className={`foto-bn object-cover transition-[opacity,transform] duration-1000 ease-out ${
+                    className={`foto-bn object-cover transition-[opacity,transform] duration-(--duracion-lenta) ease-quvant ${
                       i === activa ? "scale-100 opacity-100" : "scale-105 opacity-0"
                     }`}
                   />
@@ -236,12 +236,17 @@ export function RecorridoObjetivo() {
               {ETAPAS.map((etapa, i) => (
                 <div
                   key={etapa.id}
-                  className={`absolute inset-0 transition-opacity duration-700 ${i === activa ? "opacity-100" : "opacity-0"}`}
+                  className={`absolute inset-0 transition-opacity duration-(--duracion-lenta) ${i === activa ? "opacity-100" : "opacity-0"}`}
                 >
                   <CapaEtapa id={etapa.id} activa={i === activa} />
                 </div>
               ))}
-              <p className="absolute bottom-4 left-4 flex items-center gap-2 font-plex text-[11px] uppercase tracking-etiqueta text-blanco">
+              <p
+                aria-hidden={activa !== 0}
+                className={`absolute bottom-4 left-4 flex items-center gap-2 font-plex text-xs uppercase tracking-etiqueta text-blanco transition-opacity duration-(--duracion-media) ${
+                  activa === 0 ? "opacity-100" : "opacity-0"
+                }`}
+              >
                 <span aria-hidden className="size-1.5" style={{ background: color }} />
                 {OBJETIVO.ayuda}
               </p>

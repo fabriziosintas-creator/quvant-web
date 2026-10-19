@@ -68,10 +68,10 @@ export function VideoForja({ activo = true }: { activo?: boolean }) {
     <figure className="overflow-hidden rounded-[10px] border border-profundo">
       <figcaption className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-profundo px-4 py-2.5">
         <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-        <span className="font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco">
+        <span className="font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco">
           {forja.ventana}
         </span>
-        <span className="ml-auto font-plex text-[11px] uppercase tracking-etiqueta text-acero">
+        <span className="ml-auto font-plex text-xs uppercase tracking-etiqueta text-acero">
           {forja.nota}
         </span>
       </figcaption>

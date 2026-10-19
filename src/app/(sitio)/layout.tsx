@@ -3,6 +3,8 @@ import { ChatQuvant } from "@/componentes/chat/ChatQuvant";
 import { Cursor } from "@/componentes/estructura/Cursor";
 import { DockCanales } from "@/componentes/estructura/DockCanales";
 import { Encabezado } from "@/componentes/estructura/Encabezado";
+import { FocoTactil } from "@/componentes/estructura/FocoTactil";
+import { PausaFueraDeVista } from "@/componentes/estructura/PausaFueraDeVista";
 import { Pie } from "@/componentes/estructura/Pie";
 import { Revelar } from "@/componentes/estructura/Revelar";
 import { ScrollSuave } from "@/componentes/estructura/ScrollSuave";
@@ -26,6 +28,8 @@ export default function LayoutSitio({ children }: { children: ReactNode }) {
       </a>
       <ScrollSuave />
       <Revelar />
+      <FocoTactil />
+      <PausaFueraDeVista />
       <Encabezado />
       <main id="contenido" className="flex-1">
         {children}

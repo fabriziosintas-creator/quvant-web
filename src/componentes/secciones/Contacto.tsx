@@ -1,7 +1,7 @@
 import { BotonAbrirChat } from "@/componentes/chat/BotonAbrirChat";
 import { CONTACTO, urlEmail, urlInstagram, urlWhatsApp } from "@/datos/contacto";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
-import { CONTACTO_SECCION, MARCA } from "@/datos/textos";
+import { CONTACTO_SECCION } from "@/datos/textos";
 import { FormularioContacto } from "./FormularioContacto";
 
 function FilaDirecta({ url, etiqueta, valor }: { url: string; etiqueta: string; valor: string }) {
@@ -37,10 +37,7 @@ export function Contacto() {
           <FormularioContacto />
 
           <TarjetaViva estirar={false} className="border border-profundo p-7 md:p-9" data-revelar>
-            <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
-              {CONTACTO_SECCION.directo.etiqueta}
-            </p>
-            <p className="mt-4 titulo text-lg text-blanco">
+            <p className="titulo text-lg text-blanco">
               {CONTACTO_SECCION.directo.titulo}
             </p>
             <BotonAbrirChat className="mt-5 w-full" />
@@ -48,7 +45,7 @@ export function Contacto() {
               <FilaDirecta
                 url={urlWhatsApp()}
                 etiqueta={CONTACTO_SECCION.directo.filas.whatsapp}
-                valor={`+${CONTACTO.whatsapp}`}
+                valor={CONTACTO.whatsappVisible}
               />
               <FilaDirecta
                 url={urlEmail}
@@ -61,10 +58,6 @@ export function Contacto() {
                 valor={`@${CONTACTO.instagram}`}
               />
             </ul>
-            <p className="mt-6 flex items-center gap-3 font-plex text-xs text-acero">
-              <span aria-hidden className="inline-block size-1.5 bg-blanco" />
-              {MARCA.bajada}
-            </p>
           </TarjetaViva>
         </div>
       </div>

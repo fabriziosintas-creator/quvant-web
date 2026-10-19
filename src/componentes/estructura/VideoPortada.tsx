@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { useLiviano } from "@/estado/liviano";
 import { usePrefiereQuieto } from "@/estado/quieto";
 import { useVista } from "@/estado/vista";
 
@@ -11,7 +12,8 @@ import { useVista } from "@/estado/vista";
  * sobre capturas de Yunque y Forja; el tercio izquierdo es negro, para el
  * título y los botones.
  *
- * - En vista texto, con "menos movimiento" y mientras se decide la vista
+ * - En vista texto, con "menos movimiento", en modo liviano (celulares
+ *   muy modestos o con ahorro de datos) y mientras se decide la vista
  *   (en el servidor) va el póster: el primer cuadro, con la Q de frente. El
  *   video arranca justo ahí, así que no hay salto al pasar del póster al
  *   video.
@@ -34,7 +36,8 @@ export function VideoPortada() {
   const video = useRef<HTMLVideoElement>(null);
   const vista = useVista();
   const quieto = usePrefiereQuieto();
-  const enMovimiento = vista === "3d" && !quieto;
+  const liviano = useLiviano();
+  const enMovimiento = vista === "3d" && !quieto && !liviano;
 
   useEffect(() => {
     const elemento = video.current;

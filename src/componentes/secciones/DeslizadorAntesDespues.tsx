@@ -91,10 +91,10 @@ export function DeslizadorAntesDespues({
         />
       </div>
 
-      <span className="pointer-events-none absolute left-3 top-3 border border-profundo bg-negro/80 px-2 py-1 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
+      <span className="pointer-events-none absolute left-3 top-3 border border-profundo bg-negro/80 px-2 py-1 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
         {etiquetaAntes}
       </span>
-      <span className="pointer-events-none absolute right-3 top-3 border border-profundo bg-negro/80 px-2 py-1 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco">
+      <span className="pointer-events-none absolute right-3 top-3 border border-profundo bg-negro/80 px-2 py-1 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco">
         {etiquetaDespues}
       </span>
 

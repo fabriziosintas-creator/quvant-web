@@ -49,7 +49,7 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
             className="scale-125 object-cover opacity-35 blur-2xl"
           />
           <span className="absolute inset-0 flex items-center justify-center">
-            <span className="relative block h-[88%] overflow-hidden rounded-[16px] border border-profundo bg-negro shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] transition-transform duration-700 ease-out group-hover:-translate-y-2 aspect-[600/1298]">
+            <span className="relative block h-[88%] overflow-hidden rounded-[16px] border border-profundo bg-negro shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] transition-transform duration-(--duracion-lenta) ease-quvant group-hover:-translate-y-2 aspect-[600/1298]">
               <Image
                 src={vista.portadaCelular.src}
                 alt=""
@@ -77,7 +77,7 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
               height={vista.escritorio[0].alto}
               sizes="(min-width: 1024px) 50vw, (min-width: 768px) 66vw, 84vw"
               onLoad={() => setLista(true)}
-              className={`desliz-web absolute inset-x-0 top-0 h-auto w-full transition-opacity duration-500 ${
+              className={`desliz-web absolute inset-x-0 top-0 h-auto w-full transition-opacity duration-(--duracion-media) ${
                 lista ? "opacity-100" : "opacity-0"
               }`}
               style={{ "--recorrido": duracionRecorrido(vista.escritorio[0]) } as CSSProperties}
@@ -106,12 +106,12 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
         aria-label={`${WEBS.vitrina.entrar}: ${proyecto.nombre}, ${TIPOS[proyecto.tipo].singular.toLowerCase()} · ${proyecto.rubro}`}
         data-cursor-texto={WEBS.vitrina.entrar}
         data-al-frente={alFrente ? "si" : "no"}
-        className="ficha-web group relative flex h-full w-full flex-col overflow-hidden rounded-[10px] border border-profundo bg-negro text-left transition-colors duration-300 hover:border-[var(--acento)] focus-visible:border-[var(--acento)] data-[al-frente=si]:border-[var(--acento)]"
+        className="ficha-web group relative flex h-full w-full flex-col overflow-hidden rounded-[10px] border border-profundo bg-negro text-left transition-colors duration-(--duracion-rapida) hover:border-[var(--acento)] focus-visible:border-[var(--acento)] data-[al-frente=si]:border-[var(--acento)]"
       >
         {/* El brillo del color del proyecto, donde está el puntero. */}
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-300"
+          className="pointer-events-none absolute inset-0 z-10 transition-opacity duration-(--duracion-rapida)"
           style={{
             opacity: "var(--cerca, 0)",
             background:
@@ -126,10 +126,10 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
             <span className="size-1.5 bg-profundo" />
             <span className="size-1.5 bg-profundo" />
           </span>
-          <span className="min-w-0 flex-1 truncate text-center font-plex text-[11px] text-acero">
+          <span className="min-w-0 flex-1 truncate text-center font-plex text-xs text-acero">
             {direccionCorta(vista.url)}
           </span>
-          <span className="font-plex text-[11px] text-acero">{dosDigitos(numero)}</span>
+          <span className="font-plex text-xs text-acero">{dosDigitos(numero)}</span>
         </span>
 
         {visorAbierto ? (
@@ -146,7 +146,7 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
             <span className="block truncate titulo text-base text-blanco md:text-lg">
               {proyecto.nombre}
             </span>
-            <span className="mt-1 flex items-center gap-2 font-plex text-[11px] text-acero">
+            <span className="mt-1 flex items-center gap-2 font-plex text-xs text-acero">
               <span
                 aria-hidden
                 className={`size-1.5 shrink-0 bg-[var(--acento)] ${
@@ -158,7 +158,7 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
               </span>
             </span>
           </span>
-          <span className="shrink-0 border border-profundo px-2 py-1 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero transition-colors group-hover:border-[var(--acento)] group-hover:text-blanco">
+          <span className="shrink-0 border border-profundo px-2 py-1 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero transition-colors group-hover:border-[var(--acento)] group-hover:text-blanco">
             {TIPOS[proyecto.tipo].singular}
           </span>
         </span>

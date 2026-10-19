@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { NOSOTROS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
+import { CURVA, DURACION } from "@/componentes/estructura/movimiento";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -55,8 +56,8 @@ function Contador({ numero, prefijo }: { numero: number; prefijo: string }) {
     const estado = { v: 0 };
     const animacion = gsap.to(estado, {
       v: numero,
-      duration: 1.4,
-      ease: "power2.out",
+      duration: DURACION.lenta * 1.5,
+      ease: CURVA.entrar,
       onUpdate: () => setValor(Math.round(estado.v)),
     });
     return () => {
@@ -110,7 +111,8 @@ function PanelCodigo({ titulo }: { titulo: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const enVista = useEnVista(ref);
   const vista = useVista();
-  const [letras, setLetras] = useState(0);
+  // Arranca escrito: al llegar se lee entero y, después de una pausa, se vuelve a escribir.
+  const [letras, setLetras] = useState(TOTAL_CODIGO);
   const animar = vista === "3d" && enVista;
   const mostradas = vista === "3d" ? letras : TOTAL_CODIGO;
 
@@ -130,7 +132,7 @@ function PanelCodigo({ titulo }: { titulo: string }) {
         <span className="size-2 rounded-full bg-[#F26B5B]/70" />
         <span className="size-2 rounded-full bg-[#F0A33A]/70" />
         <span className="size-2 rounded-full bg-[#7BD389]/70" />
-        <span className="ml-2 font-plex text-[11px] text-acero">{titulo}</span>
+        <span className="ml-2 font-plex text-xs text-acero">{titulo}</span>
       </div>
       <div className="min-h-[124px] px-4 py-3 font-plex text-[11px] leading-[1.9] md:text-xs">
         {POSICIONES.map((linea, i) => {
@@ -177,7 +179,8 @@ function PanelCharla({ titulo }: { titulo: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const enVista = useEnVista(ref);
   const vista = useVista();
-  const [visibles, setVisibles] = useState(0);
+  // Arranca con la charla completa, como el editor.
+  const [visibles, setVisibles] = useState<number>(CHARLA.length);
   const animar = vista === "3d" && enVista;
   const mostrados = vista === "3d" ? visibles : CHARLA.length;
 
@@ -197,7 +200,7 @@ function PanelCharla({ titulo }: { titulo: string }) {
     <div ref={ref} aria-hidden className="overflow-hidden rounded-[10px] border border-profundo bg-[#0a0a0c]">
       <div className="flex items-center gap-2 border-b border-profundo px-4 py-2">
         <span className="size-1.5" style={{ background: COLOR_COMERCIAL }} />
-        <span className="font-plex text-[11px] uppercase tracking-etiqueta text-acero">{titulo}</span>
+        <span className="font-plex text-xs uppercase tracking-etiqueta text-acero">{titulo}</span>
       </div>
       <div className="flex min-h-[148px] flex-col gap-2 px-4 py-3">
         {CHARLA.slice(0, mostrados).map((mensaje, i) => {
@@ -224,7 +227,7 @@ function PanelCharla({ titulo }: { titulo: string }) {
             {[0, 1, 2].map((p) => (
               <span
                 key={p}
-                className="size-1.5 rounded-full bg-acero motion-safe:animate-[latido_1s_ease-in-out_infinite]"
+                className="size-1.5 rounded-full bg-acero motion-safe:animate-[latido_1s_var(--ease-vaiven)_infinite]"
                 style={{ animationDelay: `${p * 0.15}s` }}
               />
             ))}
@@ -268,7 +271,7 @@ function TarjetaFuerza({
             <span className="block font-michroma text-3xl leading-none text-blanco md:text-4xl">
               <Contador numero={fuerza.dato.numero} prefijo={fuerza.dato.prefijo} />
             </span>
-            <span className="mt-1 block max-w-[11rem] font-plex text-[11px] uppercase leading-snug tracking-etiqueta text-acero">
+            <span className="mt-1 block max-w-[11rem] font-plex text-xs uppercase leading-snug tracking-etiqueta text-acero">
               {fuerza.dato.etiqueta}
             </span>
           </p>
@@ -299,7 +302,7 @@ function TarjetaFuerza({
           {fuerza.puntos.map((punto) => (
             <li
               key={punto}
-              className="flex items-center gap-2 border border-profundo px-3 py-1.5 font-plex text-[11px] text-blanco transition-colors hover:border-[var(--acento)]"
+              className="flex items-center gap-2 border border-profundo px-3 py-1.5 font-plex text-xs text-blanco transition-colors hover:border-[var(--acento)]"
             >
               <span aria-hidden className="size-1 bg-[var(--acento)]" />
               {punto}
@@ -331,27 +334,25 @@ export function FuerzasQueSeJuntan() {
             | { animable: boolean; ancho: boolean }
             | undefined;
           if (!condiciones?.animable) return;
+          // Una sola vez, al llegar, y entera: atada al scroll, las tarjetas
+          // quedaban a medio aparecer hasta que uno bajaba.
           const linea = gsap.timeline({
-            scrollTrigger: {
-              trigger: raiz.current,
-              start: "top 80%",
-              end: "center 42%",
-              scrub: 1,
-            },
+            defaults: { ease: CURVA.entrar, duration: DURACION.lenta },
+            scrollTrigger: { trigger: raiz.current, start: "top 88%", once: true },
           });
           if (condiciones.ancho) {
             linea
-              .from('[data-fuerza="izquierda"]', { xPercent: -24, opacity: 0, ease: "none" }, 0)
-              .from('[data-fuerza="derecha"]', { xPercent: 24, opacity: 0, ease: "none" }, 0);
+              .from('[data-fuerza="izquierda"]', { xPercent: -12, opacity: 0 }, 0)
+              .from('[data-fuerza="derecha"]', { xPercent: 12, opacity: 0 }, 0);
           } else {
             linea
-              .from('[data-fuerza="izquierda"]', { y: 36, opacity: 0, ease: "none" }, 0)
-              .from('[data-fuerza="derecha"]', { y: 36, opacity: 0, ease: "none" }, 0.15);
+              .from('[data-fuerza="izquierda"]', { y: 24, opacity: 0 }, 0)
+              .from('[data-fuerza="derecha"]', { y: 24, opacity: 0 }, 0.12);
           }
           linea.from(
             '[data-fuerza="resultado"]',
-            { opacity: 0, y: 18, scale: 0.95, ease: "none" },
-            0.55,
+            { opacity: 0, y: 14, scale: 0.96, duration: DURACION.media },
+            "-=0.3",
           );
         },
       );

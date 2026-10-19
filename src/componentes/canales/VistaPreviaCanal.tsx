@@ -42,7 +42,7 @@ function Trabajos({ vivo }: { vivo: boolean }) {
           alt=""
           fill
           sizes="(min-width: 1024px) 40vw, 90vw"
-          className={`object-cover object-top transition-opacity duration-700 ${i === indice ? "opacity-100" : "opacity-0"}`}
+          className={`object-cover object-top transition-opacity duration-(--duracion-lenta) ${i === indice ? "opacity-100" : "opacity-0"}`}
         />
       ))}
       <span className="absolute bottom-0 right-[6%] block w-[20%] overflow-hidden rounded-[10px] border border-profundo bg-negro shadow-[0_18px_40px_-10px_rgba(0,0,0,0.9)] aspect-[600/1298] translate-y-[18%]">
@@ -53,7 +53,7 @@ function Trabajos({ vivo }: { vivo: boolean }) {
             alt=""
             fill
             sizes="10vw"
-            className={`object-cover object-top transition-opacity duration-700 ${i === indice ? "opacity-100" : "opacity-0"}`}
+            className={`object-cover object-top transition-opacity duration-(--duracion-lenta) ${i === indice ? "opacity-100" : "opacity-0"}`}
           />
         ))}
       </span>
@@ -75,7 +75,7 @@ function Servicios({ vivo }: { vivo: boolean }) {
           alt=""
           fill
           sizes="(min-width: 1024px) 40vw, 90vw"
-          className={`foto-bn object-cover transition-opacity duration-700 ${i === indice ? "opacity-100" : "opacity-0"}`}
+          className={`foto-bn object-cover transition-opacity duration-(--duracion-lenta) ${i === indice ? "opacity-100" : "opacity-0"}`}
         />
       ))}
       {/* Las cuatro etapas en una línea, como en el recorrido. */}
@@ -83,7 +83,7 @@ function Servicios({ vivo }: { vivo: boolean }) {
         {etapas.map((etapa, i) => (
           <span key={etapa.id} className="flex flex-1 items-center last:flex-none">
             <span
-              className="flex size-6 items-center justify-center rounded-full border bg-negro/80 font-plex text-[11px] transition-colors duration-500"
+              className="flex size-6 items-center justify-center rounded-full border bg-negro/80 font-plex text-xs transition-colors duration-(--duracion-media)"
               style={{
                 borderColor: i <= indice ? COLOR_RECORRIDO : "#26262B",
                 color: i <= indice ? COLOR_RECORRIDO : "#9C9CA3",
@@ -94,7 +94,7 @@ function Servicios({ vivo }: { vivo: boolean }) {
             {i < etapas.length - 1 ? (
               <span className="mx-1 h-px flex-1 bg-blanco/25">
                 <span
-                  className="block h-full origin-left transition-transform duration-700"
+                  className="block h-full origin-left transition-transform duration-(--duracion-lenta)"
                   style={{ transform: `scaleX(${i < indice ? 1 : 0})`, background: COLOR_RECORRIDO }}
                 />
               </span>
@@ -115,7 +115,7 @@ function Plataformas({ vivo }: { vivo: boolean }) {
         alt=""
         fill
         sizes="(min-width: 1024px) 40vw, 90vw"
-        className={`object-cover object-left-top ${vivo ? "motion-safe:animate-[deriva_16s_ease-in-out_infinite_alternate]" : ""}`}
+        className={`object-cover object-left-top ${vivo ? "motion-safe:animate-[deriva_16s_var(--ease-vaiven)_infinite_alternate]" : ""}`}
       />
       <Etiqueta color="#4FD1C5">Funcionando hoy</Etiqueta>
     </>
@@ -128,14 +128,14 @@ function Nosotros() {
       <Image src="/spot/spot-poster.webp" alt="" fill sizes="(min-width: 1024px) 40vw, 90vw" className="object-cover" />
       {/* El play va en una esquina: al centro tapaba la firma del póster. */}
       <span className="absolute bottom-5 right-5">
-        <span className="flex items-center gap-3 border border-blanco/30 bg-negro/70 px-4 py-2.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
+        <span className="flex items-center gap-3 border border-blanco/30 bg-negro/70 px-4 py-2.5 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
           <svg aria-hidden viewBox="0 0 12 12" className="size-2.5 fill-current">
             <path d="M3 1.5 10.5 6 3 10.5Z" />
           </svg>
           0:42
         </span>
       </span>
-      <span className="absolute bottom-5 left-5 flex items-center gap-3 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco">
+      <span className="absolute bottom-5 left-5 flex items-center gap-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco">
         <span aria-hidden className="size-1.5 bg-[#F0A33A]" />
         Michel + Fabrizio
       </span>
@@ -173,7 +173,7 @@ function Contacto({ vivo }: { vivo: boolean }) {
 
 function Etiqueta({ color, children }: { color: string; children: string }) {
   return (
-    <span className="absolute left-4 top-4 flex items-center gap-2 bg-negro/75 px-2.5 py-1.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
+    <span className="absolute left-4 top-4 flex items-center gap-2 bg-negro/75 px-2.5 py-1.5 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
       <span aria-hidden className="size-1.5" style={{ background: color }} />
       {children}
     </span>

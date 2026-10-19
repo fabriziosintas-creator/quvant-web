@@ -126,7 +126,7 @@ export function VisorProyecto({ proyecto, numero, total, onCerrar, onMover }: Pr
       >
         {/* Arriba: dónde estás, anterior y siguiente, cerrar. */}
         <div className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-profundo px-4 md:h-16 md:px-6">
-          <p className="flex min-w-0 items-center gap-3 font-plex text-[11px] uppercase tracking-etiqueta text-acero">
+          <p className="flex min-w-0 items-center gap-3 font-plex text-xs uppercase tracking-etiqueta text-acero">
             <span aria-hidden className="size-1.5 shrink-0 bg-[var(--acento)]" />
             <span className="shrink-0 text-blanco">
               {dosDigitos(numero)} / {dosDigitos(total)}
@@ -207,13 +207,13 @@ export function VisorProyecto({ proyecto, numero, total, onCerrar, onMover }: Pr
               onClick={() => setHoja((abierta) => !abierta)}
               aria-expanded={hoja}
               aria-controls="visor-hoja"
-              className="flex w-full items-center justify-between px-4 py-3.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco"
+              className="flex w-full items-center justify-between px-4 py-3.5 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco"
             >
               <span className="flex items-center gap-3">
                 <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
                 {TEXTOS.sobre}
               </span>
-              <span aria-hidden className={`transition-transform duration-300 ${hoja ? "rotate-180" : ""}`}>
+              <span aria-hidden className={`transition-transform duration-(--duracion-rapida) ${hoja ? "rotate-180" : ""}`}>
                 ↑
               </span>
             </button>
@@ -292,7 +292,7 @@ function Selector<T extends string>({
               onCambio(opciones[destino].valor);
               botones.current[destino]?.focus();
             }}
-            className={`px-2.5 py-1.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta transition-colors ${
+            className={`px-2.5 py-1.5 font-plex text-xs font-medium uppercase tracking-etiqueta transition-colors ${
               activa ? "bg-blanco text-negro" : "text-acero hover:text-blanco"
             }`}
           >
@@ -330,7 +330,7 @@ function BarraNavegador({
         href={vista.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex min-w-0 flex-1 basis-40 items-center justify-center gap-2 rounded-full bg-profundo/70 px-3 py-1.5 font-plex text-[11px] text-acero transition-colors hover:text-blanco"
+        className="group flex min-w-0 flex-1 basis-40 items-center justify-center gap-2 rounded-full bg-profundo/70 px-3 py-1.5 font-plex text-xs text-acero transition-colors hover:text-blanco"
       >
         <span className="truncate">{direccionCorta(vista.url)}</span>
         <span aria-hidden className="shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
@@ -350,7 +350,7 @@ function BarraNavegador({
             ]}
           />
         ) : (
-          <span className="border border-profundo px-2.5 py-1.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
+          <span className="border border-profundo px-2.5 py-1.5 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
             {TEXTOS.captura}
           </span>
         )}
@@ -488,7 +488,7 @@ function Captura({ vista, dispositivo }: { vista: VistaProyecto; dispositivo: Di
         type="button"
         onClick={() => setRecorriendo((sigue) => !sigue)}
         aria-pressed={recorriendo}
-        className="absolute bottom-3 right-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm transition-colors hover:border-[var(--acento)]"
+        className="absolute bottom-3 right-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm transition-colors hover:border-[var(--acento)]"
       >
         <span aria-hidden className={`size-1.5 ${recorriendo ? "bg-[var(--acento)] motion-safe:animate-[parpadeo_1s_steps(2,end)_infinite]" : "bg-blanco"}`} />
         {recorriendo ? TEXTOS.detener : TEXTOS.recorrer}
@@ -531,7 +531,7 @@ function EnVivo({ proyecto, vista, dispositivo }: { proyecto: Proyecto; vista: V
         width={portada.ancho}
         height={portada.alto}
         sizes="70vw"
-        className={`absolute inset-x-0 top-0 h-auto w-full transition-opacity duration-500 ${cargado ? "opacity-0" : "opacity-100"}`}
+        className={`absolute inset-x-0 top-0 h-auto w-full transition-opacity duration-(--duracion-media) ${cargado ? "opacity-0" : "opacity-100"}`}
       />
       {medida.ancho > 0 ? (
         <iframe
@@ -540,14 +540,14 @@ function EnVivo({ proyecto, vista, dispositivo }: { proyecto: Proyecto; vista: V
           onLoad={() => setCargado(true)}
           sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
           referrerPolicy="strict-origin-when-cross-origin"
-          className={`absolute left-0 top-0 origin-top-left border-0 bg-blanco transition-opacity duration-500 ${
+          className={`absolute left-0 top-0 origin-top-left border-0 bg-blanco transition-opacity duration-(--duracion-media) ${
             cargado ? "opacity-100" : "opacity-0"
           }`}
           style={{ width: ancho, height: medida.alto / escala, transform: `scale(${escala})` }}
         />
       ) : null}
       {!cargado ? (
-        <p className="absolute bottom-3 left-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
+        <p className="absolute bottom-3 left-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
           <span aria-hidden className="size-1.5 bg-[var(--acento)] motion-safe:animate-[parpadeo_1s_steps(2,end)_infinite]" />
           {TEXTOS.cargando}
         </p>
@@ -570,7 +570,7 @@ function Detalle({
 }) {
   return (
     <div className="flex flex-1 flex-col">
-      <p className="flex items-center gap-3 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
+      <p className="flex items-center gap-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
         <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
         {TIPOS[proyecto.tipo].singular} · {proyecto.rubro}
       </p>
@@ -580,7 +580,7 @@ function Detalle({
 
       {proyecto.vistas.length > 1 ? (
         <div className="mt-6">
-          <p className="font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
+          <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
             {TEXTOS.paginas}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -603,7 +603,7 @@ function Detalle({
         </div>
       ) : null}
 
-      <p className="mt-7 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
+      <p className="mt-7 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
         {TEXTOS.queTiene}
       </p>
       <ul className="mt-3 flex flex-col gap-2.5">
@@ -616,7 +616,7 @@ function Detalle({
       </ul>
 
       <div className="mt-auto pt-8">
-        <p className="mb-4 flex items-center gap-2 font-plex text-[11px] text-acero">
+        <p className="mb-4 flex items-center gap-2 font-plex text-xs text-acero">
           <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           {proyecto.estado}
         </p>
@@ -628,7 +628,7 @@ function Detalle({
         >
           {TEXTOS.abrir} <span aria-hidden>↗</span>
         </a>
-        <p className="mt-4 hidden font-plex text-[11px] uppercase tracking-etiqueta text-acero lg:block">
+        <p className="mt-4 hidden font-plex text-xs uppercase tracking-etiqueta text-acero lg:block">
           {TEXTOS.teclas}
         </p>
       </div>

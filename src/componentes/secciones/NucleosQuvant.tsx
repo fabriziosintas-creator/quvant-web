@@ -245,7 +245,7 @@ function ListaEmpresas({ alElegir }: { alElegir: (id: IdEmpresa) => void }) {
               </span>
               <span className="mt-0.5 flex items-center gap-1.5 font-plex text-[11px] text-acero">
                 {empresa.estado.alerta ? (
-                  <span aria-hidden className="size-1.5 animate-[latido_1.6s_ease-in-out_infinite] bg-[var(--empresa)]" />
+                  <span aria-hidden className="size-1.5 animate-[latido_1.6s_var(--ease-vaiven)_infinite] bg-[var(--empresa)]" />
                 ) : null}
                 <span className="truncate">
                   {empresa.estado.texto} · {empresa.variacion}

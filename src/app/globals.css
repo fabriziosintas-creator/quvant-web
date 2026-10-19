@@ -16,6 +16,26 @@
   --tracking-marca: 0.18em;
   /* Etiquetas en mayúsculas: +200. */
   --tracking-etiqueta: 0.2em;
+
+  /*
+   * El ritmo del sitio (decisión del 19-oct-2026): todo lo que se mueve usa
+   * estas tres curvas y estas cuatro duraciones (en JS, movimiento.ts).
+   *  quvant: entrar o cambiar (arranca rápido y frena suave).
+   *  salida: irse (arranca suave y se va rápido).
+   *  vaiven: lo que va y vuelve, en bucle.
+   * Las transiciones de Tailwind sin curva propia toman la de la marca.
+   */
+  --ease-quvant: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-salida: cubic-bezier(0.55, 0, 0.75, 0.2);
+  --ease-vaiven: cubic-bezier(0.45, 0, 0.55, 1);
+  --default-transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@theme static {
+  --duracion-instante: 150ms;
+  --duracion-rapida: 250ms;
+  --duracion-media: 450ms;
+  --duracion-lenta: 900ms;
 }
 
 @theme inline {
@@ -165,9 +185,9 @@ html[data-cursor="si"] :where(input, textarea, [contenteditable]) {
 .cursor-propio .cursor-marco {
   transform: translate(-50%, -50%);
   transition:
-    width 180ms cubic-bezier(0.2, 0.9, 0.2, 1),
-    height 180ms cubic-bezier(0.2, 0.9, 0.2, 1),
-    opacity 180ms linear;
+    width var(--duracion-instante) var(--ease-quvant),
+    height var(--duracion-instante) var(--ease-quvant),
+    opacity var(--duracion-instante) linear;
 }
 
 .cursor-propio .cursor-punto {
@@ -215,15 +235,15 @@ html[data-cursor="si"] :where(input, textarea, [contenteditable]) {
   scale: 0.4;
   visibility: hidden;
   transition:
-    scale 220ms cubic-bezier(0.2, 0.9, 0.2, 1),
-    visibility 0s linear 220ms;
+    scale var(--duracion-rapida) var(--ease-quvant),
+    visibility 0s linear var(--duracion-rapida);
 }
 
 .cursor-etiqueta[data-visible="si"] {
   scale: 1;
   visibility: visible;
   transition:
-    scale 220ms cubic-bezier(0.2, 0.9, 0.2, 1),
+    scale var(--duracion-rapida) var(--ease-quvant),
     visibility 0s;
 }
 
@@ -249,7 +269,7 @@ html[data-cursor="si"] :where(input, textarea, [contenteditable]) {
 
 .ficha-parada[aria-selected="true"] .glifo :is(path, rect, circle) {
   stroke-dasharray: 1;
-  animation: dibujar 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation: dibujar var(--duracion-lenta) var(--ease-quvant) forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -276,6 +296,22 @@ html[data-cursor="si"] :where(input, textarea, [contenteditable]) {
   .aurora span { animation: none; }
 }
 html[data-vista="texto"] .aurora span { animation: none; }
+
+/* Modo liviano (celulares muy modestos o con ahorro de datos, ver introDecision.ts). */
+html[data-liviano="si"] .aurora span {
+  animation: none;
+}
+
+html[data-liviano="si"] [class*="backdrop-blur"] {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Lo que se mueve en bucle y no se ve, en pausa (PausaFueraDeVista). */
+[data-pausa="si"],
+[data-pausa="si"] * {
+  animation-play-state: paused !important;
+}
 
 /*
  * El logo de la portada sintoniza como una tele (IntroTV): mientras <html>
@@ -320,12 +356,12 @@ html[data-intro="si"] [data-titulo-portada]:not([data-aterrizo]) {
 }
 
 .capa-etapa[data-activa="si"] .trazo-etapa {
-  animation: dibujar 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: dibujar var(--duracion-lenta) var(--ease-quvant) both;
 }
 
 .capa-etapa .punto-etapa {
   opacity: 0;
-  transition: opacity 0.4s ease 0.9s;
+  transition: opacity var(--duracion-media) var(--ease-quvant) var(--duracion-lenta);
 }
 
 .capa-etapa[data-activa="si"] .punto-etapa {
@@ -339,7 +375,7 @@ html[data-intro="si"] [data-titulo-portada]:not([data-aterrizo]) {
 }
 
 .capa-etapa[data-activa="si"] .onda-etapa {
-  animation: onda-etapa 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) infinite both;
+  animation: onda-etapa 2.4s var(--ease-quvant) infinite both;
 }
 
 @keyframes onda-etapa {
@@ -380,7 +416,7 @@ html[data-intro="si"] [data-titulo-portada]:not([data-aterrizo]) {
 }
 
 .ficha-servicio[aria-selected="true"] .foto-servicio {
-  animation: deriva 16s ease-in-out infinite alternate;
+  animation: deriva 16s var(--ease-vaiven) infinite alternate;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -404,11 +440,11 @@ html[data-vista="texto"] .ficha-servicio .foto-servicio {
   from { opacity: 0; transform: translateY(6px) scale(0.97); }
   to { opacity: 1; transform: none; }
 }
-.charla-burbuja { animation: burbuja 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.charla-burbuja { animation: burbuja var(--duracion-media) var(--ease-quvant) both; }
 @media (prefers-reduced-motion: reduce) { .charla-burbuja { animation: none; } }
 
 /* El panel multi núcleo: la lista o la empresa elegida entran subiendo. */
-.panel-entra { animation: burbuja 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.panel-entra { animation: burbuja var(--duracion-media) var(--ease-quvant) both; }
 html[data-vista="texto"] .panel-entra { animation: none; }
 @media (prefers-reduced-motion: reduce) { .panel-entra { animation: none; } }
 
@@ -427,18 +463,18 @@ html[data-vista="texto"] .panel-entra { animation: none; }
 
 .ficha-web .desliz-web {
   transform: translateY(0);
-  transition: transform 1.1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform var(--duracion-lenta) var(--ease-quvant);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .ficha-web:hover .desliz-web {
     transform: translateY(calc(-100% + 100cqh));
-    transition: transform var(--recorrido, 9s) cubic-bezier(0.45, 0, 0.55, 1);
+    transition: transform var(--recorrido, 9s) var(--ease-vaiven);
   }
 }
 
 .ficha-web[data-al-frente="si"] .desliz-web {
-  animation: recorrer-web var(--recorrido, 9s) cubic-bezier(0.45, 0, 0.55, 1) 0.6s infinite alternate;
+  animation: recorrer-web var(--recorrido, 9s) var(--ease-vaiven) 0.6s infinite alternate;
 }
 
 @keyframes recorrer-web {
@@ -450,7 +486,7 @@ html[data-vista="texto"] .panel-entra { animation: none; }
 /* El celular que asoma por la esquina al pasar (o al quedar al frente). */
 .ficha-web .telefono-web {
   transform: translateY(58%) rotate(4deg);
-  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform var(--duracion-media) var(--ease-quvant);
 }
 
 .ficha-web:hover .telefono-web,
@@ -515,8 +551,8 @@ html[data-vista="texto"] .ficha-web .telefono-web {
 }
 
 ::view-transition-group(.morph-web) {
-  animation-duration: 520ms;
-  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation-duration: var(--duracion-media);
+  animation-timing-function: var(--ease-quvant);
 }
 
 ::view-transition-image-pair(.morph-web) {
@@ -530,52 +566,52 @@ html[data-vista="texto"] .ficha-web .telefono-web {
 }
 
 ::view-transition-new(.visor-entra) {
-  animation: 320ms cubic-bezier(0.2, 0.8, 0.2, 1) both aparecer;
+  animation: var(--duracion-rapida) var(--ease-quvant) both aparecer;
 }
 
 ::view-transition-old(.visor-sale) {
-  animation: 220ms ease-in both aparecer reverse;
+  animation: var(--duracion-rapida) var(--ease-salida) both aparecer reverse;
 }
 
 ::view-transition-old(.paso-adelante) {
   --desplazo: -48px;
   animation:
-    160ms ease-in both aparecer reverse,
-    380ms ease-in-out both deslizar reverse;
+    var(--duracion-instante) var(--ease-salida) both aparecer reverse,
+    var(--duracion-media) var(--ease-salida) both deslizar reverse;
 }
 
 ::view-transition-new(.paso-adelante) {
   --desplazo: 48px;
   animation:
-    220ms ease-out 140ms both aparecer,
-    380ms ease-in-out both deslizar;
+    var(--duracion-rapida) var(--ease-quvant) var(--duracion-instante) both aparecer,
+    var(--duracion-media) var(--ease-quvant) both deslizar;
 }
 
 ::view-transition-old(.paso-atras) {
   --desplazo: 48px;
   animation:
-    160ms ease-in both aparecer reverse,
-    380ms ease-in-out both deslizar reverse;
+    var(--duracion-instante) var(--ease-salida) both aparecer reverse,
+    var(--duracion-media) var(--ease-salida) both deslizar reverse;
 }
 
 ::view-transition-new(.paso-atras) {
   --desplazo: -48px;
   animation:
-    220ms ease-out 140ms both aparecer,
-    380ms ease-in-out both deslizar;
+    var(--duracion-rapida) var(--ease-quvant) var(--duracion-instante) both aparecer,
+    var(--duracion-media) var(--ease-quvant) both deslizar;
 }
 
 ::view-transition-new(.ficha-entra) {
-  animation: 300ms cubic-bezier(0.2, 0.8, 0.2, 1) 80ms both aparecer-escala;
+  animation: var(--duracion-rapida) var(--ease-quvant) 80ms both aparecer-escala;
 }
 
 ::view-transition-old(.ficha-sale) {
-  animation: 180ms ease-in both aparecer-escala reverse;
+  animation: var(--duracion-instante) var(--ease-salida) both aparecer-escala reverse;
 }
 
 ::view-transition-group(.ficha-mueve) {
-  animation-duration: 420ms;
-  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation-duration: var(--duracion-media);
+  animation-timing-function: var(--ease-quvant);
 }
 
 @keyframes aparecer {
@@ -678,14 +714,18 @@ html[data-vista="texto"]::view-transition-group(*) {
   }
 }
 
-/* El pulso que baja por la línea hacia el canal siguiente. */
+/*
+ * El pulso que baja por la línea hacia el canal siguiente. Se mueve con
+ * transform (el 100% es el alto de la línea): animar "top" obligaba a
+ * recalcular la página en cada cuadro.
+ */
 .pulso-canal {
-  animation: bajar-pulso 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation: bajar-pulso 2.4s var(--ease-vaiven) infinite;
 }
 
 @keyframes bajar-pulso {
   0% {
-    top: 0;
+    transform: translateY(0);
     opacity: 0;
   }
   15% {
@@ -695,7 +735,7 @@ html[data-vista="texto"]::view-transition-group(*) {
     opacity: 1;
   }
   100% {
-    top: calc(100% - 5px);
+    transform: translateY(calc(100% - 5px));
     opacity: 0;
   }
 }

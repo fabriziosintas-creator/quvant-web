@@ -15,6 +15,7 @@ import gsap from "gsap";
 import { CAPTURAS, PARADAS, type Parada } from "@/datos/sistema";
 import { PLATAFORMAS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
+import { CURVA, DURACION } from "@/componentes/estructura/movimiento";
 
 /**
  * Recorrido por el tablero real del sistema. Una sola ventana con la
@@ -174,8 +175,8 @@ export function RecorridoTablero() {
     if (!ancho || !alto) return;
     const parada = PARADAS[indice];
     const e = calcularEncuadre(parada, ancho, alto);
-    const duracion = animar ? 1.15 : 0;
-    const ease = "power3.inOut";
+    const duracion = animar ? DURACION.lenta : 0;
+    const ease = CURVA.vaiven;
 
     for (const [clave, capa] of Object.entries(capas.current)) {
       if (!capa) continue;
@@ -241,8 +242,8 @@ export function RecorridoTablero() {
         scale: en3d ? 1 - lejos * 0.03 : 1,
         opacity: en3d ? 1 - lejos * 0.2 : 1,
         transformOrigin: "50% 50%",
-        duration: en3d ? 0.85 : 0,
-        ease: "power3.out",
+        duration: en3d ? DURACION.media : 0,
+        ease: CURVA.entrar,
         overwrite: true,
       });
     });
@@ -337,7 +338,7 @@ export function RecorridoTablero() {
                   </svg>
                   <span className="min-w-0 flex-1">
                     <span className="flex items-baseline gap-3">
-                      <span className="font-plex text-[11px] text-acero">0{indice + 1}</span>
+                      <span className="font-plex text-xs text-acero">0{indice + 1}</span>
                       <span
                         className={`titulo text-base leading-snug transition-colors group-hover:text-blanco md:text-[17px] ${
                           seleccionada ? "text-blanco" : "text-acero"
@@ -348,7 +349,7 @@ export function RecorridoTablero() {
                     </span>
                     {/* El texto solo se despliega en la parada activa. */}
                     <span
-                      className={`block overflow-hidden font-lectura text-[15px] leading-relaxed text-acero transition-[max-height,opacity,margin] duration-500 ${
+                      className={`block overflow-hidden font-lectura text-[15px] leading-relaxed text-acero transition-[max-height,opacity,margin] duration-(--duracion-media) ${
                         seleccionada ? "mt-2 max-h-24 opacity-100" : "mt-0 max-h-0 opacity-0"
                       }`}
                     >
@@ -381,7 +382,7 @@ export function RecorridoTablero() {
             type="button"
             onClick={() => setEnPausa((pausa) => !pausa)}
             aria-label={enPausa ? recorrido.seguir : recorrido.pausar}
-            className="mt-4 flex items-center gap-2 font-plex text-[11px] uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco"
+            className="mt-4 flex items-center gap-2 font-plex text-xs uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco"
           >
             <span
               aria-hidden
@@ -411,7 +412,7 @@ export function RecorridoTablero() {
         <div className="overflow-hidden rounded-[10px] border border-profundo">
           <figcaption className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
             <span aria-hidden className="size-1.5 bg-acero" />
-            <span className="min-w-0 truncate font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
+            <span className="min-w-0 truncate font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
               {recorrido.ventana}
             </span>
           </figcaption>
@@ -452,7 +453,7 @@ export function RecorridoTablero() {
             />
           </div>
         </div>
-        <p className="mt-3 font-plex text-[11px] text-acero">{recorrido.nota}</p>
+        <p className="mt-3 font-plex text-xs text-acero">{recorrido.nota}</p>
       </figure>
     </div>
   );

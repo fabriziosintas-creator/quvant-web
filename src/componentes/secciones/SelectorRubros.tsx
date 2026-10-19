@@ -16,7 +16,7 @@ function ChipEstado({ estado }: { estado: Estado }) {
   const disponible = estado === "disponible";
   return (
     <span
-      className={`shrink-0 border px-2 py-1 font-plex text-[11px] font-medium uppercase tracking-etiqueta ${
+      className={`shrink-0 border px-2 py-1 font-plex text-xs font-medium uppercase tracking-etiqueta ${
         disponible ? "border-[var(--acento)] text-blanco" : "border-profundo text-acero"
       }`}
     >
@@ -145,7 +145,7 @@ export function SelectorRubros() {
                         {producto.nombre}
                       </h4>
                       {producto.firma ? (
-                        <p className="mt-1.5 font-plex text-[11px] uppercase tracking-etiqueta text-acero">
+                        <p className="mt-1.5 font-plex text-xs uppercase tracking-etiqueta text-acero">
                           {producto.firma}
                         </p>
                       ) : null}

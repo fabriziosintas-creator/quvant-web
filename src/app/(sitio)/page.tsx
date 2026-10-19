@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ViewTransition, type CSSProperties } from "react";
+import { Suspense, ViewTransition, type CSSProperties } from "react";
 import { Canales } from "@/componentes/canales/Canales";
 import { DESLIZ_PAGINA } from "@/componentes/canales/navegacion";
 import { AuroraFondo } from "@/componentes/estructura/AuroraFondo";
@@ -22,6 +22,10 @@ const DESTACADOS = ["grimm", "yunque", "hackfit"]
  * La portada: qué hacemos y para quién (con el video de la Q), los canales
  * para seguir mirando, tres trabajos para probar ahí mismo y el cierre.
  * Todo lo demás vive en la página de cada canal.
+ *
+ * Los canales y la vitrina van en su propio <Suspense>: el HTML llega
+ * igual de completo, pero React los hidrata por separado, en tandas
+ * cortas, y el celular no se queda trabado al cargar.
  */
 export default function Inicio() {
   return (
@@ -55,7 +59,7 @@ export default function Inicio() {
                 className="inline-flex h-12 items-center justify-center gap-3 bg-blanco px-7 font-plex text-[13px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero"
               >
                 {HERO.botonPrimario.texto}
-                <span className="font-plex text-[11px] text-negro/50">{PROYECTOS.length}</span>
+                <span className="font-plex text-xs text-negro/50">{PROYECTOS.length}</span>
               </Link>
               <Link
                 href={HERO.botonSecundario.destino}
@@ -72,13 +76,15 @@ export default function Inicio() {
           <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-9 z-10 hidden md:block">
             <div className="contenedor flex justify-end">
               <div className="relative h-9 w-px bg-profundo">
-                <span className="absolute -left-[2.5px] top-0 size-1.5 bg-blanco motion-safe:animate-[desliz_2.2s_ease-in-out_infinite]" />
+                <span className="absolute -left-[2.5px] top-0 size-1.5 bg-blanco motion-safe:animate-[desliz_2.2s_var(--ease-vaiven)_infinite]" />
               </div>
             </div>
           </div>
         </section>
 
-        <Canales />
+        <Suspense>
+          <Canales />
+        </Suspense>
 
         {/* Tres trabajos para entrar ahí mismo. */}
         <section
@@ -88,19 +94,9 @@ export default function Inicio() {
         >
           <div className="contenedor py-20 md:py-28">
             <div className="flex flex-wrap items-end justify-between gap-6">
-              <div>
-                <p data-revelar className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-acero">
-                  <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-                  {INICIO.destacados.etiqueta}
-                </p>
-                <h2
-                  id="destacados-titulo"
-                  data-revelar
-                  className="mt-5 titulo text-3xl leading-tight text-blanco md:text-5xl"
-                >
-                  {INICIO.destacados.titulo}
-                </h2>
-              </div>
+              <h2 id="destacados-titulo" data-revelar className="titulo text-3xl leading-tight text-blanco md:text-5xl">
+                {INICIO.destacados.titulo}
+              </h2>
               <Link
                 href="/trabajos"
                 transitionTypes={["canal-adelante"]}
@@ -114,7 +110,9 @@ export default function Inicio() {
               </Link>
             </div>
             <div className="mt-10">
-              <Vitrina proyectos={DESTACADOS} conFiltros={false} />
+              <Suspense>
+                <Vitrina proyectos={DESTACADOS} conFiltros={false} />
+              </Suspense>
             </div>
           </div>
         </section>

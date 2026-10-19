@@ -33,7 +33,9 @@ type Cable = { d: string; id: IdCanal };
  * botón para pausar el recorrido.
  *
  * Celular: una línea vertical que une las tarjetas de cada canal, como un
- * mapa de subte; se va llenando con el scroll.
+ * mapa de subte; se va llenando con el scroll. Sin mouse, lo que en la
+ * computadora pasa al pasar por encima pasa con el scroll: la tarjeta que
+ * queda en el medio de la pantalla se enciende y su vista se mueve.
  *
  * Cada nombre de canal comparte transición con el encabezado de su
  * página: al tocarlo, la palabra viaja hasta allá.
@@ -48,6 +50,8 @@ export function Canales() {
   const caja = useRef<HTMLDivElement>(null);
   const monitor = useRef<HTMLDivElement>(null);
   const filas = useRef<Array<HTMLAnchorElement | null>>([]);
+  const tarjetas = useRef<Array<HTMLLIElement | null>>([]);
+  const [alCentro, setAlCentro] = useState(-1);
 
   const canal = CANALES[activo];
   const recorriendo = vista === "3d" && aLaVista && !encima && !enPausa;
@@ -91,6 +95,23 @@ export function Canales() {
     return () => observador.disconnect();
   }, []);
 
+  // Celular: cuál tarjeta está en el medio de la pantalla.
+  useEffect(() => {
+    if (vista !== "3d" || window.matchMedia("(min-width: 1024px)").matches) return;
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const entrada of entradas) {
+          const indice = tarjetas.current.indexOf(entrada.target as HTMLLIElement);
+          if (entrada.isIntersecting) setAlCentro(indice);
+          else setAlCentro((actual) => (actual === indice ? -1 : actual));
+        }
+      },
+      { rootMargin: "-40% 0px -40% 0px" },
+    );
+    for (const tarjeta of tarjetas.current) if (tarjeta) observador.observe(tarjeta);
+    return () => observador.disconnect();
+  }, [vista]);
+
   useEffect(() => {
     if (!recorriendo) return;
     const temporizador = setTimeout(
@@ -103,46 +124,9 @@ export function Canales() {
   return (
     <section aria-labelledby="canales-titulo" className="relative border-t border-profundo">
       <div className="contenedor py-20 md:py-28">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <div>
-            <p data-revelar className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-acero">
-              <span aria-hidden className="size-1.5 bg-blanco" />
-              {TEXTOS.etiqueta}
-            </p>
-            <h2
-              id="canales-titulo"
-              data-revelar
-              className="mt-5 titulo text-3xl leading-tight text-blanco md:text-5xl"
-            >
-              {TEXTOS.titulo}
-            </h2>
-          </div>
-          {vista === "3d" ? (
-            <button
-              type="button"
-              onClick={() => setEnPausa((pausa) => !pausa)}
-              aria-pressed={enPausa}
-              aria-label={enPausa ? TEXTOS.seguir : TEXTOS.pausar}
-              className="hidden items-center gap-2 font-plex text-[11px] uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco lg:flex"
-            >
-              <span
-                aria-hidden
-                className={`size-1.5 ${recorriendo ? "bg-blanco motion-safe:animate-[parpadeo_1.4s_steps(2,end)_infinite]" : "bg-profundo"}`}
-              />
-              {TEXTOS.enVivo}
-              <svg aria-hidden viewBox="0 0 12 12" className="ml-1 size-2.5 fill-current">
-                {enPausa ? (
-                  <path d="M3 1.5 10.5 6 3 10.5Z" />
-                ) : (
-                  <>
-                    <rect x="2" y="1.5" width="3" height="9" />
-                    <rect x="7" y="1.5" width="3" height="9" />
-                  </>
-                )}
-              </svg>
-            </button>
-          ) : null}
-        </div>
+        <h2 id="canales-titulo" data-revelar className="titulo text-3xl leading-tight text-blanco md:text-5xl">
+          {TEXTOS.titulo}
+        </h2>
 
         {/* Computadora: lista, cables y monitor. */}
         <div
@@ -191,11 +175,11 @@ export function Canales() {
                     data-cursor-texto={TEXTOS.entrar}
                     className="group relative flex items-center gap-5 border-b border-profundo py-5 first:border-t"
                   >
-                    <span className="w-6 font-plex text-[11px] text-acero">{numeroCanal(id)}</span>
+                    <span className="w-6 font-plex text-xs text-acero">{numeroCanal(id)}</span>
                     <span className="min-w-0 flex-1">
                       <ViewTransition name={`canal-${id}`} share="morph-web" default="none">
                         <span
-                          className={`block font-michroma text-xl uppercase leading-none tracking-marca transition-colors duration-300 xl:text-2xl ${
+                          className={`block font-michroma text-xl uppercase leading-none tracking-marca transition-colors duration-(--duracion-rapida) xl:text-2xl ${
                             encendido ? "text-blanco" : "text-acero"
                           }`}
                         >
@@ -203,7 +187,7 @@ export function Canales() {
                         </span>
                       </ViewTransition>
                       <span
-                        className={`block overflow-hidden font-lectura text-sm leading-snug text-acero transition-[max-height,opacity,margin] duration-500 ${
+                        className={`block overflow-hidden font-lectura text-sm leading-snug text-acero transition-[max-height,opacity,margin] duration-(--duracion-media) ${
                           encendido ? "mt-2.5 max-h-12 opacity-100" : "mt-0 max-h-0 opacity-0"
                         }`}
                       >
@@ -212,7 +196,7 @@ export function Canales() {
                     </span>
                     <IconoCanal
                       id={id}
-                      className={`size-5 shrink-0 transition-colors duration-300 ${encendido ? "text-[var(--acento)]" : "text-profundo"}`}
+                      className={`size-5 shrink-0 transition-colors duration-(--duracion-rapida) ${encendido ? "text-[var(--acento)]" : "text-profundo"}`}
                     />
                     {/* El tiempo que queda en este canal. */}
                     {encendido && recorriendo ? (
@@ -237,7 +221,7 @@ export function Canales() {
           <div
             ref={monitor}
             style={{ "--acento": ACENTO_CANAL[canal.id as IdCanal] } as CSSProperties}
-            className="relative overflow-hidden rounded-[10px] border border-profundo bg-negro transition-colors duration-500"
+            className="relative overflow-hidden rounded-[10px] border border-profundo bg-negro transition-colors duration-(--duracion-media)"
           >
             {/* El puerto donde llegan los cables. */}
             <span aria-hidden className="absolute -left-px top-1/2 z-10 block h-6 w-[3px] -translate-y-1/2 bg-[var(--acento)]" />
@@ -247,13 +231,35 @@ export function Canales() {
                 <span className="size-1.5 bg-profundo" />
                 <span className="size-1.5 bg-profundo" />
               </span>
-              <span className="min-w-0 flex-1 truncate font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
+              <span className="min-w-0 flex-1 truncate font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
                 {NAVEGACION.canal} {numeroCanal(canal.id)} · {canal.nombre}
               </span>
-              <span className="flex items-center gap-2 font-plex text-[11px] uppercase tracking-etiqueta text-acero">
-                <span aria-hidden className="size-1.5 bg-[var(--acento)] motion-safe:animate-[parpadeo_1.4s_steps(2,end)_infinite]" />
-                {TEXTOS.enVivo}
-              </span>
+              {/* "En vivo" es también el control del recorrido: pausa y sigue. */}
+              {vista === "3d" ? (
+                <button
+                  type="button"
+                  onClick={() => setEnPausa((pausa) => !pausa)}
+                  aria-pressed={enPausa}
+                  aria-label={enPausa ? TEXTOS.seguir : TEXTOS.pausar}
+                  className="flex items-center gap-2 font-plex text-xs uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco"
+                >
+                  <span
+                    aria-hidden
+                    className={`size-1.5 ${recorriendo ? "bg-[var(--acento)] motion-safe:animate-[parpadeo_1.4s_steps(2,end)_infinite]" : "bg-profundo"}`}
+                  />
+                  {TEXTOS.enVivo}
+                  <svg aria-hidden viewBox="0 0 12 12" className="ml-1 size-2.5 fill-current">
+                    {enPausa ? (
+                      <path d="M3 1.5 10.5 6 3 10.5Z" />
+                    ) : (
+                      <>
+                        <rect x="2" y="1.5" width="3" height="9" />
+                        <rect x="7" y="1.5" width="3" height="9" />
+                      </>
+                    )}
+                  </svg>
+                </button>
+              ) : null}
             </div>
             <Link
               href={canal.ruta}
@@ -266,7 +272,7 @@ export function Canales() {
               {CANALES.map((c, i) => (
                 <span
                   key={c.id}
-                  className={`absolute inset-0 transition-opacity duration-500 ${i === activo ? "opacity-100" : "opacity-0"}`}
+                  className={`absolute inset-0 transition-opacity duration-(--duracion-media) ${i === activo ? "opacity-100" : "opacity-0"}`}
                 >
                   <VistaPreviaCanal id={c.id as IdCanal} vivo={i === activo && aLaVista && vista === "3d"} />
                 </span>
@@ -278,12 +284,12 @@ export function Canales() {
                 {CANALES.map((c, i) => (
                   <span
                     key={c.id}
-                    className={`block h-1.5 transition-[width,background-color] duration-500 ${i === activo ? "w-5" : "w-1.5 bg-profundo"}`}
+                    className={`block h-1.5 transition-[width,background-color] duration-(--duracion-media) ${i === activo ? "w-5" : "w-1.5 bg-profundo"}`}
                     style={i === activo ? { background: ACENTO_CANAL[c.id as IdCanal] } : undefined}
                   />
                 ))}
               </span>
-              <span aria-hidden className="shrink-0 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco">
+              <span aria-hidden className="shrink-0 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco">
                 {TEXTOS.entrar} →
               </span>
             </div>
@@ -300,22 +306,35 @@ export function Canales() {
               background: `linear-gradient(${CANALES.map((c) => ACENTO_CANAL[c.id as IdCanal]).join(", ")})`,
             }}
           />
-          {CANALES.map((c) => {
+          {CANALES.map((c, i) => {
             const id = c.id as IdCanal;
+            const encendida = i === alCentro;
             return (
-              <li key={c.id} className="relative pb-6 pl-8 last:pb-0" style={{ "--acento": ACENTO_CANAL[id] } as CSSProperties}>
-                <span aria-hidden className="absolute left-0 top-5 block size-[11px] border border-[var(--acento)] bg-negro" />
+              <li
+                key={c.id}
+                ref={(elemento) => {
+                  tarjetas.current[i] = elemento;
+                }}
+                className="relative pb-6 pl-8 last:pb-0"
+                style={{ "--acento": ACENTO_CANAL[id] } as CSSProperties}
+              >
+                <span
+                  aria-hidden
+                  className={`absolute left-0 top-5 block size-[11px] border border-[var(--acento)] transition-colors ${encendida ? "bg-[var(--acento)]" : "bg-negro"}`}
+                />
                 <Link
                   href={c.ruta}
                   transitionTypes={[tipoTransicion("/", c.ruta)]}
-                  className="group block overflow-hidden rounded-[10px] border border-profundo bg-negro transition-colors active:border-[var(--acento)]"
+                  className={`group block overflow-hidden rounded-[10px] border bg-negro transition-colors active:border-[var(--acento)] ${
+                    encendida ? "border-[var(--acento)]" : "border-profundo"
+                  }`}
                 >
                   <span className="relative block aspect-[16/9] overflow-hidden">
-                    <VistaPreviaCanal id={id} vivo={false} />
+                    <VistaPreviaCanal id={id} vivo={encendida} />
                   </span>
                   <span className="flex items-end justify-between gap-4 p-4">
                     <span className="min-w-0">
-                      <span className="font-plex text-[11px] text-acero">
+                      <span className="font-plex text-xs text-acero">
                         {NAVEGACION.canal} {numeroCanal(id)}
                       </span>
                       <span className="mt-1.5 block font-michroma text-lg uppercase leading-none tracking-marca text-blanco">

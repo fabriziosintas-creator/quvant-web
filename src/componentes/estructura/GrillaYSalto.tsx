@@ -31,7 +31,7 @@ export function GrillaYSalto() {
       <span className="absolute inset-0" style={{ backgroundImage: grilla(CASI_NEGRO) }} />
 
       <span
-        className="absolute inset-0 transition-opacity duration-300 motion-reduce:hidden"
+        className="absolute inset-0 transition-opacity duration-(--duracion-rapida) motion-reduce:hidden"
         style={{
           backgroundImage: grilla("#9C9CA3"),
           opacity: "var(--cerca, 0)",
@@ -52,7 +52,7 @@ export function GrillaYSalto() {
           marginTop: -(5 - LADO_PUNTO) / 2,
           opacity: "var(--cerca, 0)",
           transition:
-            "left 130ms cubic-bezier(0.2, 0.9, 0.2, 1), top 130ms cubic-bezier(0.2, 0.9, 0.2, 1), opacity 220ms linear",
+            "left var(--duracion-instante) var(--ease-quvant), top var(--duracion-instante) var(--ease-quvant), opacity var(--duracion-rapida) linear",
         }}
       />
     </span>

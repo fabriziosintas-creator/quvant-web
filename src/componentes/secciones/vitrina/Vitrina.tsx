@@ -175,7 +175,7 @@ export function Vitrina({
                 type="button"
                 aria-pressed={activa}
                 onClick={() => filtrar(opcion.valor)}
-                className={`flex items-center gap-2.5 border px-3.5 py-2 font-plex text-[11px] font-medium uppercase tracking-etiqueta transition-colors ${
+                className={`flex items-center gap-2.5 border px-3.5 py-2 font-plex text-xs font-medium uppercase tracking-etiqueta transition-colors ${
                   activa
                     ? "border-blanco bg-blanco text-negro"
                     : "border-profundo text-acero hover:border-acero hover:text-blanco"
@@ -187,13 +187,13 @@ export function Vitrina({
             );
           })}
         </div>
-        <p className="font-plex text-[11px] text-acero">
+        <p className="font-plex text-xs text-acero">
           {PROYECTOS.length} {TEXTOS.proyectos} · {enVivo} {TEXTOS.enVivo}
         </p>
       </div>
-      <p className={`font-plex text-xs text-acero ${conFiltros ? "mt-4" : ""}`}>
-        {tactil ? TEXTOS.ayudaTactil : TEXTOS.ayudaMouse}
-      </p>
+      {tactil ? (
+        <p className={`font-plex text-xs text-acero ${conFiltros ? "mt-4" : ""}`}>{TEXTOS.ayudaTactil}</p>
+      ) : null}
 
       <ul
         ref={lista}
@@ -224,7 +224,7 @@ export function Vitrina({
       {/* Celular: dónde estás en el carrusel. */}
       {frente ? (
         <div className="mt-4 flex items-center justify-between md:hidden">
-          <p className="font-plex text-[11px] text-acero">
+          <p className="font-plex text-xs text-acero">
             <span className="text-blanco">{dosDigitos(alFrente + 1)}</span> / {dosDigitos(visibles.length)} ·{" "}
             {frente.nombre}
           </p>
@@ -239,7 +239,7 @@ export function Vitrina({
                 className="flex h-6 items-center"
               >
                 <span
-                  className={`block h-1.5 transition-[width,background-color] duration-300 ${
+                  className={`block h-1.5 transition-[width,background-color] duration-(--duracion-rapida) ${
                     indice === alFrente ? "w-5" : "w-1.5 bg-profundo"
                   }`}
                   style={indice === alFrente ? { background: "var(--acento)" } : undefined}

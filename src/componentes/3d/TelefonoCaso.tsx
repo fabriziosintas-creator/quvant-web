@@ -10,6 +10,10 @@ import { obtenerEntornoManual } from "./entornoManual";
  * El teléfono 3D del caso: de frente muestra la propuesta nueva y de
  * espaldas la web vieja. Con el scroll, el teléfono gira media vuelta:
  * arranca mostrando la vieja y termina de frente con la propuesta.
+ *
+ * Solo dibuja mientras está a la vista (`activo`): fuera de pantalla el
+ * lienzo queda quieto. Antes dibujaba siempre y en un celular de gama media
+ * le costaba a Trabajos la mitad de los cuadros por segundo.
  */
 
 const ANCHO_PANTALLA = 0.96;
@@ -78,13 +82,16 @@ function Telefono({ srcAntes, srcDespues }: { srcAntes: string; srcDespues: stri
 export default function TelefonoCaso({
   srcAntes,
   srcDespues,
+  activo,
 }: {
   srcAntes: string;
   srcDespues: string;
+  activo: boolean;
 }) {
   return (
     <Canvas
       dpr={[1, 1.5]}
+      frameloop={activo ? "always" : "never"}
       camera={{ position: [0, 0, 4.4], fov: 35 }}
       gl={{ alpha: true, antialias: true }}
       style={{ pointerEvents: "none" }}

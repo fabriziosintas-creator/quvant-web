@@ -25,6 +25,7 @@ export function CintaRubros() {
   return (
     <div
       aria-hidden
+      data-pausable
       className="cinta mt-14 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_10%,#000_90%,transparent)]"
     >
       <div className="cinta-pista flex w-max whitespace-nowrap">

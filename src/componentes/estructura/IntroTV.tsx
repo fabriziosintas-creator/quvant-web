@@ -208,9 +208,12 @@ export function IntroTV() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const { lienzo: textura, caja } = texturaDelTitulo(titulo, dpr);
       // El lienzo cubre el título con aire a los costados (la palabra se corre).
+      // A la derecha no pasa del borde de la pantalla: si no, en el celular la
+      // portada queda más ancha que la pantalla y se corre de costado.
       const margenX = caja.width * 0.18;
+      const margenDerecho = Math.min(margenX, Math.max(0, document.documentElement.clientWidth - caja.right));
       const margenY = caja.height * 0.3;
-      const ancho = caja.width + margenX * 2;
+      const ancho = caja.width + margenX + margenDerecho;
       const alto = caja.height + margenY * 2;
       canvas.style.left = `${caja.left + window.scrollX - margenX}px`;
       canvas.style.top = `${caja.top + window.scrollY - margenY}px`;

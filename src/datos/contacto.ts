@@ -1,15 +1,20 @@
 /**
  * Datos de contacto reales de Quvant.
  *
- * ┌─────────────────────────────────────────────────────────────┐
- * │  TODO: completar WhatsApp y email reales antes de difundir. │
- * │  Esos dos valores son EJEMPLOS y no funcionan.              │
- * └─────────────────────────────────────────────────────────────┘
+ * ┌─────────────────────────────────────────────────────────┐
+ * │  TODO: completar el email real antes de difundir.       │
+ * │  El de abajo es un EJEMPLO y no funciona.               │
+ * └─────────────────────────────────────────────────────────┘
  */
 
 export const CONTACTO = {
-  /** TODO: número de WhatsApp con código de país y sin signos. Ejemplo: "5491112345678". */
-  whatsapp: "549XXXXXXXXXX",
+  /**
+   * WhatsApp para los links (wa.me): código de país y sin signos. Los
+   * celulares argentinos llevan el 9 después del 54 para que WhatsApp los encuentre.
+   */
+  whatsapp: "5491124811956",
+  /** El mismo número, como se lee. */
+  whatsappVisible: "+54 11 2481-1956",
 
   /** TODO: email real de contacto. */
   email: "contacto@tudominio.com",

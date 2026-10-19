@@ -11,6 +11,7 @@ import { TarjetaInclinada } from "@/componentes/estructura/TarjetaInclinada";
 import { SERVICIOS_VISUAL, type IdServicio } from "@/datos/servicios";
 import { NOSOTROS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
+import { CURVA, DURACION } from "@/componentes/estructura/movimiento";
 import { ILUSTRACIONES } from "./IlustracionesServicios";
 import { NucleosQuvant } from "./NucleosQuvant";
 
@@ -47,8 +48,8 @@ function armarLinea(id: Exclude<IdServicio, "sistemas">, linea: gsap.core.Timeli
       .from('[data-pieza="riel"]', {
         scaleX: 0,
         transformOrigin: "left center",
-        duration: 0.4,
-        ease: "power2.out",
+        duration: DURACION.media,
+        ease: CURVA.entrar,
       })
       .from(
         '[data-pieza="panel"]',
@@ -56,15 +57,15 @@ function armarLinea(id: Exclude<IdServicio, "sistemas">, linea: gsap.core.Timeli
           scaleY: 0,
           opacity: 0,
           transformOrigin: "center bottom",
-          duration: 0.42,
+          duration: DURACION.media,
           stagger: 0.14,
-          ease: "power3.out",
+          ease: CURVA.entrar,
         },
         "-=0.1",
       )
       .from(
         '[data-pieza="nodo"]',
-        { scale: 0, opacity: 0, duration: 0.3, stagger: 0.14, ease: "back.out(2)" },
+        { scale: 0, opacity: 0, duration: DURACION.rapida, stagger: 0.14, ease: CURVA.entrar },
         "<0.08",
       )
       // El punto de la marca recorriendo las fases, de la primera a la última
@@ -80,9 +81,9 @@ function armarLinea(id: Exclude<IdServicio, "sistemas">, linea: gsap.core.Timeli
     scaleX: (indice: number) => DESORDEN[indice]?.sx ?? 1,
     scaleY: (indice: number) => DESORDEN[indice]?.sy ?? 1,
     transformOrigin: (indice: number) => (indice === 4 ? "left center" : "50% 50%"),
-    duration: 0.65,
+    duration: DURACION.media,
     stagger: 0.08,
-    ease: "power3.out",
+    ease: CURVA.entrar,
   });
 }
 
@@ -179,7 +180,7 @@ export function ServiciosInteractivos() {
                     alt={visual.imagen.alt}
                     fill
                     sizes="(min-width: 768px) 33vw, 100vw"
-                    className={`foto-servicio object-cover object-top transition-[transform,filter] duration-[1400ms] ease-out group-hover:scale-[1.04] ${
+                    className={`foto-servicio object-cover object-top transition-[transform,filter] duration-[1400ms] ease-quvant group-hover:scale-[1.04] ${
                       "foto" in visual ? "foto-bn" : seleccionado ? "saturate-100" : "saturate-[0.6]"
                     }`}
                   />
@@ -188,7 +189,7 @@ export function ServiciosInteractivos() {
                   ) : (
                     <span
                       aria-hidden
-                      className={`absolute inset-0 mix-blend-color transition-opacity duration-700 ${
+                      className={`absolute inset-0 mix-blend-color transition-opacity duration-(--duracion-lenta) ${
                         seleccionado ? "opacity-25" : "opacity-55"
                       }`}
                       style={{ background: "var(--acento)" }}
@@ -225,7 +226,7 @@ export function ServiciosInteractivos() {
                 {/* La línea del acento subraya la elegida. */}
                 <span
                   aria-hidden
-                  className={`absolute bottom-0 left-0 h-[2px] w-full origin-left bg-[var(--acento)] transition-transform duration-700 ease-out ${
+                  className={`absolute bottom-0 left-0 h-[2px] w-full origin-left bg-[var(--acento)] transition-transform duration-(--duracion-lenta) ease-quvant ${
                     seleccionado ? "scale-x-100" : "scale-x-0"
                   }`}
                 />
@@ -245,7 +246,7 @@ export function ServiciosInteractivos() {
       >
         <figcaption className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
           <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-          <span className="font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
+          <span className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
             {servicio.ventana}
           </span>
         </figcaption>
@@ -261,9 +262,9 @@ export function ServiciosInteractivos() {
           </div>
         )}
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-t border-profundo px-4 py-2.5">
-          <p className="font-plex text-[11px] text-acero">{servicio.pie}</p>
+          <p className="font-plex text-xs text-acero">{servicio.pie}</p>
           {/* Aclaración de honestidad: tiene que leerse, no ser un susurro. */}
-          <p className="font-plex text-[11px] uppercase tracking-etiqueta text-acero">
+          <p className="font-plex text-xs uppercase tracking-etiqueta text-acero">
             {NOSOTROS.servicios.nota}
           </p>
         </div>

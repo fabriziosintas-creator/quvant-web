@@ -26,7 +26,7 @@ function Caso({ caso }: { caso: CasoWeb }) {
   return (
     <article>
       <div className="flex flex-wrap items-center gap-3">
-        <span className="border border-acero px-2.5 py-1 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco">
+        <span className="border border-acero px-2.5 py-1 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco">
           {caso.etiqueta}
         </span>
         <span className="font-plex text-xs uppercase tracking-etiqueta text-acero">
@@ -71,7 +71,7 @@ function Caso({ caso }: { caso: CasoWeb }) {
           <div className="flex flex-1 flex-col overflow-hidden rounded-[10px] border border-profundo">
             <p className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
               <span aria-hidden className="size-1.5 bg-acero" />
-              <span className="font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
+              <span className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
                 {WEBS.etiquetaDemo}
               </span>
             </p>

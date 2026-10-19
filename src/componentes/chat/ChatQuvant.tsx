@@ -1,6 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type FormEvent, type KeyboardEvent } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+  type FormEvent,
+  type KeyboardEvent,
+} from "react";
 import { usePathname } from "next/navigation";
 import { IsotipoQ } from "@/componentes/marca/IsotipoQ";
 import { ACENTO_CANAL } from "@/datos/colores";
@@ -10,9 +19,10 @@ import type { Estado, Mensaje, Pedido, VistaVisitante } from "@/servidor/chat/ti
 /**
  * "Hablemos ahora": el chat de Quvant, abajo a la derecha en todo el sitio.
  *
- * Computadora: una píldora fija; la ventana se abre encima, chica.
- * Celular: un botón redondo arriba de la barra de canales; el chat se abre
- * a pantalla completa.
+ * Computadora: una píldora fija abajo a la derecha (con la invitación);
+ * la ventana se abre encima, chica.
+ * Celular: el botón es la Q del medio de la barra de canales (DockCanales),
+ * así no flota nada encima del contenido; el chat se abre a pantalla completa.
  *
  * Responde el asistente (api/chat). Si alguien del equipo toma la charla
  * desde el panel, sus mensajes llegan solos: el chat pregunta cada pocos
@@ -52,6 +62,24 @@ export function abrirChat(texto?: string) {
   window.dispatchEvent(new CustomEvent("quvant:abrir-chat", { detail: { texto } }));
 }
 
+/* Los mensajes del equipo sin leer, para el botón de la barra del celular. */
+let sinLeerCompartido = 0;
+const oyentes = new Set<() => void>();
+function publicarSinLeer(cantidad: number) {
+  sinLeerCompartido = cantidad;
+  for (const oyente of oyentes) oyente();
+}
+export function useSinLeerChat() {
+  return useSyncExternalStore(
+    (oyente) => {
+      oyentes.add(oyente);
+      return () => oyentes.delete(oyente);
+    },
+    () => sinLeerCompartido,
+    () => 0,
+  );
+}
+
 export function ChatQuvant() {
   const ruta = usePathname();
   const [abierto, setAbierto] = useState(false);
@@ -66,6 +94,8 @@ export function ChatQuvant() {
   const [error, setError] = useState<string | null>(null);
   const [sinLeer, setSinLeer] = useState(0);
   const [invitacion, setInvitacion] = useState(false);
+
+  useEffect(() => publicarSinLeer(sinLeer), [sinLeer]);
 
   const lista = useRef<HTMLDivElement>(null);
   const entrada = useRef<HTMLTextAreaElement>(null);
@@ -217,7 +247,7 @@ export function ChatQuvant() {
     <>
       {/* El botón (y la invitación), cuando el chat está cerrado. */}
       {!abierto ? (
-        <div className="chat-lanzador fixed bottom-[calc(6.25rem+env(safe-area-inset-bottom))] right-4 z-[60] flex flex-col items-end gap-3 md:bottom-6 md:right-6">
+        <div className="chat-lanzador fixed bottom-6 right-6 z-[60] hidden flex-col items-end gap-3 md:flex">
           {invitacion ? (
             <div className="charla-burbuja relative w-64 rounded-[16px] border border-profundo bg-negro/95 p-4 pr-10 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.9)] backdrop-blur-md">
               <p className="titulo text-sm text-blanco">{CHAT.invitacion.titulo}</p>
@@ -241,20 +271,20 @@ export function ChatQuvant() {
             }}
             aria-label={CHAT.abrir}
             aria-expanded={false}
-            className="group relative flex size-14 items-center justify-center gap-3 rounded-full border border-profundo bg-negro/90 shadow-[0_18px_50px_-14px_rgba(0,0,0,0.95)] backdrop-blur-md transition-colors hover:border-[var(--verde)] md:h-12 md:w-auto md:rounded-full md:pl-3 md:pr-5"
+            className="group relative flex h-12 items-center justify-center gap-3 rounded-full border border-profundo bg-negro/90 pl-3 pr-5 shadow-[0_18px_50px_-14px_rgba(0,0,0,0.95)] backdrop-blur-md transition-colors hover:border-[var(--verde)]"
             style={{ "--verde": VERDE } as CSSProperties}
           >
-            <IsotipoQ idGradiente="q-chat-boton" className="size-7 md:size-6" />
-            <span className="hidden font-plex text-[11px] font-medium uppercase tracking-[0.14em] text-blanco md:inline">
+            <IsotipoQ idGradiente="q-chat-boton" className="size-6" />
+            <span className="font-plex text-xs font-medium uppercase tracking-[0.14em] text-blanco">
               {CHAT.lanzador}
             </span>
             <span
               aria-hidden
-              className="absolute right-2.5 top-2.5 size-2 motion-safe:animate-[parpadeo_1.6s_steps(2,end)_infinite] md:static md:-ml-1"
+              className="-ml-1 size-2 motion-safe:animate-[parpadeo_1.6s_steps(2,end)_infinite]"
               style={{ background: VERDE }}
             />
             {sinLeer > 0 ? (
-              <span className="absolute -right-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-blanco px-1.5 font-plex text-[11px] font-bold text-negro">
+              <span className="absolute -right-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-blanco px-1.5 font-plex text-xs font-bold text-negro">
                 {sinLeer}
                 <span className="sr-only"> {CHAT.sinLeer}</span>
               </span>
@@ -282,7 +312,7 @@ export function ChatQuvant() {
             </span>
             <div className="min-w-0 flex-1">
               <p className="font-michroma text-sm uppercase tracking-marca text-blanco">{CHAT.titulo}</p>
-              <p className="truncate font-plex text-[11px] text-acero" aria-live="polite">
+              <p className="truncate font-plex text-xs text-acero" aria-live="polite">
                 {lineaEstado}
               </p>
             </div>
@@ -327,7 +357,7 @@ export function ChatQuvant() {
                 {[0, 1, 2].map((p) => (
                   <span
                     key={p}
-                    className="size-1.5 rounded-full bg-acero motion-safe:animate-[latido_1s_ease-in-out_infinite]"
+                    className="size-1.5 rounded-full bg-acero motion-safe:animate-[latido_1s_var(--ease-vaiven)_infinite]"
                     style={{ animationDelay: `${p * 0.15}s` }}
                   />
                 ))}
@@ -367,7 +397,7 @@ export function ChatQuvant() {
                 →
               </button>
             </div>
-            <p className="mt-2 px-1 font-plex text-[11px] leading-snug text-acero/80">{CHAT.privacidad}</p>
+            <p className="mt-2 px-1 font-plex text-xs leading-snug text-acero/80">{CHAT.privacidad}</p>
           </form>
         </section>
       ) : null}
@@ -378,7 +408,7 @@ export function ChatQuvant() {
 function Burbuja({ autor, texto, nombre }: { autor: Mensaje["autor"]; texto: string; nombre?: string | null }) {
   if (autor === "sistema") {
     return (
-      <p className="charla-burbuja flex items-center gap-2 self-center px-2 text-center font-plex text-[11px] uppercase tracking-etiqueta text-acero">
+      <p className="charla-burbuja flex items-center gap-2 self-center px-2 text-center font-plex text-xs uppercase tracking-etiqueta text-acero">
         <span aria-hidden className="size-1" style={{ background: VERDE }} />
         {texto}
       </p>
@@ -388,7 +418,7 @@ function Burbuja({ autor, texto, nombre }: { autor: Mensaje["autor"]; texto: str
   return (
     <div className={`charla-burbuja flex max-w-[86%] flex-col ${delVisitante ? "self-end items-end" : "self-start"}`}>
       {autor === "humano" ? (
-        <span className="mb-1 flex items-center gap-2 font-plex text-[11px] uppercase tracking-etiqueta" style={{ color: VERDE }}>
+        <span className="mb-1 flex items-center gap-2 font-plex text-xs uppercase tracking-etiqueta" style={{ color: VERDE }}>
           <span aria-hidden className="size-1.5" style={{ background: VERDE }} />
           {nombre} · {CHAT.equipo}
         </span>
@@ -441,7 +471,7 @@ function ConLinks({ texto }: { texto: string }) {
 function TarjetaPedido({ pedido }: { pedido: Pedido }) {
   return (
     <div className="charla-burbuja mt-1 border p-4" style={{ borderColor: VERDE }}>
-      <p className="flex items-center gap-2 font-plex text-[11px] font-medium uppercase tracking-etiqueta" style={{ color: VERDE }}>
+      <p className="flex items-center gap-2 font-plex text-xs font-medium uppercase tracking-etiqueta" style={{ color: VERDE }}>
         <span aria-hidden className="size-1.5" style={{ background: VERDE }} />
         {CHAT.pedido.titulo}
       </p>

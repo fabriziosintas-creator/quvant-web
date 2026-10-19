@@ -100,6 +100,8 @@ export const NAVEGACION = {
   canal: "Canal",
   inicio: "Inicio",
   hablemos: "Hablemos",
+  /** El chat, en la barra de abajo del celular. */
+  chat: "Chat",
   siguiente: "Seguí por",
   anterior: "Volver a",
   capitulos: "En esta página",
@@ -131,7 +133,6 @@ export const HERO = {
 /** La portada, después del video: los canales, los trabajos destacados y el cierre. */
 export const INICIO = {
   canales: {
-    etiqueta: "Canales",
     titulo: "Elegí por dónde seguir.",
     entrar: "Entrar",
     enVivo: "En vivo",
@@ -139,7 +140,6 @@ export const INICIO = {
     seguir: "Seguir con el recorrido de canales",
   },
   destacados: {
-    etiqueta: "Trabajos",
     titulo: "Algunos que ya están andando.",
     verTodos: "Ver todos los trabajos",
   },
@@ -168,7 +168,6 @@ export const CONTACTO_SECCION = {
   botones: { whatsapp: "Enviar por WhatsApp", email: "Prefiero por email" },
   nota: "El mensaje se abre en tu WhatsApp o tu email, listo para mandar. No guardamos nada en ningún servidor.",
   directo: {
-    etiqueta: "Directo",
     titulo: "¿Ya sabés lo que querés?",
     filas: { whatsapp: "WhatsApp", email: "Email", instagram: "Instagram" },
   },
@@ -183,7 +182,6 @@ export const WEBS = {
     todo: "Todo",
     proyectos: "proyectos",
     enVivo: "para probar en vivo",
-    ayudaMouse: "Pasá el mouse para verla moverse. Clic para entrar.",
     ayudaTactil: "Deslizá para ver más. Tocá una para entrar.",
     entrar: "Entrar",
     posicion: "Proyecto",
@@ -377,7 +375,7 @@ export const PLATAFORMAS = {
     ventana: "Forja · Recorrido real",
     nota: "Grabado en la demo · datos de ejemplo",
     descripcion:
-      "Recorrido por Forja: la red con todas las sucursales, la entrada a Casa Central en 3D, los racks con lo que falta, la lista de productos críticos y la sala de control.",
+      "Recorrido por Forja: la fragua de la intro, la red con todas las sucursales, la entrada a Casa Central en 3D, los racks con lo que falta, la lista de productos críticos y la sala de control.",
     pausar: "Pausar el video",
     reproducir: "Reproducir el video",
   },
