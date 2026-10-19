@@ -135,10 +135,9 @@ function Nosotros() {
           0:42
         </span>
       </span>
-      <span className="absolute bottom-5 left-5 flex items-center gap-2 font-michroma text-sm text-blanco">
-        <span className="flex size-8 items-center justify-center border border-[#6C8CFF]">M</span>
-        <span className="text-acero">+</span>
-        <span className="flex size-8 items-center justify-center border border-[#F0A33A]">F</span>
+      <span className="absolute bottom-5 left-5 flex items-center gap-3 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco">
+        <span aria-hidden className="size-1.5 bg-[#F0A33A]" />
+        Michel + Fabrizio
       </span>
     </>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -247,8 +248,10 @@ function TarjetaFuerza({
   lado: "izquierda" | "derecha";
   panel: React.ReactNode;
 }) {
+  // Cada fuerza tiene su persona: la del equipo con ese mismo rol.
+  const persona = NOSOTROS.equipo.find((p) => p.rol === fuerza.etiqueta);
   return (
-    <div data-fuerza={lado} className="h-full" style={{ "--acento": color } as CSSProperties}>
+    <div data-fuerza={lado} className="h-full min-w-0" style={{ "--acento": color } as CSSProperties}>
       <TarjetaViva className="border border-profundo bg-negro p-7 md:p-9">
         {/* El resplandor del color de la fuerza, arriba. */}
         <span
@@ -270,6 +273,20 @@ function TarjetaFuerza({
             </span>
           </p>
         </div>
+        {/* Quién lleva esta fuerza. La foto, cuando esté, en blanco y negro como todas las del sitio. */}
+        {persona ? (
+          <div className="relative mt-5 flex items-center gap-4">
+            {persona.foto ? (
+              <span className="relative block size-14 shrink-0 overflow-hidden border border-profundo">
+                <Image src={persona.foto} alt={`Foto de ${persona.nombre}`} fill sizes="56px" className="foto-bn object-cover" />
+              </span>
+            ) : null}
+            <p className="min-w-0">
+              <span className="block titulo text-lg text-blanco">{persona.nombre}</span>
+              <span className="mt-0.5 block font-plex text-xs text-acero">{persona.cargo}</span>
+            </p>
+          </div>
+        ) : null}
         <h3 className="relative mt-5 titulo text-xl leading-snug text-blanco md:text-2xl">
           {fuerza.titular}
         </h3>

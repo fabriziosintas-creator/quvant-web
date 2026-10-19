@@ -77,7 +77,6 @@ export const CANALES = [
     metaTitulo: "Nosotros: el equipo detrás de Quvant",
     capitulos: [
       { id: "fuerzas", nombre: "Las dos fuerzas" },
-      { id: "equipo", nombre: "El equipo" },
       { id: "video", nombre: "En 42 segundos" },
     ],
   },
@@ -478,6 +477,7 @@ export const NOSOTROS = {
       foto: "", // TODO: guardar la foto en public/equipo/fabrizio.jpg y poner acá "/equipo/fabrizio.jpg".
     },
   ],
+  /** No se muestra en la web (repetía lo que dicen todas las páginas): la usa el chat. */
   mision: {
     etiqueta: "Misión",
     texto: "Entrar en cada rubro, entender cómo trabaja y construir el sistema que todavía no tiene.",
