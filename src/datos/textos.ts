@@ -491,6 +491,7 @@ export const NOSOTROS = {
   servicios: {
     etiqueta: "Nuestros servicios",
     ayuda: "Elegí uno y mirá cómo lo armamos.",
+    verComo: "Ver cómo lo armamos",
     items: [
       {
         id: "sistemas",

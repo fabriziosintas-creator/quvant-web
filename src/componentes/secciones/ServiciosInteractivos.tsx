@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { Fragment, useEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type Ref } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -22,32 +22,12 @@ type Servicio = (typeof NOSOTROS.servicios.items)[number];
  * La imagen de cada servicio, viva: se mueve sola, cada una a su manera
  * (el tablero se recorre de punta a punta, la foto de la app se acerca, la
  * web de Ferremix se acerca a la marca; ver .mov-* en globals.css) y, con
- * el mouse, se inclina, la foto sigue al puntero y le pasa un brillo.
+ * el mouse en cualquier parte de su fila, se inclina hacia él, la foto lo
+ * sigue y le pasa un brillo (la fila le pasa --x, --y y data-encima).
  */
-function ImagenViva({ id, src, alt }: { id: IdServicio; src: string; alt: string }) {
-  const caja = useRef<HTMLSpanElement>(null);
-  const alMover = (evento: PointerEvent<HTMLSpanElement>) => {
-    const elemento = caja.current;
-    if (!elemento || evento.pointerType !== "mouse") return;
-    const r = elemento.getBoundingClientRect();
-    elemento.style.setProperty("--x", ((evento.clientX - r.left) / r.width - 0.5).toFixed(3));
-    elemento.style.setProperty("--y", ((evento.clientY - r.top) / r.height - 0.5).toFixed(3));
-    elemento.dataset.encima = "si";
-  };
-  const alSalir = () => {
-    const elemento = caja.current;
-    if (!elemento) return;
-    elemento.style.setProperty("--x", "0");
-    elemento.style.setProperty("--y", "0");
-    elemento.dataset.encima = "no";
-  };
+function ImagenViva({ id, src, alt, cajaRef }: { id: IdServicio; src: string; alt: string; cajaRef: Ref<HTMLSpanElement> }) {
   return (
-    <span
-      ref={caja}
-      onPointerMove={alMover}
-      onPointerLeave={alSalir}
-      className="imagen-viva relative block aspect-[16/10] overflow-hidden rounded-[10px] bg-negro"
-    >
+    <span ref={cajaRef} className="imagen-viva relative block aspect-[16/10] overflow-hidden rounded-[10px] bg-negro">
       <span className="imagen-viva-capa absolute -inset-[4%]">
         <Image
           src={src}
@@ -63,6 +43,49 @@ function ImagenViva({ id, src, alt }: { id: IdServicio; src: string; alt: string
 }
 
 /**
+ * El título partido en letras para la ola (cada palabra entera, así corta
+ * renglón donde corresponde). Los lectores de pantalla leen el texto
+ * entero, no las letras sueltas.
+ */
+function Letras({ texto }: { texto: string }) {
+  const palabras = texto.split(" ");
+  return (
+    <>
+      <span className="sr-only">{texto}</span>
+      <span aria-hidden>
+        {palabras.map((palabra, i) => (
+          <Fragment key={`${palabra}-${i}`}>
+            <span className="inline-block whitespace-nowrap">
+              {Array.from(palabra).map((letra, j) => (
+                <span key={j} className="letra inline-block">
+                  {letra}
+                </span>
+              ))}
+            </span>
+            {i < palabras.length - 1 ? " " : null}
+          </Fragment>
+        ))}
+      </span>
+    </>
+  );
+}
+
+/** Lo que hace la fila al pasar el mouse, que no se puede hacer con CSS: la ola del título (GSAP). */
+function ola(fila: HTMLElement) {
+  if (document.documentElement.dataset.vista === "texto") return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const letras = fila.querySelectorAll<HTMLElement>(".letra");
+  const acento = getComputedStyle(fila).getPropertyValue("--acento").trim() || "#F26B5B";
+  gsap.to(letras, {
+    keyframes: { yPercent: [0, -24, 0], color: ["#ECECEE", acento, "#ECECEE"] },
+    duration: 0.62,
+    ease: CURVA.entrar,
+    stagger: 0.017,
+    overwrite: true,
+  });
+}
+
+/**
  * Los tres servicios como filas grandes a todo el ancho, separadas por una
  * línea fina (sin tarjetas: el borde queda para lo que es una ventana): el
  * número enorme, el título y el texto, y al costado la imagen de lo que se
@@ -70,6 +93,14 @@ function ImagenViva({ id, src, alt }: { id: IdServicio; src: string; alt: string
  * real de Ferremix), con su color original. Las tres van iguales (número y
  * línea con el acento, título en blanco): elegir una cambia la ventana de
  * abajo, que dice cuál se está viendo. Cada imagen está viva (ImagenViva).
+ *
+ * La fila entera reacciona al pasar el mouse (con el foco del teclado, o
+ * en el celular al quedar en el medio de la pantalla): el número gira y
+ * entra en contorno, el título hace una ola letra por letra, una luz del
+ * acento sigue al puntero, la línea se recorre con un destello, aparece
+ * "Ver cómo lo armamos ↓", la imagen se inclina hacia el puntero y las
+ * otras filas se apagan. Casi todo es CSS (globals.css, .ficha-servicio);
+ * la ola, GSAP.
  *
  * Debajo, la ventana con la ilustración de cómo se arma cada uno, con un
  * movimiento distinto por servicio: los sistemas encastran, la app crece
@@ -134,8 +165,44 @@ export function ServiciosInteractivos() {
   const items = NOSOTROS.servicios.items;
   const [activo, setActivo] = useState<IdServicio>(items[0].id);
   const botones = useRef<Array<HTMLButtonElement | null>>([]);
+  const imagenes = useRef<Array<HTMLSpanElement | null>>([]);
   const ventana = useRef<HTMLDivElement>(null);
   const vista = useVista();
+
+  // El mouse sobre la fila: la luz lo sigue y la imagen se inclina hacia él.
+  const alMoverFila = (evento: PointerEvent<HTMLButtonElement>, indice: number) => {
+    if (evento.pointerType !== "mouse") return;
+    const fila = evento.currentTarget.getBoundingClientRect();
+    evento.currentTarget.style.setProperty("--mx", `${evento.clientX - fila.left}px`);
+    evento.currentTarget.style.setProperty("--my", `${evento.clientY - fila.top}px`);
+    const imagen = imagenes.current[indice];
+    if (!imagen) return;
+    const r = imagen.getBoundingClientRect();
+    const limitar = (v: number) => Math.max(-0.5, Math.min(0.5, v));
+    imagen.style.setProperty("--x", limitar((evento.clientX - r.left) / r.width - 0.5).toFixed(3));
+    imagen.style.setProperty("--y", limitar((evento.clientY - r.top) / r.height - 0.5).toFixed(3));
+    imagen.dataset.encima = "si";
+  };
+  const alSalirFila = (indice: number) => {
+    const imagen = imagenes.current[indice];
+    if (!imagen) return;
+    imagen.style.setProperty("--x", "0");
+    imagen.style.setProperty("--y", "0");
+    imagen.dataset.encima = "no";
+  };
+
+  // En el celular no hay mouse: la ola corre cuando la fila llega al medio de la pantalla.
+  useEffect(() => {
+    if (vista !== "3d" || !window.matchMedia("(hover: none)").matches) return;
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const entrada of entradas) if (entrada.isIntersecting) ola(entrada.target as HTMLElement);
+      },
+      { rootMargin: "-40% 0px -40% 0px" },
+    );
+    for (const boton of botones.current) if (boton) observador.observe(boton);
+    return () => observador.disconnect();
+  }, [vista]);
 
   const servicio: Servicio = items.find((item) => item.id === activo) ?? items[0];
 
@@ -206,28 +273,55 @@ export function ServiciosInteractivos() {
               tabIndex={seleccionado ? 0 : -1}
               onClick={() => alElegir(item.id)}
               onKeyDown={(evento) => alTeclear(evento, indice)}
+              onPointerEnter={(evento) => evento.pointerType === "mouse" && ola(evento.currentTarget)}
+              onPointerMove={(evento) => alMoverFila(evento, indice)}
+              onPointerLeave={() => alSalirFila(indice)}
+              onFocus={(evento) => evento.currentTarget.matches(":focus-visible") && ola(evento.currentTarget)}
+              data-foco-tactil
               className="ficha-servicio group relative grid w-full items-center gap-x-6 gap-y-5 border-b border-profundo py-7 text-left md:grid-cols-[minmax(0,1fr)_minmax(0,20rem)] md:gap-x-12 md:py-9 lg:grid-cols-[minmax(0,1fr)_minmax(0,24rem)]"
             >
-              <span className="flex min-w-0 items-start gap-5 md:gap-8">
+              {/* La luz del acento que sigue al puntero. */}
+              <span aria-hidden className="foco-servicio pointer-events-none absolute inset-y-0 -inset-x-4 md:-inset-x-8" />
+              <span className="relative flex min-w-0 items-start gap-5 md:gap-8">
+                {/* El número gira: sale el lleno y entra el de contorno. */}
                 <span
                   aria-hidden
-                  className="shrink-0 font-michroma text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.85] text-[var(--acento)]"
+                  className="numero-servicio relative inline-block shrink-0 overflow-hidden font-michroma text-[clamp(2.5rem,7vw,5.5rem)] leading-none text-[var(--acento)]"
                 >
-                  0{indice + 1}
+                  <span className="numero-lleno block">0{indice + 1}</span>
+                  <span className="numero-borde absolute inset-0 block">0{indice + 1}</span>
                 </span>
                 <span className="min-w-0 pt-1">
-                  <span className="block titulo text-2xl leading-tight text-blanco md:text-4xl">{item.nombre}</span>
+                  <span className="block titulo text-2xl leading-tight text-blanco md:text-4xl">
+                    <Letras texto={item.nombre} />
+                  </span>
                   <span className="mt-3 block max-w-xl font-lectura text-[15px] leading-relaxed text-acero md:text-base">
                     {item.texto}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="ver-como mt-4 inline-flex items-center gap-2 font-plex text-xs font-medium uppercase tracking-etiqueta text-[var(--acento)]"
+                  >
+                    {NOSOTROS.servicios.verComo}
+                    <span className="ver-como-flecha inline-block">↓</span>
                   </span>
                 </span>
               </span>
 
               {/* La imagen de lo que se ofrece, con su color original (sin tinte ni blanco y negro: decisión del 19-oct-2026). */}
-              <ImagenViva id={item.id} src={visual.imagen.src} alt={visual.imagen.alt} />
+              <ImagenViva
+                id={item.id}
+                src={visual.imagen.src}
+                alt={visual.imagen.alt}
+                cajaRef={(elemento) => {
+                  imagenes.current[indice] = elemento;
+                }}
+              />
 
               {/* La línea del acento, en las tres: se dibuja de izquierda a derecha al entrar en pantalla. */}
-              <span aria-hidden className="linea-servicio absolute -bottom-px left-0 h-[2px] w-full origin-left bg-[var(--acento)]" />
+              <span aria-hidden className="linea-servicio absolute -bottom-px left-0 h-[2px] w-full origin-left overflow-hidden bg-[var(--acento)]">
+                <span className="linea-destello absolute inset-y-0 left-0 w-1/4" />
+              </span>
             </button>
           );
         })}
