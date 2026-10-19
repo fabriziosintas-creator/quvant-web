@@ -116,6 +116,20 @@ function herramientas(acciones: Acciones) {
   return [registrarPedido, pedirPersona];
 }
 
+/**
+ * El chat muestra texto plano: si igual llega algo de markdown (negritas,
+ * títulos, viñetas), se limpia para que no se vean los asteriscos.
+ */
+function textoPlano(texto: string) {
+  return texto
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/__(.+?)__/g, "$1")
+    .replace(/(^|\s)\*(\S[^*]*?)\*(?=\s|[.,;:!?]|$)/g, "$1$2")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^\s*[-*]\s+/gm, "· ")
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, "$1 ($2)");
+}
+
 /** Una respuesta de Claude a la charla, usando las herramientas si hace falta. */
 export async function responderConIA(mensajes: Mensaje[], acciones: Acciones): Promise<string> {
   const historial = historialParaClaude(mensajes);
@@ -144,7 +158,7 @@ export async function responderConIA(mensajes: Mensaje[], acciones: Acciones): P
       .map((bloque) => bloque.text.trim())
       .filter(Boolean)
       .join("\n\n");
-    return texto || RESPUESTA_DE_RESPALDO;
+    return textoPlano(texto) || RESPUESTA_DE_RESPALDO;
   } catch (error) {
     if (error instanceof Anthropic.AuthenticationError) {
       console.error("[chat] La clave de Anthropic no es válida.");

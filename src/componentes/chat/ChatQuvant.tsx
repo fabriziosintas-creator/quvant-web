@@ -403,9 +403,38 @@ function Burbuja({ autor, texto, nombre }: { autor: Mensaje["autor"]; texto: str
         }`}
         style={autor === "humano" ? { borderColor: VERDE } : undefined}
       >
-        {texto}
+        <ConLinks texto={texto} />
       </p>
     </div>
+  );
+}
+
+/** Los links del texto, clickeables (se abren en otra pestaña; los del propio sitio, en la misma). */
+function ConLinks({ texto }: { texto: string }) {
+  const partes = texto.split(/(https?:\/\/[^\s)]+[^\s).,;:!?])/g);
+  return (
+    <>
+      {partes.map((parte, i) => {
+        if (i % 2 === 0) return parte;
+        let propio = false;
+        try {
+          propio = new URL(parte).host === window.location.host;
+        } catch {
+          // Si no es una URL válida, va como texto.
+          return parte;
+        }
+        return (
+          <a
+            key={i}
+            href={parte}
+            {...(propio ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+            className="break-all underline decoration-current/40 underline-offset-2 hover:decoration-current"
+          >
+            {parte.replace(/^https?:\/\//, "")}
+          </a>
+        );
+      })}
+    </>
   );
 }
 
