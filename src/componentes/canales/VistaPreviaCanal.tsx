@@ -132,7 +132,7 @@ function Nosotros() {
           <svg aria-hidden viewBox="0 0 12 12" className="size-2.5 fill-current">
             <path d="M3 1.5 10.5 6 3 10.5Z" />
           </svg>
-          0:45
+          0:42
         </span>
       </span>
       <span className="absolute bottom-5 left-5 flex items-center gap-2 font-michroma text-sm text-blanco">

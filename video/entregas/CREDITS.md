@@ -1,4 +1,18 @@
-# Créditos · video de Quvant (hero-loop y spot-completo)
+# Créditos · video de Quvant
+
+## Spot 2026 (el que usa la web desde el 19-oct-2026)
+
+Composición `Spot2026` (`src/spot2026/`). **No usa stock**: todo es material propio.
+
+- **Imagen**: capturas de los trabajos del portfolio de Quvant (Grimm Travel, Yunque, Forja, HackFit, Firmamento, Gene Keys, Millonarios, Ideario), las mismas de `public/webs/` del sitio; 2,2 s del recorrido real de Forja; las fotos del método de `public/objetivo/` (las de Unsplash que ya usa el sitio, ver más abajo); la Q de cromo en 3D (`src/three/QChrome.tsx`).
+- **Música y efectos**: pieza original compuesta en código (`scripts/componer-musica-2026.ts`): electrónica a 120 BPM en fa menor, con la estática, los impactos, los barridos y las subidas sincronizados a los cortes. Sin licencias de terceros.
+- **Tipografías**: Michroma, IBM Plex Mono e IBM Plex Sans (SemiBold y Regular, de `@fontsource/ibm-plex-sans`), todas SIL Open Font License 1.1.
+
+Las fotos de `public/objetivo/` son provisorias (Unsplash, licencia libre para uso comercial) hasta la sesión de fotos en la ferretería: al reemplazarlas, correr `npm run preparar-spot-2026`, `npm run render-2026` y `npm run entregas-2026`.
+
+---
+
+# Hero-loop y spot-completo (2025)
 
 ## Stock de video
 

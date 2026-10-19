@@ -5,6 +5,7 @@ import { MuestraPantalla } from "./muestras/MuestraPantalla";
 import { PRUEBA, PruebaShaders, QSola } from "./compositions/PruebaShaders";
 import { HERO, HERO_CUADROS, HeroLoop } from "./compositions/HeroLoop";
 import { SPOT, SPOT_CUADROS, SpotCompleto } from "./compositions/SpotCompleto";
+import { SPOT_2026, Spot2026 } from "./spot2026/Spot2026";
 
 /**
  * Composiciones del video: el hero-loop y el spot-completo (las dos piezas
@@ -13,6 +14,23 @@ import { SPOT, SPOT_CUADROS, SpotCompleto } from "./compositions/SpotCompleto";
 export const Raiz: React.FC = () => {
   return (
     <>
+      {/* El spot 2026 (42 s, cortado a su música): 1080p para la web y 4K para redes. */}
+      <Composition
+        id="Spot2026"
+        component={Spot2026}
+        durationInFrames={SPOT_2026.segundos * SPOT_2026.fps}
+        fps={SPOT_2026.fps}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="Spot2026-4K"
+        component={Spot2026}
+        durationInFrames={SPOT_2026.segundos * SPOT_2026.fps}
+        fps={SPOT_2026.fps}
+        width={3840}
+        height={2160}
+      />
       {/* El fondo del hero del sitio: 4K/60 y su versión 1080p. */}
       <Composition
         id="HeroLoop"

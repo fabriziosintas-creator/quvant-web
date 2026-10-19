@@ -6,13 +6,13 @@ import { NOSOTROS } from "@/datos/textos";
 const { spot } = NOSOTROS;
 
 /**
- * El spot de Quvant (45 s, con música), en una ventana como la de Forja.
+ * El spot de Quvant (42 s, con música), en una ventana como la de Forja.
  * No se descarga hasta que la persona toca "Ver el video" (preload="none"):
  * ahí arranca con sonido y aparecen los controles del navegador. Como lo
  * pide la persona, corre igual en vista texto o con "menos movimiento".
  *
- * Sale de video/ (npm run entregas -- web): AV1 con Opus primero y H.264
- * con AAC para los navegadores sin AV1.
+ * Sale de video/ (npm run render-2026 y npm run entregas-2026): VP9 con
+ * Opus primero y H.264 con AAC para los navegadores sin VP9.
  */
 export function SpotQuvant() {
   const video = useRef<HTMLVideoElement>(null);
@@ -44,7 +44,7 @@ export function SpotQuvant() {
           controls={empezado}
           aria-label={spot.descripcion}
         >
-          <source src="/spot/spot-1080.webm" type='video/webm; codecs="av01.0.09M.08, opus"' />
+          <source src="/spot/spot-1080.webm" type='video/webm; codecs="vp9, opus"' />
           <source src="/spot/spot-1080.mp4" type="video/mp4" />
         </video>
         {empezado ? null : (

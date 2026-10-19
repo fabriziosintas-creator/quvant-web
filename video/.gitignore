@@ -35,3 +35,8 @@ build/
 # Música y tic generados (npm run musica). Un tema elegido a mano (assets/audio/musica.mp3) sí se versiona.
 assets/audio/musica-quvant.wav
 assets/audio/tic.wav
+
+# material del spot 2026 (npm run preparar-spot-2026)
+public/spot2026/
+assets/audio/musica-2026.wav
+assets/audio/musica-2026-mezcla.wav

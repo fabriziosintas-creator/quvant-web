@@ -51,6 +51,10 @@
     "musica": "tsx scripts/componer-musica.ts",
     "entregas": "tsx scripts/entregas.ts",
     "verificar-entregas": "tsx scripts/verificar-entregas.ts",
-    "unir-spot": "tsx scripts/entregas.ts unir-spot"
+    "unir-spot": "tsx scripts/entregas.ts unir-spot",
+    "musica-2026": "tsx scripts/componer-musica-2026.ts",
+    "preparar-spot-2026": "node scripts/preparar-spot-2026.mjs",
+    "entregas-2026": "node scripts/entregas-2026.mjs",
+    "render-2026": "remotion render src/index.ts Spot2026 out/spot2026/spot2026-imagen.mp4 --gl=angle --concurrency=3 --muted --crf=16 --jpeg-quality=92"
   }
 }

@@ -78,7 +78,7 @@ export const CANALES = [
     capitulos: [
       { id: "fuerzas", nombre: "Las dos fuerzas" },
       { id: "equipo", nombre: "El equipo" },
-      { id: "video", nombre: "En 45 segundos" },
+      { id: "video", nombre: "En 42 segundos" },
     ],
   },
   {
@@ -482,14 +482,14 @@ export const NOSOTROS = {
     etiqueta: "Misión",
     texto: "Entrar en cada rubro, entender cómo trabaja y construir el sistema que todavía no tiene.",
   },
-  /** El spot de 45 s (video/ en este repo), con play a pedido y sonido. */
+  /** El spot de 42 s (video/ en este repo), con play a pedido y sonido. */
   spot: {
-    ventana: "Quvant en 45 segundos",
+    ventana: "Quvant en 42 segundos",
     nota: "Con sonido",
     reproducir: "Ver el video",
-    duracion: "0:45",
+    duracion: "0:42",
     descripcion:
-      "Video de Quvant: cómo programamos y diseñamos, Yunque y Forja por dentro con pantallas reales, cómo trabajamos por fases y la firma de la marca.",
+      "Video de Quvant: la intro de la tele, los problemas que ordenamos, nuestros trabajos reales (Grimm Travel, Yunque, Forja, HackFit, Firmamento y Gene Keys), cómo trabajamos y la firma de la marca.",
   },
   servicios: {
     etiqueta: "Nuestros servicios",

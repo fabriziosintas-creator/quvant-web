@@ -11,7 +11,7 @@ const [FUERZAS, EQUIPO, VIDEO] = CANALES[3].capitulos;
 
 export const metadata: Metadata = metadatosCanal("nosotros");
 
-/** Canal 04 · Nosotros: las dos fuerzas, el equipo con la misión y el spot de 45 s. */
+/** Canal 04 · Nosotros: las dos fuerzas, el equipo con la misión y el spot de 42 s. */
 export default function Nosotros() {
   return (
     <PaginaCanal id="nosotros">
