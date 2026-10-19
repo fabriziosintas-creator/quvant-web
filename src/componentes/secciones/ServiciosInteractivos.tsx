@@ -5,7 +5,6 @@ import { useRef, useState, type KeyboardEvent } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { Grano } from "@/componentes/estructura/Grano";
 import { SERVICIOS_VISUAL, type IdServicio } from "@/datos/servicios";
 import { NOSOTROS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
@@ -24,9 +23,10 @@ type Servicio = (typeof NOSOTROS.servicios.items)[number];
  * línea fina (sin tarjetas: el borde queda para lo que es una ventana): el
  * número enorme, el título y el texto, y al costado la imagen de lo que se
  * ofrece (la pantalla real del sistema, una foto de ambiente, la propuesta
- * real de Ferremix). La elegida enciende su número con el acento, su
- * imagen deriva despacio (keyframe `deriva`) y una línea la subraya. En el
- * celular, la imagen se ve solo en la elegida.
+ * real de Ferremix), con su color original. Los títulos van siempre en
+ * blanco: la elegida se nota en su número, que se enciende con el acento,
+ * en su imagen, que deriva despacio (keyframe `deriva`), y en la línea que
+ * la subraya. En el celular, la imagen se ve solo en la elegida.
  *
  * Debajo, la ventana con la ilustración de cómo se arma cada uno, con un
  * movimiento distinto por servicio: los sistemas encastran, la app crece
@@ -175,23 +175,17 @@ export function ServiciosInteractivos() {
                   0{indice + 1}
                 </span>
                 <span className="min-w-0 pt-1">
-                  <span
-                    className={`block titulo text-2xl leading-tight transition-colors group-hover:text-blanco md:text-4xl ${
-                      seleccionado ? "text-blanco" : "text-acero"
-                    }`}
-                  >
-                    {item.nombre}
-                  </span>
+                  <span className="block titulo text-2xl leading-tight text-blanco md:text-4xl">{item.nombre}</span>
                   <span className="mt-3 block max-w-xl font-lectura text-[15px] leading-relaxed text-acero md:text-base">
                     {item.texto}
                   </span>
                 </span>
               </span>
 
-              {/* La imagen de lo que se ofrece: la pantalla real (teñida con el acento) o la foto de ambiente (en blanco y negro). */}
+              {/* La imagen de lo que se ofrece, con su color original (sin tinte ni blanco y negro: decisión del 19-oct-2026). */}
               <span
-                className={`relative aspect-[16/10] overflow-hidden rounded-[10px] bg-negro transition-opacity duration-(--duracion-media) ${
-                  seleccionado ? "block opacity-100" : "hidden opacity-45 group-hover:opacity-75 md:block"
+                className={`relative aspect-[16/10] overflow-hidden rounded-[10px] bg-negro ${
+                  seleccionado ? "block" : "hidden md:block"
                 }`}
               >
                 <Image
@@ -199,21 +193,8 @@ export function ServiciosInteractivos() {
                   alt={visual.imagen.alt}
                   fill
                   sizes="(min-width: 1024px) 24rem, (min-width: 768px) 20rem, 100vw"
-                  className={`foto-servicio object-cover object-top ${
-                    "foto" in visual ? "foto-bn" : seleccionado ? "saturate-100" : "saturate-[0.6]"
-                  }`}
+                  className="foto-servicio object-cover object-top"
                 />
-                {"foto" in visual ? (
-                  <Grano />
-                ) : (
-                  <span
-                    aria-hidden
-                    className={`absolute inset-0 mix-blend-color transition-opacity duration-(--duracion-lenta) ${
-                      seleccionado ? "opacity-25" : "opacity-55"
-                    }`}
-                    style={{ background: "var(--acento)" }}
-                  />
-                )}
               </span>
 
               {/* La línea del acento subraya la elegida. */}
