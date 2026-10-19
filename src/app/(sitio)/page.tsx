@@ -39,13 +39,13 @@ export default function Inicio() {
             <h1>
               <span
                 data-titulo-portada
-                className="block font-michroma text-[clamp(2.5rem,13vw,4.75rem)] leading-none tracking-marca text-blanco md:text-[clamp(4.75rem,8vw,8.5rem)]"
+                className="block cursor-pointer select-none font-michroma text-[clamp(2.5rem,13vw,4.75rem)] leading-none tracking-marca text-blanco md:text-[clamp(4.75rem,8vw,8.5rem)]"
               >
                 {HERO.titulo}
               </span>
               <span className="sr-only"> · </span>
               <span className="mt-7 block max-w-xl titulo text-lg leading-snug text-blanco md:text-2xl">
-                <TextoTipeado texto={HERO.propuesta} velocidadMs={24} esperarIntro />
+                <TextoTipeado texto={HERO.propuesta} velocidadMs={24} />
               </span>
             </h1>
             <div className="mt-10 flex flex-wrap gap-3 md:gap-4">

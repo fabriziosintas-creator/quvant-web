@@ -278,38 +278,19 @@ html[data-cursor="si"] :where(input, textarea, [contenteditable]) {
 html[data-vista="texto"] .aurora span { animation: none; }
 
 /*
- * La intro de la portada (IntroTV): solo existe mientras <html> tiene
- * data-intro="si" (lo pone el script de <head> antes de pintar). Mientras
- * tanto la página no se mueve. El negro tapa hasta el primer cuadro del
- * shader; si algo fallara, a los 8 s se va sola.
+ * El logo de la portada sintoniza como una tele (IntroTV): mientras <html>
+ * tiene data-intro="si", el título real queda escondido debajo del lienzo
+ * del efecto y aparece cuando la palabra engancha. Si algo fallara, a los
+ * 4 s aparece igual.
  */
-.intro-tv {
-  display: none;
-  background: var(--color-negro);
-}
-
-html[data-intro="si"] {
-  overflow: hidden;
-}
-
-html[data-intro="si"] .intro-tv {
-  display: block;
-  animation: intro-seguridad 0.3s linear 8s forwards;
-}
-
-.intro-tv[data-dibujando] {
-  background: transparent;
-}
-
-/* El título real espera a que la palabra de la intro aterrice encima (si no, se ven dos). */
 html[data-intro="si"] [data-titulo-portada]:not([data-aterrizo]) {
   opacity: 0;
+  animation: titulo-seguridad 0.2s linear 4s forwards;
 }
 
-@keyframes intro-seguridad {
+@keyframes titulo-seguridad {
   to {
-    opacity: 0;
-    visibility: hidden;
+    opacity: 1;
   }
 }
 
