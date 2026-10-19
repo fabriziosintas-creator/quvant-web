@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -19,14 +19,57 @@ if (typeof window !== "undefined") {
 type Servicio = (typeof NOSOTROS.servicios.items)[number];
 
 /**
+ * La imagen de cada servicio, viva: se mueve sola, cada una a su manera
+ * (el tablero se recorre de punta a punta, la foto de la app se acerca, la
+ * web de Ferremix se acerca a la marca; ver .mov-* en globals.css) y, con
+ * el mouse, se inclina, la foto sigue al puntero y le pasa un brillo.
+ */
+function ImagenViva({ id, src, alt }: { id: IdServicio; src: string; alt: string }) {
+  const caja = useRef<HTMLSpanElement>(null);
+  const alMover = (evento: PointerEvent<HTMLSpanElement>) => {
+    const elemento = caja.current;
+    if (!elemento || evento.pointerType !== "mouse") return;
+    const r = elemento.getBoundingClientRect();
+    elemento.style.setProperty("--x", ((evento.clientX - r.left) / r.width - 0.5).toFixed(3));
+    elemento.style.setProperty("--y", ((evento.clientY - r.top) / r.height - 0.5).toFixed(3));
+    elemento.dataset.encima = "si";
+  };
+  const alSalir = () => {
+    const elemento = caja.current;
+    if (!elemento) return;
+    elemento.style.setProperty("--x", "0");
+    elemento.style.setProperty("--y", "0");
+    elemento.dataset.encima = "no";
+  };
+  return (
+    <span
+      ref={caja}
+      onPointerMove={alMover}
+      onPointerLeave={alSalir}
+      className="imagen-viva relative block aspect-[16/10] overflow-hidden rounded-[10px] bg-negro"
+    >
+      <span className="imagen-viva-capa absolute -inset-[4%]">
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes="(min-width: 1024px) 26rem, (min-width: 768px) 22rem, 100vw"
+          className={`mov-${id} object-cover object-top`}
+        />
+      </span>
+      <span aria-hidden className="imagen-viva-brillo pointer-events-none absolute inset-0" />
+    </span>
+  );
+}
+
+/**
  * Los tres servicios como filas grandes a todo el ancho, separadas por una
  * línea fina (sin tarjetas: el borde queda para lo que es una ventana): el
  * número enorme, el título y el texto, y al costado la imagen de lo que se
  * ofrece (la pantalla real del sistema, una foto de ambiente, la propuesta
- * real de Ferremix), con su color original. Los títulos van siempre en
- * blanco: la elegida se nota en su número, que se enciende con el acento,
- * en su imagen, que deriva despacio (keyframe `deriva`), y en la línea que
- * la subraya. En el celular, la imagen se ve solo en la elegida.
+ * real de Ferremix), con su color original. Las tres van iguales (número y
+ * línea con el acento, título en blanco): elegir una cambia la ventana de
+ * abajo, que dice cuál se está viendo. Cada imagen está viva (ImagenViva).
  *
  * Debajo, la ventana con la ilustración de cómo se arma cada uno, con un
  * movimiento distinto por servicio: los sistemas encastran, la app crece
@@ -145,7 +188,7 @@ export function ServiciosInteractivos() {
     <div>
       <p className="font-plex text-xs text-acero">{NOSOTROS.servicios.ayuda}</p>
 
-      <div role="tablist" aria-label={NOSOTROS.servicios.etiqueta} className="mt-8 border-t border-profundo">
+      <div role="tablist" aria-label={NOSOTROS.servicios.etiqueta} data-pausable className="mt-8 border-t border-profundo">
         {items.map((item, indice) => {
           const seleccionado = item.id === activo;
           const visual = SERVICIOS_VISUAL[item.id];
@@ -168,9 +211,7 @@ export function ServiciosInteractivos() {
               <span className="flex min-w-0 items-start gap-5 md:gap-8">
                 <span
                   aria-hidden
-                  className={`shrink-0 font-michroma text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.85] transition-colors duration-(--duracion-media) ${
-                    seleccionado ? "text-[var(--acento)]" : "text-profundo group-hover:text-acero"
-                  }`}
+                  className="shrink-0 font-michroma text-[clamp(2.5rem,7vw,5.5rem)] leading-[0.85] text-[var(--acento)]"
                 >
                   0{indice + 1}
                 </span>
@@ -183,27 +224,10 @@ export function ServiciosInteractivos() {
               </span>
 
               {/* La imagen de lo que se ofrece, con su color original (sin tinte ni blanco y negro: decisión del 19-oct-2026). */}
-              <span
-                className={`relative aspect-[16/10] overflow-hidden rounded-[10px] bg-negro ${
-                  seleccionado ? "block" : "hidden md:block"
-                }`}
-              >
-                <Image
-                  src={visual.imagen.src}
-                  alt={visual.imagen.alt}
-                  fill
-                  sizes="(min-width: 1024px) 24rem, (min-width: 768px) 20rem, 100vw"
-                  className="foto-servicio object-cover object-top"
-                />
-              </span>
+              <ImagenViva id={item.id} src={visual.imagen.src} alt={visual.imagen.alt} />
 
-              {/* La línea del acento subraya la elegida. */}
-              <span
-                aria-hidden
-                className={`absolute -bottom-px left-0 h-[2px] w-full origin-left bg-[var(--acento)] transition-transform duration-(--duracion-lenta) ease-quvant ${
-                  seleccionado ? "scale-x-100" : "scale-x-0"
-                }`}
-              />
+              {/* La línea del acento, en las tres: se dibuja de izquierda a derecha al entrar en pantalla. */}
+              <span aria-hidden className="linea-servicio absolute -bottom-px left-0 h-[2px] w-full origin-left bg-[var(--acento)]" />
             </button>
           );
         })}

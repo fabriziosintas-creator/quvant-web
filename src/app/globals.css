@@ -435,17 +435,117 @@ html[data-intro="si"] [data-titulo-portada]:not([data-aterrizo]) {
   }
 }
 
-.ficha-servicio[aria-selected="true"] .foto-servicio {
-  animation: deriva 16s var(--ease-vaiven) infinite alternate;
+/*
+ * Las imágenes de Servicios (ImagenViva): cada una se mueve sola a su
+ * manera y, con el mouse, se inclina, la foto sigue al puntero y le pasa
+ * un brillo. --x y --y van de -0,5 a 0,5 (dónde está el puntero).
+ */
+.imagen-viva {
+  --x: 0;
+  --y: 0;
+  transform: perspective(900px) rotateX(calc(var(--y) * -7deg)) rotateY(calc(var(--x) * 9deg));
+  transition: transform var(--duracion-media) var(--ease-quvant);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .ficha-servicio .foto-servicio {
-    animation: none;
+.imagen-viva[data-encima="si"] {
+  transform: perspective(900px) rotateX(calc(var(--y) * -7deg)) rotateY(calc(var(--x) * 9deg)) scale(1.03);
+  transition-duration: var(--duracion-rapida);
+}
+
+.imagen-viva-capa {
+  transform: translate(calc(var(--x) * -3%), calc(var(--y) * -3%));
+  transition: transform var(--duracion-media) var(--ease-quvant);
+}
+
+.imagen-viva-brillo {
+  opacity: 0;
+  background: radial-gradient(circle at calc(50% + var(--x) * 100%) calc(50% + var(--y) * 100%), rgb(255 255 255 / 0.22), transparent 45%);
+  mix-blend-mode: soft-light;
+  transition: opacity var(--duracion-media) var(--ease-quvant);
+}
+
+.imagen-viva[data-encima="si"] .imagen-viva-brillo {
+  opacity: 1;
+}
+
+/* Sistemas: el tablero se recorre de punta a punta (la imagen es más ancha que la ventana). */
+@keyframes mov-sistemas {
+  from {
+    object-position: 0% 0%;
+    transform: scale(1.04);
+  }
+  to {
+    object-position: 100% 0%;
+    transform: scale(1.1);
   }
 }
 
-html[data-vista="texto"] .ficha-servicio .foto-servicio {
+/* App: la foto se acerca despacio. */
+@keyframes mov-app {
+  from {
+    transform: scale(1.02) translate(0, 0);
+  }
+  to {
+    transform: scale(1.18) translate(-3%, -2%);
+  }
+}
+
+/* Web: la propuesta de Ferremix se acerca a la marca (la X, a la derecha). */
+@keyframes mov-web {
+  from {
+    transform: scale(1.02) translate(2%, 1%);
+  }
+  to {
+    transform: scale(1.2) translate(-6%, -2%);
+  }
+}
+
+.mov-sistemas {
+  animation: mov-sistemas 14s var(--ease-vaiven) infinite alternate;
+}
+
+.mov-app {
+  animation: mov-app 11s var(--ease-vaiven) infinite alternate;
+}
+
+.mov-web {
+  animation: mov-web 13s var(--ease-vaiven) infinite alternate;
+}
+
+/* La línea de cada servicio se dibuja al entrar en pantalla (donde el navegador lo permite). */
+@keyframes dibujar-linea {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .linea-servicio {
+    animation: dibujar-linea linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 10%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mov-sistemas,
+  .mov-app,
+  .mov-web,
+  .linea-servicio {
+    animation: none;
+  }
+  .imagen-viva,
+  .imagen-viva[data-encima="si"],
+  .imagen-viva-capa {
+    transform: none;
+    transition: none;
+  }
+}
+
+html[data-vista="texto"] :is(.mov-sistemas, .mov-app, .mov-web, .linea-servicio) {
   animation: none;
 }
 
