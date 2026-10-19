@@ -4,12 +4,25 @@ Proyecto Remotion (React + three.js + shaders GLSL propios) con las dos piezas d
 
 | Composición | Qué es |
 | --- | --- |
+| `Spot2026` / `Spot2026-4K` | **El spot que usa la web** (Nosotros): 42 s, cortado a su música, con los trabajos reales del portfolio. Ver abajo |
 | `HeroLoop` / `HeroLoop1080` | Fondo del hero del sitio: 24 s, sin audio, loop exacto |
 | `SpotCompleto` / `SpotPrueba1080` | Spot de 45 s para redes y presentaciones (la prueba lleva marca de tiempo) |
 | `ForjaRecorrido` | El video real de Forja de Plataformas › Industria |
 | `PruebaShaders`, `QSola4K` | Pruebas de los shaders y de la Q cromada |
 
-## De cero a las entregas
+## Spot 2026
+
+No usa stock: sale de las capturas del portfolio del sitio, la grabación de Forja, las fotos del método y la Q de cromo. La imagen y la música comparten la línea de tiempo (`src/spot2026/tiempos.ts`): para mover un corte, se cambia ahí y se regeneran las dos.
+
+```console
+npm run preparar-spot-2026   # junta el material del sitio en public/spot2026/
+npm run musica-2026          # compone la música → assets/audio/musica-2026.wav (−14 LUFS)
+node scripts/fotogramas-2026.mjs 9.5 24.6   # cuadros sueltos para revisar (out/spot2026/cuadros/)
+npm run render-2026          # la imagen, 1080p/60 (unos 6 min en esta máquina)
+npm run entregas-2026        # MP4 + WebM + póster → ../public/spot/
+```
+
+## De cero a las entregas (hero-loop y spot 2025)
 
 ```console
 npm i --loglevel=error
