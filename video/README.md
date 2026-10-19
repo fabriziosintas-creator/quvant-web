@@ -27,7 +27,7 @@ npm run entregas-2026        # MP4 + WebM + póster → ../public/spot/
 ```console
 npm i --loglevel=error
 npm run grabar            # capturas 4K de Yunque y Forja (Playwright, Chrome con GPU)
-npm run grabar-forja      # la toma en vivo de Forja
+npm run grabar-forja      # la toma de Forja, cuadro por cuadro (ver abajo)
 npm run stock             # stock de Pixabay (PIXABAY_API_KEY en .env)
 npm run normalizar        # LUT y recorte a 4K
 npm run preparar-hero     # material del hero-loop → public/hero/
@@ -46,12 +46,24 @@ npm run verificar-entregas
 
 Todo lo que se regenera (material, renders, `out/`) está en `.gitignore`.
 
-## Lo que hay que saber de esta máquina
+## El recorrido de Forja (la ventana de Plataformas › Industria)
+
+```console
+npm run grabar-forja      # la toma, 60 fps, en unos 2 min → public/forja/recorrido.mp4 + src/compositions/forja/{cursor,marcas}.json
+npm run render-forja      # la edición, 34 s a 60 fps (unos 2 min)
+npm run web-forja         # MP4 + WebM + póster → ../public/forja/
+```
+
+La toma no se filma en vivo: la demo corre con un reloj virtual (`scripts/reloj-virtual.js`) que solo avanza cuando el grabador lo pide, así que cada cuadro se dibuja entero antes de fotografiarlo y el video sale fluido aunque la máquina tarde. (La versión anterior se filmó en tiempo real desde la notebook y se trababa cada vez que el 3D no llegaba.) El guion está en `scripts/grabar-forja-cuadros.ts`; si la demo cambia de lugar un control, se ajusta ahí. La toma ya tiene el ritmo final: en la edición todo va a velocidad 1.
+
+## Lo que hay que saber de las máquinas
+
+La compu de escritorio (RTX 3070, 32 GB) renderiza todo, `OffthreadVideo` incluido. Lo que sigue es de la notebook:
 
 - Siempre `--gl=angle`: sin eso Remotion dibuja con SwiftShader (CPU) y tarda una eternidad.
 - La GPU es una Intel integrada con 2 GB compartidos entre todas las pestañas del render. A 4K, `--concurrency=2`; a 1080p, 3. Si los cuadros salen en blanco, es memoria de GPU: bajar la concurrencia.
 - Son 8 GB de RAM: mientras renderiza a 4K no correr encodes AV1 al lado (libaom 4K usa ~2 GB). Así se cayó el navegador a mitad del spot; por eso va en tramos.
-- `remotion.exe` está bloqueado (probablemente el antivirus): no se puede usar `OffthreadVideo`. El stock va en secuencias de imágenes.
+- `remotion.exe` está bloqueado (probablemente el antivirus): no se puede usar `OffthreadVideo`. El stock va en secuencias de imágenes, y `ForjaRecorrido` (que usa `OffthreadVideo`) se renderiza en la de escritorio.
 - El ffmpeg de Remotion no tiene `lut3d` ni AV1: los scripts usan `ffmpeg-static`.
 - AV1 4K va a menos de 1 cuadro por segundo en esta CPU: el loop (24 s) tarda media hora; el spot va en VP9.
 

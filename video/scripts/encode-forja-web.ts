@@ -3,7 +3,7 @@
  *
  * Del render de ForjaRecorrido a lo que sirve la web (public/forja/ del
  * sitio): un MP4 H.264 y un WebM VP9 livianos, sin audio, con faststart, y
- * un póster .webp (un cuadro de la lista de críticos sobre el depósito 3D,
+ * un póster .webp (un cuadro de los racks en 3D con el detalle de uno,
  * que es lo que se ve en vista texto y antes de que cargue el video).
  *
  * Usa ffmpeg-static (el ffmpeg que trae Remotion es mínimo).
@@ -16,7 +16,7 @@ import sharp from "sharp";
 
 const ENTRADA = process.argv[2] ?? "out/forja-recorrido.mp4";
 const DESTINO = path.resolve(process.cwd(), "..", "public", "forja");
-const SEGUNDO_POSTER = 20.5;
+const SEGUNDO_POSTER = 21.0;
 
 function correr(args: string[]) {
   if (!ffmpeg) throw new Error("ffmpeg-static no encontró el binario");

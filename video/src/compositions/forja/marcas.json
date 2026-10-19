@@ -1,38 +1,34 @@
 [
   {
-    "momento": "intro",
-    "segundo": 2.44
+    "momento": "fragua",
+    "segundo": 0
   },
   {
     "momento": "red",
-    "segundo": 14.84
-  },
-  {
-    "momento": "constelacion",
-    "segundo": 29.65
+    "segundo": 7
   },
   {
     "momento": "entrar",
-    "segundo": 34.13
+    "segundo": 11.8
   },
   {
-    "momento": "3d",
-    "segundo": 38.17
+    "momento": "racks",
+    "segundo": 17.9333
   },
   {
-    "momento": "faltantes",
-    "segundo": 43.68
+    "momento": "criticos",
+    "segundo": 23.7833
   },
   {
-    "momento": "deposito",
-    "segundo": 71.06
+    "momento": "vuelta",
+    "segundo": 28.9
   },
   {
     "momento": "sala",
-    "segundo": 78.99
+    "segundo": 31.8167
   },
   {
     "momento": "fin",
-    "segundo": 87.46
+    "segundo": 37.4833
   }
 ]
