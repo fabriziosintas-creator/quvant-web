@@ -235,13 +235,15 @@ export const PROYECTOS: readonly Proyecto[] = [
     estado: "En línea",
     resumen: "Un viaje de autoconocimiento a través de las Claves Genéticas: tus dones, tus sombras y tu propósito.",
     puntos: [
-      "Cuenta propia para seguir tu recorrido",
+      "El perfil se calcula con la fecha, la hora y el lugar de nacimiento",
+      "Tres esferas para explorar: Genio, Amor y Prosperidad",
+      "Un oráculo que responde sobre lo que estás atravesando",
       "La información se guarda solo en tu dispositivo",
-      "Pensada para leer con calma, también en el celular",
     ],
     color: "#E58FC8",
+    // Las capturas son de una cuenta de prueba (se guarda solo en el navegador).
     formato: "celular",
     embebible: true,
-    vistas: [vista("gene-keys", "inicio", "Inicio", "https://gene-keys.onrender.com/", [1129], [1960])],
+    vistas: [vista("gene-keys", "inicio", "Mi mapa", "https://gene-keys.onrender.com/", [900], [2578])],
   },
 ];

@@ -35,7 +35,7 @@ export function InterruptorVista({ corto = false, className = "" }: { corto?: bo
             type="button"
             aria-pressed={activa}
             onClick={() => fijarVista(opcion.valor)}
-            className={`rounded-full px-3 py-1.5 font-plex text-[10px] font-medium uppercase tracking-etiqueta transition-colors ${
+            className={`rounded-full px-3 py-1.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta transition-colors ${
               activa ? "bg-blanco text-negro" : "text-acero hover:text-blanco"
             }`}
           >

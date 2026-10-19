@@ -4,6 +4,7 @@ import { Canales } from "@/componentes/canales/Canales";
 import { DESLIZ_PAGINA } from "@/componentes/canales/navegacion";
 import { AuroraFondo } from "@/componentes/estructura/AuroraFondo";
 import { CintaRubros } from "@/componentes/estructura/CintaRubros";
+import { IntroTV } from "@/componentes/estructura/IntroTV";
 import { TextoTipeado } from "@/componentes/estructura/TextoTipeado";
 import { VideoPortada } from "@/componentes/estructura/VideoPortada";
 import { Vitrina } from "@/componentes/secciones/vitrina/Vitrina";
@@ -27,6 +28,7 @@ export default function Inicio() {
     <ViewTransition enter={DESLIZ_PAGINA} exit={DESLIZ_PAGINA} default="none">
       <div>
         <DatosEstructurados />
+        <IntroTV />
         <section
           id="inicio"
           className="relative flex min-h-svh flex-col justify-end overflow-hidden pb-16 pt-16 lg:justify-center lg:pb-0"
@@ -35,12 +37,15 @@ export default function Inicio() {
           <AuroraFondo />
           <div className="contenedor relative z-10">
             <h1>
-              <span className="block font-michroma text-[clamp(2.5rem,13vw,4.75rem)] leading-none tracking-marca text-blanco md:text-[clamp(4.75rem,8vw,8.5rem)]">
+              <span
+                data-titulo-portada
+                className="block font-michroma text-[clamp(2.5rem,13vw,4.75rem)] leading-none tracking-marca text-blanco md:text-[clamp(4.75rem,8vw,8.5rem)]"
+              >
                 {HERO.titulo}
               </span>
               <span className="sr-only"> · </span>
-              <span className="mt-7 block max-w-xl font-plex text-lg font-bold leading-snug text-blanco md:text-2xl">
-                <TextoTipeado texto={HERO.propuesta} velocidadMs={24} />
+              <span className="mt-7 block max-w-xl titulo text-lg leading-snug text-blanco md:text-2xl">
+                <TextoTipeado texto={HERO.propuesta} velocidadMs={24} esperarIntro />
               </span>
             </h1>
             <div className="mt-10 flex flex-wrap gap-3 md:gap-4">
@@ -91,7 +96,7 @@ export default function Inicio() {
                 <h2
                   id="destacados-titulo"
                   data-revelar
-                  className="mt-5 font-plex text-3xl font-bold leading-tight text-blanco md:text-5xl"
+                  className="mt-5 titulo text-3xl leading-tight text-blanco md:text-5xl"
                 >
                   {INICIO.destacados.titulo}
                 </h2>
@@ -126,7 +131,7 @@ export default function Inicio() {
                     "radial-gradient(ellipse 60% 90% at 90% 100%, color-mix(in srgb, var(--acento) 18%, transparent), transparent 70%)",
                 }}
               />
-              <h2 data-revelar className="relative max-w-2xl font-plex text-3xl font-bold leading-tight text-blanco md:text-5xl">
+              <h2 data-revelar className="relative max-w-2xl titulo text-3xl leading-tight text-blanco md:text-5xl">
                 {INICIO.cierre.titulo}
               </h2>
               <p data-revelar className="relative mt-5 max-w-xl font-lectura text-base leading-relaxed text-acero md:text-lg">

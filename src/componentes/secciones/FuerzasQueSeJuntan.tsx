@@ -124,12 +124,12 @@ function PanelCodigo({ titulo }: { titulo: string }) {
   }, [animar, letras]);
 
   return (
-    <div ref={ref} aria-hidden className="overflow-hidden rounded-[8px] border border-profundo bg-[#0a0a0c]">
+    <div ref={ref} aria-hidden className="overflow-hidden rounded-[10px] border border-profundo bg-[#0a0a0c]">
       <div className="flex items-center gap-2 border-b border-profundo px-4 py-2">
         <span className="size-2 rounded-full bg-[#F26B5B]/70" />
         <span className="size-2 rounded-full bg-[#F0A33A]/70" />
         <span className="size-2 rounded-full bg-[#7BD389]/70" />
-        <span className="ml-2 font-plex text-[10px] text-acero">{titulo}</span>
+        <span className="ml-2 font-plex text-[11px] text-acero">{titulo}</span>
       </div>
       <div className="min-h-[124px] px-4 py-3 font-plex text-[11px] leading-[1.9] md:text-xs">
         {POSICIONES.map((linea, i) => {
@@ -193,10 +193,10 @@ function PanelCharla({ titulo }: { titulo: string }) {
   const siguiente = CHARLA[mostrados];
 
   return (
-    <div ref={ref} aria-hidden className="overflow-hidden rounded-[8px] border border-profundo bg-[#0a0a0c]">
+    <div ref={ref} aria-hidden className="overflow-hidden rounded-[10px] border border-profundo bg-[#0a0a0c]">
       <div className="flex items-center gap-2 border-b border-profundo px-4 py-2">
         <span className="size-1.5" style={{ background: COLOR_COMERCIAL }} />
-        <span className="font-plex text-[10px] uppercase tracking-etiqueta text-acero">{titulo}</span>
+        <span className="font-plex text-[11px] uppercase tracking-etiqueta text-acero">{titulo}</span>
       </div>
       <div className="flex min-h-[148px] flex-col gap-2 px-4 py-3">
         {CHARLA.slice(0, mostrados).map((mensaje, i) => {
@@ -265,12 +265,12 @@ function TarjetaFuerza({
             <span className="block font-michroma text-3xl leading-none text-blanco md:text-4xl">
               <Contador numero={fuerza.dato.numero} prefijo={fuerza.dato.prefijo} />
             </span>
-            <span className="mt-1 block max-w-[11rem] font-plex text-[10px] uppercase leading-snug tracking-etiqueta text-acero">
+            <span className="mt-1 block max-w-[11rem] font-plex text-[11px] uppercase leading-snug tracking-etiqueta text-acero">
               {fuerza.dato.etiqueta}
             </span>
           </p>
         </div>
-        <h3 className="relative mt-5 font-plex text-xl font-bold leading-snug text-blanco md:text-2xl">
+        <h3 className="relative mt-5 titulo text-xl leading-snug text-blanco md:text-2xl">
           {fuerza.titular}
         </h3>
         {fuerza.parrafos.map((parrafo) => (

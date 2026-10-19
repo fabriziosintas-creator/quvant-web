@@ -9,6 +9,8 @@ type Props = {
   retardoMs?: number;
   velocidadMs?: number;
   className?: string;
+  /** En la portada: no empezar hasta que termine la intro de la tele (IntroTV). */
+  esperarIntro?: boolean;
 };
 
 /**
@@ -21,7 +23,7 @@ type Props = {
  * tipeada es puro decorado (aria-hidden). En vista texto (que ya cubre
  * prefers-reduced-motion) se muestra todo de una, sin animación.
  */
-export function TextoTipeado({ texto, retardoMs = 600, velocidadMs = 32, className }: Props) {
+export function TextoTipeado({ texto, retardoMs = 600, velocidadMs = 32, className, esperarIntro = false }: Props) {
   const [cantidad, setCantidad] = useState(0);
   const vista = useVista();
   const completo = cantidad >= texto.length;
@@ -31,31 +33,39 @@ export function TextoTipeado({ texto, retardoMs = 600, velocidadMs = 32, classNa
     // con la decisión del servidor y pisarla un render después).
     if (vista === "decidiendo") return;
     let intervalo: ReturnType<typeof setInterval> | undefined;
+    let demora: ReturnType<typeof setTimeout> | undefined;
     const reducido =
       vista !== "3d" || window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const demora = setTimeout(
-      () => {
-        if (reducido) {
-          setCantidad(texto.length);
-          return;
-        }
-        intervalo = setInterval(() => {
-          setCantidad((cuantas) => {
-            if (cuantas >= texto.length) {
-              clearInterval(intervalo);
-              return cuantas;
-            }
-            return cuantas + 1;
-          });
-        }, velocidadMs);
-      },
-      reducido ? 0 : retardoMs,
-    );
+    const arrancar = () => {
+      demora = setTimeout(
+        () => {
+          if (reducido) {
+            setCantidad(texto.length);
+            return;
+          }
+          intervalo = setInterval(() => {
+            setCantidad((cuantas) => {
+              if (cuantas >= texto.length) {
+                clearInterval(intervalo);
+                return cuantas;
+              }
+              return cuantas + 1;
+            });
+          }, velocidadMs);
+        },
+        reducido ? 0 : retardoMs,
+      );
+    };
+    // Si la intro de la tele está corriendo, se tipea cuando termina.
+    const conIntro = esperarIntro && document.documentElement.dataset.intro === "si";
+    if (conIntro) window.addEventListener("quvant:intro-fin", arrancar, { once: true });
+    else arrancar();
     return () => {
-      clearTimeout(demora);
+      window.removeEventListener("quvant:intro-fin", arrancar);
+      if (demora) clearTimeout(demora);
       if (intervalo) clearInterval(intervalo);
     };
-  }, [texto, retardoMs, velocidadMs, vista]);
+  }, [texto, retardoMs, velocidadMs, vista, esperarIntro]);
 
   return (
     <span className={`relative inline-block ${className ?? ""}`}>

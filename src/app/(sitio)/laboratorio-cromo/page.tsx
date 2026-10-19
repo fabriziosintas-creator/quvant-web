@@ -18,7 +18,7 @@ export default function LaboratorioCromo() {
       <p className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
         Laboratorio · Interno
       </p>
-      <h1 className="mt-4 max-w-2xl font-plex text-2xl font-bold text-blanco md:text-3xl">
+      <h1 className="mt-4 max-w-2xl titulo text-2xl text-blanco md:text-3xl">
         ¿Qué cromo te gusta más?
       </h1>
       <p className="mt-4 max-w-xl font-plex text-sm leading-relaxed text-acero">

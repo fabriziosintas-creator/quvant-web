@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Michroma } from "next/font/google";
 import "./globals.css";
+import { DECIDIR_INTRO } from "@/componentes/estructura/introDecision";
 import { SITIO } from "@/datos/sitio";
 import { MARCA } from "@/datos/textos";
 
@@ -18,9 +19,9 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-/** Para los párrafos: la misma familia Plex, sin el ancho fijo que cansa en textos largos. */
+/** Para párrafos y títulos: la misma familia Plex, sin el ancho fijo que cansa en textos largos. */
 const plexSans = IBM_Plex_Sans({
-  weight: ["400", "500"],
+  weight: ["400", "500", "600"],
   subsets: ["latin"],
   variable: "--fuente-lectura",
   display: "swap",
@@ -61,7 +62,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="es-AR"
       className={`${michroma.variable} ${plexMono.variable} ${plexSans.variable} antialiased`}
+      // El script de abajo marca data-intro antes de que React llegue.
+      suppressHydrationWarning
     >
+      <head>
+        {/* Decide la intro de la tele antes de pintar (ver IntroTV). */}
+        <script dangerouslySetInnerHTML={{ __html: DECIDIR_INTRO }} />
+      </head>
       {/* En el celular, aire abajo para la barra de canales (solo donde la hay). */}
       <body className="flex min-h-svh flex-col max-md:has-[[data-dock]]:pb-[calc(5.5rem+env(safe-area-inset-bottom))]">
         {children}

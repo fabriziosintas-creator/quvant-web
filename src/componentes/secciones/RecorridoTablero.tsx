@@ -339,7 +339,7 @@ export function RecorridoTablero() {
                     <span className="flex items-baseline gap-3">
                       <span className="font-plex text-[11px] text-acero">0{indice + 1}</span>
                       <span
-                        className={`font-plex text-base font-bold leading-snug transition-colors group-hover:text-blanco md:text-[17px] ${
+                        className={`titulo text-base leading-snug transition-colors group-hover:text-blanco md:text-[17px] ${
                           seleccionada ? "text-blanco" : "text-acero"
                         }`}
                       >
@@ -408,7 +408,7 @@ export function RecorridoTablero() {
 
       {/* La ventana con la pantalla real. */}
       <figure className="order-1 min-w-0 lg:order-2">
-        <div className="overflow-hidden rounded-[8px] border border-profundo">
+        <div className="overflow-hidden rounded-[10px] border border-profundo">
           <figcaption className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
             <span aria-hidden className="size-1.5 bg-acero" />
             <span className="min-w-0 truncate font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">

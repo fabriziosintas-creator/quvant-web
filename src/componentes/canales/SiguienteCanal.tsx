@@ -38,7 +38,7 @@ export function SiguienteCanal({ id }: { id: IdCanal }) {
           href={siguiente.ruta}
           transitionTypes={[tipoTransicion(actual.ruta, siguiente.ruta)]}
           data-cursor-texto={NAVEGACION.siguiente}
-          className="group relative mt-6 block w-full overflow-hidden rounded-[14px] border border-profundo p-7 transition-colors duration-300 hover:border-[var(--hacia)] md:p-12"
+          className="group relative mt-6 block w-full overflow-hidden rounded-[16px] border border-profundo p-7 transition-colors duration-300 hover:border-[var(--hacia)] md:p-12"
         >
           <span
             aria-hidden

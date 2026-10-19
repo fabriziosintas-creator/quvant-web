@@ -29,7 +29,7 @@ function MarcoCelular({
           className="w-full rounded-[16px]"
         />
       </div>
-      <figcaption className="font-plex text-[10px] font-medium uppercase tracking-etiqueta text-acero">
+      <figcaption className="font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
         {etiqueta}
       </figcaption>
     </figure>
@@ -43,7 +43,7 @@ export function TelefonoCasoDiferido({ caso }: { caso: CasoWeb }) {
   const vista = useVista();
 
   return (
-    <figure className="flex h-full flex-col overflow-hidden rounded-[8px] border border-profundo">
+    <figure className="flex h-full flex-col overflow-hidden rounded-[10px] border border-profundo">
       <figcaption className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
         <span aria-hidden className="size-1.5 bg-acero" />
         <span className="font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">

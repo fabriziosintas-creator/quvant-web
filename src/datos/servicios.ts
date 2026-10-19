@@ -5,6 +5,9 @@
  * - "sistemas": la pantalla real del tablero de Quvant (empresa demo).
  * - "app": una foto de ambiente, libre (Unsplash).
  * - "web": la propuesta real de rediseño para Ferremix.
+ *
+ * "foto" marca las fotos de ambiente: van en blanco y negro con grano,
+ * como todas las del sitio. Las pantallas reales quedan en su color.
  */
 
 export const SERVICIOS_VISUAL = {
@@ -17,6 +20,7 @@ export const SERVICIOS_VISUAL = {
   },
   app: {
     color: "#B388FF",
+    foto: true,
     imagen: {
       src: "/servicios/app.webp",
       alt: "Un desarrollador trabajando con varias pantallas en una oficina a oscuras",

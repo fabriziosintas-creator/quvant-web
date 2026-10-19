@@ -124,7 +124,7 @@ export function NucleosQuvant() {
         {/* El capítulo, como el rótulo de un video. */}
         <div className="pointer-events-none absolute left-3 top-3 flex items-center gap-2.5 rounded-[6px] border border-profundo bg-negro/85 px-3 py-2 md:left-4 md:top-4">
           <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-          <span className="font-plex text-[10px] font-medium uppercase tracking-etiqueta text-blanco md:text-[11px]">
+          <span className="font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco md:text-[11px]">
             0{capitulo + 1} · {cap.titulo}
           </span>
         </div>
@@ -179,7 +179,7 @@ export function NucleosQuvant() {
       <div className="flex min-w-0 flex-col p-5 md:p-6">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <p className="font-michroma text-[11px] uppercase tracking-marca text-blanco">{T.panel}</p>
-          <span className="border border-profundo px-2 py-1 font-plex text-[10px] uppercase tracking-etiqueta text-acero">
+          <span className="border border-profundo px-2 py-1 font-plex text-[11px] uppercase tracking-etiqueta text-acero">
             {T.datosEjemplo}
           </span>
         </div>
@@ -198,7 +198,7 @@ export function NucleosQuvant() {
         </div>
 
         <div className="mt-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-t border-profundo pt-3">
-          <p className="font-plex text-[10px] uppercase tracking-etiqueta text-acero">{T.resumen}</p>
+          <p className="font-plex text-[11px] uppercase tracking-etiqueta text-acero">{T.resumen}</p>
           <p className="font-plex text-[11px] text-acero">{T.ayuda}</p>
         </div>
       </div>
@@ -267,12 +267,12 @@ function DetalleEmpresa({ empresa, alVolver }: { empresa: Empresa; alVolver: () 
     <div className="panel-entra" style={{ "--empresa": empresa.color } as CSSProperties}>
       <div className="flex items-center gap-2.5">
         <span aria-hidden className="size-2 bg-[var(--empresa)]" />
-        <p className="font-plex text-base font-bold text-blanco">{empresa.nombre}</p>
+        <p className="titulo text-base text-blanco">{empresa.nombre}</p>
       </div>
       <p className="mt-1 font-plex text-[11px] text-acero">{T.suAdministracion}</p>
 
       <div className="mt-3 border border-profundo p-3">
-        <p className="font-plex text-[10px] uppercase tracking-etiqueta text-acero">{T.ultimos12}</p>
+        <p className="font-plex text-[11px] uppercase tracking-etiqueta text-acero">{T.ultimos12}</p>
         <div className="mt-2 h-12">
           <Curva serie={empresa.serie} color={empresa.color} area />
         </div>
@@ -281,7 +281,7 @@ function DetalleEmpresa({ empresa, alVolver }: { empresa: Empresa; alVolver: () 
       <ul className="mt-3 grid grid-cols-2 gap-2">
         {empresa.modulos.map((modulo) => (
           <li key={modulo.nombre} className="border border-profundo p-2.5">
-            <p className="font-plex text-[10px] uppercase tracking-etiqueta text-acero">{modulo.nombre}</p>
+            <p className="font-plex text-[11px] uppercase tracking-etiqueta text-acero">{modulo.nombre}</p>
             <p className="mt-1 font-plex text-xs leading-snug text-blanco">{modulo.valor}</p>
             <span aria-hidden className="mt-2 block h-[3px] bg-profundo">
               <span

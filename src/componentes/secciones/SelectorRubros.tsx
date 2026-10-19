@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
-import { ACENTO_NICHO, type IdNicho } from "@/datos/colores";
+import { useRef, useState, type KeyboardEvent } from "react";
 import { NICHOS } from "@/datos/nucleo";
+import { Grano } from "@/componentes/estructura/Grano";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { VideoForja } from "@/componentes/secciones/VideoForja";
 import { PLATAFORMAS } from "@/datos/textos";
@@ -16,7 +16,7 @@ function ChipEstado({ estado }: { estado: Estado }) {
   const disponible = estado === "disponible";
   return (
     <span
-      className={`shrink-0 border px-2 py-1 font-plex text-[10px] font-medium uppercase tracking-etiqueta ${
+      className={`shrink-0 border px-2 py-1 font-plex text-[11px] font-medium uppercase tracking-etiqueta ${
         disponible ? "border-[var(--acento)] text-blanco" : "border-profundo text-acero"
       }`}
     >
@@ -25,24 +25,20 @@ function ChipEstado({ estado }: { estado: Estado }) {
   );
 }
 
-/** La foto de ambiente del rubro, teñida con su acento. */
+/** La foto de ambiente del rubro, en blanco y negro documental (como todas las fotos del sitio). */
 function FotoRubro({ id }: { id: string }) {
   const foto = NICHOS.find((n) => n.id === id)?.foto;
   if (!foto) return null;
   return (
-    <div className="relative mb-6 aspect-[21/9] overflow-hidden rounded-[8px] border border-profundo bg-negro">
+    <div className="relative mb-6 aspect-[21/9] overflow-hidden rounded-[10px] border border-profundo bg-negro">
       <Image
         src={foto.src}
         alt={foto.alt}
         fill
         sizes="(min-width: 1024px) 50vw, 100vw"
-        className="object-cover"
+        className="foto-bn object-cover"
       />
-      <div
-        aria-hidden
-        className="absolute inset-0 mix-blend-color"
-        style={{ background: "var(--acento)", opacity: 0.45 }}
-      />
+      <Grano />
       <div
         aria-hidden
         className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,13,15,0.05),rgba(13,13,15,0.7))]"
@@ -100,7 +96,6 @@ export function SelectorRubros() {
               tabIndex={seleccionado ? 0 : -1}
               onClick={() => setActivo(item.id)}
               onKeyDown={(evento) => alTeclear(evento, indice)}
-              style={{ "--acento": ACENTO_NICHO[item.id as IdNicho] } as CSSProperties}
               className="group flex w-full items-center justify-between gap-4 border-b border-profundo py-4 text-left first:border-t md:py-5"
             >
               {/* El nombre baja de renglón en vez de cortarse ("INDUSTRI…", "GIMNASIOS Y FIT…"). */}
@@ -136,7 +131,6 @@ export function SelectorRubros() {
             id={`panel-${item.id}`}
             aria-labelledby={`pestania-${item.id}`}
             hidden={item.id !== activo}
-            style={{ "--acento": ACENTO_NICHO[item.id as IdNicho] } as CSSProperties}
           >
             <FotoRubro id={item.id} />
             <p className="font-lectura text-[15px] leading-relaxed text-acero">{item.descripcion}</p>

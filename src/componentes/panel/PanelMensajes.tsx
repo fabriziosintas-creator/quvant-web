@@ -176,7 +176,7 @@ export function PanelMensajes() {
         </div>
         <div className="flex items-center gap-3">
           {info.ia ? (
-            <span className="hidden items-center gap-2 border border-profundo px-2.5 py-1 font-plex text-[10px] uppercase tracking-etiqueta text-acero md:flex">
+            <span className="hidden items-center gap-2 border border-profundo px-2.5 py-1 font-plex text-[11px] uppercase tracking-etiqueta text-acero md:flex">
               <span aria-hidden className="size-1.5 bg-[#7BD389]" />
               {info.ia}
             </span>
@@ -185,7 +185,7 @@ export function PanelMensajes() {
           <button
             type="button"
             onClick={salir}
-            className="border border-profundo px-3 py-1.5 font-plex text-[10px] uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco"
+            className="border border-profundo px-3 py-1.5 font-plex text-[11px] uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco"
           >
             {PANEL.salir}
           </button>
@@ -218,7 +218,7 @@ export function PanelMensajes() {
                   type="button"
                   aria-pressed={activo}
                   onClick={() => setFiltro(clave)}
-                  className={`flex shrink-0 items-center gap-1.5 border px-2.5 py-1.5 font-plex text-[10px] font-medium uppercase tracking-etiqueta transition-colors ${
+                  className={`flex shrink-0 items-center gap-1.5 border px-2.5 py-1.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta transition-colors ${
                     activo ? "border-blanco bg-blanco text-negro" : "border-profundo text-acero hover:text-blanco"
                   }`}
                 >
@@ -246,7 +246,7 @@ export function PanelMensajes() {
                       <span className={`truncate font-plex text-sm ${c.noLeidos ? "font-bold text-blanco" : "text-blanco"}`}>
                         {nombreDe(c)}
                       </span>
-                      <span className="shrink-0 font-plex text-[10px] text-acero">{hace(c.actualizada)}</span>
+                      <span className="shrink-0 font-plex text-[11px] text-acero">{hace(c.actualizada)}</span>
                     </span>
                     <span className="truncate font-lectura text-[13px] text-acero">
                       {c.ultimo ? `${c.ultimo.autor === "visitante" ? "" : `${PANEL.autores[c.ultimo.autor]}: `}${c.ultimo.texto}` : "—"}
@@ -254,12 +254,12 @@ export function PanelMensajes() {
                     <span className="flex items-center gap-2">
                       <EtiquetaEstado conversacion={c} />
                       {c.pedido ? (
-                        <span className="border border-[#7BD389]/60 px-1.5 py-0.5 font-plex text-[9px] uppercase tracking-etiqueta text-[#7BD389]">
+                        <span className="border border-[#7BD389]/60 px-1.5 py-0.5 font-plex text-[10px] uppercase tracking-etiqueta text-[#7BD389]">
                           {PANEL.pedido}
                         </span>
                       ) : null}
                       {c.noLeidos > 0 ? (
-                        <span className="ml-auto flex min-w-5 items-center justify-center rounded-full bg-blanco px-1.5 font-plex text-[10px] font-bold text-negro">
+                        <span className="ml-auto flex min-w-5 items-center justify-center rounded-full bg-blanco px-1.5 font-plex text-[11px] font-bold text-negro">
                           {c.noLeidos}
                         </span>
                       ) : null}
@@ -292,7 +292,7 @@ export function PanelMensajes() {
 function EtiquetaEstado({ conversacion }: { conversacion: Conversacion }) {
   const color = COLOR_ESTADO[conversacion.estado];
   return (
-    <span className="flex items-center gap-1.5 font-plex text-[9px] uppercase tracking-etiqueta text-acero">
+    <span className="flex items-center gap-1.5 font-plex text-[10px] uppercase tracking-etiqueta text-acero">
       <span aria-hidden className="size-1.5" style={{ background: color }} />
       {PANEL.estados[conversacion.estado].replace("{nombre}", conversacion.atiende ?? "")}
     </span>
@@ -342,7 +342,7 @@ function Charla({
     <button
       type="button"
       onClick={() => void alAccion(accion)}
-      className={`border px-3 py-1.5 font-plex text-[10px] font-medium uppercase tracking-etiqueta transition-colors ${
+      className={`border px-3 py-1.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta transition-colors ${
         marcado ? "border-blanco bg-blanco text-negro hover:bg-acero" : "border-profundo text-acero hover:text-blanco"
       }`}
     >
@@ -358,15 +358,15 @@ function Charla({
             <button
               type="button"
               onClick={alVolver}
-              className="border border-profundo px-2.5 py-1.5 font-plex text-[10px] uppercase tracking-etiqueta text-acero md:hidden"
+              className="border border-profundo px-2.5 py-1.5 font-plex text-[11px] uppercase tracking-etiqueta text-acero md:hidden"
             >
               ← {PANEL.acciones.volver}
             </button>
             <div className="min-w-0">
-              <p className="truncate font-plex text-base font-bold text-blanco">{nombreDe(c)}</p>
+              <p className="truncate titulo text-base text-blanco">{nombreDe(c)}</p>
               <p className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1">
                 <EtiquetaEstado conversacion={c} />
-                <span className="font-plex text-[10px] text-acero">
+                <span className="font-plex text-[11px] text-acero">
                   {hora(c.creada)}
                   {c.pagina ? ` · ${PANEL.desde} ${c.pagina}` : ""}
                 </span>
@@ -380,7 +380,7 @@ function Charla({
                 href={enlace.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="border border-[#7BD389]/70 px-3 py-1.5 font-plex text-[10px] font-medium uppercase tracking-etiqueta text-[#7BD389] transition-colors hover:bg-[#7BD389] hover:text-negro"
+                className="border border-[#7BD389]/70 px-3 py-1.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-[#7BD389] transition-colors hover:bg-[#7BD389] hover:text-negro"
               >
                 {enlace.texto} ↗
               </a>
@@ -398,7 +398,7 @@ function Charla({
       <div ref={lista} className="min-h-0 flex-1 overflow-y-auto px-4 py-5 md:px-6">
         {c.pedido ? (
           <div className="mb-5 border border-[#7BD389]/60 p-4">
-            <p className="flex items-center gap-2 font-plex text-[10px] font-medium uppercase tracking-etiqueta text-[#7BD389]">
+            <p className="flex items-center gap-2 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-[#7BD389]">
               <span aria-hidden className="size-1.5 bg-[#7BD389]" />
               {PANEL.pedido} · {hora(c.pedido.registrado)}
             </p>
@@ -427,7 +427,7 @@ function Charla({
           {mensajes.map((m) => {
             if (m.autor === "sistema") {
               return (
-                <li key={m.id} className="self-center px-2 text-center font-plex text-[10px] uppercase tracking-etiqueta text-acero">
+                <li key={m.id} className="self-center px-2 text-center font-plex text-[11px] uppercase tracking-etiqueta text-acero">
                   {m.texto}
                 </li>
               );
@@ -435,11 +435,11 @@ function Charla({
             const visitante = m.autor === "visitante";
             return (
               <li key={m.id} className={`flex max-w-[80%] flex-col ${visitante ? "self-start" : "self-end items-end"}`}>
-                <span className="mb-1 font-plex text-[10px] uppercase tracking-etiqueta text-acero">
+                <span className="mb-1 font-plex text-[11px] uppercase tracking-etiqueta text-acero">
                   {visitante ? nombreDe(c) : m.autor === "humano" ? m.nombre : PANEL.autores.bot} · {hora(m.fecha)}
                 </span>
                 <p
-                  className={`whitespace-pre-line rounded-[12px] px-3.5 py-2.5 font-lectura text-[14.5px] leading-relaxed ${
+                  className={`whitespace-pre-line rounded-[10px] px-3.5 py-2.5 font-lectura text-[14.5px] leading-relaxed ${
                     visitante
                       ? "rounded-bl-[3px] bg-blanco text-negro"
                       : m.autor === "humano"
@@ -513,7 +513,7 @@ function Ingreso({ info, alEntrar }: { info: Info; alEntrar: () => Promise<void>
     <main className="flex min-h-svh items-center justify-center bg-negro px-5">
       <form onSubmit={entrar} className="w-full max-w-sm border border-profundo p-7 md:p-9">
         <Logotipo idGradiente="q-ingreso" className="text-[14px]" />
-        <h1 className="mt-8 font-plex text-2xl font-bold text-blanco">{PANEL.titulo}</h1>
+        <h1 className="mt-8 titulo text-2xl text-blanco">{PANEL.titulo}</h1>
         {!info.configurado ? (
           <p className="mt-6 font-lectura text-sm text-[#F26B5B]">{PANEL.ingreso.sinConfigurar}</p>
         ) : (

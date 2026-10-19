@@ -25,6 +25,17 @@
   --font-lectura: var(--fuente-lectura), system-ui, sans-serif;
 }
 
+/*
+ * Los títulos (decisión del 19-oct-2026): IBM Plex Sans semibold, con las
+ * letras un poco más juntas. La Mono queda para etiquetas, números y
+ * detalles técnicos; Michroma, para la marca.
+ */
+@utility titulo {
+  font-family: var(--font-lectura);
+  font-weight: 600;
+  letter-spacing: -0.022em;
+}
+
 /* Ancho de lectura del sitio: una sola medida para todas las secciones. */
 @utility contenedor {
   width: 100%;
@@ -265,6 +276,117 @@ html[data-cursor="si"] :where(input, textarea, [contenteditable]) {
   .aurora span { animation: none; }
 }
 html[data-vista="texto"] .aurora span { animation: none; }
+
+/*
+ * La intro de la portada (IntroTV): solo existe mientras <html> tiene
+ * data-intro="si" (lo pone el script de <head> antes de pintar). Mientras
+ * tanto la página no se mueve. El negro tapa hasta el primer cuadro del
+ * shader; si algo fallara, a los 8 s se va sola.
+ */
+.intro-tv {
+  display: none;
+  background: var(--color-negro);
+}
+
+html[data-intro="si"] {
+  overflow: hidden;
+}
+
+html[data-intro="si"] .intro-tv {
+  display: block;
+  animation: intro-seguridad 0.3s linear 8s forwards;
+}
+
+.intro-tv[data-dibujando] {
+  background: transparent;
+}
+
+/* El título real espera a que la palabra de la intro aterrice encima (si no, se ven dos). */
+html[data-intro="si"] [data-titulo-portada]:not([data-aterrizo]) {
+  opacity: 0;
+}
+
+@keyframes intro-seguridad {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/*
+ * Las fotos de ambiente: blanco y negro documental con grano (decisión del
+ * 19-oct-2026). Las capturas de producto y la Q de cromo no lo llevan: ahí
+ * el color es información o es la marca.
+ */
+.foto-bn {
+  filter: grayscale(1) contrast(1.18) brightness(0.78);
+}
+
+.grano {
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+
+/*
+ * "Cómo trabajamos": la capa de la marca sobre cada foto (CapaEtapa).
+ * Al pasar la etapa al frente, los trazos se dibujan, los puntos aparecen,
+ * las ondas de "Escuchar" laten y el punto de "Construir" titila.
+ */
+.capa-etapa .trazo-etapa {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.capa-etapa[data-activa="si"] .trazo-etapa {
+  animation: dibujar 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.capa-etapa .punto-etapa {
+  opacity: 0;
+  transition: opacity 0.4s ease 0.9s;
+}
+
+.capa-etapa[data-activa="si"] .punto-etapa {
+  opacity: 1;
+}
+
+.capa-etapa .onda-etapa {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.capa-etapa[data-activa="si"] .onda-etapa {
+  animation: onda-etapa 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) infinite both;
+}
+
+@keyframes onda-etapa {
+  from {
+    transform: scale(0.35);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.capa-etapa[data-activa="si"] .latido-etapa {
+  animation: parpadeo 1.4s steps(2, end) 1.2s infinite;
+}
+
+/* Sin movimiento: el dibujo ya está hecho y quieto. */
+@media (prefers-reduced-motion: reduce) {
+  .capa-etapa .trazo-etapa {
+    stroke-dashoffset: 0;
+    animation: none !important;
+  }
+  .capa-etapa .onda-etapa,
+  .capa-etapa .latido-etapa {
+    animation: none !important;
+  }
+}
 
 /* La imagen del servicio elegido deriva despacio (zoom lento y leve paneo). */
 @keyframes deriva {

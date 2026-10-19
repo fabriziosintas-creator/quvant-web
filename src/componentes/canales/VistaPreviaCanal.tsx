@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import type { IdCanal } from "@/datos/colores";
-import { OBJETIVO_VISUAL } from "@/datos/objetivo";
+import { COLOR_RECORRIDO, OBJETIVO_VISUAL } from "@/datos/objetivo";
 import { PROYECTOS } from "@/datos/portfolio";
 import { OBJETIVO } from "@/datos/textos";
 
@@ -45,7 +45,7 @@ function Trabajos({ vivo }: { vivo: boolean }) {
           className={`object-cover object-top transition-opacity duration-700 ${i === indice ? "opacity-100" : "opacity-0"}`}
         />
       ))}
-      <span className="absolute bottom-0 right-[6%] block w-[20%] overflow-hidden rounded-[8px] border border-profundo bg-negro shadow-[0_18px_40px_-10px_rgba(0,0,0,0.9)] aspect-[600/1298] translate-y-[18%]">
+      <span className="absolute bottom-0 right-[6%] block w-[20%] overflow-hidden rounded-[10px] border border-profundo bg-negro shadow-[0_18px_40px_-10px_rgba(0,0,0,0.9)] aspect-[600/1298] translate-y-[18%]">
         {VITRINA.map((proyecto, i) => cargar(vivo, i, indice) && (
           <Image
             key={proyecto.id}
@@ -67,6 +67,7 @@ function Servicios({ vivo }: { vivo: boolean }) {
   const indice = useCiclo(etapas.length, 1900, vivo);
   return (
     <>
+      {/* Igual que en el recorrido: blanco y negro, y un solo color. */}
       {etapas.map((etapa, i) => cargar(vivo, i, indice) && (
         <Image
           key={etapa.id}
@@ -74,23 +75,18 @@ function Servicios({ vivo }: { vivo: boolean }) {
           alt=""
           fill
           sizes="(min-width: 1024px) 40vw, 90vw"
-          className={`object-cover transition-opacity duration-700 ${i === indice ? "opacity-100" : "opacity-0"}`}
+          className={`foto-bn object-cover transition-opacity duration-700 ${i === indice ? "opacity-100" : "opacity-0"}`}
         />
       ))}
-      <span
-        aria-hidden
-        className="absolute inset-0 mix-blend-color transition-[background] duration-700"
-        style={{ background: OBJETIVO_VISUAL[etapas[indice].id].color, opacity: 0.4 }}
-      />
       {/* Las cuatro etapas en una línea, como en el recorrido. */}
       <span className="absolute inset-x-5 bottom-5 flex items-center">
         {etapas.map((etapa, i) => (
           <span key={etapa.id} className="flex flex-1 items-center last:flex-none">
             <span
-              className="flex size-6 items-center justify-center rounded-full border bg-negro/80 font-plex text-[10px] transition-colors duration-500"
+              className="flex size-6 items-center justify-center rounded-full border bg-negro/80 font-plex text-[11px] transition-colors duration-500"
               style={{
-                borderColor: i <= indice ? OBJETIVO_VISUAL[etapa.id].color : "#26262B",
-                color: i <= indice ? OBJETIVO_VISUAL[etapa.id].color : "#9C9CA3",
+                borderColor: i <= indice ? COLOR_RECORRIDO : "#26262B",
+                color: i <= indice ? COLOR_RECORRIDO : "#9C9CA3",
               }}
             >
               {i + 1}
@@ -98,15 +94,15 @@ function Servicios({ vivo }: { vivo: boolean }) {
             {i < etapas.length - 1 ? (
               <span className="mx-1 h-px flex-1 bg-blanco/25">
                 <span
-                  className="block h-full origin-left bg-blanco transition-transform duration-700"
-                  style={{ transform: `scaleX(${i < indice ? 1 : 0})` }}
+                  className="block h-full origin-left transition-transform duration-700"
+                  style={{ transform: `scaleX(${i < indice ? 1 : 0})`, background: COLOR_RECORRIDO }}
                 />
               </span>
             ) : null}
           </span>
         ))}
       </span>
-      <Etiqueta color={OBJETIVO_VISUAL[etapas[indice].id].color}>{etapas[indice].nombre}</Etiqueta>
+      <Etiqueta color={COLOR_RECORRIDO}>{etapas[indice].nombre}</Etiqueta>
     </>
   );
 }
@@ -178,7 +174,7 @@ function Contacto({ vivo }: { vivo: boolean }) {
 
 function Etiqueta({ color, children }: { color: string; children: string }) {
   return (
-    <span className="absolute left-4 top-4 flex items-center gap-2 bg-negro/75 px-2.5 py-1.5 font-plex text-[10px] font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
+    <span className="absolute left-4 top-4 flex items-center gap-2 bg-negro/75 px-2.5 py-1.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
       <span aria-hidden className="size-1.5" style={{ background: color }} />
       {children}
     </span>

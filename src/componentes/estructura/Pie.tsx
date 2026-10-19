@@ -42,7 +42,6 @@ export function Pie() {
       <div className="contenedor grid gap-12 py-16 md:grid-cols-[1.5fr_1fr_1fr] md:py-20">
         <div data-revelar>
           <Logotipo idGradiente="q-pie" className="text-[14px]" />
-          <p className="mt-6 max-w-xs text-sm text-acero">{MARCA.pronunciacion}</p>
         </div>
 
         <nav aria-label={PIE.etiquetaSecciones} data-revelar>

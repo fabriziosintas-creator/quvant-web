@@ -10,7 +10,6 @@ export const MARCA = {
   nombre: "Quvant",
   logotipo: "QUVANT",
   bajada: "Software a la vanguardia de cada nicho.",
-  pronunciacion: "«kúvant»",
 } as const;
 
 /**

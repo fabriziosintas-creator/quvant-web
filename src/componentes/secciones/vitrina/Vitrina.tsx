@@ -242,7 +242,7 @@ export function Vitrina({
                   className={`block h-1.5 transition-[width,background-color] duration-300 ${
                     indice === alFrente ? "w-5" : "w-1.5 bg-profundo"
                   }`}
-                  style={indice === alFrente ? { background: proyecto.color } : undefined}
+                  style={indice === alFrente ? { background: "var(--acento)" } : undefined}
                 />
               </button>
             ))}

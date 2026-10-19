@@ -42,7 +42,7 @@ export function DockCanales() {
             }`}
           />
           <IconoCanal id={canal.id as IdCanal} className={`size-5 ${activo ? "text-[var(--acento)]" : ""}`} />
-          <span className="max-w-full truncate font-plex text-[9px] font-medium uppercase tracking-[0.08em]">
+          <span className="max-w-full truncate font-plex text-[10px] font-medium uppercase tracking-[0.08em]">
             {canal.corto}
           </span>
         </Link>
@@ -72,7 +72,7 @@ export function DockCanales() {
             }`}
           >
             <IsotipoQ idGradiente="q-dock" className="size-6" />
-            <span className="font-plex text-[9px] font-medium uppercase tracking-[0.08em]">
+            <span className="font-plex text-[10px] font-medium uppercase tracking-[0.08em]">
               {NAVEGACION.inicio}
             </span>
           </Link>

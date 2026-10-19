@@ -41,7 +41,7 @@ function conocimiento() {
 
   return `
 # Quvant
-${MARCA.nombre} (se pronuncia ${MARCA.pronunciacion}). Lema: "${MARCA.bajada}"
+${MARCA.nombre} (siempre se escribe así, con Q). Lema: "${MARCA.bajada}"
 ${HERO.propuesta}
 ${SITIO.descripcion}
 

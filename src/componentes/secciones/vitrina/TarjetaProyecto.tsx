@@ -49,7 +49,7 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
             className="scale-125 object-cover opacity-35 blur-2xl"
           />
           <span className="absolute inset-0 flex items-center justify-center">
-            <span className="relative block h-[88%] overflow-hidden rounded-[14px] border border-profundo bg-negro shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] transition-transform duration-700 ease-out group-hover:-translate-y-2 aspect-[600/1298]">
+            <span className="relative block h-[88%] overflow-hidden rounded-[16px] border border-profundo bg-negro shadow-[0_20px_60px_-20px_rgba(0,0,0,0.8)] transition-transform duration-700 ease-out group-hover:-translate-y-2 aspect-[600/1298]">
               <Image
                 src={vista.portadaCelular.src}
                 alt=""
@@ -95,7 +95,7 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
   );
 
   return (
-    <TarjetaInclinada className="h-full" style={{ "--acento": proyecto.color } as CSSProperties}>
+    <TarjetaInclinada className="h-full">
       <button
         ref={botonRef}
         type="button"
@@ -126,10 +126,10 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
             <span className="size-1.5 bg-profundo" />
             <span className="size-1.5 bg-profundo" />
           </span>
-          <span className="min-w-0 flex-1 truncate text-center font-plex text-[10px] text-acero">
+          <span className="min-w-0 flex-1 truncate text-center font-plex text-[11px] text-acero">
             {direccionCorta(vista.url)}
           </span>
-          <span className="font-plex text-[10px] text-acero">{dosDigitos(numero)}</span>
+          <span className="font-plex text-[11px] text-acero">{dosDigitos(numero)}</span>
         </span>
 
         {visorAbierto ? (
@@ -143,7 +143,7 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
         {/* El pie: nombre, rubro y tipo. Lo demás está en el visor. */}
         <span className="relative flex flex-1 items-end justify-between gap-4 px-4 pb-4 pt-3.5 md:px-5 md:pb-5">
           <span className="min-w-0">
-            <span className="block truncate font-plex text-base font-bold text-blanco md:text-lg">
+            <span className="block truncate titulo text-base text-blanco md:text-lg">
               {proyecto.nombre}
             </span>
             <span className="mt-1 flex items-center gap-2 font-plex text-[11px] text-acero">
@@ -158,7 +158,7 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
               </span>
             </span>
           </span>
-          <span className="shrink-0 border border-profundo px-2 py-1 font-plex text-[10px] font-medium uppercase tracking-etiqueta text-acero transition-colors group-hover:border-[var(--acento)] group-hover:text-blanco">
+          <span className="shrink-0 border border-profundo px-2 py-1 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero transition-colors group-hover:border-[var(--acento)] group-hover:text-blanco">
             {TIPOS[proyecto.tipo].singular}
           </span>
         </span>

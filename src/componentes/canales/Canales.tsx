@@ -112,7 +112,7 @@ export function Canales() {
             <h2
               id="canales-titulo"
               data-revelar
-              className="mt-5 font-plex text-3xl font-bold leading-tight text-blanco md:text-5xl"
+              className="mt-5 titulo text-3xl leading-tight text-blanco md:text-5xl"
             >
               {TEXTOS.titulo}
             </h2>
@@ -237,7 +237,7 @@ export function Canales() {
           <div
             ref={monitor}
             style={{ "--acento": ACENTO_CANAL[canal.id as IdCanal] } as CSSProperties}
-            className="relative overflow-hidden rounded-[12px] border border-profundo bg-negro transition-colors duration-500"
+            className="relative overflow-hidden rounded-[10px] border border-profundo bg-negro transition-colors duration-500"
           >
             {/* El puerto donde llegan los cables. */}
             <span aria-hidden className="absolute -left-px top-1/2 z-10 block h-6 w-[3px] -translate-y-1/2 bg-[var(--acento)]" />
@@ -250,7 +250,7 @@ export function Canales() {
               <span className="min-w-0 flex-1 truncate font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
                 {NAVEGACION.canal} {numeroCanal(canal.id)} · {canal.nombre}
               </span>
-              <span className="flex items-center gap-2 font-plex text-[10px] uppercase tracking-etiqueta text-acero">
+              <span className="flex items-center gap-2 font-plex text-[11px] uppercase tracking-etiqueta text-acero">
                 <span aria-hidden className="size-1.5 bg-[var(--acento)] motion-safe:animate-[parpadeo_1.4s_steps(2,end)_infinite]" />
                 {TEXTOS.enVivo}
               </span>
@@ -308,7 +308,7 @@ export function Canales() {
                 <Link
                   href={c.ruta}
                   transitionTypes={[tipoTransicion("/", c.ruta)]}
-                  className="group block overflow-hidden rounded-[12px] border border-profundo bg-negro transition-colors active:border-[var(--acento)]"
+                  className="group block overflow-hidden rounded-[10px] border border-profundo bg-negro transition-colors active:border-[var(--acento)]"
                 >
                   <span className="relative block aspect-[16/9] overflow-hidden">
                     <VistaPreviaCanal id={id} vivo={false} />

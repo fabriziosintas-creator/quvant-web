@@ -29,7 +29,7 @@ function PerfilEquipo({ persona }: { persona: Persona }) {
           <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
             {persona.rol}
           </p>
-          <h3 className="mt-2 font-plex text-xl font-bold text-blanco">{persona.nombre}</h3>
+          <h3 className="mt-2 titulo text-xl text-blanco">{persona.nombre}</h3>
           <p className="mt-1 font-plex text-sm text-acero">{persona.cargo}</p>
           {persona.titulo ? (
             <p className="mt-1 font-plex text-xs text-acero">{persona.titulo}</p>
@@ -74,7 +74,7 @@ export function Equipo() {
           <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
             {NOSOTROS.mision.etiqueta}
           </p>
-          <p className="mt-5 max-w-3xl font-plex text-xl font-bold leading-snug text-blanco md:text-2xl">
+          <p className="mt-5 max-w-3xl titulo text-xl leading-snug text-blanco md:text-2xl">
             {NOSOTROS.mision.texto}
           </p>
         </TarjetaViva>

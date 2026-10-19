@@ -40,7 +40,7 @@ export function Contacto() {
             <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
               {CONTACTO_SECCION.directo.etiqueta}
             </p>
-            <p className="mt-4 font-plex text-lg font-bold text-blanco">
+            <p className="mt-4 titulo text-lg text-blanco">
               {CONTACTO_SECCION.directo.titulo}
             </p>
             <BotonAbrirChat className="mt-5 w-full" />

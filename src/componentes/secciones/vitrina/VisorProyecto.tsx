@@ -12,6 +12,7 @@ import {
   type Ref,
 } from "react";
 import { createPortal } from "react-dom";
+import { ACENTO_CANAL } from "@/datos/colores";
 import { TIPOS, type Proyecto, type VistaProyecto } from "@/datos/portfolio";
 import { WEBS } from "@/datos/textos";
 import { CONSULTA_ANGOSTA, direccionCorta, dosDigitos, useConsulta } from "./comun";
@@ -121,7 +122,7 @@ export function VisorProyecto({ proyecto, numero, total, onCerrar, onMover }: Pr
         aria-label={`${TEXTOS.etiqueta}: ${proyecto.nombre}`}
         data-lenis-prevent
         className="fixed inset-0 z-[70] flex flex-col bg-negro/92 backdrop-blur-md"
-        style={{ "--acento": proyecto.color } as CSSProperties}
+        style={{ "--acento": ACENTO_CANAL.trabajos } as CSSProperties}
       >
         {/* Arriba: dónde estás, anterior y siguiente, cerrar. */}
         <div className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-profundo px-4 md:h-16 md:px-6">
@@ -291,7 +292,7 @@ function Selector<T extends string>({
               onCambio(opciones[destino].valor);
               botones.current[destino]?.focus();
             }}
-            className={`px-2.5 py-1.5 font-plex text-[10px] font-medium uppercase tracking-etiqueta transition-colors ${
+            className={`px-2.5 py-1.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta transition-colors ${
               activa ? "bg-blanco text-negro" : "text-acero hover:text-blanco"
             }`}
           >
@@ -349,7 +350,7 @@ function BarraNavegador({
             ]}
           />
         ) : (
-          <span className="border border-profundo px-2.5 py-1.5 font-plex text-[10px] font-medium uppercase tracking-etiqueta text-acero">
+          <span className="border border-profundo px-2.5 py-1.5 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
             {TEXTOS.captura}
           </span>
         )}
@@ -487,7 +488,7 @@ function Captura({ vista, dispositivo }: { vista: VistaProyecto; dispositivo: Di
         type="button"
         onClick={() => setRecorriendo((sigue) => !sigue)}
         aria-pressed={recorriendo}
-        className="absolute bottom-3 right-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-plex text-[10px] font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm transition-colors hover:border-[var(--acento)]"
+        className="absolute bottom-3 right-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm transition-colors hover:border-[var(--acento)]"
       >
         <span aria-hidden className={`size-1.5 ${recorriendo ? "bg-[var(--acento)] motion-safe:animate-[parpadeo_1s_steps(2,end)_infinite]" : "bg-blanco"}`} />
         {recorriendo ? TEXTOS.detener : TEXTOS.recorrer}
@@ -546,7 +547,7 @@ function EnVivo({ proyecto, vista, dispositivo }: { proyecto: Proyecto; vista: V
         />
       ) : null}
       {!cargado ? (
-        <p className="absolute bottom-3 left-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-plex text-[10px] font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
+        <p className="absolute bottom-3 left-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
           <span aria-hidden className="size-1.5 bg-[var(--acento)] motion-safe:animate-[parpadeo_1s_steps(2,end)_infinite]" />
           {TEXTOS.cargando}
         </p>
@@ -573,7 +574,7 @@ function Detalle({
         <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
         {TIPOS[proyecto.tipo].singular} · {proyecto.rubro}
       </p>
-      <h2 className="mt-3 font-plex text-2xl font-bold leading-tight text-blanco">{proyecto.nombre}</h2>
+      <h2 className="mt-3 titulo text-2xl leading-tight text-blanco">{proyecto.nombre}</h2>
       <p className="mt-1.5 font-plex text-xs text-acero">{proyecto.cliente}</p>
       <p className="mt-5 font-lectura text-[15px] leading-relaxed text-blanco">{proyecto.resumen}</p>
 
@@ -627,7 +628,7 @@ function Detalle({
         >
           {TEXTOS.abrir} <span aria-hidden>↗</span>
         </a>
-        <p className="mt-4 hidden font-plex text-[10px] uppercase tracking-etiqueta text-acero lg:block">
+        <p className="mt-4 hidden font-plex text-[11px] uppercase tracking-etiqueta text-acero lg:block">
           {TEXTOS.teclas}
         </p>
       </div>

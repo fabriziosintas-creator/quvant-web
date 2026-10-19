@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { useRef, useState, type KeyboardEvent } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { Grano } from "@/componentes/estructura/Grano";
 import { GrillaYSalto } from "@/componentes/estructura/GrillaYSalto";
 import { TarjetaInclinada } from "@/componentes/estructura/TarjetaInclinada";
 import { SERVICIOS_VISUAL, type IdServicio } from "@/datos/servicios";
@@ -93,7 +94,6 @@ export function ServiciosInteractivos() {
   const vista = useVista();
 
   const servicio: Servicio = items.find((item) => item.id === activo) ?? items[0];
-  const visualActivo = SERVICIOS_VISUAL[activo];
 
   useGSAP(
     () => {
@@ -153,11 +153,7 @@ export function ServiciosInteractivos() {
           const seleccionado = item.id === activo;
           const visual = SERVICIOS_VISUAL[item.id];
           return (
-            <TarjetaInclinada
-              key={item.id}
-              className="h-full"
-              style={{ "--acento": visual.color } as CSSProperties}
-            >
+            <TarjetaInclinada key={item.id} className="h-full">
               <button
                 ref={(elemento) => {
                   botones.current[indice] = elemento;
@@ -176,7 +172,7 @@ export function ServiciosInteractivos() {
               >
                 <GrillaYSalto />
 
-                {/* La imagen de lo que se ofrece, teñida con el acento del servicio. */}
+                {/* La imagen de lo que se ofrece: la pantalla real (teñida con el acento) o la foto de ambiente (en blanco y negro). */}
                 <span className="relative block aspect-[16/10] overflow-hidden border-b border-profundo bg-negro">
                   <Image
                     src={visual.imagen.src}
@@ -184,16 +180,20 @@ export function ServiciosInteractivos() {
                     fill
                     sizes="(min-width: 768px) 33vw, 100vw"
                     className={`foto-servicio object-cover object-top transition-[transform,filter] duration-[1400ms] ease-out group-hover:scale-[1.04] ${
-                      seleccionado ? "saturate-100" : "saturate-[0.6]"
+                      "foto" in visual ? "foto-bn" : seleccionado ? "saturate-100" : "saturate-[0.6]"
                     }`}
                   />
-                  <span
-                    aria-hidden
-                    className={`absolute inset-0 mix-blend-color transition-opacity duration-700 ${
-                      seleccionado ? "opacity-25" : "opacity-55"
-                    }`}
-                    style={{ background: "var(--acento)" }}
-                  />
+                  {"foto" in visual ? (
+                    <Grano />
+                  ) : (
+                    <span
+                      aria-hidden
+                      className={`absolute inset-0 mix-blend-color transition-opacity duration-700 ${
+                        seleccionado ? "opacity-25" : "opacity-55"
+                      }`}
+                      style={{ background: "var(--acento)" }}
+                    />
+                  )}
                   <span
                     aria-hidden
                     className="absolute inset-0 bg-[linear-gradient(180deg,rgba(13,13,15,0.05)_40%,rgba(13,13,15,0.75))]"
@@ -211,7 +211,7 @@ export function ServiciosInteractivos() {
 
                 <span className="relative flex flex-1 flex-col p-6 md:p-7">
                   <span
-                    className={`font-plex text-lg font-bold leading-snug transition-colors group-hover:text-blanco ${
+                    className={`titulo text-lg leading-snug transition-colors group-hover:text-blanco ${
                       seleccionado ? "text-blanco" : "text-acero"
                     }`}
                   >
@@ -241,8 +241,7 @@ export function ServiciosInteractivos() {
         role="tabpanel"
         id="panel-servicio"
         aria-labelledby={`servicio-${activo}`}
-        style={{ "--acento": visualActivo.color } as CSSProperties}
-        className="mt-6 overflow-hidden rounded-[8px] border border-profundo md:mt-8"
+        className="mt-6 overflow-hidden rounded-[10px] border border-profundo md:mt-8"
       >
         <figcaption className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
           <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
@@ -264,7 +263,7 @@ export function ServiciosInteractivos() {
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-t border-profundo px-4 py-2.5">
           <p className="font-plex text-[11px] text-acero">{servicio.pie}</p>
           {/* Aclaración de honestidad: tiene que leerse, no ser un susurro. */}
-          <p className="font-plex text-[10px] uppercase tracking-etiqueta text-acero">
+          <p className="font-plex text-[11px] uppercase tracking-etiqueta text-acero">
             {NOSOTROS.servicios.nota}
           </p>
         </div>

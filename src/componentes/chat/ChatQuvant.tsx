@@ -219,8 +219,8 @@ export function ChatQuvant() {
       {!abierto ? (
         <div className="chat-lanzador fixed bottom-[calc(6.25rem+env(safe-area-inset-bottom))] right-4 z-[60] flex flex-col items-end gap-3 md:bottom-6 md:right-6">
           {invitacion ? (
-            <div className="charla-burbuja relative w-64 rounded-[14px] border border-profundo bg-negro/95 p-4 pr-10 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.9)] backdrop-blur-md">
-              <p className="font-plex text-sm font-bold text-blanco">{CHAT.invitacion.titulo}</p>
+            <div className="charla-burbuja relative w-64 rounded-[16px] border border-profundo bg-negro/95 p-4 pr-10 shadow-[0_20px_50px_-20px_rgba(0,0,0,0.9)] backdrop-blur-md">
+              <p className="titulo text-sm text-blanco">{CHAT.invitacion.titulo}</p>
               <p className="mt-1 font-lectura text-sm text-acero">{CHAT.invitacion.texto}</p>
               <button
                 type="button"
@@ -254,7 +254,7 @@ export function ChatQuvant() {
               style={{ background: VERDE }}
             />
             {sinLeer > 0 ? (
-              <span className="absolute -right-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-blanco px-1.5 font-plex text-[10px] font-bold text-negro">
+              <span className="absolute -right-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-blanco px-1.5 font-plex text-[11px] font-bold text-negro">
                 {sinLeer}
                 <span className="sr-only"> {CHAT.sinLeer}</span>
               </span>
@@ -367,7 +367,7 @@ export function ChatQuvant() {
                 →
               </button>
             </div>
-            <p className="mt-2 px-1 font-plex text-[10px] leading-snug text-acero/80">{CHAT.privacidad}</p>
+            <p className="mt-2 px-1 font-plex text-[11px] leading-snug text-acero/80">{CHAT.privacidad}</p>
           </form>
         </section>
       ) : null}
@@ -378,7 +378,7 @@ export function ChatQuvant() {
 function Burbuja({ autor, texto, nombre }: { autor: Mensaje["autor"]; texto: string; nombre?: string | null }) {
   if (autor === "sistema") {
     return (
-      <p className="charla-burbuja flex items-center gap-2 self-center px-2 text-center font-plex text-[10px] uppercase tracking-etiqueta text-acero">
+      <p className="charla-burbuja flex items-center gap-2 self-center px-2 text-center font-plex text-[11px] uppercase tracking-etiqueta text-acero">
         <span aria-hidden className="size-1" style={{ background: VERDE }} />
         {texto}
       </p>
@@ -388,13 +388,13 @@ function Burbuja({ autor, texto, nombre }: { autor: Mensaje["autor"]; texto: str
   return (
     <div className={`charla-burbuja flex max-w-[86%] flex-col ${delVisitante ? "self-end items-end" : "self-start"}`}>
       {autor === "humano" ? (
-        <span className="mb-1 flex items-center gap-2 font-plex text-[10px] uppercase tracking-etiqueta" style={{ color: VERDE }}>
+        <span className="mb-1 flex items-center gap-2 font-plex text-[11px] uppercase tracking-etiqueta" style={{ color: VERDE }}>
           <span aria-hidden className="size-1.5" style={{ background: VERDE }} />
           {nombre} · {CHAT.equipo}
         </span>
       ) : null}
       <p
-        className={`whitespace-pre-line rounded-[12px] px-3.5 py-2.5 font-lectura text-[14.5px] leading-relaxed ${
+        className={`whitespace-pre-line rounded-[10px] px-3.5 py-2.5 font-lectura text-[14.5px] leading-relaxed ${
           delVisitante
             ? "rounded-br-[3px] bg-blanco text-negro"
             : autor === "humano"
@@ -412,7 +412,7 @@ function Burbuja({ autor, texto, nombre }: { autor: Mensaje["autor"]; texto: str
 function TarjetaPedido({ pedido }: { pedido: Pedido }) {
   return (
     <div className="charla-burbuja mt-1 border p-4" style={{ borderColor: VERDE }}>
-      <p className="flex items-center gap-2 font-plex text-[10px] font-medium uppercase tracking-etiqueta" style={{ color: VERDE }}>
+      <p className="flex items-center gap-2 font-plex text-[11px] font-medium uppercase tracking-etiqueta" style={{ color: VERDE }}>
         <span aria-hidden className="size-1.5" style={{ background: VERDE }} />
         {CHAT.pedido.titulo}
       </p>

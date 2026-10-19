@@ -38,7 +38,7 @@ export function PaginaCanal({ id, children }: { id: IdCanal; children: ReactNode
               <span className="text-blanco">{canal.nombre}</span>
             </ViewTransition>
           </p>
-          <h1 className="mt-6 max-w-4xl font-plex text-[clamp(2rem,6vw,4rem)] font-bold leading-[1.08] text-blanco">
+          <h1 className="mt-6 max-w-4xl titulo text-[clamp(2rem,6vw,4rem)] leading-[1.08] text-blanco">
             {canal.titulo}
           </h1>
           <p className="mt-6 max-w-2xl font-lectura text-base leading-relaxed text-acero md:text-lg">
