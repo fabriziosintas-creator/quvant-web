@@ -52,12 +52,12 @@ export const CANALES = [
   {
     id: "plataformas",
     ruta: "/plataformas",
-    nombre: "Plataformas",
+    nombre: "Sistemas",
     corto: "Sistemas",
-    frase: "Un núcleo que ya funciona y un sistema para cada rubro.",
-    titulo: "El mismo núcleo, un sistema para cada rubro.",
+    frase: "Un mismo sistema que se acomoda a cómo trabaja tu rubro.",
+    titulo: "Un sistema que ya funciona, pensado para tu rubro.",
     bajada:
-      "Quvant es el sistema de gestión: un núcleo común que ya funciona y, arriba, una plantilla pensada para cada rubro. Cada producto lleva su nombre y la firma de la casa.",
+      "Quvant es el sistema de gestión de tu negocio: lo que ya anda en otros rubros, ajustado a cómo trabaja el tuyo. Cada versión lleva su nombre y la firma de la casa.",
     metaTitulo: "Sistemas de gestión por rubro: industria, gimnasios y más",
     capitulos: [
       { id: "hoy", nombre: "Lo que hace hoy" },
@@ -116,10 +116,10 @@ export const NAVEGACION = {
 /** Interruptor 3D / texto: arriba en la computadora, en el pie en el celular. */
 export const INTERRUPTOR_VISTA = {
   etiqueta: "Elegir cómo ver el sitio",
-  opcion3d: "Vista 3D",
-  opcionTexto: "Vista texto",
-  corto3d: "3D",
-  cortoTexto: "Texto",
+  opcion3d: "Con animaciones",
+  opcionTexto: "Versión liviana",
+  corto3d: "Animada",
+  cortoTexto: "Liviana",
 } as const;
 
 export const ACCESIBILIDAD = {
@@ -129,9 +129,10 @@ export const ACCESIBILIDAD = {
 
 export const HERO = {
   titulo: "QUVANT",
-  propuesta: "Software de gestión, apps y webs para pymes y empresas de primer nivel.",
+  /** La frase oficial va entera arriba (MARCA.bajada); esta es la línea humana de abajo. */
+  propuesta: "Hacemos los sistemas y las webs de negocios que atienden, venden y cobran todos los días.",
   botonPrimario: { texto: "Ver trabajos", destino: "/trabajos" },
-  botonSecundario: { texto: "Hablemos", destino: "/contacto" },
+  botonSecundario: { texto: "Contanos qué necesitás", destino: "/contacto" },
 } as const;
 
 /** La portada, después del video: los canales, los trabajos destacados y el cierre. */
@@ -150,7 +151,7 @@ export const INICIO = {
   cierre: {
     titulo: "¿Tenés un proyecto en mente?",
     texto: "Contanos qué necesitás y te respondemos con una propuesta concreta.",
-    boton: "Hablemos",
+    boton: "Escribinos",
   },
 } as const;
 
@@ -227,7 +228,7 @@ export const WEBS = {
 export const PLATAFORMAS = {
   /** Para los datos estructurados: qué es Quvant como producto. */
   descripcion:
-    "Quvant es el sistema de gestión: un núcleo común que ya funciona y, arriba, una plantilla pensada para cada rubro.",
+    "Quvant es el sistema de gestión de tu negocio: un mismo sistema que se acomoda a cómo trabaja tu rubro.",
   hoy: {
     etiqueta: "Lo que hace hoy",
     etiquetaResto: "Y además",
@@ -248,37 +249,37 @@ export const PLATAFORMAS = {
       {
         id: "margen",
         titulo: "El margen, antes de tocar un precio",
-        texto: "Ves el margen antes de aplicar un aumento masivo de precios.",
+        texto: "Antes de subir los precios, ves cuánto vas a ganar. Sin sorpresas a fin de mes.",
       },
       {
         id: "offline",
         titulo: "Sin internet, se sigue vendiendo",
-        texto: "Se sigue vendiendo sin internet en el mostrador.",
+        texto: "Si se corta internet, el mostrador sigue vendiendo.",
       },
       {
         id: "tablero",
-        titulo: "Cada rol ve lo suyo",
-        texto: "Tablero por rol con «Para atender hoy»; el dueño ve todo desde el celular.",
+        titulo: "Cada uno ve lo suyo",
+        texto: "El cajero ve la caja; el dueño ve todo desde el celular, con lo que hay que atender hoy.",
       },
       {
         id: "stock",
         titulo: "El stock, sucursal por sucursal",
-        texto: "Stock por sucursal y conteo con la cámara del teléfono.",
+        texto: "Contás el stock con la cámara del celular y sabés qué hay en cada sucursal.",
       },
       {
         id: "compras",
         titulo: "Compras que se sugieren solas",
-        texto: "Compras sugeridas según el stock mínimo.",
+        texto: "Cuando algo llega al mínimo, el sistema te arma la compra. Vos la confirmás.",
       },
     ],
     resto: [
       "Presupuestos que pasan a venta en un clic",
-      "Cuentas corrientes con límite",
-      "Taller de servicio técnico",
-      "Hoja de ruta de reparto",
-      "Reportes exportables",
-      "Importación desde Excel",
-      "Permisos por rol y doble factor para el dueño",
+      "Cuentas corrientes con tope para fiar",
+      "Servicio técnico: cada reparación con su estado",
+      "La hoja de ruta del reparto",
+      "Reportes que bajás a Excel",
+      "La lista del proveedor se carga desde el Excel",
+      "Cada persona entra solo a lo suyo; el dueño, con una clave extra",
     ],
   },
   rubros: {
@@ -297,12 +298,12 @@ export const PLATAFORMAS = {
           {
             nombre: "Yunque",
             firma: "by Quvant",
-            rol: "El sistema de gestión e inventario para empresas industriales: stock por sucursal, compras y ventas en un solo lugar.",
+            rol: "Para empresas industriales: el stock de cada sucursal, las compras y las ventas en un solo lugar.",
           },
           {
             nombre: "Forja",
             firma: "by Quvant",
-            rol: "El complemento de Yunque que muestra el inventario y las sucursales en 3D.",
+            rol: "Ves tu depósito y tus sucursales en 3D: qué falta y dónde está.",
           },
         ],
       },
@@ -315,7 +316,7 @@ export const PLATAFORMAS = {
           {
             nombre: "Quvant Gimnasios",
             firma: "",
-            rol: "La administración del gimnasio, armada sobre el núcleo Quvant.",
+            rol: "La administración del gimnasio: lo que ya anda en otros rubros, pensado para el tuyo.",
           },
           {
             nombre: "HackFit",
@@ -408,8 +409,8 @@ export const OBJETIVO = {
       nombre: "Escuchar",
       titular: "Primero escuchamos.",
       texto:
-        "Antes de proponer nada, entendemos cómo trabajás hoy: qué te traba y qué hacés a mano. Llegamos con preguntas, no con una solución armada.",
-      marca: "Nada de soluciones enlatadas.",
+        "Antes de proponer nada, entendemos cómo trabajás hoy: qué te traba y qué hacés a mano. Llegamos con preguntas, no con un sistema armado de antemano.",
+      marca: "Nada armado de antemano.",
     },
     {
       id: "sonar",
@@ -440,8 +441,9 @@ export const NOSOTROS = {
     desarrollo: {
       etiqueta: "Fuerza de desarrollo",
       titular: "Más de 10 años construyendo software.",
+      // TODO: que la revise Michel (es una propuesta con lo ya aprobado, sin inventar datos).
       parrafos: [
-        "Sistemas y sitios web para startups y empresas de primer nivel, simples de usar desde el primer día. Con las tecnologías más nuevas e inteligencia artificial para construir más rápido y con más precisión.",
+        "Soy Michel. Programo hace más de diez años: sistemas y sitios web para startups y empresas de primer nivel, simples de usar desde el primer día. Trabajo con las tecnologías más nuevas y con inteligencia artificial para construir más rápido y con más precisión.",
       ],
       puntos: ["Sistemas y sitios web", "Tecnologías nuevas", "IA para construir mejor"],
       dato: { numero: 10, prefijo: "+", etiqueta: "años construyendo software" },
@@ -450,8 +452,9 @@ export const NOSOTROS = {
     comercial: {
       etiqueta: "Fuerza comercial",
       titular: "Entendemos tu negocio antes de escribir una línea de código.",
+      // TODO: que la revise Fabrizio (es una propuesta con lo ya aprobado, sin inventar datos).
       parrafos: [
-        "Conocemos el negocio y a la gente que lo mueve. Lo que necesitás se vuelve un pedido claro para desarrollo, y te acompañamos hasta que el sistema anda en tu empresa. Y después también.",
+        "Soy Fabrizio. Me ocupo de conocer tu negocio y a la gente que lo mueve: el que atiende, el que cobra, el que cuenta el stock. Lo que necesitás se vuelve un pedido claro para desarrollo, y te acompaño hasta que el sistema anda en tu empresa. Y después también.",
       ],
       puntos: ["Escuchar primero", "Propuestas concretas", "Acompañamiento después"],
       dato: { numero: 4, prefijo: "", etiqueta: "etapas, de la idea al sistema andando" },
@@ -476,7 +479,7 @@ export const NOSOTROS = {
       rol: "Fuerza comercial",
       cargo: "Co-founder · Área comercial",
       bajada:
-        "Entiende el negocio de cada cliente y busca soluciones que simplifiquen el trabajo adentro de las empresas.",
+        "Entiende el negocio de cada cliente y busca cómo simplificar el trabajo adentro de las empresas.",
       titulo: "", // TODO: título o formación de Fabrizio.
       linkedin: "", // TODO: URL del perfil de LinkedIn de Fabrizio.
       foto: "", // TODO: guardar la foto en public/equipo/fabrizio.jpg y poner acá "/equipo/fabrizio.jpg".
@@ -503,11 +506,11 @@ export const NOSOTROS = {
     items: [
       {
         id: "sistemas",
-        nombre: "Sistemas listos para tu nicho",
+        nombre: "Sistemas listos para tu rubro",
         texto:
-          "Gestión y administración ya armadas para rubros específicos. Se contratan por mes y se usan desde el primer día.",
-        ventana: "Núcleos Quvant · Multi núcleo",
-        pie: "Construí tu propio núcleo: cada empresa con su sistema y un panel para seguirlas a todas.",
+          "La gestión de tu negocio ya armada para tu rubro. Se paga por mes y se usa desde el primer día.",
+        ventana: "Varias empresas, un solo panel",
+        pie: "Cada empresa con su sistema, y vos con un solo panel para seguirlas a todas.",
       },
       {
         id: "app",
@@ -529,17 +532,17 @@ export const NOSOTROS = {
     nota: "Ilustraciones de cómo trabajamos, no capturas de un sistema.",
     /** La escena de Núcleos Quvant (servicio 01). Empresas y cifras: src/datos/multinucleo.ts. */
     multinucleo: {
-      panel: "Panel multi núcleo",
+      panel: "Panel de todas tus empresas",
       datosEjemplo: "Datos de ejemplo",
-      resumen: "4 empresas · 4 núcleos · 1 panel",
+      resumen: "4 empresas · 4 sistemas · 1 panel",
       capitulos: [
         {
-          titulo: "Cada empresa, su núcleo",
+          titulo: "Cada empresa, su sistema",
           texto: "Cada una tiene su propio sistema y su administración, independientes.",
         },
         {
           titulo: "Todas, en un panel",
-          texto: "El Multi núcleo conecta todas tus empresas en un solo panel.",
+          texto: "Un panel junta todas tus empresas en un solo lugar.",
         },
         {
           titulo: "Seguimiento en vivo",
@@ -554,11 +557,11 @@ export const NOSOTROS = {
       reproducir: "Reproducir el recorrido",
       pausar: "Pausar el recorrido",
       verTodas: "Todas las empresas",
-      ayuda: "Tocá una empresa para entrar a su núcleo.",
-      suAdministracion: "Su núcleo y su administración, por separado.",
+      ayuda: "Tocá una empresa para entrar a su sistema.",
+      suAdministracion: "Su sistema y su administración, por separado.",
       ultimos12: "Ventas, últimos 12 días",
       escena:
-        "Escena 3D: cuatro empresas, cada una con su núcleo de color, conectadas por haces de datos a un panel central con sus estadísticas.",
+        "Escena 3D: cuatro empresas, cada una con su sistema de color, conectadas por haces de datos a un panel central con sus estadísticas.",
     },
   },
 } as const;
@@ -755,9 +758,9 @@ export const CUENTA = {
     /** Lo útil según el objetivo que eligió al registrarse. */
     sugerencias: {
       mejorar_clientela: {
-        titulo: "Mirá la plantilla de tu rubro",
+        titulo: "Mirá el sistema para tu rubro",
         texto: "El sistema de {rubro}: lo que ya hace hoy y lo que viene.",
-        boton: "Ver la plantilla",
+        boton: "Ver el sistema",
       },
       hacer_web: {
         titulo: "Escribinos para tu web",
@@ -909,20 +912,20 @@ export const EMAILS = {
       industria:
         "Para la industria, Quvant ordena el stock de cada sucursal, las compras y las ventas en un solo sistema. Y el dueño ve todo desde el celular.",
       gimnasios:
-        "Para gimnasios, Quvant suma la administración del gimnasio sobre un núcleo que ya funciona, y una app para que tus socios tengan rutinas y dietas personalizadas.",
+        "Para gimnasios, Quvant suma la administración del gimnasio sobre un sistema que ya funciona, y una app para que tus socios tengan rutinas y dietas personalizadas.",
       holistica:
         "Estamos armando el sistema para centros y profesionales del bienestar. Te avisamos apenas esté listo; mientras tanto, contanos qué necesitás.",
       pymes:
-        "Para pymes estamos diseñando la gestión completa, del presupuesto al reporte, sobre un núcleo que ya funciona en otros rubros.",
+        "Para pymes estamos diseñando la gestión completa, del presupuesto al reporte, sobre un sistema que ya funciona en otros rubros.",
       inmobiliarias:
-        "Para inmobiliarias estamos diseñando la cartera de propiedades, los contratos y las cobranzas en un solo lugar, sobre un núcleo que ya funciona.",
+        "Para inmobiliarias estamos diseñando la cartera de propiedades, los contratos y las cobranzas en un solo lugar, sobre un sistema que ya funciona.",
       supermercados:
-        "Para supermercados estamos diseñando la venta rápida en muchas cajas, el stock y las sucursales, sobre un núcleo que ya funciona.",
-      otro: "Quvant tiene un núcleo que ya funciona (ventas, stock, compras y reportes) y lo adaptamos a cada rubro. Contanos el tuyo y vemos cómo encaja.",
+        "Para supermercados estamos diseñando la venta rápida en muchas cajas, el stock y las sucursales, sobre un sistema que ya funciona.",
+      otro: "Quvant tiene un sistema que ya funciona (ventas, stock, compras y reportes) y lo adaptamos a cada rubro. Contanos el tuyo y vemos cómo encaja.",
     },
     /** Un único botón, según lo que la trajo a Quvant. */
     botones: {
-      mejorar_clientela: "Ver la plantilla de tu rubro",
+      mejorar_clientela: "Ver el sistema para tu rubro",
       hacer_web: "Pedir mi web",
       curiosidad: "Hablar con nosotros",
     },

@@ -87,7 +87,7 @@ export const CASOS: readonly CasoWeb[] = [
     },
     enlaces: {
       demo: { url: "https://yunque-rust.vercel.app/demo/ferremix#1", texto: "Pasar la demo" },
-      propuesta: { url: "https://ferremix-propuesta.vercel.app/", texto: "Ver propuesta" },
+      propuesta: { url: "https://ferremix-propuesta.vercel.app/", texto: "Ver la propuesta para Ferremix" },
     },
   },
 ];
