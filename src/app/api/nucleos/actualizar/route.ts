@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextResponse, type NextRequest } from "next/server";
 import { correrProcesoDiario } from "@/servidor/nucleos/proceso";
 import { procesoDiarioObjetivos } from "@/servidor/objetivos/proceso";
@@ -21,6 +22,8 @@ export async function GET(pedido: NextRequest) {
   const [nucleos, objetivos] = await Promise.allSettled([correrProcesoDiario(), Promise.resolve().then(() => procesoDiarioObjetivos(crearClienteAdmin()))]);
   if (nucleos.status === "rejected") console.error("[nucleos] proceso diario:", nucleos.reason);
   if (objetivos.status === "rejected") console.error("[objetivos] proceso diario:", objetivos.reason);
+  // Datos nuevos del día: la caché de "Dentro del nicho" se vuelve a armar en el próximo pedido.
+  revalidateTag("nichos", "max");
   const ok = nucleos.status === "fulfilled" || objetivos.status === "fulfilled";
   return NextResponse.json(
     {

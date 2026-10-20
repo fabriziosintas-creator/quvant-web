@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { esNicho, texto, uuidValido, type Errores } from "@/servidor/cuenta/validacion";
 import { exigirAdmin } from "./acceso";
@@ -233,6 +233,7 @@ export async function agregarLocal(_previo: EstadoFormulario, datos: FormData): 
     console.error("[locales] agregar:", error?.message);
     return { estado: "error", mensaje: E.general, valores };
   }
+  updateTag("nichos");
   revalidatePath(RUTA);
   return { estado: "listo", mensaje: T.local.agregado, localId: data.id };
 }
@@ -280,6 +281,7 @@ export async function cargarVisita(_previo: EstadoFormulario, datos: FormData): 
     const { error: errorProxima } = await supabase.from("locales").update({ proxima_visita: valores.proxima }).eq("id", valores.local_id);
     if (errorProxima) console.error("[visitas] próxima:", errorProxima.message);
   }
+  updateTag("nichos");
   revalidatePath(RUTA);
   return { estado: "listo", mensaje: T.visita.guardada, localId: valores.local_id };
 }
@@ -301,6 +303,7 @@ export async function cambiarEstadoLocal(datos: FormData) {
     })
     .eq("id", id);
   if (error) console.error("[locales] estado:", error.message);
+  updateTag("nichos");
   revalidatePath(RUTA);
 }
 
@@ -323,6 +326,7 @@ export async function ubicarLocal(datos: FormData) {
     })
     .eq("id", id);
   if (error) console.error("[locales] ubicar:", error.message);
+  updateTag("nichos");
   revalidatePath(RUTA);
 }
 
@@ -332,6 +336,7 @@ export async function borrarLocal(datos: FormData) {
   if (!uuidValido(id)) return;
   const { error } = await supabase.from("locales").delete().eq("id", id);
   if (error) console.error("[locales] borrar:", error.message);
+  updateTag("nichos");
   revalidatePath(RUTA);
 }
 
@@ -414,6 +419,7 @@ export async function importarCsv(_previo: EstadoFormulario, datos: FormData): P
       console.error("[locales] importar:", error.message);
     } else importados += tanda.length;
   }
+  updateTag("nichos");
   revalidatePath(RUTA);
   const pendientes = await contarPendientes(supabase);
   const mensaje = T.importar.resultado.replace("{importados}", String(importados)).replace("{repetidos}", String(repetidos)).replace("{errores}", String(errores));
@@ -483,6 +489,7 @@ export async function ubicarPendientes(): Promise<TandaUbicada> {
     if (punto) ubicados++;
     else sinUbicar++;
   }
+  updateTag("nichos");
   revalidatePath(RUTA);
   return { ubicados, sinUbicar, quedan: await contarPendientes(supabase) };
 }

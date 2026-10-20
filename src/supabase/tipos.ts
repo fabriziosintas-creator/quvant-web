@@ -301,6 +301,7 @@ export type Database = {
           alta: string
           baja: string | null
           cliente_plantilla_id: string | null
+          comparte_metricas: boolean
           creado_en: string
           es_prueba: boolean
           id: string
@@ -318,6 +319,7 @@ export type Database = {
           alta?: string
           baja?: string | null
           cliente_plantilla_id?: string | null
+          comparte_metricas?: boolean
           creado_en?: string
           es_prueba?: boolean
           id?: string
@@ -335,6 +337,7 @@ export type Database = {
           alta?: string
           baja?: string | null
           cliente_plantilla_id?: string | null
+          comparte_metricas?: boolean
           creado_en?: string
           es_prueba?: boolean
           id?: string
@@ -421,6 +424,7 @@ export type Database = {
       eventos: {
         Row: {
           creado_en: string
+          detalle: string | null
           id: number
           nicho_id: string | null
           pagina: string | null
@@ -430,6 +434,7 @@ export type Database = {
         }
         Insert: {
           creado_en?: string
+          detalle?: string | null
           id?: never
           nicho_id?: string | null
           pagina?: string | null
@@ -439,6 +444,7 @@ export type Database = {
         }
         Update: {
           creado_en?: string
+          detalle?: string | null
           id?: never
           nicho_id?: string | null
           pagina?: string | null
@@ -1109,6 +1115,14 @@ export type Database = {
       }
     }
     Functions: {
+      atencion_nicho: {
+        Args: { desde: string; hasta: string; nicho: string }
+        Returns: { detalle: string; tipo: string; visitas: number }[]
+      }
+      embudo_nicho: {
+        Args: { desde: string; hasta: string; nicho: string }
+        Returns: Json
+      }
       metricas_nichos: {
         Args: { desde: string }
         Returns: {
@@ -1141,6 +1155,9 @@ export type Database = {
       rol: "usuario" | "admin"
       tipo_evento:
         | "visita"
+        | "tiempo_nicho"
+        | "profundidad_nicho"
+        | "origen"
         | "vista_nicho"
         | "clic_demo"
         | "clic_contacto"
@@ -1288,6 +1305,9 @@ export const Constants = {
       rol: ["usuario", "admin"],
       tipo_evento: [
         "visita",
+        "tiempo_nicho",
+        "profundidad_nicho",
+        "origen",
         "vista_nicho",
         "clic_demo",
         "clic_contacto",

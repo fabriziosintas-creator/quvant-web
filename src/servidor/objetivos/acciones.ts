@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { METRICA, esMetrica, type FiltroAceptado } from "@/objetivos/catalogo";
 import { abonoPromedio, embudoAlReves, tasasReales, tieneEmbudo } from "@/objetivos/embudo";
@@ -87,6 +87,7 @@ export async function cargarCobro(_previo: EstadoForm, datos: FormData): Promise
     console.error("[objetivos] cobro:", error.message);
     return { estado: "error", mensaje: E.general, valores };
   }
+  updateTag("nichos");
   revalidatePath(RUTA, "layout");
   return { estado: "listo", mensaje: T.facturacion.cargado };
 }
@@ -97,6 +98,7 @@ export async function borrarCobro(datos: FormData) {
   if (!uuidValido(id)) return;
   const { error } = await supabase.from("cobros_quvant").delete().eq("id", id);
   if (error) console.error("[objetivos] borrar cobro:", error.message);
+  updateTag("nichos");
   revalidatePath(RUTA, "layout");
 }
 
@@ -115,6 +117,7 @@ export async function cargarTipoCambio(_previo: EstadoForm, datos: FormData): Pr
     console.error("[objetivos] tipo de cambio:", error.message);
     return { estado: "error", mensaje: E.general };
   }
+  updateTag("nichos");
   revalidatePath(RUTA, "layout");
   return { estado: "listo", mensaje: T.facturacion.tipoCambioCargado };
 }
@@ -137,6 +140,7 @@ export async function cargarAvance(_previo: EstadoForm, datos: FormData): Promis
     console.error("[objetivos] avance:", error.message);
     return { estado: "error", mensaje: E.general };
   }
+  updateTag("nichos");
   revalidatePath(RUTA, "layout");
   return { estado: "listo", mensaje: T.detalle.avanceCargado };
 }
@@ -211,6 +215,7 @@ export async function guardarMeta(_previo: EstadoForm, datos: FormData): Promise
       console.error("[objetivos] crear:", error?.message);
       return { estado: "error", mensaje: E.general, valores };
     }
+    updateTag("nichos");
     revalidatePath(RUTA, "layout");
     return { estado: "listo", mensaje: T.form.creado, id: data.id };
   }
@@ -237,6 +242,7 @@ export async function guardarMeta(_previo: EstadoForm, datos: FormData): Promise
       .insert(cambios.map((c) => ({ meta_id: id, campo: c.campo, valor_anterior: String(c.antes), valor_nuevo: String(c.despues), motivo: valores.motivo.slice(0, 500), quien: perfil.id })));
     if (errorCambios) console.error("[objetivos] cambios:", errorCambios.message);
   }
+  updateTag("nichos");
   revalidatePath(RUTA, "layout");
   return { estado: "listo", mensaje: T.form.guardado, id };
 }
@@ -247,6 +253,7 @@ export async function archivarMeta(datos: FormData) {
   if (!uuidValido(id)) return;
   const { error } = await supabase.from("metas").update({ archivada: texto(datos, "volver") !== "si" }).eq("id", id);
   if (error) console.error("[objetivos] archivar:", error.message);
+  updateTag("nichos");
   revalidatePath(RUTA, "layout");
 }
 
@@ -286,6 +293,7 @@ export async function cargarPlan(_previo: EstadoForm, datos: FormData): Promise<
     console.error("[objetivos] plan:", error.message);
     return { estado: "error", mensaje: E.general };
   }
+  updateTag("nichos");
   revalidatePath(RUTA, "layout");
   return { estado: "listo", mensaje: T.plan.cargado.replace("{n}", String(nuevas.length)) };
 }
@@ -312,6 +320,7 @@ export async function crearMetasDeActividad(datos: FormData) {
   ];
   const { error } = await supabase.from("metas").insert(nuevas);
   if (error) console.error("[objetivos] actividad:", error.message);
+  updateTag("nichos");
   revalidatePath(RUTA, "layout");
 }
 
@@ -321,6 +330,7 @@ export async function cerrarPeriodosAhora(): Promise<{ mensaje: string }> {
   try {
     const r = await cerrarPeriodos(supabase);
     await fotografiar(supabase);
+    updateTag("nichos");
     revalidatePath(RUTA, "layout");
     return { mensaje: r.cerrados === 0 ? T.procesos.nadaQueCerrar : T.procesos.cerrados.replace("{n}", String(r.cerrados)).replace("{c}", String(r.cumplidos)) };
   } catch (error) {
