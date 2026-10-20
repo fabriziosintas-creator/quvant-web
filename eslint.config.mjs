@@ -15,6 +15,8 @@ const eslintConfig = defineConfig([
     // El showreel es un proyecto aparte, con su propio ESLint y su propio
     // tsconfig: lo revisa `npm run lint` adentro de video/.
     "video/**",
+    // El worker de MapLibre, copiado de node_modules (código de terceros, minificado).
+    "public/maplibre/**",
   ]),
 ]);
 

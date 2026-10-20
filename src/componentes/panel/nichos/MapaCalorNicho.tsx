@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { GeoJSONSourceSpecification, Map as MapaLibre } from "maplibre-gl";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { estiloQuvant, paletaDeLaPagina } from "@/componentes/panel/mapa/estiloMapa";
+import { cargarMapLibre } from "@/componentes/panel/mapa/maplibre";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { linkRecorrido, recorridoCercano } from "@/nichos/estadistica";
 import type { ProspectoNicho, VisitaNicho } from "@/nichos/tipos";
@@ -46,7 +47,7 @@ export function MapaCalorNicho({ prospectos, visitas, acento, hoy }: { prospecto
     let mapa: MapaLibre | null = null;
     (async () => {
       try {
-        const maplibre = await import("maplibre-gl");
+        const maplibre = await cargarMapLibre();
         if (!vivo || !contenedor.current) return;
         mapa = new maplibre.Map({ container: contenedor.current, style: estiloQuvant(paletaDeLaPagina()), center: [-58.4173, -34.6118], zoom: 10, attributionControl: { compact: false }, dragRotate: false, touchPitch: false });
         mapa.touchZoomRotate.disableRotation();

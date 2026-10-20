@@ -46,3 +46,6 @@ next-env.d.ts
 
 # vistas previas de los emails (npm run emails:vista)
 /.emails-vista/
+
+# El worker de MapLibre: lo copia scripts/copiar-worker-maplibre.mjs antes de dev y build.
+/public/maplibre/

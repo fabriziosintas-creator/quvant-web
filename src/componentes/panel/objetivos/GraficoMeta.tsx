@@ -154,7 +154,9 @@ export function GraficoMeta({
           {T.proyeccion}
         </span>
       </figcaption>
-      <table id={`${id}-tabla`} className="sr-only">
+      {/* Dentro de un div oculto: a una tabla, sr-only no le achica el ancho y desborda la página en el celular. */}
+      <div className="sr-only">
+      <table id={`${id}-tabla`}>
         <caption>{T.grafico}</caption>
         <thead>
           <tr>
@@ -173,6 +175,7 @@ export function GraficoMeta({
           ))}
         </tbody>
       </table>
+      </div>
     </figure>
   );
 }

@@ -9,6 +9,7 @@ import { PANEL_ADMIN } from "@/datos/textos";
 import type { Admin, Local, Visita } from "@/servidor/panel/mapa";
 import { estiloQuvant, paletaDeLaPagina } from "./estiloMapa";
 import { FichaLocal } from "./FichaLocal";
+import { cargarMapLibre } from "./maplibre";
 import { Leyenda, Marcador, descripcionDe } from "./Marcador";
 
 const T = PANEL_ADMIN.mapa;
@@ -76,7 +77,7 @@ export function MapaProspeccion({
     let creado: MapaLibre | null = null;
     (async () => {
       try {
-        const maplibre = await import("maplibre-gl");
+        const maplibre = await cargarMapLibre();
         if (!vivo || !contenedor.current) return;
         creado = new maplibre.Map({
           container: contenedor.current,

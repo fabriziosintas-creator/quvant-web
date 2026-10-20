@@ -54,7 +54,9 @@ export function ProyeccionMrr({ historia, pronostico, color }: { historia: Array
         <motion.path d={futuro} fill="none" stroke={color} strokeWidth="1.5" strokeDasharray="4 4" initial={{ opacity: quieto ? 1 : 0 }} animate={{ opacity: 1 }} transition={{ delay: quieto ? 0 : 0.9, duration: 0.5 }} />
         <circle cx={px(ultimo)} cy={py(historia[ultimo].mrr)} r="4" fill={color} />
       </svg>
-      <table id={`${id}-t`} className="sr-only">
+      {/* La tabla va dentro de un div oculto: a una tabla, sr-only no le achica el ancho y desborda la página en el celular. */}
+      <div className="sr-only">
+      <table id={`${id}-t`}>
         <tbody>
           {historia.map((h) => (
             <tr key={h.mes}>
@@ -72,6 +74,7 @@ export function ProyeccionMrr({ historia, pronostico, color }: { historia: Array
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }
