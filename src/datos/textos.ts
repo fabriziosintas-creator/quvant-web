@@ -1293,7 +1293,7 @@ export const PANEL_ADMIN = {
     bajada: "Nuestras metas de facturación, clientes, web, calle y núcleos: cuáles se cumplen, cuáles van en camino y cuáles no.",
     faltaMigracion: "Falta aplicar en la base las tablas de Objetivos (migración 20261022130000_objetivos_quvant). Con «npx.cmd supabase db push --linked» queda andando.",
     vacio: "Todavía no hay objetivos cargados. Empezá por el plan inicial: carga las metas de los próximos 12 meses y después las ajustás.",
-    marcador: "{n} de {total} objetivos cumplidos o en camino",
+    marcadorResto: "de {total} objetivos en curso, cumplidos o en camino",
     marcadorSin: "Sin objetivos abiertos en este filtro",
     estados: { cumplido: "Cumplido", en_camino: "En camino", en_riesgo: "En riesgo", atrasado: "Atrasado", sin_datos: "Sin datos", no_cumplido: "No cumplido" },
     areas: { facturacion: "Facturación", clientes: "Clientes", web: "Web", comercial: "Comercial", calle: "Calle", nucleos: "Núcleos" },

@@ -1118,3 +1118,19 @@ html[data-vista="texto"] .linea-canales {
     animation: none;
   }
 }
+
+/* ── Panel: el punto cuadrado late una vez (un objetivo cumplido, un cierre) ── */
+@keyframes latido {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.8);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [class*="animate-[latido"] {
+    animation: none;
+  }
+}

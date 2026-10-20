@@ -59,6 +59,7 @@ const ACENTO_SECCION: Record<string, string> = {
   "/panel": AURORA[0],
   "/panel/plantillas": ACENTO_NICHO.industria,
   "/panel/nucleos": ACENTO_NICHO.pymes,
+  "/panel/objetivos": ACENTO_NICHO.holistica,
   "/panel/mapa": ACENTO_CANAL.contacto,
   "/panel/mensajes": ACENTO_CANAL.trabajos,
 };
