@@ -5,12 +5,11 @@
 
 export const SITIO = {
   /**
-   * TODO: cambiar por el dominio propio cuando se compre (con https y sin
-   * barra final, por ejemplo "https://quvant.com.ar"). Mientras tanto va la
-   * URL de Vercel, que es donde el sitio vive de verdad: así la vista previa
-   * al compartir el link y el sitemap apuntan a algo que existe.
+   * El dominio propio (comprado en nic.ar el 20-oct-2026 y delegado a
+   * Vercel). Con https y sin barra final. "www" es el principal: el apex
+   * quvant.com.ar redirige acá.
    */
-  url: "https://quvant-web.vercel.app",
+  url: "https://www.quvant.com.ar",
 
   titulo: "Quvant | Desarrollo de software y sistemas de gestión en Argentina",
   descripcion:
