@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, type CSSProperties } from "react";
 import { tipoTransicion } from "@/componentes/canales/navegacion";
+import { EnlaceCuenta } from "@/componentes/cuenta/EnlaceCuenta";
 import { Logotipo } from "@/componentes/marca/Logotipo";
 import { ACENTO_CANAL } from "@/datos/colores";
 import { PROYECTOS } from "@/datos/portfolio";
@@ -23,7 +24,9 @@ const CONTADOR: Partial<Record<string, number>> = { trabajos: PROYECTOS.length }
  * Computadora: la firma a la izquierda, los canales en una píldora al
  * centro (el actual en blanco, con su color) y a la derecha el interruptor
  * 3D / texto y "Hablemos".
- * Celular: la firma y "Hablemos". Los canales están en la barra de abajo
+ * Antes de "Hablemos", la cuenta: "Ingresar", "Mi cuenta" y "Panel"
+ * (solo admin), ver EnlaceCuenta.
+ * Celular: la firma, la cuenta y "Hablemos". Los canales están en la barra de abajo
  * (DockCanales), al alcance del pulgar.
  *
  * Lleva su propio nombre de transición: al cambiar de canal la página se
@@ -122,6 +125,7 @@ export function Encabezado() {
 
         <div className="flex shrink-0 items-center gap-3">
           <InterruptorVista corto className="hidden lg:flex" />
+          <EnlaceCuenta />
           <Link
             href={CONTACTO.ruta}
             aria-current={enContacto ? "page" : undefined}

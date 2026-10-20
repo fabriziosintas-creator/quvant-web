@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/*
+ * Tailwind no revisa la carpeta del video (proyecto Remotion aparte, con
+ * gigas de material): no tiene clases de la web y, al recorrerla, Windows
+ * se queda sin recursos y el build falla (os error 1450).
+ */
+@source not "../../video";
+
 @theme {
   /*
    * Paleta Quvant (manual de identidad, sección 06).

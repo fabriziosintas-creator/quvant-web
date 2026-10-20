@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, type KeyboardEvent } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import { NICHOS } from "@/datos/nucleo";
 import { Grano } from "@/componentes/estructura/Grano";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { VideoForja } from "@/componentes/secciones/VideoForja";
+import { ACENTO_NICHO } from "@/datos/colores";
 import { PLATAFORMAS } from "@/datos/textos";
 
 type Rubro = (typeof PLATAFORMAS.rubros.items)[number];
@@ -56,6 +58,16 @@ export function SelectorRubros() {
   const rubros = PLATAFORMAS.rubros.items;
   const [activo, setActivo] = useState<IdRubro>(rubros[0].id);
   const botones = useRef<Array<HTMLButtonElement | null>>([]);
+
+  // "#rubro-gimnasios" (desde la cuenta: "Mirá la plantilla de tu rubro")
+  // abre ese rubro y lleva hasta los rubros.
+  useEffect(() => {
+    const id = window.location.hash.match(/^#rubro-([a-z]+)$/)?.[1];
+    const rubro = rubros.find((item) => item.id === id);
+    if (!rubro) return;
+    queueMicrotask(() => setActivo(rubro.id));
+    document.getElementById("rubros")?.scrollIntoView({ block: "start" });
+  }, [rubros]);
 
   const alTeclear = (evento: KeyboardEvent<HTMLButtonElement>, indice: number) => {
     const ultimo = rubros.length - 1;
@@ -164,6 +176,18 @@ export function SelectorRubros() {
               </div>
             )}
 
+            {/* Al registro con este rubro ya elegido (y anotado de dónde vino). */}
+            <div className="mt-6 flex flex-col gap-3 border-t border-profundo pt-6 sm:flex-row sm:items-center sm:justify-between">
+              <p className="font-lectura text-sm leading-relaxed text-acero">{PLATAFORMAS.rubros.registrarmeNota}</p>
+              <Link
+                href={`/registro?nicho=${item.id}&origen=plataformas-rubros`}
+                style={{ "--acento": ACENTO_NICHO[item.id] } as CSSProperties}
+                className="inline-flex h-11 shrink-0 items-center justify-center gap-2 border border-[var(--acento)] px-5 font-plex text-xs font-medium uppercase tracking-[0.14em] text-blanco transition-colors hover:bg-profundo/60"
+              >
+                <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
+                {PLATAFORMAS.rubros.registrarme}
+              </Link>
+            </div>
           </div>
         ))}
       </div>

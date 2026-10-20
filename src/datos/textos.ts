@@ -106,6 +106,11 @@ export const NAVEGACION = {
   capitulos: "En esta página",
   navPrincipal: "Canales del sitio",
   navCelular: "Barra de canales",
+  /** La cuenta, en el encabezado: "Ingresar" sin sesión, "Mi cuenta" con sesión y "Panel" solo para admin. */
+  ingresar: "Ingresar",
+  miCuenta: "Mi cuenta",
+  cuentaCorto: "Cuenta",
+  panel: "Panel",
 } as const;
 
 /** Interruptor 3D / texto: arriba en la computadora, en el pie en el celular. */
@@ -279,6 +284,9 @@ export const PLATAFORMAS = {
   rubros: {
     etiqueta: "Rubros",
     notaVacio: "Estamos entrando en este rubro. Si es el tuyo, hablemos.",
+    /** El botón de cada rubro que lleva al registro con ese rubro ya elegido. */
+    registrarme: "Registrarme",
+    registrarmeNota: "Creá tu cuenta y te mostramos cómo funciona para tu rubro.",
     items: [
       {
         id: "industria",
@@ -662,4 +670,213 @@ export const PIE = {
   etiquetaSecciones: "Canales",
   etiquetaSeguinos: "Seguinos",
   derechos: "© 2026 Quvant",
+  privacidad: "Privacidad",
+} as const;
+
+/**
+ * Registro, ingreso y cuenta de las personas que se registran.
+ *
+ * Los rubros y los objetivos tienen que coincidir con las tablas nichos y
+ * objetivos de la base (supabase/migrations): si se suma uno allá, se suma
+ * acá. "{x}" se reemplaza en el componente.
+ */
+export const CUENTA = {
+  etiqueta: "Tu cuenta",
+  /** Los rubros que se eligen al registrarse (tarjetas grandes, para el dedo). */
+  nichos: [
+    { id: "industria", nombre: "Industria", detalle: "Fábricas, depósitos y ferreterías industriales." },
+    { id: "gimnasios", nombre: "Gimnasios y fitness", detalle: "Gimnasios, boxes, estudios y entrenadores." },
+    { id: "holistica", nombre: "Holística", detalle: "Terapias, bienestar, yoga y meditación." },
+    { id: "pymes", nombre: "Pymes", detalle: "Comercios y empresas de servicios." },
+    { id: "inmobiliarias", nombre: "Inmobiliarias", detalle: "Alquileres, ventas y administración." },
+    { id: "supermercados", nombre: "Supermercados", detalle: "Autoservicios, almacenes y cadenas." },
+    { id: "otro", nombre: "Otro rubro", detalle: "Contanos cuál y lo vemos juntos." },
+  ],
+  /** Con las palabras de fabrizio. */
+  objetivos: [
+    { id: "mejorar_clientela", texto: "Quiero mejorar mi clientela" },
+    { id: "hacer_web", texto: "Quiero hacer mi página web" },
+    { id: "curiosidad", texto: "Curiosidad, pero me interesa lo que ofrecen" },
+  ],
+  campos: {
+    nombre: { etiqueta: "Nombre", marcador: "¿Cómo te llamás?" },
+    apellido: { etiqueta: "Apellido (opcional)", marcador: "Tu apellido" },
+    email: { etiqueta: "Email", marcador: "tu@email.com" },
+    contrasena: { etiqueta: "Contraseña", ayuda: "Al menos 8 caracteres." },
+    mostrar: "Mostrar",
+    ocultar: "Ocultar",
+    nicho: "¿De qué rubro es tu negocio?",
+    nichoOtro: { etiqueta: "¿Cuál?", marcador: "Contanos tu rubro" },
+    objetivo: "¿Qué te trajo a Quvant?",
+    empresa: { etiqueta: "Empresa (opcional)", marcador: "El nombre de tu negocio" },
+    ciudad: { etiqueta: "Ciudad (opcional)", marcador: "CABA, Rosario, Córdoba…" },
+    telefono: { etiqueta: "Teléfono (opcional)", marcador: "Por si preferís que te llamemos" },
+    novedades: "Quiero recibir novedades de Quvant por email.",
+    privacidad: { antes: "Leí y acepto la ", enlace: "política de privacidad", despues: "." },
+  },
+  registro: {
+    metaTitulo: "Creá tu cuenta",
+    titulo: "Creá tu cuenta.",
+    bajada: "Contanos de qué es tu negocio y qué buscás, y te mostramos lo que Quvant puede hacer por tu rubro.",
+    boton: "Crear mi cuenta",
+    enviando: "Creando tu cuenta…",
+    yaTenes: "¿Ya tenés cuenta?",
+    ingresar: "Ingresá",
+    listo: {
+      titulo: "Revisá tu email.",
+      texto: "Te mandamos un enlace a {email} para confirmar tu cuenta. Tocalo y entrás directo.",
+      nota: "¿No llegó? Fijate en spam o en promociones. El enlace vence en una hora.",
+      yaTenia: "¿Ya tenías cuenta con ese email? Entonces no te llega nada nuevo: ingresá o recuperá tu contraseña.",
+      reenviar: "Mandármelo de nuevo",
+      reenviado: "Listo, te lo mandamos de nuevo.",
+    },
+  },
+  ingreso: {
+    metaTitulo: "Ingresá a tu cuenta",
+    titulo: "Ingresá a tu cuenta.",
+    bajada: "Con el email y la contraseña con los que te registraste.",
+    boton: "Ingresar",
+    enviando: "Ingresando…",
+    olvide: "Olvidé mi contraseña",
+    sinCuenta: "¿Todavía no tenés cuenta?",
+    registrate: "Registrate",
+    reenviar: "Mandarme el enlace de confirmación",
+  },
+  recuperar: {
+    metaTitulo: "Recuperá tu contraseña",
+    titulo: "¿Olvidaste tu contraseña?",
+    bajada: "Dejanos tu email y te mandamos un enlace para elegir una nueva.",
+    boton: "Mandarme el enlace",
+    enviando: "Mandando…",
+    listo: "Si hay una cuenta con ese email, en unos minutos te llega el enlace. Fijate también en spam.",
+    volver: "Volver a ingresar",
+  },
+  cuenta: {
+    metaTitulo: "Tu cuenta",
+    hola: "Hola, {nombre}.",
+    bajada: "Acá ves y cambiás tus datos.",
+    cargando: "Cargando tu cuenta…",
+    avisos: {
+      bienvenida: "Listo: tu email quedó confirmado. Te damos la bienvenida a Quvant.",
+      nuevaContrasena: "Entraste con el enlace para recuperar la contraseña: elegí una nueva acá abajo.",
+    },
+    /** Lo útil según el objetivo que eligió al registrarse. */
+    sugerencias: {
+      mejorar_clientela: {
+        titulo: "Mirá la plantilla de tu rubro",
+        texto: "El sistema de {rubro}: lo que ya hace hoy y lo que viene.",
+        boton: "Ver la plantilla",
+      },
+      hacer_web: {
+        titulo: "Escribinos para tu web",
+        texto: "Contanos qué tenés en mente y te respondemos con una propuesta concreta.",
+        boton: "Hablemos",
+      },
+      curiosidad: {
+        titulo: "Mirá lo que ya hicimos",
+        texto: "Webs, sistemas y apps que ya están andando. Entrá a cualquiera y recorrela.",
+        boton: "Ver trabajos",
+      },
+    },
+    datos: {
+      titulo: "Tus datos",
+      email: "Email",
+      emailNota: "Es el email con el que entrás. Para cambiarlo, escribinos.",
+      guardar: "Guardar cambios",
+      guardando: "Guardando…",
+      guardado: "Listo, quedó guardado.",
+    },
+    contrasena: {
+      titulo: "Contraseña",
+      nueva: "Contraseña nueva",
+      repetir: "Repetila",
+      boton: "Cambiar la contraseña",
+      cambiando: "Cambiando…",
+      cambiada: "Listo, tu contraseña cambió.",
+    },
+    panel: "Ir al panel",
+    salir: "Cerrar sesión",
+  },
+  errores: {
+    nombre: "Contanos tu nombre.",
+    email: "Revisá el email: parece que le falta algo.",
+    contrasena: "La contraseña tiene que tener al menos 8 caracteres.",
+    contrasenaLarga: "La contraseña es demasiado larga (como mucho 72 caracteres).",
+    noCoinciden: "Las dos contraseñas no coinciden.",
+    nicho: "Elegí el rubro de tu negocio.",
+    nichoOtro: "Contanos de qué rubro es.",
+    objetivo: "Elegí qué te trajo a Quvant.",
+    privacidad: "Para crear la cuenta tenés que aceptar la política de privacidad.",
+    largo: "Ese dato es demasiado largo.",
+    credenciales: "El email o la contraseña no coinciden.",
+    sinConfirmar: "Todavía no confirmaste tu email. Si no te llegó el enlace, te lo mandamos de nuevo.",
+    contrasenaDebil: "Esa contraseña es fácil de adivinar. Probá con otra más larga o con números y símbolos.",
+    contrasenaIgual: "La contraseña nueva tiene que ser distinta de la anterior.",
+    demasiados: "Hubo muchos intentos seguidos. Esperá unos minutos y probá de nuevo.",
+    emailNoAutorizado:
+      "Todavía no podemos mandar emails a esa dirección: estamos terminando de configurar el envío. Probá en unos días o escribinos.",
+    enlace: "El enlace venció o ya se usó. Pedí uno nuevo.",
+    sesion: "Tu sesión venció. Ingresá de nuevo.",
+    sinConfigurar: "El registro todavía no está disponible. Probá en unos días.",
+    general: "Algo salió mal de nuestro lado. Probá de nuevo en un rato.",
+    revisa: "Revisá los datos marcados.",
+  },
+} as const;
+
+/**
+ * Política de privacidad (Ley 25.326 de Protección de Datos Personales).
+ *
+ * ┌─────────────────────────────────────────────────────────┐
+ * │  TODO: revisar con un abogado antes de difundir.        │
+ * │  Es un texto base: no reemplaza asesoramiento legal.    │
+ * └─────────────────────────────────────────────────────────┘
+ */
+export const PRIVACIDAD = {
+  metaTitulo: "Política de privacidad",
+  titulo: "Política de privacidad.",
+  actualizada: "Última actualización: octubre de 2026.",
+  borrador: "Texto base, pendiente de revisión legal.",
+  secciones: [
+    {
+      titulo: "Quién es responsable",
+      parrafos: [
+        "Quvant es responsable de los datos personales que dejás en este sitio. Podés escribirnos por los medios de contacto que figuran al final de esta página.",
+      ],
+    },
+    {
+      titulo: "Qué datos guardamos",
+      parrafos: [
+        "Si creás una cuenta: tu nombre y apellido, tu email, el rubro de tu negocio, qué te trajo a Quvant y, si los cargás, tu empresa, tu ciudad y tu teléfono. Tu contraseña se guarda cifrada: nadie de Quvant la puede ver.",
+        "Si usás el chat de la web: lo que escribís en la conversación.",
+        "Para medir qué secciones interesan, la web anota visitas y clics con un identificador anónimo propio, sin cookies de terceros y sin tu nombre ni tu email. Si tu navegador pide no ser rastreado (Do Not Track o Global Privacy Control), no anotamos nada.",
+      ],
+    },
+    {
+      titulo: "Para qué los usamos",
+      parrafos: [
+        "Para darte acceso a tu cuenta, responderte, mostrarte lo que Quvant puede hacer por tu rubro y, solo si lo aceptaste, mandarte novedades por email. No vendemos ni cedemos tus datos a nadie.",
+      ],
+    },
+    {
+      titulo: "Dónde se guardan",
+      parrafos: [
+        "Usamos proveedores de infraestructura que pueden tener sus servidores fuera de la Argentina: Supabase (base de datos y cuentas), Vercel (el sitio) y Resend (el envío de emails). Al crear tu cuenta prestás tu consentimiento para que tus datos se guarden en esos servidores, con medidas de seguridad razonables.",
+      ],
+    },
+    {
+      titulo: "Tus derechos",
+      parrafos: [
+        "Podés pedirnos en cualquier momento ver, corregir, actualizar o borrar tus datos, y dejar de recibir novedades. Muchos datos los podés cambiar vos mismo desde tu cuenta; para lo demás, escribinos.",
+        "El titular de los datos personales tiene la facultad de ejercer el derecho de acceso a los mismos en forma gratuita a intervalos no inferiores a seis meses, salvo que se acredite un interés legítimo al efecto conforme lo establecido en el artículo 14, inciso 3 de la Ley Nº 25.326.",
+        "La AGENCIA DE ACCESO A LA INFORMACIÓN PÚBLICA, en su carácter de Órgano de Control de la Ley Nº 25.326, tiene la atribución de atender las denuncias y reclamos que interpongan quienes resulten afectados en sus derechos por incumplimiento de las normas vigentes en materia de protección de datos personales.",
+      ],
+    },
+    {
+      titulo: "Cambios",
+      parrafos: [
+        "Si cambiamos esta política, lo vas a ver en esta página con la fecha nueva. Si el cambio es importante, te avisamos por email.",
+      ],
+    },
+  ],
+  contacto: "Contacto",
 } as const;

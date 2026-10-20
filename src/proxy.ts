@@ -1,13 +1,26 @@
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { actualizarSesion } from "@/supabase/proxy";
+
+/** Las páginas que piden sesión: sin cookie de Supabase, directo a /ingresar. */
+const CON_SESION = ["/cuenta"];
 
 /**
  * Corre antes de cada página (Next 16 llama "proxy" a lo que antes era
- * middleware). Por ahora solo renueva la sesión de Supabase; la protección
- * de /cuenta y /panel se suma con el registro y el panel, y se vuelve a
- * verificar en el servidor de cada página (el proxy solo no alcanza).
+ * middleware): renueva la sesión de Supabase y, si alguien entra a una
+ * página con sesión sin haber ingresado, lo manda a /ingresar sin dibujar
+ * nada. Es el camino rápido: cada página vuelve a verificar la sesión en
+ * el servidor (el proxy solo no alcanza). /panel se protege en su propia
+ * página.
  */
 export async function proxy(pedido: NextRequest) {
+  const { pathname, search } = pedido.nextUrl;
+  const pideSesion = CON_SESION.some((ruta) => pathname === ruta || pathname.startsWith(`${ruta}/`));
+  const tieneCookie = pedido.cookies.getAll().some((cookie) => cookie.name.startsWith("sb-"));
+  if (pideSesion && !tieneCookie) {
+    const destino = new URL("/ingresar", pedido.url);
+    destino.searchParams.set("siguiente", `${pathname}${search}`);
+    return NextResponse.redirect(destino);
+  }
   return actualizarSesion(pedido);
 }
 

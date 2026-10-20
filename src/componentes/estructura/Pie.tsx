@@ -86,7 +86,12 @@ export function Pie() {
 
       <div className="border-t border-profundo">
         <div className="contenedor flex items-center justify-between gap-4 py-5">
-          <p className="font-plex text-xs text-acero">{PIE.derechos}</p>
+          <p className="flex flex-wrap items-center gap-x-4 gap-y-1 font-plex text-xs text-acero">
+            {PIE.derechos}
+            <Link href="/privacidad" className="underline decoration-profundo underline-offset-4 hover:text-blanco hover:decoration-blanco">
+              {PIE.privacidad}
+            </Link>
+          </p>
           <InterruptorVista className="lg:hidden" />
           <span aria-hidden className="hidden size-1.5 bg-acero lg:inline-block" />
         </div>
