@@ -108,15 +108,6 @@ export const NAVEGACION = {
   navCelular: "Barra de canales",
 } as const;
 
-/** Interruptor 3D / texto: arriba en la computadora, en el pie en el celular. */
-export const INTERRUPTOR_VISTA = {
-  etiqueta: "Elegir cómo ver el sitio",
-  opcion3d: "Vista 3D",
-  opcionTexto: "Vista texto",
-  corto3d: "3D",
-  cortoTexto: "Texto",
-} as const;
-
 export const ACCESIBILIDAD = {
   saltarAlContenido: "Saltar al contenido",
   irAlInicio: "Quvant — ir al inicio",

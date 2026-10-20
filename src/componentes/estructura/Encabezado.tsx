@@ -8,7 +8,6 @@ import { Logotipo } from "@/componentes/marca/Logotipo";
 import { ACENTO_CANAL } from "@/datos/colores";
 import { PROYECTOS } from "@/datos/portfolio";
 import { ACCESIBILIDAD, CANALES, NAVEGACION } from "@/datos/textos";
-import { InterruptorVista } from "./InterruptorVista";
 
 /** Contacto va aparte, como botón: el resto son los canales de la píldora. */
 const EN_LA_PILDORA = CANALES.filter((canal) => canal.id !== "contacto");
@@ -21,8 +20,7 @@ const CONTADOR: Partial<Record<string, number>> = { trabajos: PROYECTOS.length }
  * El encabezado fijo, translúcido.
  *
  * Computadora: la firma a la izquierda, los canales en una píldora al
- * centro (el actual en blanco, con su color) y a la derecha el interruptor
- * 3D / texto y "Hablemos".
+ * centro (el actual en blanco, con su color) y a la derecha "Hablemos".
  * Celular: la firma y "Hablemos". Los canales están en la barra de abajo
  * (DockCanales), al alcance del pulgar.
  *
@@ -121,7 +119,6 @@ export function Encabezado() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
-          <InterruptorVista corto className="hidden lg:flex" />
           <Link
             href={CONTACTO.ruta}
             aria-current={enContacto ? "page" : undefined}

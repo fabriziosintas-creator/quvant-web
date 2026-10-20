@@ -27,7 +27,6 @@ if(location.pathname!=="/")return;
 var forzada=new URLSearchParams(location.search).has("intro");
 if(!forzada){
 if(liviano)return;
-if(localStorage.getItem("quvant-vista")==="texto")return;
 if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
 }
 var c=document.createElement("canvas");if(!c.getContext("webgl2"))return;
