@@ -6,6 +6,7 @@ import { CUENTA } from "@/datos/textos";
 import { pedirRecuperacion, type EstadoFormulario } from "@/servidor/cuenta/acciones";
 import { Aviso, Campo } from "./Campos";
 import { CLASE_BOTON, CLASE_ENLACE } from "./estilos";
+import { enviarSinReiniciar } from "./enviarSinReiniciar";
 
 const INICIAL: EstadoFormulario = { estado: "inicial" };
 const { campos, recuperar } = CUENTA;
@@ -20,7 +21,7 @@ export function FormularioRecuperar() {
       {estado.estado === "listo" ? (
         <Aviso tipo="listo">{recuperar.listo}</Aviso>
       ) : (
-        <form action={enviar} noValidate className="flex flex-col gap-6">
+        <form onSubmit={enviarSinReiniciar(enviar)} noValidate className="flex flex-col gap-6">
           {estado.estado === "error" && estado.mensaje ? <Aviso tipo="error">{estado.mensaje}</Aviso> : null}
           <Campo
             name="email"

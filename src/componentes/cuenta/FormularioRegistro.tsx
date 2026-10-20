@@ -6,6 +6,7 @@ import { CUENTA } from "@/datos/textos";
 import { reenviarConfirmacion, registrarse, type EstadoFormulario } from "@/servidor/cuenta/acciones";
 import { Aviso, CampoContrasena, Campo, Casilla } from "./Campos";
 import { CLASE_BOTON, CLASE_BOTON_SECUNDARIO, CLASE_ENLACE } from "./estilos";
+import { enviarSinReiniciar } from "./enviarSinReiniciar";
 import { EleccionPerfil } from "./EleccionPerfil";
 
 const INICIAL: EstadoFormulario = { estado: "inicial" };
@@ -45,7 +46,7 @@ export function FormularioRegistro({ nicho = "", origen = "" }: { nicho?: string
   const cadena = (campo: string) => (typeof v[campo] === "string" ? (v[campo] as string) : undefined);
 
   return (
-    <form action={enviar} noValidate className="flex flex-col gap-7">
+    <form onSubmit={enviarSinReiniciar(enviar)} noValidate className="flex flex-col gap-7">
       <input type="hidden" name="origen" value={origen} />
       <input type="hidden" name="visita" value={visita} />
 

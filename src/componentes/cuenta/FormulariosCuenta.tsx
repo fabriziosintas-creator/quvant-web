@@ -1,10 +1,11 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
 import { CUENTA } from "@/datos/textos";
 import { cambiarContrasena, guardarPerfil, type EstadoFormulario } from "@/servidor/cuenta/acciones";
 import { Aviso, Campo, CampoContrasena, Casilla } from "./Campos";
 import { CLASE_BOTON, CLASE_ETIQUETA } from "./estilos";
+import { enviarSinReiniciar } from "./enviarSinReiniciar";
 import { EleccionPerfil } from "./EleccionPerfil";
 
 const INICIAL: EstadoFormulario = { estado: "inicial" };
@@ -40,7 +41,7 @@ export function DatosCuenta({ perfil }: { perfil: PerfilEditable }) {
   return (
     <section aria-labelledby="datos-titulo" className="flex flex-col gap-7">
       <div id="datos-titulo">{titulo(cuenta.datos.titulo)}</div>
-      <form action={enviar} noValidate className="flex flex-col gap-7">
+      <form onSubmit={enviarSinReiniciar(enviar)} noValidate className="flex flex-col gap-7">
         {estado.estado === "error" && estado.mensaje ? <Aviso tipo="error">{estado.mensaje}</Aviso> : null}
 
         <div>
@@ -90,6 +91,11 @@ export function DatosCuenta({ perfil }: { perfil: PerfilEditable }) {
 export function CambiarContrasena({ destacar = false }: { destacar?: boolean }) {
   const [estado, enviar, enviando] = useActionState(cambiarContrasena, INICIAL);
   const e = estado.errores ?? {};
+  const formulario = useRef<HTMLFormElement>(null);
+  // Si salió bien, la contraseña nueva no queda escrita en pantalla.
+  useEffect(() => {
+    if (estado.estado === "listo") formulario.current?.reset();
+  }, [estado]);
   return (
     <section
       id="contrasena"
@@ -97,7 +103,7 @@ export function CambiarContrasena({ destacar = false }: { destacar?: boolean }) 
       className={`flex scroll-mt-32 flex-col gap-7 ${destacar ? "border border-blanco p-5 md:p-7" : ""}`}
     >
       <div id="contrasena-titulo">{titulo(cuenta.contrasena.titulo)}</div>
-      <form action={enviar} noValidate className="flex flex-col gap-6">
+      <form ref={formulario} onSubmit={enviarSinReiniciar(enviar)} noValidate className="flex flex-col gap-6">
         {estado.estado === "error" && estado.mensaje ? <Aviso tipo="error">{estado.mensaje}</Aviso> : null}
         <div className="grid gap-5 sm:grid-cols-2">
           <CampoContrasena

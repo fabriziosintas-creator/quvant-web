@@ -1,16 +1,13 @@
 /**
  * Configuración de los emails: quién los manda.
  *
- * ┌─────────────────────────────────────────────────────────────────┐
- * │  TODO: dominio verificado en Resend.                            │
- * │  Cuando quvant.com.ar figure "Verified" en resend.com/domains,  │
- * │  poner dominioVerificado en true. Hasta entonces los emails     │
- * │  salen en modo prueba desde onboarding@resend.dev y Resend solo │
- * │  los entrega a la casilla dueña de la cuenta.                   │
- * └─────────────────────────────────────────────────────────────────┘
+ * quvant.com.ar quedó verificado en Resend el 20-oct-2026 (DKIM, SPF y MX
+ * de "send", y DMARC, cargados en el DNS de Vercel). Con false, los emails
+ * vuelven al modo prueba (onboarding@resend.dev, que Resend solo entrega a
+ * la casilla dueña de la cuenta).
  */
 
-const dominioVerificado = false;
+const dominioVerificado = true;
 
 export const EMAIL = {
   dominio: "quvant.com.ar",

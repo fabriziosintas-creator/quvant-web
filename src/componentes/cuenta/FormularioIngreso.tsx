@@ -6,6 +6,7 @@ import { CUENTA } from "@/datos/textos";
 import { ingresar, reenviarConfirmacion, type EstadoFormulario } from "@/servidor/cuenta/acciones";
 import { Aviso, Campo, CampoContrasena } from "./Campos";
 import { CLASE_BOTON, CLASE_BOTON_SECUNDARIO, CLASE_ENLACE } from "./estilos";
+import { enviarSinReiniciar } from "./enviarSinReiniciar";
 
 const INICIAL: EstadoFormulario = { estado: "inicial" };
 const { campos, ingreso, registro } = CUENTA;
@@ -22,7 +23,7 @@ export function FormularioIngreso({ siguiente = "/cuenta", aviso }: { siguiente?
 
   return (
     <div className="flex flex-col gap-6">
-      <form action={enviar} noValidate className="flex flex-col gap-6">
+      <form onSubmit={enviarSinReiniciar(enviar)} noValidate className="flex flex-col gap-6">
         <input type="hidden" name="siguiente" value={siguiente} />
         {aviso && estado.estado === "inicial" ? <Aviso tipo="error">{aviso}</Aviso> : null}
         {estado.estado === "error" && estado.mensaje ? <Aviso tipo="error">{estado.mensaje}</Aviso> : null}
