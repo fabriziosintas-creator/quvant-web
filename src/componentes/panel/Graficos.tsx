@@ -1,27 +1,49 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 
 /**
  * Las piezas de los gráficos del panel, en HTML (sin librería: no pesan,
  * se leen con lector de pantalla y se ven nítidas en el celular).
  *
- * Reglas (guía de visualización + manual): un solo color para la magnitud
- * (blanco sobre negro, en barras finas que crecen desde la misma base); el
- * color del rubro solo como punto al lado del nombre, nunca en el texto;
- * el valor al final de cada barra; los números en Plex Mono tabular.
+ * Reglas (guía de visualización + manual): barras finas que crecen desde
+ * la misma base, el valor al final de cada barra, los números en Plex Mono
+ * tabular. El color entra como en la web (colores.ts, decisión del
+ * 14-oct-2026): un acento por rubro o por período, en puntos, bordes,
+ * barras y brillos, nunca en el texto de lectura.
  */
 
+const ACERO = "#9C9CA3";
+
 export function PuntoRubro({ acento }: { acento?: string }) {
-  return <span aria-hidden className="size-1.5 shrink-0" style={{ background: acento ?? "#9C9CA3" }} />;
+  return <span aria-hidden className="size-1.5 shrink-0" style={{ background: acento ?? ACERO }} />;
 }
 
-/** Una tarjeta con un número grande (los indicadores de arriba). */
-export function Indicador({ etiqueta, valor, detalle }: { etiqueta: string; valor: ReactNode; detalle?: ReactNode }) {
+/**
+ * Una tarjeta con un número grande (los indicadores de arriba). Es la
+ * tarjeta viva de la web: se inclina con el mouse y enciende la grilla con
+ * el punto que salta (del color del acento); el borde y la línea de abajo
+ * se encienden al pasar. Con "medidor" (0 a 1), una barra fina de la
+ * proporción (por ejemplo, la conversión).
+ */
+export function Indicador({ etiqueta, valor, detalle, acento, medidor }: { etiqueta: string; valor: ReactNode; detalle?: ReactNode; acento?: string; medidor?: number }) {
   return (
-    <div className="flex min-w-0 flex-col gap-3 border border-profundo p-4 md:p-5">
-      <p className="font-plex text-[11px] font-medium uppercase leading-snug tracking-etiqueta text-acero">{etiqueta}</p>
-      <p className="font-michroma text-2xl leading-none text-blanco md:text-3xl">{valor}</p>
-      {detalle ? <p className="font-plex text-xs text-acero">{detalle}</p> : null}
-    </div>
+    <TarjetaViva style={{ "--acento": acento ?? "#ececee" } as CSSProperties} className="group border border-profundo p-4 transition-colors duration-300 hover:border-(--acento)/60 md:p-5">
+      <div className="flex min-w-0 flex-col gap-3">
+        <p className="flex items-center gap-2 font-plex text-[11px] font-medium uppercase leading-snug tracking-etiqueta text-acero">
+          <span aria-hidden className="size-1.5 shrink-0 bg-(--acento) transition-transform duration-300 group-hover:scale-150" />
+          {etiqueta}
+        </p>
+        <p className="font-michroma text-2xl leading-none text-blanco md:text-3xl">{valor}</p>
+        {medidor !== undefined ? (
+          <span aria-hidden className="block h-1 bg-profundo">
+            <span className="barra-crece block h-full bg-(--acento)" style={{ width: `${Math.min(100, Math.max(medidor > 0 ? 2 : 0, medidor * 100))}%` }} />
+          </span>
+        ) : null}
+        {detalle ? <p className="font-plex text-xs text-acero">{detalle}</p> : null}
+      </div>
+      {/* Pegada al borde de abajo: el contenido está dentro del padding, la línea sale hasta el borde. */}
+      <span aria-hidden className="absolute -inset-x-4 -bottom-4 h-px origin-left scale-x-[0.12] md:-inset-x-5 md:-bottom-5 bg-(--acento) transition-transform duration-500 ease-(--ease-quvant) group-hover:scale-x-100" />
+    </TarjetaViva>
   );
 }
 
@@ -44,20 +66,25 @@ export function Barras({
     <figure className="flex min-w-0 flex-col gap-4 border border-profundo p-4 md:p-5">
       <figcaption className="font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco">{titulo}</figcaption>
       <ul className="flex flex-col">
-        {filas.map((fila) => {
+        {filas.map((fila, i) => {
           const texto = `${fila.etiqueta}: ${formato(fila.valor)}${unidad ? ` ${unidad}` : ""}${fila.detalle ? ` (${fila.detalle})` : ""}`;
           return (
             <li
               key={fila.id}
               title={texto}
-              className="grid grid-cols-[minmax(0,8.5rem)_minmax(0,1fr)_auto] items-center gap-3 py-1.5 transition-colors hover:bg-profundo/40 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)_auto]"
+              style={{ "--acento": fila.acento ?? "#ececee" } as CSSProperties}
+              className="group grid grid-cols-[minmax(0,8.5rem)_minmax(0,1fr)_auto] items-center gap-3 px-1 py-1.5 transition-colors hover:bg-profundo/40 sm:grid-cols-[minmax(0,11rem)_minmax(0,1fr)_auto]"
             >
-              <span className="flex min-w-0 items-center gap-2 font-plex text-xs text-acero">
-                <PuntoRubro acento={fila.acento} />
+              <span className="flex min-w-0 items-center gap-2 font-plex text-xs text-acero transition-colors group-hover:text-blanco">
+                <span aria-hidden className="size-1.5 shrink-0 bg-(--acento) transition-transform duration-300 group-hover:scale-150" />
                 <span className="truncate">{fila.etiqueta}</span>
               </span>
               <span aria-hidden className="h-2.5 bg-profundo/50">
-                <span className="block h-full bg-blanco" style={{ width: `${(fila.valor / maximo) * 100}%` }} />
+                {/* Crece al aparecer, una barra detrás de otra; al pasar, brilla. */}
+                <span
+                  className="barra-crece block h-full bg-(--acento) opacity-80 transition-[opacity,box-shadow] duration-300 group-hover:opacity-100 group-hover:shadow-[0_0_12px_var(--acento)]"
+                  style={{ width: `${(fila.valor / maximo) * 100}%`, animationDelay: `${i * 70}ms` }}
+                />
               </span>
               <span className="min-w-8 text-right font-plex text-xs tabular-nums text-blanco">
                 <span className="sr-only">{texto}</span>

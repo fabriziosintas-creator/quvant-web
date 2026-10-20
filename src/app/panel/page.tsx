@@ -2,7 +2,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { Barras, Bloque, Indicador, PuntoRubro, TituloPanel } from "@/componentes/panel/Graficos";
 import { fechaHora, numero, porcentaje, porcentajeFino } from "@/componentes/panel/formato";
-import { ACENTO_NICHO } from "@/datos/colores";
+import { Numero } from "@/componentes/panel/nucleos/comunes";
+import { ACENTO_CANAL, ACENTO_NICHO, AURORA, aRgb } from "@/datos/colores";
 import { CUENTA, PANEL_ADMIN } from "@/datos/textos";
 import { exigirAdmin } from "@/servidor/panel/acceso";
 import {
@@ -19,6 +20,8 @@ import {
 
 const T = PANEL_ADMIN.resumen;
 const acentoDe = (nicho: string) => (nicho in ACENTO_NICHO ? ACENTO_NICHO[nicho as keyof typeof ACENTO_NICHO] : undefined);
+/** Un color por período, el mismo en todas las tarjetas (los tres del brillo de la portada). */
+const ACENTO_PERIODO = { hoy: AURORA[0], semana: AURORA[1], mes: AURORA[2] } as const;
 const objetivoCorto = (id: string) => PANEL_ADMIN.objetivosCortos[id as keyof typeof PANEL_ADMIN.objetivosCortos] ?? id;
 
 /** 6.1 Resumen: cuántos entran y se registran, los registrados por rubro y por objetivo, y la lista con filtros y CSV. */
@@ -50,13 +53,15 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel">["
       <EntraronYSeRegistraron visitas={visitas} />
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Indicador etiqueta={T.tiles.hoy} valor={numero(resumen.hoy)} />
-        <Indicador etiqueta={T.tiles.semana} valor={numero(resumen.semana)} />
-        <Indicador etiqueta={T.tiles.mes} valor={numero(resumen.mes)} />
+        <Indicador etiqueta={T.tiles.hoy} valor={<Numero valor={resumen.hoy} />} acento={ACENTO_PERIODO.hoy} />
+        <Indicador etiqueta={T.tiles.semana} valor={<Numero valor={resumen.semana} />} acento={ACENTO_PERIODO.semana} />
+        <Indicador etiqueta={T.tiles.mes} valor={<Numero valor={resumen.mes} />} acento={ACENTO_PERIODO.mes} />
         <Indicador
           etiqueta={T.tiles.confirmacion}
           valor={porcentaje(resumen.confirmados, resumen.total)}
           detalle={T.tiles.deTotal.replace("{n}", numero(resumen.confirmados)).replace("{total}", numero(resumen.total))}
+          acento={ACENTO_CANAL.contacto}
+          medidor={resumen.total > 0 ? resumen.confirmados / resumen.total : 0}
         />
       </div>
 
@@ -75,7 +80,7 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel">["
             <Barras
               titulo={T.porObjetivo}
               unidad={T.personas}
-              filas={CUENTA.objetivos.map((o) => ({ id: o.id, etiqueta: objetivoCorto(o.id), valor: resumen.por_objetivo[o.id] ?? 0 }))}
+              filas={CUENTA.objetivos.map((o, i) => ({ id: o.id, etiqueta: objetivoCorto(o.id), valor: resumen.por_objetivo[o.id] ?? 0, acento: AURORA[i % AURORA.length] }))}
             />
           </div>
 
@@ -136,7 +141,9 @@ function EntraronYSeRegistraron({ visitas }: { visitas: Visitas | null }) {
               <Indicador
                 key={periodo}
                 etiqueta={V.tiles[periodo]}
-                valor={numero(personas)}
+                valor={<Numero valor={personas} />}
+                acento={ACENTO_PERIODO[periodo]}
+                medidor={personas > 0 ? registros / personas : 0}
                 detalle={
                   <>
                     {(registros === 1 ? V.registro : V.registraron.replace("{n}", numero(registros))).replace("{p}", tasa)}
@@ -154,7 +161,7 @@ function EntraronYSeRegistraron({ visitas }: { visitas: Visitas | null }) {
   );
 }
 
-/** El cruce rubro × objetivo: tabla con cada celda más clara cuantas más personas (una sola escala, de negro a blanco). */
+/** El cruce rubro × objetivo: cada fila con el color de su rubro, más intenso cuantas más personas. */
 function Cruce({ resumen, nichos }: { resumen: Awaited<ReturnType<typeof cargarResumen>>; nichos: Array<{ id: string; nombre: string }> }) {
   const valor = (nicho: string, objetivo: string) => resumen.cruce.find((c) => c.nicho === nicho && c.objetivo === objetivo)?.n ?? 0;
   const maximo = Math.max(1, ...resumen.cruce.map((c) => c.n));
@@ -178,7 +185,7 @@ function Cruce({ resumen, nichos }: { resumen: Awaited<ReturnType<typeof cargarR
         </thead>
         <tbody>
           {nichos.map((n) => (
-            <tr key={n.id} className="border-t border-profundo">
+            <tr key={n.id} className="border-t border-profundo transition-colors hover:bg-profundo/40">
               <th scope="row" className="p-3 text-left font-normal text-blanco">
                 <span className="flex items-center gap-2">
                   <PuntoRubro acento={acentoDe(n.id)} />
@@ -191,7 +198,7 @@ function Cruce({ resumen, nichos }: { resumen: Awaited<ReturnType<typeof cargarR
                   <td
                     key={o.id}
                     className="p-3 text-right tabular-nums text-blanco"
-                    style={{ background: n2 ? `rgb(236 236 238 / ${0.06 + 0.3 * (n2 / maximo)})` : undefined }}
+                    style={{ background: n2 ? `rgb(${aRgb(acentoDe(n.id) ?? "#ECECEE")} / ${0.1 + 0.4 * (n2 / maximo)})` : undefined }}
                   >
                     {n2 || <span className="text-acero/50">0</span>}
                   </td>

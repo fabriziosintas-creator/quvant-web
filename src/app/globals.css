@@ -1102,3 +1102,19 @@ html[data-vista="texto"] .linea-canales {
 .mapa-quvant .maplibregl-ctrl-attrib a:hover {
   color: var(--color-blanco);
 }
+
+/* ── Panel: las barras crecen desde su base al aparecer ───────────── */
+.barra-crece {
+  transform-origin: left center;
+  animation: barra-crece 900ms var(--ease-quvant) both;
+}
+@keyframes barra-crece {
+  from {
+    transform: scaleX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .barra-crece {
+    animation: none;
+  }
+}

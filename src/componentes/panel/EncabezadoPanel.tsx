@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { CSSProperties } from "react";
 import { Logotipo } from "@/componentes/marca/Logotipo";
+import { ACENTO_CANAL, ACENTO_NICHO, AURORA } from "@/datos/colores";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { salir } from "@/servidor/cuenta/acciones";
 
@@ -52,6 +54,15 @@ export function EncabezadoPanel({ nombre }: { nombre: string }) {
   );
 }
 
+/** Un acento por sección (de la paleta de colores.ts): el punto y la línea de abajo. */
+const ACENTO_SECCION: Record<string, string> = {
+  "/panel": AURORA[0],
+  "/panel/plantillas": ACENTO_NICHO.industria,
+  "/panel/nucleos": ACENTO_NICHO.pymes,
+  "/panel/mapa": ACENTO_CANAL.contacto,
+  "/panel/mensajes": ACENTO_CANAL.trabajos,
+};
+
 function Secciones({ actual }: { actual: (ruta: string) => boolean }) {
   return (
     <ul className="flex h-11 items-stretch gap-5 md:h-14">
@@ -60,9 +71,13 @@ function Secciones({ actual }: { actual: (ruta: string) => boolean }) {
           <Link
             href={seccion.ruta}
             aria-current={actual(seccion.ruta) ? "page" : undefined}
-            className="flex items-center gap-2 whitespace-nowrap border-b-2 border-transparent font-plex text-xs font-medium uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco aria-[current=page]:border-blanco aria-[current=page]:text-blanco"
+            style={{ "--acento": ACENTO_SECCION[seccion.ruta] ?? "#ececee" } as CSSProperties}
+            className="group relative flex items-center gap-2 whitespace-nowrap font-plex text-xs font-medium uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco aria-[current=page]:text-blanco"
           >
+            {/* El punto aparece al pasar (y queda en la actual); la línea crece desde la izquierda. */}
+            <span aria-hidden className="size-1.5 scale-0 bg-(--acento) transition-transform duration-300 group-hover:scale-100 group-aria-[current=page]:scale-100" />
             {seccion.nombre}
+            <span aria-hidden className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-(--acento) transition-transform duration-300 ease-(--ease-quvant) group-hover:scale-x-100 group-aria-[current=page]:scale-x-100" />
           </Link>
         </li>
       ))}
