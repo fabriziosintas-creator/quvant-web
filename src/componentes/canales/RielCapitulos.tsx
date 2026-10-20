@@ -96,9 +96,7 @@ export function RielCapitulos({ capitulos }: { capitulos: readonly Capitulo[] })
                       : "border-profundo text-acero hover:text-blanco"
                   }`}
                 >
-                  <span className={activo ? "text-[var(--acento)]" : "text-acero/60"}>
-                    {String(indice + 1).padStart(2, "0")}
-                  </span>
+                  <span aria-hidden className={`size-1.5 shrink-0 ${activo ? "bg-[var(--acento)]" : "bg-acero/60"}`} />
                   {capitulo.nombre}
                 </a>
               </li>
@@ -145,8 +143,7 @@ export function RielCapitulos({ capitulos }: { capitulos: readonly Capitulo[] })
                         activo ? "text-blanco" : "text-acero"
                       }`}
                     >
-                      {String(indice + 1).padStart(2, "0")}
-                      <span className="ml-2 hidden whitespace-nowrap group-hover/riel:inline group-focus-within/riel:inline">
+                      <span className="hidden whitespace-nowrap group-hover/riel:inline group-focus-within/riel:inline">
                         {capitulo.nombre}
                       </span>
                     </span>

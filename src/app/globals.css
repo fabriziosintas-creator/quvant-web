@@ -27,22 +27,22 @@
   /*
    * El ritmo del sitio (decisión del 19-oct-2026): todo lo que se mueve usa
    * estas tres curvas y estas cuatro duraciones (en JS, movimiento.ts).
-   *  quvant: entrar o cambiar (arranca rápido y frena suave).
+   *  quvant: entrar o cambiar (arranca suave y frena suave: nada salta).
    *  salida: irse (arranca suave y se va rápido).
    *  vaiven: lo que va y vuelve, en bucle.
    * Las transiciones de Tailwind sin curva propia toman la de la marca.
    */
-  --ease-quvant: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-quvant: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-salida: cubic-bezier(0.55, 0, 0.75, 0.2);
   --ease-vaiven: cubic-bezier(0.45, 0, 0.55, 1);
-  --default-transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --default-transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 @theme static {
-  --duracion-instante: 150ms;
-  --duracion-rapida: 250ms;
-  --duracion-media: 450ms;
-  --duracion-lenta: 900ms;
+  --duracion-instante: 200ms;
+  --duracion-rapida: 300ms;
+  --duracion-media: 600ms;
+  --duracion-lenta: 1000ms;
 }
 
 @theme inline {
@@ -112,15 +112,14 @@ body {
   color: var(--color-negro);
 }
 
-/* Cursor de terminal: el punto cuadrado de la marca parpadeando. */
+/* El punto de la marca respira (antes titilaba como un cursor de terminal). */
 @keyframes parpadeo {
   0%,
-  49% {
+  100% {
     opacity: 1;
   }
-  50%,
-  100% {
-    opacity: 0;
+  50% {
+    opacity: 0.35;
   }
 }
 
@@ -424,7 +423,7 @@ html[data-intro="si"] [data-titulo-portada]:not([data-aterrizo]) {
 }
 
 .capa-etapa[data-activa="si"] .latido-etapa {
-  animation: parpadeo 1.4s steps(2, end) 1.2s infinite;
+  animation: parpadeo 2.4s ease-in-out 1.2s infinite;
 }
 
 /* Sin movimiento: el dibujo ya está hecho y quieto. */
@@ -956,7 +955,7 @@ html[data-vista="texto"]::view-transition-group(*) {
 
 /* Los canales de la portada: el pulso que corre por el cable encendido. */
 .cable-flujo {
-  animation: flujo 0.9s linear infinite;
+  animation: flujo 1.8s linear infinite;
 }
 
 @keyframes flujo {

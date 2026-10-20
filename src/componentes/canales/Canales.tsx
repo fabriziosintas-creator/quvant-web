@@ -12,11 +12,11 @@ import {
   type CSSProperties,
 } from "react";
 import { ACENTO_CANAL, type IdCanal } from "@/datos/colores";
-import { CANALES, INICIO, NAVEGACION } from "@/datos/textos";
+import { CANALES, INICIO } from "@/datos/textos";
 import { usePrefiereQuieto } from "@/estado/quieto";
 import { useVista } from "@/estado/vista";
 import { IconoCanal } from "./IconoCanal";
-import { numeroCanal, tipoTransicion } from "./navegacion";
+import { tipoTransicion } from "./navegacion";
 import { puntosDeCurva, usePuntosACables, type Destino } from "./puntosACables";
 import { VistaPreviaCanal } from "./VistaPreviaCanal";
 
@@ -262,7 +262,6 @@ export function Canales() {
                     data-cursor-texto={TEXTOS.entrar}
                     className="group relative flex items-center gap-5 border-b border-profundo py-5 first:border-t"
                   >
-                    <span className="w-6 font-plex text-xs text-acero">{numeroCanal(id)}</span>
                     <span className="min-w-0 flex-1">
                       <ViewTransition name={`canal-${id}`} share="morph-web" default="none">
                         <span
@@ -319,7 +318,7 @@ export function Canales() {
                 <span className="size-1.5 bg-profundo" />
               </span>
               <span className="min-w-0 flex-1 truncate font-lectura text-sm font-medium text-acero">
-                {NAVEGACION.canal} {numeroCanal(canal.id)} · {canal.nombre}
+                {canal.nombre}
               </span>
               {/* "En vivo" es también el control del recorrido: pausa y sigue. */}
               {vista === "3d" ? (
@@ -332,7 +331,7 @@ export function Canales() {
                 >
                   <span
                     aria-hidden
-                    className={`size-1.5 ${recorriendo ? "bg-[var(--acento)] motion-safe:animate-[parpadeo_1.4s_steps(2,end)_infinite]" : "bg-profundo"}`}
+                    className={`size-1.5 ${recorriendo ? "bg-[var(--acento)] motion-safe:animate-[parpadeo_2.2s_ease-in-out_infinite]" : "bg-profundo"}`}
                   />
                   {TEXTOS.enVivo}
                   <svg aria-hidden viewBox="0 0 12 12" className="ml-1 size-2.5 fill-current">
@@ -426,10 +425,7 @@ export function Canales() {
                   </span>
                   <span className="flex items-end justify-between gap-4 p-4">
                     <span className="min-w-0">
-                      <span className="font-plex text-xs text-acero">
-                        {NAVEGACION.canal} {numeroCanal(id)}
-                      </span>
-                      <span className="mt-1.5 block font-michroma text-lg uppercase leading-none tracking-marca text-blanco">
+                      <span className="block font-michroma text-lg uppercase leading-none tracking-marca text-blanco">
                         {c.nombre}
                       </span>
                       <span className="mt-2 block font-lectura text-sm leading-snug text-acero">{c.frase}</span>

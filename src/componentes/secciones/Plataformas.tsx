@@ -41,7 +41,7 @@ export function LoQueHaceHoy() {
             <li key={item} className="flex items-center gap-2.5 font-lectura text-sm text-blanco">
               <span
                 aria-hidden
-                className="size-1.5 bg-[var(--acento)] motion-safe:animate-[parpadeo_1.8s_steps(2,end)_infinite]"
+                className="size-1.5 bg-[var(--acento)] motion-safe:animate-[parpadeo_2.9s_ease-in-out_infinite]"
                 style={{ animationDelay: `${indice * 0.6}s` }}
               />
               {item}

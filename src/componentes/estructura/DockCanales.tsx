@@ -75,7 +75,7 @@ export function DockCanales() {
               {/* El punto verde de "en línea", como en el botón de la computadora. */}
               <span
                 aria-hidden
-                className="absolute -right-1 -top-0.5 size-1.5 motion-safe:animate-[parpadeo_1.6s_steps(2,end)_infinite]"
+                className="absolute -right-1 -top-0.5 size-1.5 motion-safe:animate-[parpadeo_2.6s_ease-in-out_infinite]"
                 style={{ background: ACENTO_CANAL.contacto }}
               />
             </span>

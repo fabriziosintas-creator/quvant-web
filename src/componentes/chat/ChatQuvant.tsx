@@ -280,7 +280,7 @@ export function ChatQuvant() {
             </span>
             <span
               aria-hidden
-              className="-ml-1 size-2 motion-safe:animate-[parpadeo_1.6s_steps(2,end)_infinite]"
+              className="-ml-1 size-2 motion-safe:animate-[parpadeo_2.6s_ease-in-out_infinite]"
               style={{ background: VERDE }}
             />
             {sinLeer > 0 ? (

@@ -7,16 +7,12 @@ import { tipoTransicion } from "@/componentes/canales/navegacion";
 import { EnlaceCuenta } from "@/componentes/cuenta/EnlaceCuenta";
 import { Logotipo } from "@/componentes/marca/Logotipo";
 import { ACENTO_CANAL } from "@/datos/colores";
-import { PROYECTOS } from "@/datos/portfolio";
 import { ACCESIBILIDAD, CANALES, NAVEGACION } from "@/datos/textos";
 import { InterruptorVista } from "./InterruptorVista";
 
 /** Contacto va aparte, como botón: el resto son los canales de la píldora. */
 const EN_LA_PILDORA = CANALES.filter((canal) => canal.id !== "contacto");
 const CONTACTO = CANALES.find((canal) => canal.id === "contacto")!;
-
-/** Al lado de cada canal, cuánto hay adentro (como los contadores de basement). */
-const CONTADOR: Partial<Record<string, number>> = { trabajos: PROYECTOS.length };
 
 /**
  * El encabezado fijo, translúcido.
@@ -92,7 +88,6 @@ export function Encabezado() {
           <ul className="flex items-center gap-0.5 rounded-full border border-profundo bg-profundo/30 p-1">
             {EN_LA_PILDORA.map((canal) => {
               const activo = ruta === canal.ruta;
-              const cantidad = CONTADOR[canal.id];
               return (
                 <li key={canal.id}>
                   <Link
@@ -111,11 +106,6 @@ export function Encabezado() {
                       }`}
                     />
                     {canal.nombre}
-                    {cantidad ? (
-                      <span className={`hidden lg:inline ${activo ? "text-negro/50" : "text-acero/60"}`}>
-                        {cantidad}
-                      </span>
-                    ) : null}
                   </Link>
                 </li>
               );

@@ -111,9 +111,7 @@ export function SelectorRubros() {
               className="group flex w-full items-center justify-between gap-4 border-b border-profundo py-4 text-left first:border-t md:py-5"
             >
               {/* El nombre baja de renglón en vez de cortarse ("INDUSTRI…", "GIMNASIOS Y FIT…"). */}
-              <span className="flex min-w-0 items-baseline gap-3 sm:gap-4">
-                <span className="font-plex text-xs text-acero">0{indice + 1}</span>
-                <span
+              <span className="flex min-w-0 items-baseline gap-3 sm:gap-4">                <span
                   className={`min-w-0 font-michroma text-sm uppercase leading-snug tracking-[0.12em] transition-colors group-hover:text-blanco sm:text-base sm:tracking-marca lg:text-lg ${
                     seleccionado ? "text-blanco" : "text-acero"
                   }`}

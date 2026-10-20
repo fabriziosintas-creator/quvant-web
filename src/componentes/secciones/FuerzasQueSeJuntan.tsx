@@ -154,7 +154,7 @@ function PanelCodigo({ titulo }: { titulo: string }) {
                 })}
                 {conCursor ? (
                   <span
-                    className="ml-0.5 inline-block size-[0.6em] translate-y-[1px] motion-safe:animate-[parpadeo_1.1s_steps(2,end)_infinite]"
+                    className="ml-0.5 inline-block size-[0.6em] translate-y-[1px] motion-safe:animate-[parpadeo_2.0s_ease-in-out_infinite]"
                     style={{ background: COLOR_DESARROLLO }}
                   />
                 ) : null}

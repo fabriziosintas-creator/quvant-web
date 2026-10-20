@@ -150,7 +150,7 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
               <span
                 aria-hidden
                 className={`size-1.5 shrink-0 bg-[var(--acento)] ${
-                  proyecto.estado === "En línea" ? "motion-safe:animate-[parpadeo_1.8s_steps(2,end)_infinite]" : ""
+                  proyecto.estado === "En línea" ? "motion-safe:animate-[parpadeo_2.9s_ease-in-out_infinite]" : ""
                 }`}
               />
               <span className="truncate">

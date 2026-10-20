@@ -338,7 +338,6 @@ export function RecorridoTablero() {
                   </svg>
                   <span className="min-w-0 flex-1">
                     <span className="flex items-baseline gap-3">
-                      <span className="font-plex text-xs text-acero">0{indice + 1}</span>
                       <span
                         className={`titulo text-base leading-snug transition-colors group-hover:text-blanco md:text-[17px] ${
                           seleccionada ? "text-blanco" : "text-acero"
@@ -388,7 +387,7 @@ export function RecorridoTablero() {
               aria-hidden
               className={`size-1.5 ${
                 recorriendo
-                  ? "bg-blanco motion-safe:animate-[parpadeo_1.4s_steps(2,end)_infinite]"
+                  ? "bg-blanco motion-safe:animate-[parpadeo_2.2s_ease-in-out_infinite]"
                   : "bg-profundo"
               }`}
             />

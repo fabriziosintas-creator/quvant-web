@@ -490,7 +490,7 @@ function Captura({ vista, dispositivo }: { vista: VistaProyecto; dispositivo: Di
         aria-pressed={recorriendo}
         className="absolute bottom-3 right-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-lectura text-sm font-medium text-blanco backdrop-blur-sm transition-colors hover:border-[var(--acento)]"
       >
-        <span aria-hidden className={`size-1.5 ${recorriendo ? "bg-[var(--acento)] motion-safe:animate-[parpadeo_1s_steps(2,end)_infinite]" : "bg-blanco"}`} />
+        <span aria-hidden className={`size-1.5 ${recorriendo ? "bg-[var(--acento)] motion-safe:animate-[parpadeo_2.0s_ease-in-out_infinite]" : "bg-blanco"}`} />
         {recorriendo ? TEXTOS.detener : TEXTOS.recorrer}
       </button>
     </div>
@@ -548,7 +548,7 @@ function EnVivo({ proyecto, vista, dispositivo }: { proyecto: Proyecto; vista: V
       ) : null}
       {!cargado ? (
         <p className="absolute bottom-3 left-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-lectura text-sm font-medium text-blanco backdrop-blur-sm">
-          <span aria-hidden className="size-1.5 bg-[var(--acento)] motion-safe:animate-[parpadeo_1s_steps(2,end)_infinite]" />
+          <span aria-hidden className="size-1.5 bg-[var(--acento)] motion-safe:animate-[parpadeo_2.0s_ease-in-out_infinite]" />
           {TEXTOS.cargando}
         </p>
       ) : null}

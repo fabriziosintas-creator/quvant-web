@@ -1,7 +1,6 @@
 import { ViewTransition, type CSSProperties, type ReactNode } from "react";
 import { ACENTO_CANAL, type IdCanal } from "@/datos/colores";
-import { NAVEGACION } from "@/datos/textos";
-import { DESLIZ_PAGINA, canalPorId, numeroCanal } from "./navegacion";
+import { DESLIZ_PAGINA, canalPorId } from "./navegacion";
 import { RielCapitulos } from "./RielCapitulos";
 import { SiguienteCanal } from "./SiguienteCanal";
 
@@ -32,8 +31,6 @@ export function PaginaCanal({ id, children }: { id: IdCanal; children: ReactNode
         <header className="contenedor relative pb-12 pt-28 md:pb-16 md:pt-40">
           <p className="flex items-center gap-3 font-lectura text-sm font-medium text-acero">
             <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-            {NAVEGACION.canal} {numeroCanal(id)}
-            <span aria-hidden className="h-px w-8 bg-profundo" />
             <ViewTransition name={`canal-${id}`} share="morph-web" default="none">
               <span className="text-blanco">{canal.nombre}</span>
             </ViewTransition>
