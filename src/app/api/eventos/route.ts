@@ -70,9 +70,22 @@ export async function POST(pedido: NextRequest) {
     perfil = data?.claims?.sub ?? null;
   }
 
+  const admin = crearClienteAdmin();
+
+  // Un admin (fabrizio o Michel) no se mide: su navegador queda anotado como
+  // del equipo (se descuenta también lo que ya había contado) y no se guarda nada.
+  if (perfil) {
+    const { data: quien } = await admin.from("perfiles").select("rol").eq("id", perfil).maybeSingle();
+    if (quien?.rol === "admin") {
+      const navegadores = [...new Set(filas.map((f) => f.visita_id))].map((visita_id) => ({ visita_id, perfil_id: perfil }));
+      const { error } = await admin.from("navegadores_equipo").upsert(navegadores, { onConflict: "visita_id", ignoreDuplicates: true });
+      if (error) console.error("[eventos] equipo:", error.message);
+      return new NextResponse(null, { status: 204 });
+    }
+  }
+
   // Las visitas van aparte: si la base todavía no tiene el tipo "visita"
   // (migración sin aplicar), solo fallan ellas y el resto se guarda.
-  const admin = crearClienteAdmin();
   const tandas = [filas.filter((f) => f.tipo !== "visita"), filas.filter((f) => f.tipo === "visita")];
   for (const tanda of tandas) {
     if (tanda.length === 0) continue;

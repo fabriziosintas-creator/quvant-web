@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
 import { EncabezadoPanel } from "@/componentes/panel/EncabezadoPanel";
+import { MarcarEquipo } from "@/componentes/panel/MarcarEquipo";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { exigirAdmin } from "@/servidor/panel/acceso";
 
@@ -32,6 +33,7 @@ async function Guardia({ children }: { children: ReactNode }) {
   const { perfil } = await exigirAdmin("/panel");
   return (
     <>
+      <MarcarEquipo />
       <EncabezadoPanel nombre={perfil.nombre} />
       {children}
     </>

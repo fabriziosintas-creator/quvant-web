@@ -12,6 +12,8 @@
 export type TipoEvento = "visita" | "vista_nicho" | "clic_demo" | "clic_contacto" | "inicio_registro";
 
 export const CLAVE_VISITA = "quvant-visita";
+/** Marca de los navegadores del equipo (la pone el panel al abrirse): ahí no se mide nada. */
+export const CLAVE_EQUIPO = "quvant-equipo";
 
 type Evento = { tipo: TipoEvento; nicho?: string | null; pagina: string; visita: string };
 
@@ -22,7 +24,12 @@ let escuchando = false;
 function noRastrear() {
   if (typeof navigator === "undefined") return true;
   const n = navigator as Navigator & { globalPrivacyControl?: boolean };
-  return navigator.doNotTrack === "1" || n.globalPrivacyControl === true;
+  if (navigator.doNotTrack === "1" || n.globalPrivacyControl === true) return true;
+  try {
+    return window.localStorage.getItem(CLAVE_EQUIPO) === "si";
+  } catch {
+    return false;
+  }
 }
 
 /** El id anónimo de la visita (se crea la primera vez; sin localStorage, no se mide). */

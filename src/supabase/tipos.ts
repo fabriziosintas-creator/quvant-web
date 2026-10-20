@@ -519,6 +519,32 @@ export type Database = {
           },
         ]
       }
+      navegadores_equipo: {
+        Row: {
+          creado_en: string
+          perfil_id: string | null
+          visita_id: string
+        }
+        Insert: {
+          creado_en?: string
+          perfil_id?: string | null
+          visita_id: string
+        }
+        Update: {
+          creado_en?: string
+          perfil_id?: string | null
+          visita_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "navegadores_equipo_perfil_id_fkey"
+            columns: ["perfil_id"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       nichos: {
         Row: {
           en_registro: boolean
