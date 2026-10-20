@@ -182,6 +182,39 @@ export type Database = {
           },
         ]
       }
+      avances_manuales: {
+        Row: {
+          cargado_por: string | null
+          creado_en: string
+          es_prueba: boolean
+          fecha: string
+          id: number
+          meta_id: string
+          nota: string | null
+          valor: number
+        }
+        Insert: {
+          cargado_por?: string | null
+          creado_en?: string
+          es_prueba?: boolean
+          fecha?: string
+          id?: number
+          meta_id: string
+          nota?: string | null
+          valor: number
+        }
+        Update: {
+          cargado_por?: string | null
+          creado_en?: string
+          es_prueba?: boolean
+          fecha?: string
+          id?: number
+          meta_id?: string
+          nota?: string | null
+          valor?: number
+        }
+        Relationships: []
+      }
       clientes_plantilla: {
         Row: {
           abono_mensual: number | null
@@ -192,6 +225,8 @@ export type Database = {
           es_prueba: boolean
           estado: Database["public"]["Enums"]["estado_cliente"]
           fecha: string
+          fecha_alta: string | null
+          fecha_baja: string | null
           id: string
           local_id: string | null
           nicho_id: string
@@ -206,6 +241,8 @@ export type Database = {
           es_prueba?: boolean
           estado?: Database["public"]["Enums"]["estado_cliente"]
           fecha?: string
+          fecha_alta?: string | null
+          fecha_baja?: string | null
           id?: string
           local_id?: string | null
           nicho_id: string
@@ -220,6 +257,8 @@ export type Database = {
           es_prueba?: boolean
           estado?: Database["public"]["Enums"]["estado_cliente"]
           fecha?: string
+          fecha_alta?: string | null
+          fecha_baja?: string | null
           id?: string
           local_id?: string | null
           nicho_id?: string
@@ -260,6 +299,7 @@ export type Database = {
         Row: {
           actualizado_en: string
           alta: string
+          baja: string | null
           cliente_plantilla_id: string | null
           creado_en: string
           es_prueba: boolean
@@ -276,6 +316,7 @@ export type Database = {
         Insert: {
           actualizado_en?: string
           alta?: string
+          baja?: string | null
           cliente_plantilla_id?: string | null
           creado_en?: string
           es_prueba?: boolean
@@ -292,6 +333,7 @@ export type Database = {
         Update: {
           actualizado_en?: string
           alta?: string
+          baja?: string | null
           cliente_plantilla_id?: string | null
           creado_en?: string
           es_prueba?: boolean
@@ -321,6 +363,60 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      cobros_quvant: {
+        Row: {
+          actualizado_en: string
+          cargado_por: string | null
+          cliente: string
+          cliente_plantilla_id: string | null
+          cobrado: boolean
+          creado_en: string
+          es_prueba: boolean
+          factura: string | null
+          fecha: string
+          id: string
+          iva_incluido: boolean
+          monto_ars: number
+          nicho_id: string | null
+          nota: string | null
+          tipo: string
+        }
+        Insert: {
+          actualizado_en?: string
+          cargado_por?: string | null
+          cliente: string
+          cliente_plantilla_id?: string | null
+          cobrado?: boolean
+          creado_en?: string
+          es_prueba?: boolean
+          factura?: string | null
+          fecha?: string
+          id?: string
+          iva_incluido?: boolean
+          monto_ars: number
+          nicho_id?: string | null
+          nota?: string | null
+          tipo: string
+        }
+        Update: {
+          actualizado_en?: string
+          cargado_por?: string | null
+          cliente?: string
+          cliente_plantilla_id?: string | null
+          cobrado?: boolean
+          creado_en?: string
+          es_prueba?: boolean
+          factura?: string | null
+          fecha?: string
+          id?: string
+          iva_incluido?: boolean
+          monto_ars?: number
+          nicho_id?: string | null
+          nota?: string | null
+          tipo?: string
+        }
+        Relationships: []
       }
       eventos: {
         Row: {
@@ -519,6 +615,183 @@ export type Database = {
           },
         ]
       }
+      metas: {
+        Row: {
+          acumulacion: string
+          actualizado_en: string
+          archivada: boolean
+          area: string
+          clave_plan: string | null
+          creado_en: string
+          creado_por: string | null
+          descripcion: string | null
+          desde: string
+          direccion: string
+          es_prueba: boolean
+          etapa: string
+          filtros: Json
+          hasta: string
+          id: string
+          meta_original: number
+          meta_valor: number
+          metrica: string
+          nombre: string
+          orden: number
+          repite_de: string | null
+          responsable: string
+          se_repite: boolean
+          tipo_periodo: string
+          unidad: string
+        }
+        Insert: {
+          acumulacion: string
+          actualizado_en?: string
+          archivada?: boolean
+          area: string
+          clave_plan?: string | null
+          creado_en?: string
+          creado_por?: string | null
+          descripcion?: string | null
+          desde: string
+          direccion?: string
+          es_prueba?: boolean
+          etapa?: string
+          filtros?: Json
+          hasta: string
+          id?: string
+          meta_original: number
+          meta_valor: number
+          metrica: string
+          nombre: string
+          orden?: number
+          repite_de?: string | null
+          responsable?: string
+          se_repite?: boolean
+          tipo_periodo: string
+          unidad: string
+        }
+        Update: {
+          acumulacion?: string
+          actualizado_en?: string
+          archivada?: boolean
+          area?: string
+          clave_plan?: string | null
+          creado_en?: string
+          creado_por?: string | null
+          descripcion?: string | null
+          desde?: string
+          direccion?: string
+          es_prueba?: boolean
+          etapa?: string
+          filtros?: Json
+          hasta?: string
+          id?: string
+          meta_original?: number
+          meta_valor?: number
+          metrica?: string
+          nombre?: string
+          orden?: number
+          repite_de?: string | null
+          responsable?: string
+          se_repite?: boolean
+          tipo_periodo?: string
+          unidad?: string
+        }
+        Relationships: []
+      }
+      metas_cambios: {
+        Row: {
+          campo: string
+          creado_en: string
+          id: number
+          meta_id: string
+          motivo: string
+          quien: string | null
+          valor_anterior: string | null
+          valor_nuevo: string | null
+        }
+        Insert: {
+          campo: string
+          creado_en?: string
+          id?: number
+          meta_id: string
+          motivo: string
+          quien?: string | null
+          valor_anterior?: string | null
+          valor_nuevo?: string | null
+        }
+        Update: {
+          campo?: string
+          creado_en?: string
+          id?: number
+          meta_id?: string
+          motivo?: string
+          quien?: string | null
+          valor_anterior?: string | null
+          valor_nuevo?: string | null
+        }
+        Relationships: []
+      }
+      metas_cierres: {
+        Row: {
+          cerrado_en: string
+          desde: string
+          hasta: string
+          id: number
+          meta: number
+          meta_id: string
+          porcentaje: number | null
+          resultado: string
+          valor: number | null
+        }
+        Insert: {
+          cerrado_en?: string
+          desde: string
+          hasta: string
+          id?: number
+          meta: number
+          meta_id: string
+          porcentaje?: number | null
+          resultado: string
+          valor?: number | null
+        }
+        Update: {
+          cerrado_en?: string
+          desde?: string
+          hasta?: string
+          id?: number
+          meta?: number
+          meta_id?: string
+          porcentaje?: number | null
+          resultado?: string
+          valor?: number | null
+        }
+        Relationships: []
+      }
+      metas_fotos: {
+        Row: {
+          dia: string
+          estado: string
+          meta_id: string
+          porcentaje: number | null
+          valor: number | null
+        }
+        Insert: {
+          dia: string
+          estado: string
+          meta_id: string
+          porcentaje?: number | null
+          valor?: number | null
+        }
+        Update: {
+          dia?: string
+          estado?: string
+          meta_id?: string
+          porcentaje?: number | null
+          valor?: number | null
+        }
+        Relationships: []
+      }
       navegadores_equipo: {
         Row: {
           creado_en: string
@@ -689,6 +962,30 @@ export type Database = {
           },
         ]
       }
+      tipo_cambio_mensual: {
+        Row: {
+          cargado_por: string | null
+          creado_en: string
+          fuente: string | null
+          mes: string
+          pesos_por_dolar: number
+        }
+        Insert: {
+          cargado_por?: string | null
+          creado_en?: string
+          fuente?: string | null
+          mes: string
+          pesos_por_dolar: number
+        }
+        Update: {
+          cargado_por?: string | null
+          creado_en?: string
+          fuente?: string | null
+          mes?: string
+          pesos_por_dolar?: number
+        }
+        Relationships: []
+      }
       visitas: {
         Row: {
           creado_en: string
@@ -826,6 +1123,10 @@ export type Database = {
       }
       resumen_registros: { Args: never; Returns: Json }
       resumen_visitas: { Args: never; Returns: Json }
+      visitantes_por_dia: {
+        Args: { desde: string; hasta: string }
+        Returns: { dia: string; visita_id: string }[]
+      }
     }
     Enums: {
       estado_cliente: "demo_mostrada" | "en_prueba" | "activo" | "baja"
