@@ -880,3 +880,82 @@ export const PRIVACIDAD = {
   ],
   contacto: "Contacto",
 } as const;
+
+/**
+ * Los emails (plantillas en src/emails). Confirmación y recuperación los
+ * manda Supabase con nuestra plantilla; bienvenida y aviso interno, la web
+ * con Resend. "{x}" se reemplaza al armar cada email.
+ */
+export const EMAILS = {
+  pie: {
+    bajada: "Software a la vanguardia de cada nicho.",
+    porque: "Recibís este email porque creaste una cuenta en Quvant.",
+  },
+  confirmacion: {
+    asunto: "Confirmá tu email para entrar a Quvant",
+    vistaPrevia: "Un toque y tu cuenta queda lista.",
+    titulo: "Confirmá tu email.",
+    texto: "Gracias por registrarte en Quvant. Tocá el botón para confirmar tu email y entrar a tu cuenta.",
+    boton: "Confirmar mi email",
+    vence: "El enlace vence en una hora. Si no creaste una cuenta en Quvant, ignorá este email.",
+  },
+  recuperacion: {
+    asunto: "Elegí tu contraseña nueva de Quvant",
+    vistaPrevia: "El enlace para cambiar tu contraseña.",
+    titulo: "Elegí tu contraseña nueva.",
+    texto: "Pediste cambiar la contraseña de tu cuenta de Quvant. Tocá el botón y elegí una nueva.",
+    boton: "Elegir contraseña nueva",
+    vence: "El enlace vence en una hora. Si no lo pediste, ignorá este email: tu contraseña sigue igual.",
+  },
+  bienvenida: {
+    asunto: "Te damos la bienvenida a Quvant",
+    vistaPrevia: "Tu cuenta ya está lista.",
+    titulo: "Hola, {nombre}.",
+    texto: "Tu cuenta ya está lista. Gracias por contarnos de tu negocio: así te mostramos lo que sirve para tu rubro.",
+    /** Qué hace Quvant por cada rubro, en dos líneas. Honesto: lo que existe hoy y lo que está en camino. */
+    rubros: {
+      industria:
+        "Para la industria, Quvant ordena el stock de cada sucursal, las compras y las ventas en un solo sistema. Y el dueño ve todo desde el celular.",
+      gimnasios:
+        "Para gimnasios, Quvant suma la administración del gimnasio sobre un núcleo que ya funciona, y una app para que tus socios tengan rutinas y dietas personalizadas.",
+      holistica:
+        "Estamos armando el sistema para centros y profesionales del bienestar. Te avisamos apenas esté listo; mientras tanto, contanos qué necesitás.",
+      pymes:
+        "Para pymes estamos diseñando la gestión completa, del presupuesto al reporte, sobre un núcleo que ya funciona en otros rubros.",
+      inmobiliarias:
+        "Para inmobiliarias estamos diseñando la cartera de propiedades, los contratos y las cobranzas en un solo lugar, sobre un núcleo que ya funciona.",
+      supermercados:
+        "Para supermercados estamos diseñando la venta rápida en muchas cajas, el stock y las sucursales, sobre un núcleo que ya funciona.",
+      otro: "Quvant tiene un núcleo que ya funciona (ventas, stock, compras y reportes) y lo adaptamos a cada rubro. Contanos el tuyo y vemos cómo encaja.",
+    },
+    /** Un único botón, según lo que la trajo a Quvant. */
+    botones: {
+      mejorar_clientela: "Ver la plantilla de tu rubro",
+      hacer_web: "Pedir mi web",
+      curiosidad: "Hablar con nosotros",
+    },
+    cierre: "Cualquier duda, escribinos por WhatsApp: te responde una persona del equipo.",
+    firma: "El equipo de Quvant",
+  },
+  avisoInterno: {
+    asunto: "Nuevo registro: {nombre} · {rubro}",
+    vistaPrevia: "Alguien confirmó su cuenta en la web.",
+    titulo: "Nuevo registro confirmado.",
+    campos: {
+      nombre: "Nombre",
+      email: "Email",
+      rubro: "Rubro",
+      objetivo: "Objetivo",
+      empresa: "Empresa",
+      ciudad: "Ciudad",
+      novedades: "Novedades",
+      origen: "Vino desde",
+    },
+    si: "Sí",
+    no: "No",
+    sinDato: "—",
+    boton: "Ver en el panel",
+  },
+  /** Para el enlace de respaldo cuando el botón no anda. */
+  respaldo: "¿El botón no anda? Copiá este enlace en tu navegador:",
+} as const;

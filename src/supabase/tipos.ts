@@ -273,6 +273,7 @@ export type Database = {
           acepto_privacidad_en: string
           actualizado_en: string
           apellido: string | null
+          bienvenida_enviada_en: string | null
           ciudad: string | null
           creado_en: string
           email: string
@@ -292,6 +293,7 @@ export type Database = {
           acepto_privacidad_en?: string
           actualizado_en?: string
           apellido?: string | null
+          bienvenida_enviada_en?: string | null
           ciudad?: string | null
           creado_en?: string
           email: string
@@ -311,6 +313,7 @@ export type Database = {
           acepto_privacidad_en?: string
           actualizado_en?: string
           apellido?: string | null
+          bienvenida_enviada_en?: string | null
           ciudad?: string | null
           creado_en?: string
           email?: string

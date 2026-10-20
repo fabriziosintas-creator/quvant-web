@@ -1,7 +1,8 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
-import type { NextRequest } from "next/server";
+import { after, type NextRequest } from "next/server";
 import { destinoSeguro } from "@/servidor/cuenta/validacion";
+import { despuesDeConfirmar } from "@/servidor/emails/bienvenida";
 import { configSupabase } from "@/supabase/entorno";
 import { crearClienteServidor } from "@/supabase/servidor";
 
@@ -23,7 +24,7 @@ export async function GET(pedido: NextRequest) {
   if (!configSupabase() || (!codigo && !(tokenHash && tipo))) redirect("/ingresar?error=enlace");
 
   const supabase = await crearClienteServidor();
-  const { error } =
+  const { data, error } =
     tokenHash && tipo
       ? await supabase.auth.verifyOtp({ type: tipo, token_hash: tokenHash })
       : await supabase.auth.exchangeCodeForSession(codigo!);
@@ -36,7 +37,12 @@ export async function GET(pedido: NextRequest) {
   // Al confirmar la cuenta, la bienvenida; al recuperar, el destino ya pide la contraseña nueva.
   const destino = new URL(siguiente, pedido.nextUrl.origin);
   const confirmoCuenta = tipo ? tipo === "signup" || tipo === "email" : !destino.searchParams.has("contrasena");
-  if (confirmoCuenta) destino.searchParams.set("bienvenida", "1");
+  if (confirmoCuenta) {
+    destino.searchParams.set("bienvenida", "1");
+    // El email de bienvenida (y el aviso a los socios) sale después de responder: no demora la entrada.
+    const id = data.user?.id;
+    if (id) after(() => despuesDeConfirmar(id));
+  }
   if (tipo === "recovery") {
     destino.pathname = "/cuenta";
     destino.searchParams.set("contrasena", "nueva");
