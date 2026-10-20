@@ -145,8 +145,8 @@ export const Notebook: React.FC<{ u: number; ancho: number; captura: Captura; ba
       >
         <div style={{ position: "relative", width: anchoPantalla, height: altoPantalla, borderRadius: 6 * u, overflow: "hidden" }}>
           <Pantalla src={captura.src} anchoImagen={captura.ancho} altoImagen={captura.alto} anchoPantalla={anchoPantalla} altoPantalla={altoPantalla} bajada={bajada} zoom={zoom} />
-          {/* El reflejo del vidrio. */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(255,255,255,0.08) 0%, transparent 32%)" }} />
+          {/* Una luz grande y difusa de un costado, en vez de un reflejo duro. */}
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(115deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.015) 30%, transparent 55%)" }} />
         </div>
       </div>
       {/* La base. */}
@@ -157,7 +157,8 @@ export const Notebook: React.FC<{ u: number; ancho: number; captura: Captura; ba
           marginLeft: -ancho * 0.07,
           borderRadius: `0 0 ${16 * u}px ${16 * u}px`,
           background: "linear-gradient(180deg, #3a3b40, #1a1a1e)",
-          boxShadow: `0 ${18 * u}px ${40 * u}px rgba(0,0,0,0.6)`,
+          // La sombra de contacto, para que se apoye en algo.
+          boxShadow: `0 ${6 * u}px ${14 * u}px rgba(0,0,0,0.85), 0 ${18 * u}px ${40 * u}px rgba(0,0,0,0.6)`,
         }}
       />
     </div>
@@ -196,7 +197,7 @@ export const Telefono: React.FC<{ u: number; ancho: number; captura: Captura; ba
             background: "#050506",
           }}
         />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(120deg, rgba(255,255,255,0.1) 0%, transparent 30%)" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(120deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.015) 30%, transparent 55%)" }} />
       </div>
     </div>
   );
@@ -223,11 +224,10 @@ export const Ventana: React.FC<{ u: number; ancho: number; alto: number; titulo:
       ...style,
     }}
   >
-    <div style={{ height: 40 * u, display: "flex", alignItems: "center", gap: 10 * u, padding: `0 ${18 * u}px`, borderBottom: `${1.5 * u}px solid ${COLOR.profundo}` }}>
-      {["#F26B5B", "#F0A33A", "#7BD389"].map((c) => (
-        <span key={c} style={{ width: 10 * u, height: 10 * u, borderRadius: 999, background: c, opacity: 0.8 }} />
-      ))}
-      <span style={{ marginLeft: 10 * u, fontFamily: '"IBM Plex Mono", monospace', fontSize: 15 * u, color: COLOR.acero }}>{titulo}</span>
+    {/* La barra de arriba, como las pantallas de la web: el cuadradito y el título, sin semáforo de colores. */}
+    <div style={{ height: 40 * u, display: "flex", alignItems: "center", gap: 12 * u, padding: `0 ${18 * u}px` }}>
+      <span style={{ width: 6 * u, height: 6 * u, background: COLOR.acero }} />
+      <span style={{ fontFamily: '"IBM Plex Sans", sans-serif', fontWeight: 600, fontSize: 16 * u, color: COLOR.acero }}>{titulo}</span>
     </div>
     <div style={{ position: "absolute", top: 40 * u, left: 0, right: 0, bottom: 0 }}>{children}</div>
   </div>

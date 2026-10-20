@@ -22,7 +22,8 @@ const Sube: React.FC<{ k: number; children: ReactNode; style?: CSSProperties }> 
 
 /** Separación de color (rojo y cian) que se va apagando: el "golpe" de un corte. */
 const Separado: React.FC<{ fuerza: number; u: number; children: ReactNode; style?: CSSProperties }> = ({ fuerza, u, children, style }) => {
-  const d = fuerza * 14 * u;
+  // Más corto y más suave que antes (web más humana): un acento, no un glitch.
+  const d = fuerza * 7 * u;
   return (
     <div style={{ position: "relative", ...style }}>
       {fuerza > 0.01 ? (
@@ -145,7 +146,7 @@ export const Tele: React.FC<Props> = ({ t, u, ancho, alto, cuadro }) => {
       </AbsoluteFill>
       {enganchada ? (
         <div style={{ position: "absolute", left: 0, right: 0, top: alto / 2 + 120 * u, display: "flex", justifyContent: "center" }}>
-          <Sube k={tramo(t, T.enganche + 0.55, T.enganche + 1.05)}>
+          <Sube k={tramo(t, T.enganche + 0.55, T.enganche + 1.3)}>
             <div style={{ ...titulo(36 * u), color: COLOR.acero }}>Software de gestión, apps y webs.</div>
           </Sube>
         </div>
@@ -256,7 +257,7 @@ export const Trabajos: React.FC<Props> = ({ t, u, ancho, alto }) => {
   const trabajo = TRABAJOS[i];
   const local = t - trabajo.t;
   const datos = DATOS[trabajo.id];
-  const entra = curvaMarca(tramo(local, 0, 0.32));
+  const entra = curvaMarca(tramo(local, 0, 0.5));
   const sale = tramo(local, 1.9, 2);
   const giro = -15 + 9 * suave(tramo(local, 0, 2));
   const empuje = 70 * suave(tramo(local, 0, 2));
@@ -288,20 +289,23 @@ export const Trabajos: React.FC<Props> = ({ t, u, ancho, alto }) => {
       <div style={{ position: "absolute", left: MARGEN * u, top: 96 * u, display: "flex", gap: 22 * u, alignItems: "center" }}>
         <span style={{ width: 9 * u, height: 9 * u, background: ACENTO.trabajos }} />
         <span style={{ ...etiqueta(18 * u), color: COLOR.blanco }}>Trabajos</span>
-        <span style={etiqueta(18 * u)}>
-          {String(i + 1).padStart(2, "0")} / {String(TRABAJOS.length).padStart(2, "0")}
+        {/* Dónde vamos: un cuadradito por trabajo, sin numeración. */}
+        <span style={{ display: "flex", gap: 8 * u, marginLeft: 6 * u }}>
+          {TRABAJOS.map((x, n) => (
+            <span key={x.id} style={{ width: 6 * u, height: 6 * u, background: n <= i ? COLOR.blanco : COLOR.profundo }} />
+          ))}
         </span>
       </div>
       <div style={{ position: "absolute", left: MARGEN * u, bottom: 150 * u, width: 600 * u }}>
-        <Sube k={tramo(local, 0.08, 0.45)}>
+        <Sube k={tramo(local, 0.08, 0.62)}>
           <div style={{ ...etiqueta(19 * u), color: ACENTO.trabajos }}>{datos.tipo}</div>
         </Sube>
         <div style={{ height: 18 * u }} />
-        <Sube k={tramo(local, 0.12, 0.52)}>
+        <Sube k={tramo(local, 0.12, 0.7)}>
           <div style={titulo(96 * u)}>{datos.nombre}</div>
         </Sube>
         <div style={{ height: 14 * u }} />
-        <Sube k={tramo(local, 0.2, 0.6)}>
+        <Sube k={tramo(local, 0.2, 0.8)}>
           <div style={texto(30 * u)}>{datos.detalle}</div>
         </Sube>
       </div>
@@ -466,7 +470,8 @@ export const Metodo: React.FC<Props> = ({ t, u }) => {
             width: "100%",
             height: "100%",
             objectFit: "cover",
-            filter: "grayscale(1) contrast(1.18) brightness(0.62)",
+            // Color real al 35 % (como las fotos de la web), no monocromo.
+            filter: "saturate(0.35) contrast(1.08) brightness(0.66)",
             transform: `scale(${1.12 - 0.07 * k}) translateX(${(i % 2 ? -1 : 1) * 18 * k * u}px)`,
           }}
         />
@@ -482,14 +487,13 @@ export const Metodo: React.FC<Props> = ({ t, u }) => {
         <div style={{ position: "relative", width: 360 * u, height: 2 * u, background: COLOR.profundo, marginLeft: 12 * u }}>
           <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: `${((i + curvaMarca(tramo(local, 0, 0.5))) / ETAPAS.length) * 100}%`, background: ACENTO.metodo }} />
         </div>
-        <span style={etiqueta(18 * u)}>0{i + 1} / 04</span>
       </div>
       <div style={{ position: "absolute", left: MARGEN * u, bottom: 170 * u, width: 1000 * u }}>
-        <Sube k={tramo(local, 0.05, 0.45)}>
+        <Sube k={tramo(local, 0.05, 0.65)}>
           <div style={titulo(118 * u)}>{etapa.titulo}</div>
         </Sube>
         <div style={{ height: 24 * u }} />
-        <Sube k={tramo(local, 0.18, 0.58)}>
+        <Sube k={tramo(local, 0.18, 0.8)}>
           <div style={{ ...texto(34 * u), color: COLOR.blanco, opacity: 0.8 }}>{etapa.nota}</div>
         </Sube>
       </div>
