@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { fraccionVista, origenDe, profundidadDe, tramoDe } from "./atencion";
 import { medir } from "./medir";
 
 /** Cuánto tiene que estar la página a la vista para contar como visita. */
@@ -19,6 +20,11 @@ const ESPERA_VISITA_MS = 2000;
  *    data-nicho si es de un rubro): clic_demo / clic_contacto.
  * Un rubro se cuenta una vez por carga de página; la base además lo
  * limita a una vez cada 30 minutos por visita.
+ *  · de dónde vino la visita (origen), una vez por sesión: buscador, redes,
+ *    campaña, otro sitio o directo; nunca la dirección exacta.
+ *  · la atención a cada rubro: cuánto estuvo a la vista (tiempo_nicho, en
+ *    tramos) y hasta dónde bajó dentro de su bloque (profundidad_nicho), una
+ *    vez por carga, al ocultar o cerrar la página.
  */
 export function MedirRubros() {
   useEffect(() => {
@@ -37,6 +43,59 @@ export function MedirRubros() {
     document.addEventListener("visibilitychange", contarVisita);
     contarVisita();
 
+    // ── De dónde vino (una vez por sesión) ──
+    try {
+      if (!sessionStorage.getItem("quvant-origen")) {
+        sessionStorage.setItem("quvant-origen", "si");
+        medir("origen", null, origenDe(document.referrer, window.location.href));
+      }
+    } catch {
+      // Sin sessionStorage (modo privado estricto): no se mide el origen.
+    }
+
+    // ── Atención a cada rubro: tiempo a la vista y profundidad ──
+    const atencion = new Map<string, { ms: number; desde: number | null; maximo: number }>();
+    const enviados = new Set<string>();
+    const bloques = new Map<Element, string>();
+    const deRubro = (n: string) => {
+      let a = atencion.get(n);
+      if (!a) atencion.set(n, (a = { ms: 0, desde: null, maximo: 0 }));
+      return a;
+    };
+    const alMoverse = () => {
+      for (const [el, n] of bloques) {
+        if (!el.isConnected) continue;
+        const caja = el.getBoundingClientRect();
+        const a = deRubro(n);
+        a.maximo = Math.max(a.maximo, fraccionVista(caja.top, caja.height, window.innerHeight));
+      }
+    };
+    let cuadro = 0;
+    const alDesplazar = () => {
+      if (cuadro) return;
+      cuadro = requestAnimationFrame(() => {
+        cuadro = 0;
+        alMoverse();
+      });
+    };
+    window.addEventListener("scroll", alDesplazar, { passive: true });
+    /** Al ocultar o cerrar: lo de cada rubro, una sola vez por carga. */
+    const mandarAtencion = () => {
+      const ahora = performance.now();
+      for (const [n, a] of atencion) {
+        if (enviados.has(n)) continue;
+        const ms = a.ms + (a.desde === null ? 0 : ahora - a.desde);
+        if (ms < 1000) continue;
+        enviados.add(n);
+        medir("tiempo_nicho", n, tramoDe(ms));
+        const p = profundidadDe(a.maximo);
+        if (p) medir("profundidad_nicho", n, p);
+      }
+    };
+    const alOcultar = () => document.visibilityState === "hidden" && mandarAtencion();
+    document.addEventListener("visibilitychange", alOcultar);
+    window.addEventListener("pagehide", mandarAtencion);
+
     const vistos = new Set<string>();
     const temporizadores = new Map<Element, ReturnType<typeof setTimeout>>();
 
@@ -50,7 +109,16 @@ export function MedirRubros() {
       (entradas) => {
         for (const entrada of entradas) {
           const nicho = (entrada.target as HTMLElement).dataset.medirNicho ?? (entrada.target as HTMLElement).dataset.nicho;
-          if (!nicho || vistos.has(nicho)) continue;
+          if (!nicho) continue;
+          // El reloj de atención corre mientras el bloque está a la vista.
+          bloques.set(entrada.target, nicho);
+          const a = deRubro(nicho);
+          if (aLaVista(entrada) && a.desde === null) a.desde = performance.now();
+          else if (!aLaVista(entrada) && a.desde !== null) {
+            a.ms += performance.now() - a.desde;
+            a.desde = null;
+          }
+          if (vistos.has(nicho)) continue;
           const pendiente = temporizadores.get(entrada.target);
           if (aLaVista(entrada) && !pendiente) {
             temporizadores.set(
@@ -92,6 +160,11 @@ export function MedirRubros() {
     document.addEventListener("click", alTocar, true);
 
     return () => {
+      mandarAtencion();
+      window.removeEventListener("scroll", alDesplazar);
+      document.removeEventListener("visibilitychange", alOcultar);
+      window.removeEventListener("pagehide", mandarAtencion);
+      if (cuadro) cancelAnimationFrame(cuadro);
       if (esperaVisita) clearTimeout(esperaVisita);
       document.removeEventListener("visibilitychange", contarVisita);
       observador.disconnect();

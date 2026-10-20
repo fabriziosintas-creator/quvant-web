@@ -845,7 +845,7 @@ export const PRIVACIDAD = {
       parrafos: [
         "Si creás una cuenta: tu nombre y apellido, tu email, el rubro de tu negocio, qué te trajo a Quvant y, si los cargás, tu empresa, tu ciudad y tu teléfono. Tu contraseña se guarda cifrada: nadie de Quvant la puede ver.",
         "Si usás el chat de la web: lo que escribís en la conversación.",
-        "Para medir qué secciones interesan, la web anota visitas y clics con un identificador anónimo propio, sin cookies de terceros y sin tu nombre ni tu email. Si tu navegador pide no ser rastreado (Do Not Track o Global Privacy Control), no anotamos nada.",
+        "Para medir qué secciones interesan, la web anota visitas y clics con un identificador anónimo propio, sin cookies de terceros y sin tu nombre ni tu email: qué rubro mirás, cuánto tiempo (en tramos) y hasta dónde bajás en su sección, y de dónde llegaste (buscador, redes, una campaña o directo, nunca la dirección exacta). Si tu navegador pide no ser rastreado (Do Not Track o Global Privacy Control), no anotamos nada.",
       ],
     },
     {

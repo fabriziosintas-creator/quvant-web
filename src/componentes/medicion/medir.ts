@@ -9,13 +9,13 @@
  * se juntan y van de a tandas con sendBeacon (no frenan la navegación).
  */
 
-export type TipoEvento = "visita" | "vista_nicho" | "clic_demo" | "clic_contacto" | "inicio_registro";
+export type TipoEvento = "visita" | "vista_nicho" | "clic_demo" | "clic_contacto" | "inicio_registro" | "tiempo_nicho" | "profundidad_nicho" | "origen";
 
 export const CLAVE_VISITA = "quvant-visita";
 /** Marca de los navegadores del equipo (la pone el panel al abrirse): ahí no se mide nada. */
 export const CLAVE_EQUIPO = "quvant-equipo";
 
-type Evento = { tipo: TipoEvento; nicho?: string | null; pagina: string; visita: string };
+type Evento = { tipo: TipoEvento; nicho?: string | null; pagina: string; visita: string; detalle?: string };
 
 const esperando: Evento[] = [];
 let temporizador: ReturnType<typeof setTimeout> | null = null;
@@ -55,12 +55,12 @@ function enviar() {
   if (esperando.length > 0) enviar();
 }
 
-/** Anota un evento. Se manda enseguida si la página se oculta; si no, en un segundo. */
-export function medir(tipo: TipoEvento, nicho?: string | null) {
+/** Anota un evento. `detalle` es un valor de lista cerrada (un tramo, un porcentaje, un origen), nunca texto libre. */
+export function medir(tipo: TipoEvento, nicho?: string | null, detalle?: string) {
   if (typeof window === "undefined" || noRastrear()) return;
   const visita = idVisita();
   if (!visita) return;
-  esperando.push({ tipo, nicho: nicho ?? null, pagina: window.location.pathname, visita });
+  esperando.push({ tipo, nicho: nicho ?? null, pagina: window.location.pathname, visita, ...(detalle ? { detalle } : {}) });
   if (!escuchando) {
     escuchando = true;
     document.addEventListener("visibilitychange", () => document.visibilityState === "hidden" && enviar());

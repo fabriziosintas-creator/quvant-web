@@ -1,4 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { ORIGENES, PROFUNDIDADES, TRAMOS } from "@/componentes/medicion/atencion";
+import { ACENTO_NICHO } from "@/datos/colores";
 import { esNicho, uuidValido } from "@/servidor/cuenta/validacion";
 import { crearClienteAdmin } from "@/supabase/admin";
 import { configSupabase } from "@/supabase/entorno";
@@ -20,6 +22,9 @@ import type { Enums } from "@/supabase/tipos";
 
 const TIPOS: readonly Enums<"tipo_evento">[] = [
   "visita",
+  "tiempo_nicho",
+  "profundidad_nicho",
+  "origen",
   "vista_nicho",
   "clic_demo",
   "clic_contacto",
@@ -28,7 +33,12 @@ const TIPOS: readonly Enums<"tipo_evento">[] = [
   "email_confirmado",
 ];
 /** Lo que el navegador puede mandar (los de registro los anota la base). */
-const DESDE_LA_WEB: readonly Enums<"tipo_evento">[] = ["visita", "vista_nicho", "clic_demo", "clic_contacto", "inicio_registro"];
+const DESDE_LA_WEB: readonly Enums<"tipo_evento">[] = ["visita", "vista_nicho", "clic_demo", "clic_contacto", "inicio_registro", "tiempo_nicho", "profundidad_nicho", "origen"];
+
+/** Los valores que acepta cada evento con detalle: listas cerradas, nunca texto libre. */
+const DETALLES: Partial<Record<Enums<"tipo_evento">, readonly string[]>> = { tiempo_nicho: TRAMOS, profundidad_nicho: PROFUNDIDADES, origen: ORIGENES };
+/** Rubros que se pueden medir: los del registro y los que la web muestra como próximamente (todos están en la tabla nichos). */
+const esRubro = (v: unknown): v is string => esNicho(v) || (typeof v === "string" && v in ACENTO_NICHO);
 
 const noRastrear = (pedido: NextRequest) =>
   pedido.headers.get("dnt") === "1" || pedido.headers.get("sec-gpc") === "1";
@@ -57,8 +67,15 @@ export async function POST(pedido: NextRequest) {
     if (!tipo || !DESDE_LA_WEB.includes(tipo)) return [];
     const visita = typeof e.visita === "string" && uuidValido(e.visita) ? e.visita : null;
     if (!visita) return [];
-    const nicho = typeof e.nicho === "string" && esNicho(e.nicho) ? e.nicho : null;
+    const nicho = esRubro(e.nicho) ? e.nicho : null;
     const pagina = typeof e.pagina === "string" ? e.pagina.replace(/[?#].*$/, "").slice(0, 200) : null;
+    const lista = DETALLES[tipo];
+    if (lista) {
+      // Con detalle: tiene que ser de su lista; tiempo y profundidad, además, de un rubro.
+      if (typeof e.detalle !== "string" || !lista.includes(e.detalle)) return [];
+      if (tipo !== "origen" && !nicho) return [];
+      return [{ tipo, nicho_id: nicho, pagina, visita_id: visita, detalle: e.detalle }];
+    }
     return [{ tipo, nicho_id: nicho, pagina, visita_id: visita }];
   });
   if (filas.length === 0) return new NextResponse(null, { status: 204 });
@@ -86,7 +103,9 @@ export async function POST(pedido: NextRequest) {
 
   // Las visitas van aparte: si la base todavía no tiene el tipo "visita"
   // (migración sin aplicar), solo fallan ellas y el resto se guarda.
-  const tandas = [filas.filter((f) => f.tipo !== "visita"), filas.filter((f) => f.tipo === "visita")];
+  // Lo mismo con los eventos con detalle (migración de nichos).
+  const conDetalle = (f: (typeof filas)[number]) => "detalle" in f;
+  const tandas = [filas.filter((f) => f.tipo !== "visita" && !conDetalle(f)), filas.filter((f) => f.tipo === "visita"), filas.filter(conDetalle)];
   for (const tanda of tandas) {
     if (tanda.length === 0) continue;
     const { error } = await admin.from("eventos").insert(tanda.map((fila) => ({ ...fila, perfil_id: perfil })));
