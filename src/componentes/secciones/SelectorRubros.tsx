@@ -38,7 +38,7 @@ function FotoRubro({ id }: { id: string }) {
         alt={foto.alt}
         fill
         sizes="(min-width: 1024px) 50vw, 100vw"
-        className="foto-bn object-cover"
+        className="foto-real object-cover"
       />
       <Grano />
       <div

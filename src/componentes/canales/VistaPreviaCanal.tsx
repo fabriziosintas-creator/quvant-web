@@ -45,7 +45,7 @@ function Trabajos({ vivo }: { vivo: boolean }) {
           className={`object-cover object-top transition-opacity duration-(--duracion-lenta) ${i === indice ? "opacity-100" : "opacity-0"}`}
         />
       ))}
-      <span className="absolute bottom-0 right-[6%] block w-[20%] overflow-hidden rounded-2xl border border-profundo bg-negro shadow-[0_18px_40px_-10px_rgba(0,0,0,0.9)] aspect-[600/1298] translate-y-[18%]">
+      <span className="pantalla absolute bottom-0 right-[6%] block w-[20%] overflow-hidden aspect-[600/1298] translate-y-[18%]">
         {VITRINA.map((proyecto, i) => cargar(vivo, i, indice) && (
           <Image
             key={proyecto.id}
@@ -75,7 +75,7 @@ function Servicios({ vivo }: { vivo: boolean }) {
           alt=""
           fill
           sizes="(min-width: 1024px) 40vw, 90vw"
-          className={`foto-bn object-cover transition-opacity duration-(--duracion-lenta) ${i === indice ? "opacity-100" : "opacity-0"}`}
+          className={`foto-real object-cover transition-opacity duration-(--duracion-lenta) ${i === indice ? "opacity-100" : "opacity-0"}`}
         />
       ))}
       {/* Las cuatro etapas en una línea, como en el recorrido. */}

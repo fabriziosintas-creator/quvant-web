@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { Cara } from "@/componentes/estructura/Foto";
 import { NOSOTROS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
 import { CURVA, DURACION } from "@/componentes/estructura/movimiento";
@@ -282,18 +282,14 @@ function TarjetaFuerza({
           <span className="block font-michroma text-[clamp(4.5rem,11vw,9rem)] leading-[0.9] text-blanco">
             <Contador numero={fuerza.dato.numero} prefijo={fuerza.dato.prefijo} />
           </span>
-          <span className="mt-3 block max-w-[18rem] font-plex text-xs uppercase leading-snug tracking-etiqueta text-acero">
+          <span className="mt-3 block max-w-[18rem] font-lectura text-sm leading-snug text-acero">
             {fuerza.dato.etiqueta}
           </span>
         </p>
-        {/* Quién lleva esta fuerza. La foto, cuando esté, en blanco y negro como todas las del sitio. */}
+        {/* Quién lleva esta fuerza. La foto sale del registro (src/datos/fotos.ts): solo con permiso. */}
         {persona ? (
           <div className="mt-8 flex items-center gap-4">
-            {persona.foto ? (
-              <span className="relative block size-14 shrink-0 overflow-hidden border border-profundo">
-                <Image src={persona.foto} alt={`Foto de ${persona.nombre}`} fill sizes="56px" className="foto-bn object-cover" />
-              </span>
-            ) : null}
+            <Cara id={`nosotros-${persona.nombre.toLowerCase()}`} />
             <p className="min-w-0">
               <span className="block titulo text-lg text-blanco">{persona.nombre}</span>
               <span className="mt-0.5 block font-plex text-xs text-acero">{persona.cargo}</span>

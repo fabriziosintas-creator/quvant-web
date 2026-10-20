@@ -364,12 +364,28 @@ html[data-intro="si"] [data-titulo-portada]:not([data-aterrizo]) {
 }
 
 /*
- * Las fotos de ambiente: blanco y negro documental con grano (decisión del
- * 19-oct-2026). Las capturas de producto y la Q de cromo no lo llevan: ahí
- * el color es información o es la marca.
+ * Las fotos: color real con un retoque leve y parejo (un poco menos de
+ * saturación, negros profundos) para que convivan con el negro de la marca
+ * (web más humana, paso 6; decisión tomada, se puede cambiar). Las
+ * capturas de producto y la Q de cromo no lo llevan: ahí el color es
+ * información o es la marca.
+ * Alternativa, todas en blanco y negro: filter: grayscale(1) contrast(1.18) brightness(0.78);
  */
-.foto-bn {
-  filter: grayscale(1) contrast(1.18) brightness(0.78);
+.foto-real {
+  filter: saturate(0.82) contrast(1.06) brightness(0.94);
+}
+
+/*
+ * Las pantallas del sistema (capturas, el antes/después, el celular de la
+ * vista previa): apoyadas con una sombra suave y un filo apenas visible,
+ * en lugar de ventanas con borde fino flotando (web más humana, paso 6).
+ */
+.pantalla {
+  border-radius: 1rem;
+  background: #131316;
+  box-shadow:
+    0 30px 80px -30px rgba(0, 0, 0, 0.85),
+    0 0 0 1px rgba(236, 236, 238, 0.06);
 }
 
 .grano {

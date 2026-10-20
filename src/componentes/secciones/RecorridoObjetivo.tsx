@@ -222,7 +222,7 @@ export function RecorridoObjetivo() {
                     alt={visual.foto.alt}
                     fill
                     sizes="(min-width: 1024px) 45vw, 100vw"
-                    className={`foto-bn object-cover transition-[opacity,transform] duration-(--duracion-lenta) ease-quvant ${
+                    className={`foto-real object-cover transition-[opacity,transform] duration-(--duracion-lenta) ease-quvant ${
                       i === activa ? "scale-100 opacity-100" : "scale-105 opacity-0"
                     }`}
                   />

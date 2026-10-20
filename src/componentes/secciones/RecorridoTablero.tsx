@@ -406,10 +406,10 @@ export function RecorridoTablero() {
         ) : null}
       </div>
 
-      {/* La ventana con la pantalla real. */}
+      {/* La pantalla real, apoyada con sombra (clase .pantalla en globals.css). */}
       <figure className="order-1 min-w-0 lg:order-2">
-        <div className="overflow-hidden rounded-2xl border border-profundo">
-          <figcaption className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
+        <div className="pantalla overflow-hidden">
+          <figcaption className="flex items-center gap-3 px-4 py-2.5">
             <span aria-hidden className="size-1.5 bg-acero" />
             <span className="min-w-0 truncate font-lectura text-sm font-medium text-acero">
               {recorrido.ventana}

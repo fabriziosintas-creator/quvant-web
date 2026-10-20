@@ -68,7 +68,7 @@ export function DeslizadorAntesDespues({
       onPointerMove={alMover}
       onPointerUp={alSoltar}
       onPointerCancel={alSoltar}
-      className="relative select-none overflow-hidden rounded-2xl border border-profundo touch-pan-y"
+      className="pantalla relative select-none overflow-hidden touch-pan-y"
       style={{ aspectRatio: `${antes.ancho} / ${antes.alto}` }}
     >
       <Image

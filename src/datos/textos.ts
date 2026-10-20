@@ -471,7 +471,7 @@ export const NOSOTROS = {
       bajada: "El encargado de darle vida y forma a todas las ideas.",
       titulo: "", // TODO: título o formación de Michel.
       linkedin: "", // TODO: URL del perfil de LinkedIn de Michel.
-      foto: "", // TODO: guardar la foto en public/equipo/michel.jpg y poner acá "/equipo/michel.jpg".
+      // La foto sale del registro src/datos/fotos.ts (id nosotros-michel).
     },
     {
       nombre: "Fabrizio",
@@ -482,7 +482,7 @@ export const NOSOTROS = {
         "Entiende el negocio de cada cliente y busca cómo simplificar el trabajo adentro de las empresas.",
       titulo: "", // TODO: título o formación de Fabrizio.
       linkedin: "", // TODO: URL del perfil de LinkedIn de Fabrizio.
-      foto: "", // TODO: guardar la foto en public/equipo/fabrizio.jpg y poner acá "/equipo/fabrizio.jpg".
+      // La foto sale del registro src/datos/fotos.ts (id nosotros-fabrizio).
     },
   ],
   /** No se muestra en la web (repetía lo que dicen todas las páginas): la usa el chat. */
