@@ -80,7 +80,7 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/nuc
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-5">
         <IndicadorGrande etiqueta={G.tiles.clientes} valor={<Numero valor={tiles.clientes} />} />
         <IndicadorGrande etiqueta={G.tiles.usuarios} valor={<Numero valor={tiles.usuarios} />} />
-        <IndicadorGrande etiqueta={G.tiles.acciones} valor={<Numero valor={tiles.acciones} formato={numero} />} />
+        <IndicadorGrande etiqueta={G.tiles.acciones} valor={<Numero valor={tiles.acciones} />} />
         <IndicadorGrande etiqueta={G.tiles.salud} valor={tiles.salud === null ? "—" : <Numero valor={tiles.salud} />} detalle={T.medidoPorUso} />
         <IndicadorGrande etiqueta={G.tiles.alertas} valor={<Numero valor={tiles.alertas} />} />
       </div>
@@ -98,7 +98,6 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/nuc
         ) : (
           <LineasActividad
             semanas={semanas}
-            etiquetaSemana={(s) => s.slice(5).split("-").reverse().join("/")}
             series={activos.map((r) => ({ id: r.nucleo.id, nombre: r.nucleo.nombre, valores: serieDe(p.clientes.filter((c) => c.nucleoId === r.nucleo.id), semanas) }))}
           />
         )}

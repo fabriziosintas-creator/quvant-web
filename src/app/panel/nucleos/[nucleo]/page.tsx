@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { FUNCIONES_CLAVE } from "../../../../../medicion-sistema/catalogo";
 import { Bloque, TituloPanel } from "@/componentes/panel/Graficos";
-import { numero } from "@/componentes/panel/formato";
 import { Embudo, MapaCalorAdopcion, MiniLinea } from "@/componentes/panel/nucleos/Graficos";
 import { CartelEjemplo, Filtros, IndicadorGrande, ListaOrdenada, Numero, Semaforo, Tendencia, Vista } from "@/componentes/panel/nucleos/comunes";
 import { Ciudad } from "@/componentes/panel/nucleos/tresd/Ciudad";
@@ -55,8 +54,9 @@ async function Contenido({ params, searchParams }: { params: PageProps<"/panel/n
 
   const ranking = (
     <ListaOrdenada
-      items={ordenados}
-      render={(c, i) => (
+      items={ordenados.map((c, i) => ({
+        id: c.id,
+        contenido: (
         <article className="grid gap-3 border border-profundo p-4 md:grid-cols-[2rem_minmax(0,1fr)_auto_auto_auto_auto] md:items-center">
           <span className="font-plex text-xs tabular-nums text-acero">{i + 1}</span>
           <div className="flex min-w-0 flex-col gap-1.5">
@@ -72,7 +72,8 @@ async function Contenido({ params, searchParams }: { params: PageProps<"/panel/n
           {c.indicadores ? <Tendencia valor={c.indicadores.tendencia} /> : <span />}
           <MiniLinea valores={(c.indicadores?.semanas ?? []).map((s) => s.acciones)} />
         </article>
-      )}
+        ),
+      }))}
     />
   );
 
@@ -91,7 +92,7 @@ async function Contenido({ params, searchParams }: { params: PageProps<"/panel/n
         <>
           <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
             <IndicadorGrande etiqueta={T.general.tiles.clientes} valor={<Numero valor={r.clientes} />} />
-            <IndicadorGrande etiqueta={T.general.tiles.acciones} valor={<Numero valor={r.acciones} formato={numero} />} />
+            <IndicadorGrande etiqueta={T.general.tiles.acciones} valor={<Numero valor={r.acciones} />} />
             <IndicadorGrande etiqueta={T.general.tiles.salud} valor={r.salud === null ? "—" : <Numero valor={r.salud} />} detalle={saludResto !== null ? `${N.comparacion}: ${saludResto}` : undefined} />
             <IndicadorGrande etiqueta={N.ordenes.adopcion} valor={r.adopcion === null ? "—" : <><Numero valor={r.adopcion} /> %</>} detalle={adopcionResto !== null ? `${N.comparacion}: ${adopcionResto} %` : undefined} />
           </div>

@@ -183,7 +183,8 @@ export function MapaProspeccion({
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)]">
       <div className="flex flex-col gap-3">
         <div id="mapa" className="mapa-quvant relative scroll-mt-4 h-[60svh] min-h-80 overflow-hidden border border-profundo bg-negro lg:h-[72vh]">
-          <div ref={contenedor} className="absolute inset-0" aria-label={T.titulo} role="region" />
+          {/* Alto y ancho explícitos: MapLibre le pone position: relative al contenedor (pisaría un absolute inset-0 y el mapa quedaría con alto cero). */}
+          <div ref={contenedor} className="h-full w-full" aria-label={T.titulo} role="region" />
           {fallo ? (
             <div className="absolute inset-0 flex items-center justify-center p-6">
               <p className="max-w-md text-center font-lectura text-sm leading-relaxed text-acero">{T.sinMapa}</p>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { animate, motion, useReducedMotion } from "motion/react";
 import { useEffect, useState, type ReactNode } from "react";
+import { numero } from "@/componentes/panel/formato";
 import { PANEL_ADMIN } from "@/datos/textos";
 import type { Semaforo as TipoSemaforo, Tendencia as TipoTendencia } from "@/nucleos/tipos";
 
@@ -38,8 +39,8 @@ export function Tendencia({ valor }: { valor: TipoTendencia }) {
   );
 }
 
-/** Un número que cuenta hasta su valor al aparecer (sin movimiento, aparece directo). */
-export function Numero({ valor, formato = (n) => String(n) }: { valor: number; formato?: (n: number) => string }) {
+/** Un número que cuenta hasta su valor al aparecer (sin movimiento, aparece directo). Con separador de miles, en castellano. */
+export function Numero({ valor }: { valor: number }) {
   const quieto = useReducedMotion();
   const [n, setN] = useState(0);
   useEffect(() => {
@@ -47,7 +48,7 @@ export function Numero({ valor, formato = (n) => String(n) }: { valor: number; f
     const control = animate(0, valor, { duration: 1.1, ease: [0.25, 0.1, 0.25, 1], onUpdate: (v) => setN(Math.round(v)) });
     return () => control.stop();
   }, [valor, quieto]);
-  return <>{formato(quieto ? valor : n)}</>;
+  return <>{numero(quieto ? valor : n)}</>;
 }
 
 /** Indicador grande en Michroma (los de arriba de cada vista). */
@@ -94,14 +95,18 @@ export function Vista({ children, nivel }: { children: ReactNode; nivel: 0 | 1 |
   );
 }
 
-/** Las tarjetas que se ordenan solas al cambiar el orden (layout animado). */
-export function ListaOrdenada<T extends { id: string }>({ items, render }: { items: T[]; render: (item: T, indice: number) => ReactNode }) {
+/**
+ * Las tarjetas que se ordenan solas al cambiar el orden (layout animado).
+ * Llegan ya armadas desde el servidor: una función no puede pasar del
+ * servidor a un componente del navegador.
+ */
+export function ListaOrdenada({ items }: { items: Array<{ id: string; contenido: ReactNode }> }) {
   const quieto = useReducedMotion();
   return (
     <ul className="flex flex-col gap-2">
-      {items.map((item, i) => (
+      {items.map((item) => (
         <motion.li key={item.id} layout={!quieto} transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}>
-          {render(item, i)}
+          {item.contenido}
         </motion.li>
       ))}
     </ul>
