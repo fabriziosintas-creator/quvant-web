@@ -19,25 +19,25 @@ import {
 
 export type EmailArmado = { asunto: string; html: string; texto: string };
 
-async function armar(asunto: string, email: ReactElement): Promise<EmailArmado> {
+export async function armarEmail(asunto: string, email: ReactElement): Promise<EmailArmado> {
   const [html, texto] = await Promise.all([render(email), render(email, { plainText: true })]);
   return { asunto, html, texto };
 }
 
 export const armarBienvenida = (datos: DatosBienvenida, urlImagenes?: string) =>
-  armar(EMAILS.bienvenida.asunto, <EmailBienvenida datos={datos} urlImagenes={urlImagenes} />);
+  armarEmail(EMAILS.bienvenida.asunto, <EmailBienvenida datos={datos} urlImagenes={urlImagenes} />);
 
 export const armarAvisoRegistro = (datos: DatosAviso, urlImagenes?: string) =>
-  armar(
+  armarEmail(
     EMAILS.avisoInterno.asunto.replace("{nombre}", datos.nombre).replace("{rubro}", nombreRubro(datos.nicho, datos.nichoOtro)),
     <EmailAvisoRegistro datos={datos} urlImagenes={urlImagenes} />,
   );
 
 export const armarConfirmacion = (saludo: string, enlace: string, urlImagenes?: string) =>
-  armar(EMAILS.confirmacion.asunto, <EmailConfirmacion saludo={saludo} enlace={enlace} urlImagenes={urlImagenes} />);
+  armarEmail(EMAILS.confirmacion.asunto, <EmailConfirmacion saludo={saludo} enlace={enlace} urlImagenes={urlImagenes} />);
 
 export const armarRecuperacion = (saludo: string, enlace: string, urlImagenes?: string) =>
-  armar(EMAILS.recuperacion.asunto, <EmailRecuperacion saludo={saludo} enlace={enlace} urlImagenes={urlImagenes} />);
+  armarEmail(EMAILS.recuperacion.asunto, <EmailRecuperacion saludo={saludo} enlace={enlace} urlImagenes={urlImagenes} />);
 
 /**
  * Las plantillas de Supabase: el mismo email con sus variables en lugar de
