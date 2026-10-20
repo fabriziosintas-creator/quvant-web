@@ -1134,3 +1134,14 @@ html[data-vista="texto"] .linea-canales {
     animation: none;
   }
 }
+
+/* ── Objetivos: el embudo al revés se ensancha desde el centro, de abajo hacia arriba ── */
+.embudo-crece {
+  transform-origin: center;
+  animation: barra-crece 800ms var(--ease-quvant) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .embudo-crece {
+    animation: none;
+  }
+}
