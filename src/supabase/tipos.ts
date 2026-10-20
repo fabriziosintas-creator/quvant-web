@@ -405,6 +405,24 @@ export type Database = {
           },
         ]
       }
+      geocodificaciones: {
+        Row: {
+          clave: string
+          creado_en: string
+          resultado: Json
+        }
+        Insert: {
+          clave: string
+          creado_en?: string
+          resultado: Json
+        }
+        Update: {
+          clave?: string
+          creado_en?: string
+          resultado?: Json
+        }
+        Relationships: []
+      }
       locales: {
         Row: {
           actualizado_en: string
@@ -422,7 +440,9 @@ export type Database = {
           nicho_id: string | null
           nombre: string
           origen: Database["public"]["Enums"]["origen_local"]
-          place_id: string | null
+          link_google_maps: string | null
+          osm_id: string | null
+          ubicacion_pendiente: boolean
           provincia: string | null
           proxima_visita: string | null
           rubro: string | null
@@ -446,7 +466,9 @@ export type Database = {
           nicho_id?: string | null
           nombre: string
           origen?: Database["public"]["Enums"]["origen_local"]
-          place_id?: string | null
+          link_google_maps?: string | null
+          osm_id?: string | null
+          ubicacion_pendiente?: boolean
           provincia?: string | null
           proxima_visita?: string | null
           rubro?: string | null
@@ -470,7 +492,9 @@ export type Database = {
           nicho_id?: string | null
           nombre?: string
           origen?: Database["public"]["Enums"]["origen_local"]
-          place_id?: string | null
+          link_google_maps?: string | null
+          osm_id?: string | null
+          ubicacion_pendiente?: boolean
           provincia?: string | null
           proxima_visita?: string | null
           rubro?: string | null
@@ -723,7 +747,9 @@ export type Database = {
           nicho_id: string | null
           nombre: string | null
           origen: Database["public"]["Enums"]["origen_local"] | null
-          place_id: string | null
+          link_google_maps: string | null
+          osm_id: string | null
+          ubicacion_pendiente: boolean | null
           provincia: string | null
           proxima_visita: string | null
           rubro: string | null
@@ -773,6 +799,7 @@ export type Database = {
         }[]
       }
       resumen_registros: { Args: never; Returns: Json }
+      resumen_visitas: { Args: never; Returns: Json }
     }
     Enums: {
       estado_cliente: "demo_mostrada" | "en_prueba" | "activo" | "baja"
@@ -786,6 +813,7 @@ export type Database = {
       origen_local: "manual" | "importado"
       rol: "usuario" | "admin"
       tipo_evento:
+        | "visita"
         | "vista_nicho"
         | "clic_demo"
         | "clic_contacto"
@@ -799,7 +827,6 @@ export type Database = {
     }
   }
 }
-      resumen_visitas: { Args: never; Returns: Json }
 
 type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
@@ -813,7 +840,6 @@ export type Tables<
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        | "visita"
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
@@ -934,6 +960,7 @@ export const Constants = {
       origen_local: ["manual", "importado"],
       rol: ["usuario", "admin"],
       tipo_evento: [
+        "visita",
         "vista_nicho",
         "clic_demo",
         "clic_contacto",
@@ -945,4 +972,3 @@ export const Constants = {
     },
   },
 } as const
-        "visita",

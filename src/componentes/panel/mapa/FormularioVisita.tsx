@@ -80,6 +80,12 @@ export function FormularioVisita({ localId, admins, yo, alGuardar }: { localId: 
       </fieldset>
 
       <Campo name="nota" etiqueta={T.visita.nota} defaultValue={v.nota} maxLength={2000} />
+      <Campo name="mostrado" etiqueta={T.visita.mostrado} defaultValue={v.mostrado} maxLength={200} list={`visita-mostrado-${localId}`} />
+      <datalist id={`visita-mostrado-${localId}`}>
+        {T.visita.mostradoOpciones.map((opcion) => (
+          <option key={opcion} value={opcion} />
+        ))}
+      </datalist>
       <div className="grid gap-4 sm:grid-cols-2">
         <Campo name="siguiente" etiqueta={T.visita.siguiente} defaultValue={v.siguiente} maxLength={500} />
         <Campo name="proxima" type="date" etiqueta={T.visita.proxima} defaultValue={v.proxima} error={e.proxima} />

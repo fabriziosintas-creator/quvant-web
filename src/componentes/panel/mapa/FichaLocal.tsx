@@ -12,11 +12,16 @@ import { Marcador, descripcionDe } from "./Marcador";
 
 const T = PANEL_ADMIN.mapa;
 
-/** Cómo llegar: con coordenadas si las hay; si no, por nombre y dirección. */
-function urlComoLlegar(local: Local) {
-  const destino = local.latitud !== null && local.longitud !== null ? `${local.latitud},${local.longitud}` : [local.nombre, local.direccion, local.ciudad].filter(Boolean).join(", ");
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destino)}`;
-}
+/**
+ * Los dos botones de Google son solo links: abren la app o la web de
+ * Google Maps, sin API ni clave. Con coordenadas si las hay; si no, por
+ * nombre y dirección.
+ */
+const destinoDe = (local: Local) =>
+  local.latitud !== null && local.longitud !== null ? `${local.latitud},${local.longitud}` : [local.nombre, local.direccion, local.ciudad].filter(Boolean).join(", ");
+const urlComoLlegar = (local: Local) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destinoDe(local))}`;
+/** El link guardado del local (el que se pegó) es el mejor: abre la ficha de Google del lugar. */
+const urlVerEnGoogle = (local: Local) => local.link_google_maps ?? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destinoDe(local))}`;
 
 /** La ficha de un local: qué pasó, qué sigue y los botones para actuar desde la calle. */
 export function FichaLocal({
@@ -81,6 +86,7 @@ export function FichaLocal({
             </p>
             <p className="mt-1 font-plex text-[11px] uppercase tracking-etiqueta text-acero">
               {descripcionDe(local)}
+              {local.contacto ? ` · ${T.ficha.atendio.replace("{nombre}", local.contacto)}` : ""}
               {local.origen === "importado" ? ` · ${T.ficha.importado}` : ""}
               {local.es_prueba ? ` · ${T.ficha.prueba}` : ""}
             </p>
@@ -106,7 +112,9 @@ export function FichaLocal({
         </div>
       </dl>
 
-      {local.latitud === null ? <p className="border border-profundo p-3 font-lectura text-sm text-acero">{T.ficha.sinCoordenadas}</p> : null}
+      {local.latitud === null ? (
+        <p className="border border-profundo p-3 font-lectura text-sm text-acero">{local.ubicacion_pendiente ? T.ficha.ubicandoImportado : T.ficha.sinCoordenadas}</p>
+      ) : null}
 
       <div className="flex flex-wrap gap-2">
         <button type="button" onClick={() => setCargando((c) => !c)} aria-expanded={cargando} className="rounded-full inline-flex h-11 items-center bg-blanco px-5 font-lectura text-sm font-medium text-negro hover:bg-acero">
@@ -114,6 +122,9 @@ export function FichaLocal({
         </button>
         <a href={urlComoLlegar(local)} target="_blank" rel="noopener noreferrer" className={`${CLASE_BOTON_SECUNDARIO} h-11 px-5`}>
           {T.ficha.comoLlegar}
+        </a>
+        <a href={urlVerEnGoogle(local)} target="_blank" rel="noopener noreferrer" className={`${CLASE_BOTON_SECUNDARIO} h-11 px-5`}>
+          {T.ficha.verEnGoogle}
         </a>
         {local.telefono ? (
           <a href={`tel:${local.telefono.replace(/[^\d+]/g, "")}`} className={`${CLASE_BOTON_SECUNDARIO} h-11 px-5`}>
@@ -178,6 +189,7 @@ export function FichaLocal({
                   {v.volver ? ` · ${T.ficha.volver.toLowerCase()}: ${T.volver[v.volver].toLowerCase()}` : ""}
                   <span className="text-acero"> · {T.ficha.fue.replace("{nombre}", nombreDe(v.visitante_id))}</span>
                 </p>
+                {v.que_se_mostro ? <p className="font-plex text-xs text-acero">{T.ficha.mostramos.replace("{que}", v.que_se_mostro)}</p> : null}
                 {v.nota ? <p className="font-lectura text-sm text-acero">{v.nota}</p> : null}
                 {v.siguiente_paso ? <p className="font-lectura text-sm text-blanco">→ {v.siguiente_paso}</p> : null}
               </li>

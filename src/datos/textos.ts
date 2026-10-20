@@ -1116,8 +1116,7 @@ export const PANEL_ADMIN = {
   mapa: {
     titulo: "Mapa de prospección",
     bajada: "Los locales que visitamos y cómo nos fue en cada uno. Cargá la visita en la puerta del local, desde el celular.",
-    sinClave:
-      "Falta la clave de Google Maps (NEXT_PUBLIC_GOOGLE_MAPS_API_KEY en .env.local y en Vercel). La lista y la carga de visitas funcionan igual; el mapa aparece cuando esté la clave.",
+    sinMapa: "El mapa no pudo cargar (hace falta conexión y un navegador con WebGL). La lista, las fichas y la carga de visitas funcionan igual.",
     contadores: {
       locales: "Locales cargados",
       visitados: "Visitados",
@@ -1151,6 +1150,7 @@ export const PANEL_ADMIN = {
       orden: { visitas: "Cantidad de visitas", ultima: "Última visita", proxima: "Próxima visita", nombre: "Nombre" },
       vacio: "No hay locales con estos filtros.",
       sinUbicar: "Sin ubicar",
+      ubicando: "Ubicándolo…",
       mostrando: "{n} locales · {ubicados} en el mapa",
       abrir: "Ver el local",
     },
@@ -1161,7 +1161,11 @@ export const PANEL_ADMIN = {
       proxima: "Próxima visita",
       cargarVisita: "Cargar visita",
       comoLlegar: "Cómo llegar",
+      verEnGoogle: "Ver en Google Maps",
       llamar: "Llamar",
+      atendio: "Atendió {nombre}",
+      mostramos: "Mostramos: {que}",
+      ubicandoImportado: "Importado de una planilla: lo estamos ubicando. Si no aparece, tocá «Ubicarlo donde estoy» parado en la puerta.",
       cerrar: "Cerrar",
       historial: "Historial",
       sinHistorial: "Todavía no tiene visitas.",
@@ -1182,6 +1186,8 @@ export const PANEL_ADMIN = {
       feedback: "¿Cómo nos fue?",
       volver: "¿Volver?",
       nota: "Nota (opcional)",
+      mostrado: "Qué le mostramos (opcional)",
+      mostradoOpciones: ["La plantilla de su rubro", "Una página web", "Un sistema a medida", "Trabajos que hicimos"],
       siguiente: "Siguiente paso (opcional)",
       proxima: "Próxima visita (opcional)",
       guardar: "Guardar visita",
@@ -1197,9 +1203,38 @@ export const PANEL_ADMIN = {
     },
     local: {
       titulo: "Agregar un local",
-      bajada: "Buscalo por nombre o dirección, o cargalo parado en la puerta con «Estoy acá».",
-      buscar: "Buscar en Google Maps",
-      buscarMarcador: "Nombre del local o dirección…",
+      bajada:
+        "Pegá el link de Google Maps del local (en el celular: Compartir → Copiar), buscá la dirección, o cargalo parado en la puerta con «Estoy acá». Si ya estaba cargado, se abre el que está.",
+      link: {
+        etiqueta: "Link de Google Maps",
+        marcador: "https://maps.app.goo.gl/… (pegá acá lo que copiaste)",
+        boton: "Leer link",
+        leyendo: "Leyendo…",
+        vacio: "Pegá primero el link de Google Maps.",
+        noEsLink: "Eso no parece un link de Google Maps. En la app: Compartir → Copiar link.",
+        cortoSinRespuesta: "No pudimos abrir ese link corto. Abrilo en el navegador y pegá la dirección larga que aparece arriba.",
+        sinCoordenadas: "El link no trae la ubicación. Te dejamos el nombre en el buscador: tocá «Buscar».",
+        leido: "Leímos «{nombre}» y su ubicación. Revisá los datos y agregalo.",
+        sinNombre: "el local",
+      },
+      busqueda: {
+        etiqueta: "Buscar la dirección",
+        marcador: "Calle y número, ciudad",
+        boton: "Buscar",
+        buscando: "Buscando…",
+        corta: "Escribí un poco más para buscar.",
+        sinRespuesta: "El buscador de OpenStreetMap no respondió. Probá de nuevo en un rato.",
+        nada: "No encontramos esa dirección. Probá con calle, número y ciudad, o usá «Estoy acá».",
+        elegido: "Listo, ubicado. Completá el nombre si falta y agregalo.",
+        atribucion: "Direcciones de © OpenStreetMap (Nominatim).",
+      },
+      abrirExistente: "Abrir el que está",
+      ubicacion: "Ubicado en {coordenadas} ({precision})",
+      exacta: "exacta",
+      aproximada: "aproximada",
+      sinUbicar: "Todavía sin ubicación en el mapa (se puede agregar igual).",
+      quitarUbicacion: "Quitar",
+      contacto: "Quién nos atendió (opcional)",
       nombre: "Nombre",
       nicho: "Rubro",
       sinNicho: "—",
@@ -1228,13 +1263,18 @@ export const PANEL_ADMIN = {
     importar: {
       titulo: "Importar una planilla",
       bajada:
-        "Un CSV con nombre, ciudad, provincia, web, teléfono y rubro (exportado de prospeccion-empresas.xlsx o prospeccion-herramientas.xlsx). Solo se leen esas columnas: «Estado comercial» y «Notas propias» no se tocan. Los que Google ubica quedan como importados, por visitar; los demás quedan en la lista como «sin ubicar» para corregirlos a mano.",
+        "Un CSV con nombre, ciudad, provincia, web, teléfono y rubro (y el link de Google Maps, si lo tiene), exportado de prospeccion-empresas.xlsx o prospeccion-herramientas.xlsx. Solo se leen esas columnas: «Estado comercial» y «Notas propias» no se tocan. Se cargan como importados, por visitar, y se ubican de a uno por segundo en OpenStreetMap; los que no aparecen quedan «sin ubicar» para corregirlos a mano.",
       archivo: "Archivo CSV",
       boton: "Importar CSV",
       importando: "Importando…",
-      sinClaveServidor:
-        "Sin GOOGLE_MAPS_SERVER_KEY el servidor no puede ubicar ninguno: igual se importan, todos como «sin ubicar».",
-      resultado: "Importados {importados} ({ubicados} ubicados, {sinUbicar} sin ubicar) · {repetidos} ya estaban · {errores} con error.",
+      resultado: "{importados} cargados · {repetidos} ya estaban · {errores} con error.",
+      cola: {
+        ubicando: "Ubicando en el mapa, de a uno por segundo: faltan {quedan}. Dejá esta pantalla abierta.",
+        pendientes: "Quedan {quedan} locales importados sin ubicar.",
+        listo: "Listo, terminamos de ubicarlos.",
+        resumen: "Ubicados {ubicados}, sin ubicar {sinUbicar}.",
+        seguir: "Seguir ubicando",
+      },
       errores: {
         archivo: "Elegí un archivo CSV.",
         vacio: "El archivo no tiene filas con nombre.",
@@ -1244,7 +1284,7 @@ export const PANEL_ADMIN = {
       },
     },
     costo:
-      "Google Maps incluye por mes y por producto un uso gratis (unas 10.000 cargas de mapa, 10.000 geocodificaciones y 10.000 autocompletados); el mapa solo se carga acá, así que el uso va a ser bajo.",
+      "Mapa propio, sin claves ni costo: mosaicos de OpenFreeMap (gratis, sin límite de vistas) y direcciones de Nominatim (como mucho una búsqueda por segundo, siempre al tocar «Buscar»). Datos © OpenStreetMap. Los botones de Google solo abren Google Maps.",
   },
   /** La sección Núcleos: todo Quvant → cada núcleo → cada cliente. */
   nucleos: {

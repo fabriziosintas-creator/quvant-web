@@ -1065,3 +1065,40 @@ html[data-vista="texto"] .linea-canales {
     mask-composite: intersect;
   }
 }
+
+/* ── Mapa de prospección (/panel/mapa) ───────────────────────────────
+   Los controles de MapLibre (zoom, mi ubicación, atribución) con la
+   paleta: cajas negras con borde profundo y los íconos en claro. La
+   atribución "© OpenStreetMap" es obligatoria: queda siempre a la vista. */
+.mapa-quvant .maplibregl-ctrl-group {
+  background: var(--color-negro);
+  border: 1px solid var(--color-profundo);
+  border-radius: 0;
+  box-shadow: none;
+}
+.mapa-quvant .maplibregl-ctrl-group button {
+  width: 40px;
+  height: 40px;
+}
+.mapa-quvant .maplibregl-ctrl-group button + button {
+  border-top: 1px solid var(--color-profundo);
+}
+.mapa-quvant .maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+  filter: invert(1) brightness(0.9);
+}
+.mapa-quvant .maplibregl-ctrl-group button:focus-visible {
+  outline: 1px solid var(--color-blanco);
+  outline-offset: -3px;
+}
+.mapa-quvant .maplibregl-ctrl-attrib {
+  background: rgb(13 13 15 / 0.8);
+  color: var(--color-acero);
+  font-family: var(--font-plex);
+  font-size: 10px;
+}
+.mapa-quvant .maplibregl-ctrl-attrib a {
+  color: var(--color-acero);
+}
+.mapa-quvant .maplibregl-ctrl-attrib a:hover {
+  color: var(--color-blanco);
+}

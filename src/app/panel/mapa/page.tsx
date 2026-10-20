@@ -5,11 +5,11 @@ import { Bloque, Indicador, TituloPanel } from "@/componentes/panel/Graficos";
 import { hoyEnBuenosAires, numero } from "@/componentes/panel/formato";
 import { FormularioLocal } from "@/componentes/panel/mapa/FormularioLocal";
 import { ImportarCsv } from "@/componentes/panel/mapa/ImportarCsv";
-import { MapaProspeccion, ProveedorMapas } from "@/componentes/panel/mapa/MapaProspeccion";
+import { MapaProspeccion } from "@/componentes/panel/mapa/MapaProspeccion";
 import { PANEL_ADMIN } from "@/datos/textos";
+import { uuidValido } from "@/servidor/cuenta/validacion";
 import { exigirAdmin } from "@/servidor/panel/acceso";
 import { cargarNichos } from "@/servidor/panel/datos";
-import { hayGeocodificacion } from "@/servidor/panel/geocodificar";
 import {
   ESTADOS_LOCAL,
   FEEDBACKS,
@@ -43,18 +43,18 @@ export default function Mapa({ searchParams }: PageProps<"/panel/mapa">) {
 
 async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/mapa">["searchParams"] }) {
   const { supabase, perfil } = await exigirAdmin("/panel/mapa");
-  const filtros = leerFiltrosMapa(await searchParams);
+  const parametros = await searchParams;
+  const filtros = leerFiltrosMapa(parametros);
   const [locales, visitas, admins, nichos] = await Promise.all([cargarLocales(supabase), cargarVisitas(supabase), cargarAdmins(supabase), cargarNichos(supabase)]);
   const hoy = hoyEnBuenosAires();
   const filtrados = filtrarLocales(locales, visitas, filtros, hoy);
   const contadores = contar(locales, visitas, admins, hoy);
-  const clave = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "";
-  const mapId = process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID || "DEMO_MAP_ID";
   const nombresNicho = Object.fromEntries(nichos.map((n) => [n.id, n.nombre]));
+  const abrir = typeof parametros.local === "string" && uuidValido(parametros.local) ? parametros.local : null;
   const C = T.contadores;
 
   return (
-    <ProveedorMapas clave={clave}>
+    <>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6">
         <Indicador etiqueta={C.locales} valor={numero(contadores.locales)} />
         <Indicador etiqueta={C.visitados} valor={numero(contadores.visitados)} />
@@ -75,22 +75,21 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/map
         visitas={visitas}
         admins={admins}
         yo={perfil.id}
-        hayClave={Boolean(clave)}
-        mapId={mapId}
         nombresNicho={nombresNicho}
         ubicados={filtrados.filter((l) => l.latitud !== null).length}
+        abrirId={abrir}
       />
 
       <Bloque titulo={T.local.titulo} nota={T.local.bajada}>
-        <FormularioLocal nichos={nichos.filter((n) => n.id !== "otro").map((n) => ({ id: n.id, nombre: n.nombre }))} hayClave={Boolean(clave)} />
+        <FormularioLocal nichos={nichos.filter((n) => n.id !== "otro").map((n) => ({ id: n.id, nombre: n.nombre }))} />
       </Bloque>
 
       <Bloque titulo={T.importar.titulo} nota={T.importar.bajada}>
-        <ImportarCsv hayClaveServidor={hayGeocodificacion()} />
+        <ImportarCsv pendientesAlCargar={locales.filter((l) => l.ubicacion_pendiente).length} />
       </Bloque>
 
       <p className="font-plex text-xs text-acero">{T.costo}</p>
-    </ProveedorMapas>
+    </>
   );
 }
 
