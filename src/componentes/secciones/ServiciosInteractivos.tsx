@@ -139,7 +139,7 @@ function armarLinea(id: Exclude<IdServicio, "sistemas">, linea: gsap.core.Timeli
       )
       .from(
         '[data-pieza="nodo"]',
-        { scale: 0, opacity: 0, duration: DURACION.rapida, stagger: 0.14, ease: CURVA.entrar },
+        { scale: 0, opacity: 0, duration: DURACION.media, stagger: 0.14, ease: CURVA.entrar },
         "<0.08",
       )
       // El punto de la marca recorriendo las fases, de la primera a la última

@@ -80,7 +80,7 @@ export function RielCapitulos({ capitulos }: { capitulos: readonly Capitulo[] })
         className="barra-capitulos sticky top-16 z-30 border-y border-profundo bg-negro/85 backdrop-blur-md md:top-20 min-[1360px]:hidden"
       >
         <ul className="carrusel-web contenedor flex gap-2 overflow-x-auto py-2.5">
-          {capitulos.map((capitulo, indice) => {
+          {capitulos.map((capitulo) => {
             const activo = capitulo.id === actual;
             return (
               <li key={capitulo.id} className="shrink-0">
@@ -123,7 +123,7 @@ export function RielCapitulos({ capitulos }: { capitulos: readonly Capitulo[] })
             />
           </span>
           <ol className="relative flex flex-col gap-5">
-            {capitulos.map((capitulo, indice) => {
+            {capitulos.map((capitulo) => {
               const activo = capitulo.id === actual;
               return (
                 <li key={capitulo.id}>
