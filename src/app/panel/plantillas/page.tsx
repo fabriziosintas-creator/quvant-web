@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, ViewTransition } from "react";
 import { FormularioCliente } from "@/componentes/panel/FormularioCliente";
+import { Puerta } from "@/componentes/panel/nichos/Puerta";
 import { Barras, Bloque, PuntoRubro, TituloPanel } from "@/componentes/panel/Graficos";
 import { fecha, numero, pesos, porcentaje } from "@/componentes/panel/formato";
 import { ACENTO_NICHO } from "@/datos/colores";
@@ -144,10 +145,16 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/pla
         {ordenadas.map((t) => (
           <article key={t.id} className="flex flex-col gap-4 border border-profundo p-4 md:p-5">
             <header className="flex items-start justify-between gap-3">
-              <h3 className="flex min-w-0 items-center gap-2 break-words font-michroma text-sm uppercase tracking-marca text-blanco">
-                <PuntoRubro acento={acentoDe(t.id)} />
-                {t.nombre}
-              </h3>
+              {/* Una puerta al nicho: el punto y el nombre se vuelven la cabecera de adentro. */}
+              <Puerta nicho={t.id} etiqueta={PANEL_ADMIN.nichos.entrar.replace("{nombre}", t.nombre)} className="group min-w-0">
+                <ViewTransition name={`nicho-${t.id}`} share="entrar-nicho" default="none">
+                  <h3 className="flex min-w-0 items-center gap-2 break-words font-michroma text-sm uppercase tracking-marca text-blanco transition-colors group-hover:text-acero">
+                    <PuntoRubro acento={acentoDe(t.id)} />
+                    {t.nombre}
+                    <span aria-hidden className="font-plex text-xs text-acero transition-transform group-hover:translate-x-1">→</span>
+                  </h3>
+                </ViewTransition>
+              </Puerta>
               <span className="shrink-0 border border-profundo px-2 py-1 font-plex text-[10px] uppercase tracking-etiqueta text-acero">
                 {T.estadosRubro[t.estado]}
               </span>

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Suspense, type CSSProperties } from "react";
 import { Barras, Bloque } from "@/componentes/panel/Graficos";
 import { Vista } from "@/componentes/panel/nucleos/comunes";
+import { Puerta } from "@/componentes/panel/nichos/Puerta";
 import { FormAvance } from "@/componentes/panel/objetivos/Formularios";
 import { GraficoMeta } from "@/componentes/panel/objetivos/GraficoMeta";
 import { Anillo, ChipEstado } from "@/componentes/panel/objetivos/Piezas";
@@ -108,6 +109,11 @@ async function Contenido({ params }: { params: PageProps<"/panel/objetivos/[id]"
             <span>{T.areas[meta.area]}</span>
             <IconoFuente meta={meta} />
             {meta.archivada ? <span className="border border-profundo px-2 py-0.5 uppercase tracking-etiqueta">{D.archivada}</span> : null}
+            {meta.filtros.nicho ? (
+              <Puerta nicho={meta.filtros.nicho} className="uppercase tracking-etiqueta text-acero underline decoration-profundo underline-offset-4 hover:text-blanco">
+                {PANEL_ADMIN.nichos.entrar.replace("{nombre}", nombreNicho(meta.filtros.nicho))}
+              </Puerta>
+            ) : null}
           </p>
         </div>
         <div className="flex flex-wrap gap-2 md:flex-col">

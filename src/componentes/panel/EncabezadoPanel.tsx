@@ -58,6 +58,7 @@ export function EncabezadoPanel({ nombre }: { nombre: string }) {
 const ACENTO_SECCION: Record<string, string> = {
   "/panel": AURORA[0],
   "/panel/plantillas": ACENTO_NICHO.industria,
+  "/panel/nichos": ACENTO_NICHO.kioscos,
   "/panel/nucleos": ACENTO_NICHO.pymes,
   "/panel/objetivos": ACENTO_NICHO.holistica,
   "/panel/mapa": ACENTO_CANAL.contacto,

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 
@@ -47,7 +48,7 @@ export function Indicador({ etiqueta, valor, detalle, acento, medidor }: { etiqu
   );
 }
 
-export type FilaBarra = { id: string; etiqueta: string; valor: number; acento?: string; detalle?: string };
+export type FilaBarra = { id: string; etiqueta: string; valor: number; acento?: string; detalle?: string; /** Si lleva a algún lado (por ejemplo, adentro de un nicho). */ href?: string };
 
 /** Barras horizontales: una fila por categoría, la barra proporcional al máximo y el valor al final. */
 export function Barras({
@@ -77,7 +78,13 @@ export function Barras({
             >
               <span className="flex min-w-0 items-center gap-2 font-plex text-xs text-acero transition-colors group-hover:text-blanco">
                 <span aria-hidden className="size-1.5 shrink-0 bg-(--acento) transition-transform duration-300 group-hover:scale-150" />
-                <span className="truncate">{fila.etiqueta}</span>
+                {fila.href ? (
+                  <Link href={fila.href} className="truncate underline decoration-profundo underline-offset-4 hover:decoration-(--acento)">
+                    {fila.etiqueta}
+                  </Link>
+                ) : (
+                  <span className="truncate">{fila.etiqueta}</span>
+                )}
               </span>
               <span aria-hidden className="h-2.5 bg-profundo/50">
                 {/* Crece al aparecer, una barra detrás de otra; al pasar, brilla. */}

@@ -143,7 +143,7 @@ export function FormAvance({ metaId }: { metaId: string }) {
 }
 
 // ── Crear o editar un objetivo ────────────────────────────────────────
-export function FormMeta({ meta, nichos }: { meta?: Meta; nichos: Array<{ id: string; nombre: string }> }) {
+export function FormMeta({ meta, nichos, nichoInicial }: { meta?: Meta; nichos: Array<{ id: string; nombre: string }>; /** Si se entra desde un nicho: queda elegido. */ nichoInicial?: string }) {
   const F = T.form;
   const router = useRouter();
   const [estado, enviar, enviando] = useActionState(async (previo: EstadoForm, datos: FormData) => {
@@ -153,7 +153,7 @@ export function FormMeta({ meta, nichos }: { meta?: Meta; nichos: Array<{ id: st
   }, INICIAL);
   const e = estado.errores ?? {};
   const v = estado.valores ?? {};
-  const [clave, setClave] = useState(v.metrica ?? meta?.metrica ?? "registros");
+  const [clave, setClave] = useState(v.metrica ?? meta?.metrica ?? (nichoInicial ? "clientes_activos" : "registros"));
   const [periodo, setPeriodo] = useState(v.tipo_periodo ?? meta?.tipoPeriodo ?? "mes");
   const metrica = useMemo(() => METRICAS.find((m) => m.clave === clave) ?? METRICAS[0], [clave]);
   const [meta0, setMeta0] = useState(v.meta ?? (meta ? String(meta.meta) : ""));
@@ -176,7 +176,7 @@ export function FormMeta({ meta, nichos }: { meta?: Meta; nichos: Array<{ id: st
       {metrica.filtros.length > 0 ? (
         <div className="grid gap-4 md:grid-cols-2">
           {metrica.filtros.includes("nicho") ? (
-            <Selector id="meta-filtro-nicho" nombre="filtro_nicho" etiqueta={F.filtroNicho} valor={meta?.filtros.nicho ?? ""} opciones={[["", F.sinFiltro], ...nichos.map((n) => [n.id, n.nombre] as [string, string])]} />
+            <Selector id="meta-filtro-nicho" nombre="filtro_nicho" etiqueta={F.filtroNicho} valor={meta?.filtros.nicho ?? nichoInicial ?? ""} opciones={[["", F.sinFiltro], ...nichos.map((n) => [n.id, n.nombre] as [string, string])]} />
           ) : null}
           {metrica.filtros.includes("socio") ? <Selector id="meta-filtro-socio" nombre="filtro_socio" etiqueta={F.filtroSocio} valor={meta?.filtros.socio ?? ""} opciones={[["", F.sinFiltro], ["fabrizio", T.responsables.fabrizio], ["michel", T.responsables.michel]]} /> : null}
           {metrica.filtros.includes("tipo") ? <Selector id="meta-filtro-tipo" nombre="filtro_tipo" etiqueta={F.filtroTipo} valor={meta?.filtros.tipo ?? ""} opciones={[["", F.sinFiltro], ...Object.entries(T.facturacion.tipos)]} /> : null}

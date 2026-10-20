@@ -7,6 +7,7 @@ import { LineasActividad } from "@/componentes/panel/nucleos/Graficos";
 import { AccionesAlerta, BotonActualizar } from "@/componentes/panel/nucleos/Interactivos";
 import { CartelEjemplo, Filtros, IndicadorGrande, Numero, Semaforo, Vista } from "@/componentes/panel/nucleos/comunes";
 import { Constelacion } from "@/componentes/panel/nucleos/tresd/Constelacion";
+import { Puerta } from "@/componentes/panel/nichos/Puerta";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { alertasOrdenadas, resumenNucleo, semanasDelPanorama, serieDe, tilesGenerales } from "@/nucleos/agregados";
 import { cargarPanorama, filtrosEnUrl, leerFiltrosNucleos } from "@/servidor/nucleos/datos";
@@ -59,9 +60,14 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/nuc
               <p className="flex flex-wrap gap-x-4 gap-y-1">
                 {(["verde", "amarillo", "rojo", "arranque"] as const).map((s) => (r.semaforos[s] ? <span key={s} className="flex items-center gap-1.5 font-plex text-xs text-acero"><Semaforo valor={s} conTexto={false} tamano="sm" />{r.semaforos[s]} {T.semaforo[s].toLowerCase()}</span> : null))}
               </p>
-              <Link href={`/panel/nucleos/${r.nucleo.id}${sufijo}`} className="inline-flex h-9 w-fit items-center gap-2 border border-profundo px-3 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco hover:border-acero">
-                {G.verNucleo} →
-              </Link>
+              <div className="flex flex-wrap gap-2">
+                <Link href={`/panel/nucleos/${r.nucleo.id}${sufijo}`} className="inline-flex h-9 w-fit items-center gap-2 border border-profundo px-3 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-blanco hover:border-acero">
+                  {G.verNucleo} →
+                </Link>
+                <Puerta nicho={r.nucleo.id} className="inline-flex h-9 w-fit items-center gap-2 px-3 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero hover:text-blanco">
+                  {PANEL_ADMIN.nichos.entrar.replace("{nombre}", r.nucleo.nombre)}
+                </Puerta>
+              </div>
             </>
           )}
         </li>

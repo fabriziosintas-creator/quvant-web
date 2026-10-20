@@ -74,7 +74,7 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel">["
               titulo={T.porNicho}
               unidad={T.personas}
               filas={enRegistro
-                .map((n) => ({ id: n.id, etiqueta: n.nombre, valor: resumen.por_nicho[n.id] ?? 0, acento: acentoDe(n.id) }))
+                .map((n) => ({ id: n.id, etiqueta: n.nombre, valor: resumen.por_nicho[n.id] ?? 0, acento: acentoDe(n.id), href: n.id === "otro" ? undefined : `/panel/nichos/${n.id}` }))
                 .sort((a, b) => b.valor - a.valor)}
             />
             <Barras

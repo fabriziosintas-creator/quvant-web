@@ -1145,3 +1145,30 @@ html[data-vista="texto"] .linea-canales {
     animation: none;
   }
 }
+
+/* ── Panel: entrar a un nicho ─────────────────────────────────────────
+   El punto del nicho (en la tarjeta de Plantillas o en Nichos) se vuelve la
+   cabecera de la página del nicho; cada bloque que llega se enciende en su
+   lugar, uno detrás del otro. Con "menos movimiento", nada se mueve. */
+::view-transition-group(.entrar-nicho) {
+  animation-duration: 700ms;
+  animation-timing-function: var(--ease-quvant);
+}
+.nicho-entra {
+  animation: nicho-entra 700ms var(--ease-quvant) both;
+}
+@keyframes nicho-entra {
+  from {
+    opacity: 0;
+    transform: perspective(900px) translateZ(-60px) translateY(14px);
+    filter: blur(4px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(.entrar-nicho) {
+    animation: none;
+  }
+  .nicho-entra {
+    animation: none;
+  }
+}
