@@ -1,5 +1,6 @@
 import { createBrowserClient } from "@supabase/ssr";
 import { exigirConfigSupabase } from "./entorno";
+import type { Database } from "./tipos";
 
 /**
  * Cliente para componentes del navegador ("use client"). Usa solo la clave
@@ -9,5 +10,5 @@ import { exigirConfigSupabase } from "./entorno";
  */
 export function crearClienteNavegador() {
   const { url, clavePublica } = exigirConfigSupabase();
-  return createBrowserClient(url, clavePublica);
+  return createBrowserClient<Database>(url, clavePublica);
 }

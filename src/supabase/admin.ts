@@ -1,6 +1,7 @@
 import "server-only";
 import { createClient } from "@supabase/supabase-js";
 import { exigirConfigSupabase } from "./entorno";
+import type { Database } from "./tipos";
 
 /**
  * Cliente con la clave SECRETA: saltea RLS y ve toda la base. Solo para
@@ -19,7 +20,7 @@ export function crearClienteAdmin() {
     throw new Error("Falta SUPABASE_SECRET_KEY (ver .env.example).");
   }
 
-  return createClient(url, claveSecreta, {
+  return createClient<Database>(url, claveSecreta, {
     auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
   });
 }

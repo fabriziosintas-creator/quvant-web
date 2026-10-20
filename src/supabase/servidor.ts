@@ -2,6 +2,7 @@ import "server-only";
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { exigirConfigSupabase } from "./entorno";
+import type { Database } from "./tipos";
 
 /**
  * Cliente para Server Components, Server Actions y Route Handlers. Actúa
@@ -16,7 +17,7 @@ export async function crearClienteServidor() {
   const { url, clavePublica } = exigirConfigSupabase();
   const almacen = await cookies();
 
-  return createServerClient(url, clavePublica, {
+  return createServerClient<Database>(url, clavePublica, {
     cookies: {
       getAll: () => almacen.getAll(),
       setAll(cookiesNuevas) {
