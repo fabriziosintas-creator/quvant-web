@@ -52,12 +52,12 @@ export const CANALES = [
   {
     id: "plataformas",
     ruta: "/plataformas",
-    nombre: "Plataformas",
+    nombre: "Sistemas",
     corto: "Sistemas",
-    frase: "Un núcleo que ya funciona y un sistema para cada rubro.",
-    titulo: "El mismo núcleo, un sistema para cada rubro.",
+    frase: "Un mismo sistema que se acomoda a cómo trabaja tu rubro.",
+    titulo: "Un sistema que ya funciona, pensado para tu rubro.",
     bajada:
-      "Quvant es el sistema de gestión: un núcleo común que ya funciona y, arriba, una plantilla pensada para cada rubro. Cada producto lleva su nombre y la firma de la casa.",
+      "Quvant es el sistema de gestión de tu negocio: lo que ya anda en otros rubros, ajustado a cómo trabaja el tuyo. Cada versión lleva su nombre y la firma de la casa.",
     metaTitulo: "Sistemas de gestión por rubro: industria, gimnasios y más",
     capitulos: [
       { id: "hoy", nombre: "Lo que hace hoy" },
@@ -106,15 +106,20 @@ export const NAVEGACION = {
   capitulos: "En esta página",
   navPrincipal: "Canales del sitio",
   navCelular: "Barra de canales",
+  /** La cuenta, en el encabezado: "Ingresar" sin sesión, "Mi cuenta" con sesión y "Panel" solo para admin. */
+  ingresar: "Ingresar",
+  miCuenta: "Mi cuenta",
+  cuentaCorto: "Cuenta",
+  panel: "Panel",
 } as const;
 
 /** Interruptor 3D / texto: arriba en la computadora, en el pie en el celular. */
 export const INTERRUPTOR_VISTA = {
   etiqueta: "Elegir cómo ver el sitio",
-  opcion3d: "Vista 3D",
-  opcionTexto: "Vista texto",
-  corto3d: "3D",
-  cortoTexto: "Texto",
+  opcion3d: "Con animaciones",
+  opcionTexto: "Versión liviana",
+  corto3d: "Animada",
+  cortoTexto: "Liviana",
 } as const;
 
 export const ACCESIBILIDAD = {
@@ -124,9 +129,10 @@ export const ACCESIBILIDAD = {
 
 export const HERO = {
   titulo: "QUVANT",
-  propuesta: "Software de gestión, apps y webs para pymes y empresas de primer nivel.",
+  /** La frase oficial va entera arriba (MARCA.bajada); esta es la línea humana de abajo. */
+  propuesta: "Hacemos los sistemas y las webs de negocios que atienden, venden y cobran todos los días.",
   botonPrimario: { texto: "Ver trabajos", destino: "/trabajos" },
-  botonSecundario: { texto: "Hablemos", destino: "/contacto" },
+  botonSecundario: { texto: "Contanos qué necesitás", destino: "/contacto" },
 } as const;
 
 /** La portada, después del video: los canales, los trabajos destacados y el cierre. */
@@ -145,27 +151,35 @@ export const INICIO = {
   cierre: {
     titulo: "¿Tenés un proyecto en mente?",
     texto: "Contanos qué necesitás y te respondemos con una propuesta concreta.",
-    boton: "Hablemos",
+    boton: "Escribinos",
   },
 } as const;
 
 export const CONTACTO_SECCION = {
+  /** Arriba del formulario: quiénes responden (las caras salen de src/datos/fotos.ts, solo con permiso). */
+  presentacion: {
+    frase: "Te respondemos nosotros, no un bot.",
+    detalle: "Michel y Fabrizio leen cada mensaje.",
+    // TODO: fabrizio: si hay un tiempo de respuesta real ("en el día", "antes de 24 horas"), va acá. Vacío, no se muestra.
+    tiempo: "",
+  },
   campos: {
-    nombre: { etiqueta: "Nombre", marcador: "¿Cómo te llamás?" },
-    empresa: { etiqueta: "Empresa (opcional)", marcador: "El nombre de tu empresa" },
-    rubro: { etiqueta: "Rubro", marcador: "Ferretería, gimnasio, inmobiliaria…" },
+    nombre: { etiqueta: "Tu nombre", marcador: "¿Cómo te llamás?" },
     necesidad: {
       etiqueta: "Qué necesitás",
+      /** enMensaje: cómo sigue "Les escribo porque…" en el mensaje que se arma. */
       opciones: [
-        { id: "sistema", texto: "Un sistema listo para mi rubro" },
-        { id: "app", texto: "Una app a medida" },
-        { id: "web", texto: "Una web nueva o renovada" },
+        { id: "sistema", texto: "Un sistema para mi negocio", enMensaje: "busco un sistema para mi negocio" },
+        { id: "app", texto: "Una app a medida", enMensaje: "quiero una app a medida" },
+        { id: "web", texto: "Una web", enMensaje: "necesito una web nueva o renovada" },
       ],
     },
-    mensaje: { etiqueta: "Mensaje", marcador: "Contanos tu situación en dos líneas." },
+    mensaje: { etiqueta: "Contanos un poco", marcador: "Qué hacés, qué te está trabando, qué te gustaría resolver." },
+    empresa: { etiqueta: "Empresa (opcional)", marcador: "El nombre de tu negocio" },
+    rubro: { etiqueta: "Rubro (opcional)", marcador: "Ferretería, gimnasio, inmobiliaria…" },
   },
   botones: { whatsapp: "Enviar por WhatsApp", email: "Prefiero por email" },
-  nota: "El mensaje se abre en tu WhatsApp o tu email, listo para mandar. No guardamos nada en ningún servidor.",
+  nota: "Se abre en tu WhatsApp o en tu email con el mensaje ya escrito; lo podés retocar antes de mandarlo. No guardamos nada.",
   directo: {
     titulo: "¿Ya sabés lo que querés?",
     filas: { whatsapp: "WhatsApp", email: "Email", instagram: "Instagram" },
@@ -216,13 +230,16 @@ export const WEBS = {
   notaCelular: "Con el scroll, el teléfono gira: de la web actual a la propuesta.",
   etiquetaDemo: "La demo, paso a paso",
   etiquetaQueCambio: "Qué cambió",
+  /** El caso como historia (web más humana, paso 7). */
+  historia: { quienes: "Quiénes son", vimos: "Lo que vimos", propusimos: "Lo que propusimos" },
+  testimonios: "Lo que dicen de trabajar con nosotros",
 } as const;
 
 /** El canal Plataformas (título y bajada en CANALES). */
 export const PLATAFORMAS = {
   /** Para los datos estructurados: qué es Quvant como producto. */
   descripcion:
-    "Quvant es el sistema de gestión: un núcleo común que ya funciona y, arriba, una plantilla pensada para cada rubro.",
+    "Quvant es el sistema de gestión de tu negocio: un mismo sistema que se acomoda a cómo trabaja tu rubro.",
   hoy: {
     etiqueta: "Lo que hace hoy",
     etiquetaResto: "Y además",
@@ -243,42 +260,45 @@ export const PLATAFORMAS = {
       {
         id: "margen",
         titulo: "El margen, antes de tocar un precio",
-        texto: "Ves el margen antes de aplicar un aumento masivo de precios.",
+        texto: "Antes de subir los precios, ves cuánto vas a ganar. Sin sorpresas a fin de mes.",
       },
       {
         id: "offline",
         titulo: "Sin internet, se sigue vendiendo",
-        texto: "Se sigue vendiendo sin internet en el mostrador.",
+        texto: "Si se corta internet, el mostrador sigue vendiendo.",
       },
       {
         id: "tablero",
-        titulo: "Cada rol ve lo suyo",
-        texto: "Tablero por rol con «Para atender hoy»; el dueño ve todo desde el celular.",
+        titulo: "Cada uno ve lo suyo",
+        texto: "El cajero ve la caja; el dueño ve todo desde el celular, con lo que hay que atender hoy.",
       },
       {
         id: "stock",
         titulo: "El stock, sucursal por sucursal",
-        texto: "Stock por sucursal y conteo con la cámara del teléfono.",
+        texto: "Contás el stock con la cámara del celular y sabés qué hay en cada sucursal.",
       },
       {
         id: "compras",
         titulo: "Compras que se sugieren solas",
-        texto: "Compras sugeridas según el stock mínimo.",
+        texto: "Cuando algo llega al mínimo, el sistema te arma la compra. Vos la confirmás.",
       },
     ],
     resto: [
       "Presupuestos que pasan a venta en un clic",
-      "Cuentas corrientes con límite",
-      "Taller de servicio técnico",
-      "Hoja de ruta de reparto",
-      "Reportes exportables",
-      "Importación desde Excel",
-      "Permisos por rol y doble factor para el dueño",
+      "Cuentas corrientes con tope para fiar",
+      "Servicio técnico: cada reparación con su estado",
+      "La hoja de ruta del reparto",
+      "Reportes que bajás a Excel",
+      "La lista del proveedor se carga desde el Excel",
+      "Cada persona entra solo a lo suyo; el dueño, con una clave extra",
     ],
   },
   rubros: {
     etiqueta: "Rubros",
     notaVacio: "Estamos entrando en este rubro. Si es el tuyo, hablemos.",
+    /** El botón de cada rubro que lleva al registro con ese rubro ya elegido. */
+    registrarme: "Registrarme",
+    registrarmeNota: "Creá tu cuenta y te mostramos cómo funciona para tu rubro.",
     items: [
       {
         id: "industria",
@@ -289,12 +309,12 @@ export const PLATAFORMAS = {
           {
             nombre: "Yunque",
             firma: "by Quvant",
-            rol: "El sistema de gestión e inventario para empresas industriales: stock por sucursal, compras y ventas en un solo lugar.",
+            rol: "Para empresas industriales: el stock de cada sucursal, las compras y las ventas en un solo lugar.",
           },
           {
             nombre: "Forja",
             firma: "by Quvant",
-            rol: "El complemento de Yunque que muestra el inventario y las sucursales en 3D.",
+            rol: "Ves tu depósito y tus sucursales en 3D: qué falta y dónde está.",
           },
         ],
       },
@@ -307,7 +327,7 @@ export const PLATAFORMAS = {
           {
             nombre: "Quvant Gimnasios",
             firma: "",
-            rol: "La administración del gimnasio, armada sobre el núcleo Quvant.",
+            rol: "La administración del gimnasio: lo que ya anda en otros rubros, pensado para el tuyo.",
           },
           {
             nombre: "HackFit",
@@ -400,8 +420,8 @@ export const OBJETIVO = {
       nombre: "Escuchar",
       titular: "Primero escuchamos.",
       texto:
-        "Antes de proponer nada, entendemos cómo trabajás hoy: qué te traba y qué hacés a mano. Llegamos con preguntas, no con una solución armada.",
-      marca: "Nada de soluciones enlatadas.",
+        "Antes de proponer nada, entendemos cómo trabajás hoy: qué te traba y qué hacés a mano. Llegamos con preguntas, no con un sistema armado de antemano.",
+      marca: "Nada armado de antemano.",
     },
     {
       id: "sonar",
@@ -432,8 +452,9 @@ export const NOSOTROS = {
     desarrollo: {
       etiqueta: "Fuerza de desarrollo",
       titular: "Más de 10 años construyendo software.",
+      // TODO: que la revise Michel (es una propuesta con lo ya aprobado, sin inventar datos).
       parrafos: [
-        "Sistemas y sitios web para startups y empresas de primer nivel, simples de usar desde el primer día. Con las tecnologías más nuevas e inteligencia artificial para construir más rápido y con más precisión.",
+        "Soy Michel. Programo hace más de diez años: sistemas y sitios web para startups y empresas de primer nivel, simples de usar desde el primer día. Trabajo con las tecnologías más nuevas y con inteligencia artificial para construir más rápido y con más precisión.",
       ],
       puntos: ["Sistemas y sitios web", "Tecnologías nuevas", "IA para construir mejor"],
       dato: { numero: 10, prefijo: "+", etiqueta: "años construyendo software" },
@@ -442,8 +463,9 @@ export const NOSOTROS = {
     comercial: {
       etiqueta: "Fuerza comercial",
       titular: "Entendemos tu negocio antes de escribir una línea de código.",
+      // TODO: que la revise Fabrizio (es una propuesta con lo ya aprobado, sin inventar datos).
       parrafos: [
-        "Conocemos el negocio y a la gente que lo mueve. Lo que necesitás se vuelve un pedido claro para desarrollo, y te acompañamos hasta que el sistema anda en tu empresa. Y después también.",
+        "Soy Fabrizio. Me ocupo de conocer tu negocio y a la gente que lo mueve: el que atiende, el que cobra, el que cuenta el stock. Lo que necesitás se vuelve un pedido claro para desarrollo, y te acompaño hasta que el sistema anda en tu empresa. Y después también.",
       ],
       puntos: ["Escuchar primero", "Propuestas concretas", "Acompañamiento después"],
       dato: { numero: 4, prefijo: "", etiqueta: "etapas, de la idea al sistema andando" },
@@ -460,7 +482,7 @@ export const NOSOTROS = {
       bajada: "El encargado de darle vida y forma a todas las ideas.",
       titulo: "", // TODO: título o formación de Michel.
       linkedin: "", // TODO: URL del perfil de LinkedIn de Michel.
-      foto: "", // TODO: guardar la foto en public/equipo/michel.jpg y poner acá "/equipo/michel.jpg".
+      // La foto sale del registro src/datos/fotos.ts (id nosotros-michel).
     },
     {
       nombre: "Fabrizio",
@@ -468,10 +490,10 @@ export const NOSOTROS = {
       rol: "Fuerza comercial",
       cargo: "Co-founder · Área comercial",
       bajada:
-        "Entiende el negocio de cada cliente y busca soluciones que simplifiquen el trabajo adentro de las empresas.",
+        "Entiende el negocio de cada cliente y busca cómo simplificar el trabajo adentro de las empresas.",
       titulo: "", // TODO: título o formación de Fabrizio.
       linkedin: "", // TODO: URL del perfil de LinkedIn de Fabrizio.
-      foto: "", // TODO: guardar la foto en public/equipo/fabrizio.jpg y poner acá "/equipo/fabrizio.jpg".
+      // La foto sale del registro src/datos/fotos.ts (id nosotros-fabrizio).
     },
   ],
   /** No se muestra en la web (repetía lo que dicen todas las páginas): la usa el chat. */
@@ -495,11 +517,11 @@ export const NOSOTROS = {
     items: [
       {
         id: "sistemas",
-        nombre: "Sistemas listos para tu nicho",
+        nombre: "Sistemas listos para tu rubro",
         texto:
-          "Gestión y administración ya armadas para rubros específicos. Se contratan por mes y se usan desde el primer día.",
-        ventana: "Núcleos Quvant · Multi núcleo",
-        pie: "Construí tu propio núcleo: cada empresa con su sistema y un panel para seguirlas a todas.",
+          "La gestión de tu negocio ya armada para tu rubro. Se paga por mes y se usa desde el primer día.",
+        ventana: "Varias empresas, un solo panel",
+        pie: "Cada empresa con su sistema, y vos con un solo panel para seguirlas a todas.",
       },
       {
         id: "app",
@@ -521,17 +543,17 @@ export const NOSOTROS = {
     nota: "Ilustraciones de cómo trabajamos, no capturas de un sistema.",
     /** La escena de Núcleos Quvant (servicio 01). Empresas y cifras: src/datos/multinucleo.ts. */
     multinucleo: {
-      panel: "Panel multi núcleo",
+      panel: "Panel de todas tus empresas",
       datosEjemplo: "Datos de ejemplo",
-      resumen: "4 empresas · 4 núcleos · 1 panel",
+      resumen: "4 empresas · 4 sistemas · 1 panel",
       capitulos: [
         {
-          titulo: "Cada empresa, su núcleo",
+          titulo: "Cada empresa, su sistema",
           texto: "Cada una tiene su propio sistema y su administración, independientes.",
         },
         {
           titulo: "Todas, en un panel",
-          texto: "El Multi núcleo conecta todas tus empresas en un solo panel.",
+          texto: "Un panel junta todas tus empresas en un solo lugar.",
         },
         {
           titulo: "Seguimiento en vivo",
@@ -546,11 +568,11 @@ export const NOSOTROS = {
       reproducir: "Reproducir el recorrido",
       pausar: "Pausar el recorrido",
       verTodas: "Todas las empresas",
-      ayuda: "Tocá una empresa para entrar a su núcleo.",
-      suAdministracion: "Su núcleo y su administración, por separado.",
+      ayuda: "Tocá una empresa para entrar a su sistema.",
+      suAdministracion: "Su sistema y su administración, por separado.",
       ultimos12: "Ventas, últimos 12 días",
       escena:
-        "Escena 3D: cuatro empresas, cada una con su núcleo de color, conectadas por haces de datos a un panel central con sus estadísticas.",
+        "Escena 3D: cuatro empresas, cada una con su sistema de color, conectadas por haces de datos a un panel central con sus estadísticas.",
     },
   },
 } as const;
@@ -610,14 +632,6 @@ export const CHAT = {
 /** El panel de mensajes del equipo (/panel). */
 export const PANEL = {
   titulo: "Panel de mensajes",
-  ingreso: {
-    quien: "¿Quién sos?",
-    clave: "Clave",
-    entrar: "Entrar",
-    claveDePrueba: "En esta computadora la clave de prueba es «quvant». En producción se define con PANEL_CLAVE.",
-    sinConfigurar: "Falta configurar PANEL_CLAVE en el servidor.",
-  },
-  salir: "Salir",
   bandeja: "Bandeja",
   filtros: {
     todas: "Todas",
@@ -662,4 +676,674 @@ export const PIE = {
   etiquetaSecciones: "Canales",
   etiquetaSeguinos: "Seguinos",
   derechos: "© 2026 Quvant",
+  privacidad: "Privacidad",
+} as const;
+
+/**
+ * Registro, ingreso y cuenta de las personas que se registran.
+ *
+ * Los rubros y los objetivos tienen que coincidir con las tablas nichos y
+ * objetivos de la base (supabase/migrations): si se suma uno allá, se suma
+ * acá. "{x}" se reemplaza en el componente.
+ */
+export const CUENTA = {
+  etiqueta: "Tu cuenta",
+  /** Los rubros que se eligen al registrarse (tarjetas grandes, para el dedo). */
+  nichos: [
+    { id: "industria", nombre: "Industria", detalle: "Fábricas, depósitos y ferreterías industriales." },
+    { id: "gimnasios", nombre: "Gimnasios y fitness", detalle: "Gimnasios, boxes, estudios y entrenadores." },
+    { id: "holistica", nombre: "Holística", detalle: "Terapias, bienestar, yoga y meditación." },
+    { id: "pymes", nombre: "Pymes", detalle: "Comercios y empresas de servicios." },
+    { id: "inmobiliarias", nombre: "Inmobiliarias", detalle: "Alquileres, ventas y administración." },
+    { id: "supermercados", nombre: "Supermercados", detalle: "Autoservicios, almacenes y cadenas." },
+    { id: "otro", nombre: "Otro rubro", detalle: "Contanos cuál y lo vemos juntos." },
+  ],
+  /** Con las palabras de fabrizio. */
+  objetivos: [
+    { id: "mejorar_clientela", texto: "Quiero mejorar mi clientela" },
+    { id: "hacer_web", texto: "Quiero hacer mi página web" },
+    { id: "curiosidad", texto: "Curiosidad, pero me interesa lo que ofrecen" },
+  ],
+  campos: {
+    nombre: { etiqueta: "Nombre", marcador: "¿Cómo te llamás?" },
+    apellido: { etiqueta: "Apellido (opcional)", marcador: "Tu apellido" },
+    email: { etiqueta: "Email", marcador: "tu@email.com" },
+    contrasena: { etiqueta: "Contraseña", ayuda: "Al menos 8 caracteres." },
+    mostrar: "Mostrar",
+    ocultar: "Ocultar",
+    nicho: "¿De qué rubro es tu negocio?",
+    nichoOtro: { etiqueta: "¿Cuál?", marcador: "Contanos tu rubro" },
+    objetivo: "¿Qué te trajo a Quvant?",
+    empresa: { etiqueta: "Empresa (opcional)", marcador: "El nombre de tu negocio" },
+    ciudad: { etiqueta: "Ciudad (opcional)", marcador: "CABA, Rosario, Córdoba…" },
+    telefono: { etiqueta: "Teléfono (opcional)", marcador: "Por si preferís que te llamemos" },
+    novedades: "Quiero recibir novedades de Quvant por email.",
+    privacidad: { antes: "Leí y acepto la ", enlace: "política de privacidad", despues: "." },
+  },
+  registro: {
+    metaTitulo: "Creá tu cuenta",
+    titulo: "Creá tu cuenta.",
+    bajada: "Contanos de qué es tu negocio y qué buscás, y te mostramos lo que Quvant puede hacer por tu rubro.",
+    boton: "Crear mi cuenta",
+    enviando: "Creando tu cuenta…",
+    yaTenes: "¿Ya tenés cuenta?",
+    ingresar: "Ingresá",
+    listo: {
+      titulo: "Revisá tu email.",
+      texto: "Te mandamos un enlace a {email} para confirmar tu cuenta. Tocalo y entrás directo.",
+      nota: "¿No llegó? Fijate en spam o en promociones. El enlace vence en una hora.",
+      yaTenia: "¿Ya tenías cuenta con ese email? Entonces no te llega nada nuevo: ingresá o recuperá tu contraseña.",
+      reenviar: "Mandármelo de nuevo",
+      reenviado: "Listo, te lo mandamos de nuevo.",
+    },
+  },
+  ingreso: {
+    metaTitulo: "Ingresá a tu cuenta",
+    titulo: "Ingresá a tu cuenta.",
+    bajada: "Con el email y la contraseña con los que te registraste.",
+    boton: "Ingresar",
+    enviando: "Ingresando…",
+    olvide: "Olvidé mi contraseña",
+    sinCuenta: "¿Todavía no tenés cuenta?",
+    registrate: "Registrate",
+    reenviar: "Mandarme el enlace de confirmación",
+  },
+  recuperar: {
+    metaTitulo: "Recuperá tu contraseña",
+    titulo: "¿Olvidaste tu contraseña?",
+    bajada: "Dejanos tu email y te mandamos un enlace para elegir una nueva.",
+    boton: "Mandarme el enlace",
+    enviando: "Mandando…",
+    listo: "Si hay una cuenta con ese email, en unos minutos te llega el enlace. Fijate también en spam.",
+    volver: "Volver a ingresar",
+  },
+  cuenta: {
+    metaTitulo: "Tu cuenta",
+    hola: "Hola, {nombre}.",
+    bajada: "Acá ves y cambiás tus datos.",
+    cargando: "Cargando tu cuenta…",
+    avisos: {
+      bienvenida: "Listo: tu email quedó confirmado. Te damos la bienvenida a Quvant.",
+      nuevaContrasena: "Entraste con el enlace para recuperar la contraseña: elegí una nueva acá abajo.",
+    },
+    /** Lo útil según el objetivo que eligió al registrarse. */
+    sugerencias: {
+      mejorar_clientela: {
+        titulo: "Mirá el sistema para tu rubro",
+        texto: "El sistema de {rubro}: lo que ya hace hoy y lo que viene.",
+        boton: "Ver el sistema",
+      },
+      hacer_web: {
+        titulo: "Escribinos para tu web",
+        texto: "Contanos qué tenés en mente y te respondemos con una propuesta concreta.",
+        boton: "Hablemos",
+      },
+      curiosidad: {
+        titulo: "Mirá lo que ya hicimos",
+        texto: "Webs, sistemas y apps que ya están andando. Entrá a cualquiera y recorrela.",
+        boton: "Ver trabajos",
+      },
+    },
+    datos: {
+      titulo: "Tus datos",
+      email: "Email",
+      emailNota: "Es el email con el que entrás. Para cambiarlo, escribinos.",
+      guardar: "Guardar cambios",
+      guardando: "Guardando…",
+      guardado: "Listo, quedó guardado.",
+    },
+    contrasena: {
+      titulo: "Contraseña",
+      nueva: "Contraseña nueva",
+      repetir: "Repetila",
+      boton: "Cambiar la contraseña",
+      cambiando: "Cambiando…",
+      cambiada: "Listo, tu contraseña cambió.",
+    },
+    panel: "Ir al panel",
+    salir: "Cerrar sesión",
+  },
+  errores: {
+    nombre: "Contanos tu nombre.",
+    email: "Revisá el email: parece que le falta algo.",
+    contrasena: "La contraseña tiene que tener al menos 8 caracteres.",
+    contrasenaLarga: "La contraseña es demasiado larga (como mucho 72 caracteres).",
+    noCoinciden: "Las dos contraseñas no coinciden.",
+    nicho: "Elegí el rubro de tu negocio.",
+    nichoOtro: "Contanos de qué rubro es.",
+    objetivo: "Elegí qué te trajo a Quvant.",
+    privacidad: "Para crear la cuenta tenés que aceptar la política de privacidad.",
+    largo: "Ese dato es demasiado largo.",
+    credenciales: "El email o la contraseña no coinciden.",
+    sinConfirmar: "Todavía no confirmaste tu email. Si no te llegó el enlace, te lo mandamos de nuevo.",
+    contrasenaDebil: "Esa contraseña es fácil de adivinar. Probá con otra más larga o con números y símbolos.",
+    contrasenaIgual: "La contraseña nueva tiene que ser distinta de la anterior.",
+    demasiados: "Hubo muchos intentos seguidos. Esperá unos minutos y probá de nuevo.",
+    emailNoAutorizado:
+      "Todavía no podemos mandar emails a esa dirección: estamos terminando de configurar el envío. Probá en unos días o escribinos.",
+    enlace: "El enlace venció o ya se usó. Pedí uno nuevo.",
+    sesion: "Tu sesión venció. Ingresá de nuevo.",
+    sinConfigurar: "El registro todavía no está disponible. Probá en unos días.",
+    general: "Algo salió mal de nuestro lado. Probá de nuevo en un rato.",
+    revisa: "Revisá los datos marcados.",
+  },
+} as const;
+
+/**
+ * Política de privacidad (Ley 25.326 de Protección de Datos Personales).
+ *
+ * ┌─────────────────────────────────────────────────────────┐
+ * │  TODO: revisar con un abogado antes de difundir.        │
+ * │  Es un texto base: no reemplaza asesoramiento legal.    │
+ * └─────────────────────────────────────────────────────────┘
+ */
+export const PRIVACIDAD = {
+  metaTitulo: "Política de privacidad",
+  titulo: "Política de privacidad.",
+  actualizada: "Última actualización: octubre de 2026.",
+  borrador: "Texto base, pendiente de revisión legal.",
+  secciones: [
+    {
+      titulo: "Quién es responsable",
+      parrafos: [
+        "Quvant es responsable de los datos personales que dejás en este sitio. Podés escribirnos por los medios de contacto que figuran al final de esta página.",
+      ],
+    },
+    {
+      titulo: "Qué datos guardamos",
+      parrafos: [
+        "Si creás una cuenta: tu nombre y apellido, tu email, el rubro de tu negocio, qué te trajo a Quvant y, si los cargás, tu empresa, tu ciudad y tu teléfono. Tu contraseña se guarda cifrada: nadie de Quvant la puede ver.",
+        "Si usás el chat de la web: lo que escribís en la conversación.",
+        "Para medir qué secciones interesan, la web anota visitas y clics con un identificador anónimo propio, sin cookies de terceros y sin tu nombre ni tu email. Si tu navegador pide no ser rastreado (Do Not Track o Global Privacy Control), no anotamos nada.",
+      ],
+    },
+    {
+      titulo: "Para qué los usamos",
+      parrafos: [
+        "Para darte acceso a tu cuenta, responderte, mostrarte lo que Quvant puede hacer por tu rubro y, solo si lo aceptaste, mandarte novedades por email. No vendemos ni cedemos tus datos a nadie.",
+      ],
+    },
+    {
+      titulo: "Dónde se guardan",
+      parrafos: [
+        "Usamos proveedores de infraestructura que pueden tener sus servidores fuera de la Argentina: Supabase (base de datos y cuentas), Vercel (el sitio) y Resend (el envío de emails). Al crear tu cuenta prestás tu consentimiento para que tus datos se guarden en esos servidores, con medidas de seguridad razonables.",
+      ],
+    },
+    {
+      titulo: "Tus derechos",
+      parrafos: [
+        "Podés pedirnos en cualquier momento ver, corregir, actualizar o borrar tus datos, y dejar de recibir novedades. Muchos datos los podés cambiar vos mismo desde tu cuenta; para lo demás, escribinos.",
+        "El titular de los datos personales tiene la facultad de ejercer el derecho de acceso a los mismos en forma gratuita a intervalos no inferiores a seis meses, salvo que se acredite un interés legítimo al efecto conforme lo establecido en el artículo 14, inciso 3 de la Ley Nº 25.326.",
+        "La AGENCIA DE ACCESO A LA INFORMACIÓN PÚBLICA, en su carácter de Órgano de Control de la Ley Nº 25.326, tiene la atribución de atender las denuncias y reclamos que interpongan quienes resulten afectados en sus derechos por incumplimiento de las normas vigentes en materia de protección de datos personales.",
+      ],
+    },
+    {
+      titulo: "Cambios",
+      parrafos: [
+        "Si cambiamos esta política, lo vas a ver en esta página con la fecha nueva. Si el cambio es importante, te avisamos por email.",
+      ],
+    },
+  ],
+  contacto: "Contacto",
+} as const;
+
+/**
+ * Los emails (plantillas en src/emails). Confirmación y recuperación los
+ * manda Supabase con nuestra plantilla; bienvenida y aviso interno, la web
+ * con Resend. "{x}" se reemplaza al armar cada email.
+ */
+export const EMAILS = {
+  pie: {
+    bajada: "Software a la vanguardia de cada nicho.",
+    porque: "Recibís este email porque creaste una cuenta en Quvant.",
+  },
+  confirmacion: {
+    asunto: "Confirmá tu email para entrar a Quvant",
+    vistaPrevia: "Un toque y tu cuenta queda lista.",
+    titulo: "Confirmá tu email.",
+    texto: "Gracias por registrarte en Quvant. Tocá el botón para confirmar tu email y entrar a tu cuenta.",
+    boton: "Confirmar mi email",
+    vence: "El enlace vence en una hora. Si no creaste una cuenta en Quvant, ignorá este email.",
+  },
+  recuperacion: {
+    asunto: "Elegí tu contraseña nueva de Quvant",
+    vistaPrevia: "El enlace para cambiar tu contraseña.",
+    titulo: "Elegí tu contraseña nueva.",
+    texto: "Pediste cambiar la contraseña de tu cuenta de Quvant. Tocá el botón y elegí una nueva.",
+    boton: "Elegir contraseña nueva",
+    vence: "El enlace vence en una hora. Si no lo pediste, ignorá este email: tu contraseña sigue igual.",
+  },
+  bienvenida: {
+    asunto: "Te damos la bienvenida a Quvant",
+    vistaPrevia: "Tu cuenta ya está lista.",
+    titulo: "Hola, {nombre}.",
+    texto: "Tu cuenta ya está lista. Gracias por contarnos de tu negocio: así te mostramos lo que sirve para tu rubro.",
+    /** Qué hace Quvant por cada rubro, en dos líneas. Honesto: lo que existe hoy y lo que está en camino. */
+    rubros: {
+      industria:
+        "Para la industria, Quvant ordena el stock de cada sucursal, las compras y las ventas en un solo sistema. Y el dueño ve todo desde el celular.",
+      gimnasios:
+        "Para gimnasios, Quvant suma la administración del gimnasio sobre un sistema que ya funciona, y una app para que tus socios tengan rutinas y dietas personalizadas.",
+      holistica:
+        "Estamos armando el sistema para centros y profesionales del bienestar. Te avisamos apenas esté listo; mientras tanto, contanos qué necesitás.",
+      pymes:
+        "Para pymes estamos diseñando la gestión completa, del presupuesto al reporte, sobre un sistema que ya funciona en otros rubros.",
+      inmobiliarias:
+        "Para inmobiliarias estamos diseñando la cartera de propiedades, los contratos y las cobranzas en un solo lugar, sobre un sistema que ya funciona.",
+      supermercados:
+        "Para supermercados estamos diseñando la venta rápida en muchas cajas, el stock y las sucursales, sobre un sistema que ya funciona.",
+      otro: "Quvant tiene un sistema que ya funciona (ventas, stock, compras y reportes) y lo adaptamos a cada rubro. Contanos el tuyo y vemos cómo encaja.",
+    },
+    /** Un único botón, según lo que la trajo a Quvant. */
+    botones: {
+      mejorar_clientela: "Ver el sistema para tu rubro",
+      hacer_web: "Pedir mi web",
+      curiosidad: "Hablar con nosotros",
+    },
+    cierre: "Cualquier duda, escribinos por WhatsApp: te responde una persona del equipo.",
+    firma: "El equipo de Quvant",
+  },
+  avisoInterno: {
+    asunto: "Nuevo registro: {nombre} · {rubro}",
+    vistaPrevia: "Alguien confirmó su cuenta en la web.",
+    titulo: "Nuevo registro confirmado.",
+    campos: {
+      nombre: "Nombre",
+      email: "Email",
+      rubro: "Rubro",
+      objetivo: "Objetivo",
+      empresa: "Empresa",
+      ciudad: "Ciudad",
+      novedades: "Novedades",
+      origen: "Vino desde",
+    },
+    si: "Sí",
+    no: "No",
+    sinDato: "—",
+    boton: "Ver en el panel",
+  },
+  /** Para el enlace de respaldo cuando el botón no anda. */
+  respaldo: "¿El botón no anda? Copiá este enlace en tu navegador:",
+} as const;
+
+/**
+ * El panel interno (solo admin): resumen de registros, rendimiento de las
+ * plantillas por rubro y la bandeja del chat. "{x}" se reemplaza en el
+ * componente.
+ */
+export const PANEL_ADMIN = {
+  titulo: "Panel",
+  secciones: [
+    { ruta: "/panel", nombre: "Resumen" },
+    { ruta: "/panel/plantillas", nombre: "Plantillas" },
+    { ruta: "/panel/nucleos", nombre: "Núcleos" },
+    { ruta: "/panel/mapa", nombre: "Mapa" },
+    { ruta: "/panel/mensajes", nombre: "Bandeja" },
+  ],
+  miCuenta: "Mi cuenta",
+  verWeb: "Ver la web",
+  salir: "Salir",
+  cargando: "Cargando…",
+  /** Los objetivos, cortos, para gráficos y tablas. */
+  objetivosCortos: {
+    mejorar_clientela: "Mejorar su clientela",
+    hacer_web: "Hacer su web",
+    curiosidad: "Curiosidad",
+  },
+  sinRubro: "Sin rubro",
+  resumen: {
+    titulo: "Resumen",
+    bajada: "Quiénes se registran, de qué rubro son y qué buscan. No cuenta las cuentas de admin.",
+    tiles: {
+      hoy: "Registros de hoy",
+      semana: "Esta semana",
+      mes: "Este mes",
+      confirmacion: "Confirmaron el email",
+      deTotal: "{n} de {total}",
+    },
+    porNicho: "Personas por rubro",
+    porObjetivo: "Personas por objetivo",
+    cruce: "Rubro × objetivo",
+    cruceNota: "Cada celda: cuántas personas de ese rubro buscan eso. Cuanto más clara, más personas.",
+    total: "Total",
+    personas: "personas",
+    ultimos: "Últimos registrados",
+    filtros: {
+      titulo: "Filtrar",
+      nicho: "Rubro",
+      objetivo: "Objetivo",
+      ciudad: "Ciudad",
+      desde: "Desde",
+      hasta: "Hasta",
+      novedades: "Novedades",
+      todos: "Todos",
+      si: "Sí",
+      no: "No",
+      aplicar: "Filtrar",
+      limpiar: "Limpiar",
+    },
+    exportar: "Exportar CSV",
+    exportarNota: "Exporta todas las filas del filtro, no solo las que se ven.",
+    columnas: {
+      fecha: "Alta",
+      nombre: "Nombre",
+      email: "Email",
+      nicho: "Rubro",
+      objetivo: "Objetivo",
+      empresa: "Empresa",
+      ciudad: "Ciudad",
+      telefono: "Teléfono",
+      novedades: "Novedades",
+      confirmado: "Confirmó",
+      origen: "Vino desde",
+    },
+    vacio: "No hay registros con estos filtros.",
+    mostrando: "Mostrando {n} de {total}.",
+    sinDatos: "Todavía no se registró nadie. Cuando alguien cree su cuenta, aparece acá.",
+  },
+  plantillas: {
+    titulo: "Rendimiento de plantillas",
+    bajada:
+      "Qué rubro mira la gente, cuál convierte en registros y cuál vende de verdad. Las visitas y los clics se miden en la web sin cookies de terceros; los clientes se cargan a mano abajo.",
+    rango: "Período",
+    rangos: { "7": "7 días", "30": "30 días", "90": "90 días" },
+    ordenar: "Ordenar por",
+    aplicar: "Ver",
+    metricas: {
+      vistas: "Visitas al rubro",
+      clics_demo: "Clics en la demo",
+      clics_contacto: "Clics en Hablemos",
+      inicios_registro: "Empezaron el registro",
+      registros: "Registros",
+      conversion: "Conversión",
+      activos: "Clientes activos",
+      abono: "Abono mensual",
+    },
+    conversionNota: "Registros sobre visitas al rubro.",
+    destacados: {
+      ingresos: "Más ingresos",
+      interes: "Más interés",
+      conversion: "Mejor conversión",
+      menosInteres: "Menos interés",
+      sinDatos: "Sin datos todavía",
+    },
+    clientesPorEstado: "Clientes",
+    estadosCliente: {
+      demo_mostrada: "Demo mostrada",
+      en_prueba: "En prueba",
+      activo: "Activo",
+      baja: "Baja",
+    },
+    estadosRubro: { disponible: "Disponible", "en-diseno": "En diseño", proximamente: "Próximamente", otro: "Sin plantilla" },
+    comparacion: "Comparación entre rubros",
+    sinRubroNota: "Clics en «Hablemos» del encabezado, que no son de ningún rubro.",
+    sinEventos:
+      "Todavía no hay visitas medidas en este período. La medición arranca cuando esta versión de la web esté publicada.",
+  },
+  clientes: {
+    titulo: "Clientes por plantilla",
+    bajada: "Lo que vende de verdad: cargá cada empresa a la que le mostraron una plantilla y cómo sigue.",
+    campos: {
+      empresa: "Empresa",
+      nicho: "Plantilla (rubro)",
+      estado: "Estado",
+      abono: "Abono mensual (opcional, en pesos)",
+      fecha: "Fecha",
+      notas: "Notas (opcional)",
+    },
+    agregar: "Agregar cliente",
+    agregando: "Agregando…",
+    agregado: "Listo, quedó cargado.",
+    cambiarEstado: "Cambiar estado",
+    borrar: "Borrar",
+    confirmarBorrar: "¿Borrar {empresa}? No se puede deshacer.",
+    vacio: "Todavía no hay clientes cargados.",
+    errores: {
+      empresa: "Escribí el nombre de la empresa.",
+      nicho: "Elegí el rubro de la plantilla.",
+      estado: "Elegí el estado.",
+      abono: "El abono tiene que ser un número (sin puntos de miles).",
+      fecha: "Revisá la fecha.",
+      general: "No se pudo guardar. Probá de nuevo.",
+    },
+  },
+  bandeja: {
+    sinSesion: "Tu sesión venció.",
+    ingresar: "Ingresar de nuevo",
+  },
+  /** 6.3 El mapa de prospección: los locales visitados, cómo nos fue y a cuáles volver. */
+  mapa: {
+    titulo: "Mapa de prospección",
+    bajada: "Los locales que visitamos y cómo nos fue en cada uno. Cargá la visita en la puerta del local, desde el celular.",
+    sinClave:
+      "Falta la clave de Google Maps (NEXT_PUBLIC_GOOGLE_MAPS_API_KEY en .env.local y en Vercel). La lista y la carga de visitas funcionan igual; el mapa aparece cuando esté la clave.",
+    contadores: {
+      locales: "Locales cargados",
+      visitados: "Visitados",
+      interesados: "Interesados",
+      clientes: "Clientes",
+      descartados: "Descartados",
+      visitasMes: "Visitas del mes",
+      sinVisitas: "Nadie salió todavía",
+    },
+    estados: { por_visitar: "Por visitar", visitado: "Visitado", interesado: "Interesado", cliente: "Cliente", descartado: "Descartado" },
+    feedback: { bueno: "Bueno", regular: "Regular", malo: "Malo" },
+    volver: { si: "Sí", mas_adelante: "Más adelante", no: "No" },
+    sinVisitas: "Sin visitas",
+    leyenda: { titulo: "Cómo leer los puntos", sinVisitar: "Sin visitar", volver: "Hay que volver", cliente: "Cliente", descartado: "Descartado" },
+    filtros: {
+      titulo: "Filtrar",
+      nicho: "Rubro",
+      estado: "Estado",
+      feedback: "Último feedback",
+      volver: "Volver",
+      visitante: "Quién lo visitó",
+      sinVisitar: "Sin visitar hace más de (días)",
+      semana: "Próximas visitas de esta semana",
+      todos: "Todos",
+      aplicar: "Filtrar",
+      limpiar: "Limpiar",
+    },
+    lista: {
+      titulo: "Locales",
+      ordenar: "Ordenar por",
+      orden: { visitas: "Cantidad de visitas", ultima: "Última visita", proxima: "Próxima visita", nombre: "Nombre" },
+      vacio: "No hay locales con estos filtros.",
+      sinUbicar: "Sin ubicar",
+      mostrando: "{n} locales · {ubicados} en el mapa",
+      abrir: "Ver el local",
+    },
+    ficha: {
+      visitas: "Visitas",
+      ultimoFeedback: "Último feedback",
+      volver: "Volver",
+      proxima: "Próxima visita",
+      cargarVisita: "Cargar visita",
+      comoLlegar: "Cómo llegar",
+      llamar: "Llamar",
+      cerrar: "Cerrar",
+      historial: "Historial",
+      sinHistorial: "Todavía no tiene visitas.",
+      estado: "Estado",
+      guardar: "Guardar",
+      borrar: "Borrar este local",
+      confirmarBorrar: "¿Borrar {nombre} con todas sus visitas? No se puede deshacer.",
+      ubicarAca: "Ubicarlo donde estoy",
+      importado: "Importado",
+      prueba: "Prueba",
+      sinCoordenadas: "Sin ubicación en el mapa: tocá «Ubicarlo donde estoy» parado en la puerta del local.",
+      fue: "Fue {nombre}",
+    },
+    visita: {
+      titulo: "Cargar visita",
+      fecha: "Fecha",
+      quien: "Quién fue",
+      feedback: "¿Cómo nos fue?",
+      volver: "¿Volver?",
+      nota: "Nota (opcional)",
+      siguiente: "Siguiente paso (opcional)",
+      proxima: "Próxima visita (opcional)",
+      guardar: "Guardar visita",
+      guardando: "Guardando…",
+      guardada: "Listo, visita cargada.",
+      errores: {
+        fecha: "Revisá la fecha.",
+        quien: "Elegí quién fue.",
+        feedback: "Elegí cómo nos fue.",
+        proxima: "Revisá la fecha de la próxima visita.",
+        general: "No se pudo guardar. Probá de nuevo.",
+      },
+    },
+    local: {
+      titulo: "Agregar un local",
+      bajada: "Buscalo por nombre o dirección, o cargalo parado en la puerta con «Estoy acá».",
+      buscar: "Buscar en Google Maps",
+      buscarMarcador: "Nombre del local o dirección…",
+      nombre: "Nombre",
+      nicho: "Rubro",
+      sinNicho: "—",
+      rubro: "Rubro, como lo dirías vos (opcional)",
+      direccion: "Dirección",
+      ciudad: "Ciudad",
+      provincia: "Provincia",
+      telefono: "Teléfono",
+      web: "Web",
+      estoyAca: "Estoy acá",
+      ubicando: "Buscando tu ubicación…",
+      ubicado: "Ubicación tomada (±{m} m).",
+      sinUbicacion: "No pudimos tomar tu ubicación: en el celular hace falta HTTPS y dar permiso.",
+      agregar: "Agregar local",
+      agregando: "Agregando…",
+      agregado: "Listo, quedó cargado.",
+      repetido: "Ese local ya estaba cargado: lo abrimos.",
+      errores: {
+        nombre: "Escribí el nombre del local.",
+        nicho: "Elegí un rubro de la lista.",
+        coordenadas: "La ubicación quedó incompleta. Probá «Estoy acá» de nuevo.",
+        largo: "Ese dato es demasiado largo.",
+        general: "No se pudo guardar. Probá de nuevo.",
+      },
+    },
+    importar: {
+      titulo: "Importar una planilla",
+      bajada:
+        "Un CSV con nombre, ciudad, provincia, web, teléfono y rubro (exportado de prospeccion-empresas.xlsx o prospeccion-herramientas.xlsx). Solo se leen esas columnas: «Estado comercial» y «Notas propias» no se tocan. Los que Google ubica quedan como importados, por visitar; los demás quedan en la lista como «sin ubicar» para corregirlos a mano.",
+      archivo: "Archivo CSV",
+      boton: "Importar CSV",
+      importando: "Importando…",
+      sinClaveServidor:
+        "Sin GOOGLE_MAPS_SERVER_KEY el servidor no puede ubicar ninguno: igual se importan, todos como «sin ubicar».",
+      resultado: "Importados {importados} ({ubicados} ubicados, {sinUbicar} sin ubicar) · {repetidos} ya estaban · {errores} con error.",
+      errores: {
+        archivo: "Elegí un archivo CSV.",
+        vacio: "El archivo no tiene filas con nombre.",
+        columnas: "No encontré la columna del nombre (nombre, empresa o local).",
+        grande: "Como mucho 500 filas por vez.",
+        general: "No se pudo importar. Probá de nuevo.",
+      },
+    },
+    costo:
+      "Google Maps incluye por mes y por producto un uso gratis (unas 10.000 cargas de mapa, 10.000 geocodificaciones y 10.000 autocompletados); el mapa solo se carga acá, así que el uso va a ser bajo.",
+  },
+  /** La sección Núcleos: todo Quvant → cada núcleo → cada cliente. */
+  nucleos: {
+    titulo: "Núcleos",
+    bajada: "Cómo se usa el sistema: todo Quvant, cada núcleo y cada cliente. Medido por uso del sistema, no por ventas.",
+    medidoPorUso: "Medido por uso del sistema, no por ventas.",
+    ejemplo: {
+      cartel: "Datos de ejemplo",
+      explicacion: "Clientes y uso inventados para ver el panel. Se apagan solos cuando haya datos reales.",
+      noSeGuarda: "Con datos de ejemplo no se guarda nada. Cuando haya clientes reales, sí.",
+    },
+    filtros: { rango: "Período", rangos: { "7": "7 días", "30": "30 días", "90": "90 días" }, responsable: "Responsable", todos: "Los dos", fabrizio: "fabrizio", michel: "Michel", prueba: "Incluir clientes de prueba" },
+    actualizar: { boton: "Actualizar ahora", corriendo: "Actualizando…", listo: "Listo: {fotos} fotos guardadas y {alertas} alertas nuevas.", ejemplo: "Sin PostHog ni tablas no hay nada que actualizar: el panel muestra datos de ejemplo.", error: "No se pudo actualizar." },
+    semaforo: { verde: "Bien", amarillo: "Atención", rojo: "En riesgo", arranque: "En arranque" },
+    tendencia: { sube: "Sube", estable: "Estable", baja: "Baja" },
+    general: {
+      tiles: { clientes: "Clientes activos", usuarios: "Usuarios activos esta semana", acciones: "Acciones esta semana", salud: "Salud promedio", alertas: "Alertas abiertas" },
+      constelacion: "Constelación de núcleos",
+      constelacionNota: "Cada núcleo es un nodo: su tamaño, la cantidad de clientes; su brillo, la actividad de la semana. Los clientes orbitan como puntos.",
+      lista: "Núcleos",
+      actividad: "Actividad de las últimas 12 semanas por núcleo",
+      alertasHoy: "Alertas abiertas, por gravedad",
+      sinAlertas: "No hay alertas abiertas.",
+      proximamente: "Próximamente",
+      proximamenteNota: "Este núcleo todavía no tiene sistema: sin números hasta que exista.",
+      clientes: "{n} clientes",
+      verNucleo: "Entrar al núcleo",
+    },
+    nucleo: {
+      volver: "Todos los núcleos",
+      comparacion: "Contra el resto de Quvant",
+      ranking: "Clientes",
+      ordenar: "Ordenar por",
+      ordenes: { salud: "Salud", adopcion: "Adopción", tendencia: "Tendencia", crecimiento: "Crecimiento" },
+      mapaCalor: "Adopción de funciones clave",
+      mapaCalorNota: "Clientes en filas, funciones clave en columnas. Una columna vacía pide una mejora del sistema o una capacitación general; una fila vacía, una llamada.",
+      embudo: "Embudo de activación",
+      pasos: { alta: "Alta", primera_sesion: "Primer inicio de sesión", primera_accion_principal: "Primera operación", primera_funcion_avanzada: "Primera función avanzada", uso_semanal_estable: "Uso semanal estable" },
+      ciudad: "Ciudad de clientes",
+      ciudadNota: "Cada cliente es un volumen: la altura es la actividad, el ancho la cantidad de sucursales y el acabado la salud.",
+      quePasa: "¿Qué está pasando en este núcleo?",
+      sinClientes: "Todavía no hay clientes en este núcleo.",
+      usada: "usada",
+      sinUsar: "sin usar",
+      dejoDeUsar: "dejó de usar",
+    },
+    cliente: {
+      volver: "Volver al núcleo",
+      alta: "Alta",
+      sucursales: "Sucursales",
+      usuarios: "Usuarios",
+      responsable: "Responsable",
+      plan: "Plan",
+      salud: "Salud",
+      evolucion: "Evolución de la salud",
+      usoSemanal: "Uso semanal por módulo (8 semanas)",
+      torre: "Torre de uso",
+      torreNota: "Una columna por módulo y una fila por semana: se ve de un vistazo qué módulo se apagó.",
+      funciones: "Funciones clave",
+      ultimaVez: "Última vez",
+      nunca: "Nunca",
+      porSucursal: "Actividad por sucursal (7 días)",
+      porRol: "Acciones por rol (4 semanas)",
+      diasActivos: "{n} días activos",
+      lineaDeTiempo: "Alertas y acompañamientos",
+      sinHistorial: "Todavía no hay alertas ni acompañamientos.",
+      registrar: "Registrar acompañamiento",
+      registrando: "Guardando…",
+      acompanamientoListo: "Listo, quedó registrado.",
+      acompanamientoError: "No se pudo registrar el acompañamiento.",
+      noEncontrado: "No encontré ese cliente.",
+      sinIndicadores: "Este cliente todavía no tiene indicadores calculados: tocá «Actualizar ahora».",
+      tiposAcomp: { llamada: "Llamada", visita: "Visita", capacitacion: "Capacitación", mensaje: "Mensaje", correccion: "Corrección en la configuración", novedad: "Novedad en el sistema" },
+      campos: { tipo: "Qué hicimos", fecha: "Fecha", nota: "Nota (opcional)", alerta: "Resuelve la alerta" },
+      ninguna: "Ninguna",
+      dejarNovedad: "Dejar novedad en su sistema",
+      dejarNovedadNota: "Pendiente: necesita «Novedades de Quvant» en el sistema (paso A.5, no hecho todavía).",
+    },
+    alertas: {
+      tipos: { dejo_de_usar: "Dejó de usar una función clave", nunca_uso: "Nunca usó una función clave", cayo_actividad: "Cayó la actividad", sucursal_sin_actividad: "Sucursal sin actividad", bajo_semaforo: "Bajó de color", sin_sesiones: "Nadie inició sesión" },
+      gravedad: { roja: "Roja", amarilla: "Amarilla" },
+      estados: { nueva: "Nueva", vista: "Vista", resuelta: "Resuelta", descartada: "Descartada" },
+      acciones: { ver: "Marcar vista", resolver: "Resolver", descartar: "Descartar", acompanar: "Registrar acompañamiento" },
+    },
+    claude: {
+      titulo: "Qué dice Claude",
+      nota: "Resume al cliente y sugiere qué hacer con sus indicadores de uso. Nunca manda nada solo: el borrador se edita y se copia.",
+      pedir: "Analizar este cliente",
+      pidiendo: "Analizando…",
+      resumen: "Resumen",
+      riesgo: "Principal riesgo",
+      correcciones: "Qué conviene hacer",
+      tiposCorreccion: { configuracion: "Configuración", capacitacion: "Capacitación", mejora: "Mejora del sistema" },
+      mensaje: "Borrador de mensaje",
+      copiar: "Copiar el mensaje",
+      copiado: "Copiado.",
+      ejemplo: "Sin ANTHROPIC_API_KEY: este análisis se armó con los indicadores, sin Claude.",
+      modelo: "Modelo",
+      error: "No se pudo analizar. Probá de nuevo en un rato.",
+    },
+    tresD: { ver3d: "Vista 3D", verLista: "Vista lista", sinWebGL: "Este dispositivo no tiene 3D: se muestra la lista." },
+  },
 } as const;

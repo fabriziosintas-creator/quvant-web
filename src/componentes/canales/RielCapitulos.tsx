@@ -80,7 +80,7 @@ export function RielCapitulos({ capitulos }: { capitulos: readonly Capitulo[] })
         className="barra-capitulos sticky top-16 z-30 border-y border-profundo bg-negro/85 backdrop-blur-md md:top-20 min-[1360px]:hidden"
       >
         <ul className="carrusel-web contenedor flex gap-2 overflow-x-auto py-2.5">
-          {capitulos.map((capitulo, indice) => {
+          {capitulos.map((capitulo) => {
             const activo = capitulo.id === actual;
             return (
               <li key={capitulo.id} className="shrink-0">
@@ -90,15 +90,13 @@ export function RielCapitulos({ capitulos }: { capitulos: readonly Capitulo[] })
                   }}
                   href={`#${capitulo.id}`}
                   aria-current={activo ? "location" : undefined}
-                  className={`flex items-center gap-2 border px-3 py-1.5 font-plex text-xs font-medium uppercase tracking-etiqueta transition-colors ${
+                  className={`flex items-center gap-2 border px-3 py-1.5 font-lectura text-sm font-medium transition-colors ${
                     activo
                       ? "border-[var(--acento)] text-blanco"
                       : "border-profundo text-acero hover:text-blanco"
                   }`}
                 >
-                  <span className={activo ? "text-[var(--acento)]" : "text-acero/60"}>
-                    {String(indice + 1).padStart(2, "0")}
-                  </span>
+                  <span aria-hidden className={`size-1.5 shrink-0 ${activo ? "bg-[var(--acento)]" : "bg-acero/60"}`} />
                   {capitulo.nombre}
                 </a>
               </li>
@@ -115,7 +113,7 @@ export function RielCapitulos({ capitulos }: { capitulos: readonly Capitulo[] })
         aria-label={NAVEGACION.capitulos}
         className="group/riel fixed left-5 top-1/2 z-30 hidden -translate-y-1/2 min-[1360px]:block"
       >
-        <div className="relative rounded-[10px] border border-transparent py-3 pl-3 pr-3 transition-colors group-hover/riel:border-profundo group-hover/riel:bg-negro/90 group-hover/riel:backdrop-blur-md">
+        <div className="relative rounded-2xl border border-transparent py-3 pl-3 pr-3 transition-colors group-hover/riel:border-profundo group-hover/riel:bg-negro/90 group-hover/riel:backdrop-blur-md">
           {/* La línea del canal y su relleno. */}
           <span aria-hidden className="absolute bottom-6 left-[19px] top-6 w-px bg-profundo">
             <span
@@ -125,7 +123,7 @@ export function RielCapitulos({ capitulos }: { capitulos: readonly Capitulo[] })
             />
           </span>
           <ol className="relative flex flex-col gap-5">
-            {capitulos.map((capitulo, indice) => {
+            {capitulos.map((capitulo) => {
               const activo = capitulo.id === actual;
               return (
                 <li key={capitulo.id}>
@@ -141,12 +139,11 @@ export function RielCapitulos({ capitulos }: { capitulos: readonly Capitulo[] })
                       }`}
                     />
                     <span
-                      className={`font-plex text-xs font-medium uppercase tracking-etiqueta transition-colors ${
+                      className={`font-lectura text-sm font-medium transition-colors ${
                         activo ? "text-blanco" : "text-acero"
                       }`}
                     >
-                      {String(indice + 1).padStart(2, "0")}
-                      <span className="ml-2 hidden whitespace-nowrap group-hover/riel:inline group-focus-within/riel:inline">
+                      <span className="hidden whitespace-nowrap group-hover/riel:inline group-focus-within/riel:inline">
                         {capitulo.nombre}
                       </span>
                     </span>

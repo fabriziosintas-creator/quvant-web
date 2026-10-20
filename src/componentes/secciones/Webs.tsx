@@ -1,17 +1,20 @@
 import Link from "next/link";
 import { TelefonoCasoDiferido } from "@/componentes/3d/TelefonoCasoDiferido";
 import { CASOS, CASO_PROXIMO, type CasoWeb } from "@/datos/casos";
+import { Foto } from "@/componentes/estructura/Foto";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { WEBS } from "@/datos/textos";
 import { DeslizadorAntesDespues } from "./DeslizadorAntesDespues";
 
-function EnlaceExterno({ url, texto }: { url: string; texto: string }) {
+function EnlaceExterno({ url, texto, medir, nicho }: { url: string; texto: string; medir?: "demo" | "contacto"; nicho?: string }) {
   return (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group inline-flex items-center gap-3 border border-profundo px-5 py-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco transition-colors hover:border-acero"
+      data-medir={medir}
+      data-nicho={nicho}
+      className="group inline-flex items-center gap-3 rounded-2xl bg-profundo/35 px-5 py-3 font-lectura text-sm font-medium text-blanco transition-colors hover:border-acero"
     >
       <span
         aria-hidden
@@ -22,25 +25,47 @@ function EnlaceExterno({ url, texto }: { url: string; texto: string }) {
   );
 }
 
+function Momento({ titulo, texto }: { titulo: string; texto: string }) {
+  return (
+    <div>
+      <p className="flex items-center gap-3 font-lectura text-sm font-medium text-acero">
+        <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
+        {titulo}
+      </p>
+      <p className="mt-3 max-w-2xl font-lectura text-[15px] leading-relaxed text-blanco md:text-base">{texto}</p>
+    </div>
+  );
+}
+
 function Caso({ caso }: { caso: CasoWeb }) {
   return (
     <article>
       <div className="flex flex-wrap items-center gap-3">
-        <span className="border border-acero px-2.5 py-1 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco">
+        <span className="border border-acero px-2.5 py-1 font-lectura text-sm font-medium text-blanco">
           {caso.etiqueta}
         </span>
-        <span className="font-plex text-xs uppercase tracking-etiqueta text-acero">
+        <span className="font-lectura text-sm text-acero">
           {caso.cliente}
         </span>
       </div>
       <h3 className="mt-5 max-w-3xl titulo text-xl leading-snug text-blanco md:text-2xl">
         {caso.titulo}
       </h3>
-      <p className="mt-3 max-w-2xl font-lectura text-[15px] leading-relaxed text-acero">
-        {caso.descripcionCliente}
-      </p>
+      {/* La historia en tres momentos: quiénes son, lo que vimos y lo que propusimos (el deslizador). */}
+      <div className="mt-8 grid gap-8 md:grid-cols-2">
+        <Momento titulo={WEBS.historia.quienes} texto={caso.historia.quienes} />
+        <Momento titulo={WEBS.historia.vimos} texto={caso.historia.vimos} />
+      </div>
+      {/* Las fotos del local, solo con permiso de Ferremix (src/datos/fotos.ts). */}
+      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        <Foto id="ferremix-local" sizes="(min-width: 640px) 50vw, 100vw" proporcion="aspect-[4/3]" />
+        <Foto id="ferremix-mostrador" sizes="(min-width: 640px) 50vw, 100vw" proporcion="aspect-[4/3]" />
+      </div>
+      <div className="mt-10">
+        <Momento titulo={WEBS.historia.propusimos} texto={caso.historia.propusimos} />
+      </div>
 
-      <div className="mt-8">
+      <div className="mt-6">
         <DeslizadorAntesDespues
           antes={caso.escritorio.antes}
           despues={caso.escritorio.despues}
@@ -54,8 +79,8 @@ function Caso({ caso }: { caso: CasoWeb }) {
         <TelefonoCasoDiferido caso={caso} />
 
         <div className="flex flex-col gap-6">
-          <div className="border border-profundo p-7 md:p-8">
-            <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+          <div className="rounded-2xl bg-profundo/35 p-7 md:p-8">
+            <p className="font-lectura text-sm font-medium text-acero">
               {WEBS.etiquetaQueCambio}
             </p>
             <ul className="mt-5 flex flex-col gap-3">
@@ -68,10 +93,10 @@ function Caso({ caso }: { caso: CasoWeb }) {
             </ul>
           </div>
 
-          <div className="flex flex-1 flex-col overflow-hidden rounded-[10px] border border-profundo">
+          <div className="flex flex-1 flex-col overflow-hidden rounded-2xl border border-profundo">
             <p className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
               <span aria-hidden className="size-1.5 bg-acero" />
-              <span className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+              <span className="font-lectura text-sm font-medium text-acero">
                 {WEBS.etiquetaDemo}
               </span>
             </p>
@@ -87,9 +112,9 @@ function Caso({ caso }: { caso: CasoWeb }) {
             ) : (
               <div className="flex flex-1 flex-col justify-center gap-4 p-7 md:p-8">
                 <p className="titulo text-base text-blanco">{caso.demo.titulo}</p>
-                <p className="font-lectura text-[15px] leading-relaxed text-acero">{caso.demo.nota}</p>
+                <p className="font-lectura text-[15px] leading-relaxed text-blanco">{caso.demo.nota}</p>
                 <div className="mt-2">
-                  <EnlaceExterno url={caso.enlaces.demo.url} texto={caso.enlaces.demo.texto} />
+                  <EnlaceExterno url={caso.enlaces.demo.url} texto={caso.enlaces.demo.texto} medir="demo" nicho="industria" />
                 </div>
               </div>
             )}
@@ -120,15 +145,13 @@ export function CasoFerremix() {
           className="border border-dashed border-profundo p-10 text-center md:p-14"
           data-revelar
         >
-          <p className="font-michroma text-lg uppercase tracking-marca text-blanco md:text-xl">
-            {CASO_PROXIMO.titulo}
-          </p>
+          <p className="titulo text-xl text-blanco md:text-2xl">{CASO_PROXIMO.titulo}</p>
           <p className="mt-3 font-lectura text-sm text-acero md:text-base">{CASO_PROXIMO.texto}</p>
           <div className="mt-6 flex justify-center">
             <Link
               href={CASO_PROXIMO.accion.destino}
               transitionTypes={["canal-adelante"]}
-              className="inline-flex h-11 items-center justify-center bg-blanco px-6 font-plex text-[12px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero"
+              className="rounded-full inline-flex h-11 items-center justify-center bg-blanco px-6 font-lectura text-sm font-medium text-negro transition-colors hover:bg-acero"
             >
               {CASO_PROXIMO.accion.texto}
             </Link>

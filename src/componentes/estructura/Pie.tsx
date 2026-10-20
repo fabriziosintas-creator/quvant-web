@@ -39,7 +39,7 @@ export function Pie() {
         </p>
 
         <nav aria-label={PIE.etiquetaSecciones} data-revelar>
-          <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+          <p className="font-lectura text-sm font-medium text-acero">
             {PIE.etiquetaSecciones}
           </p>
           <ul className="mt-5 flex flex-col gap-3">
@@ -62,7 +62,7 @@ export function Pie() {
         </nav>
 
         <div data-revelar>
-          <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+          <p className="font-lectura text-sm font-medium text-acero">
             {PIE.etiquetaSeguinos}
           </p>
           <ul className="mt-5">
@@ -86,7 +86,12 @@ export function Pie() {
 
       <div className="border-t border-profundo">
         <div className="contenedor flex items-center justify-between gap-4 py-5">
-          <p className="font-plex text-xs text-acero">{PIE.derechos}</p>
+          <p className="flex flex-wrap items-center gap-x-4 gap-y-1 font-plex text-xs text-acero">
+            {PIE.derechos}
+            <Link href="/privacidad" className="underline decoration-profundo underline-offset-4 hover:text-blanco hover:decoration-blanco">
+              {PIE.privacidad}
+            </Link>
+          </p>
           <InterruptorVista className="lg:hidden" />
           <span aria-hidden className="hidden size-1.5 bg-acero lg:inline-block" />
         </div>

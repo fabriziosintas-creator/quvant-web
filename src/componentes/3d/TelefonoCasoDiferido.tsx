@@ -30,9 +30,7 @@ function MarcoCelular({
           className="w-full rounded-[16px]"
         />
       </div>
-      <figcaption className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
-        {etiqueta}
-      </figcaption>
+      <figcaption className="font-lectura text-sm text-acero">{etiqueta}</figcaption>
     </figure>
   );
 }
@@ -66,12 +64,10 @@ export function TelefonoCasoDiferido({ caso }: { caso: CasoWeb }) {
   }, [vista]);
 
   return (
-    <figure className="flex h-full flex-col overflow-hidden rounded-[10px] border border-profundo">
-      <figcaption className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
+    <figure className="pantalla flex h-full flex-col overflow-hidden">
+      <figcaption className="flex items-center gap-3 px-4 py-2.5">
         <span aria-hidden className="size-1.5 bg-acero" />
-        <span className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
-          {WEBS.etiquetaCelular}
-        </span>
+        <span className="font-lectura text-sm font-medium text-acero">{WEBS.etiquetaCelular}</span>
       </figcaption>
       {vista === "3d" ? (
         <div ref={marco} className="relative aspect-[4/5] flex-1" aria-hidden>

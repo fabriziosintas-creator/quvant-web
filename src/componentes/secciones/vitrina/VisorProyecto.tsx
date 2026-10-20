@@ -126,7 +126,7 @@ export function VisorProyecto({ proyecto, numero, total, onCerrar, onMover }: Pr
       >
         {/* Arriba: dónde estás, anterior y siguiente, cerrar. */}
         <div className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-profundo px-4 md:h-16 md:px-6">
-          <p className="flex min-w-0 items-center gap-3 font-plex text-xs uppercase tracking-etiqueta text-acero">
+          <p className="flex min-w-0 items-center gap-3 font-lectura text-sm text-acero">
             <span aria-hidden className="size-1.5 shrink-0 bg-[var(--acento)]" />
             <span className="shrink-0 text-blanco">
               {dosDigitos(numero)} / {dosDigitos(total)}
@@ -155,7 +155,7 @@ export function VisorProyecto({ proyecto, numero, total, onCerrar, onMover }: Pr
             exit={PASO}
             default="none"
           >
-            <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-[10px] border border-profundo bg-negro">
+            <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border border-profundo bg-negro">
               <BarraNavegador
                 proyecto={proyecto}
                 vista={vista}
@@ -207,7 +207,7 @@ export function VisorProyecto({ proyecto, numero, total, onCerrar, onMover }: Pr
               onClick={() => setHoja((abierta) => !abierta)}
               aria-expanded={hoja}
               aria-controls="visor-hoja"
-              className="flex w-full items-center justify-between px-4 py-3.5 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco"
+              className="flex w-full items-center justify-between px-4 py-3.5 font-lectura text-sm font-medium text-blanco"
             >
               <span className="flex items-center gap-3">
                 <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
@@ -292,7 +292,7 @@ function Selector<T extends string>({
               onCambio(opciones[destino].valor);
               botones.current[destino]?.focus();
             }}
-            className={`px-2.5 py-1.5 font-plex text-xs font-medium uppercase tracking-etiqueta transition-colors ${
+            className={`px-2.5 py-1.5 font-lectura text-sm font-medium transition-colors ${
               activa ? "bg-blanco text-negro" : "text-acero hover:text-blanco"
             }`}
           >
@@ -350,7 +350,7 @@ function BarraNavegador({
             ]}
           />
         ) : (
-          <span className="border border-profundo px-2.5 py-1.5 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+          <span className="border border-profundo px-2.5 py-1.5 font-lectura text-sm font-medium text-acero">
             {TEXTOS.captura}
           </span>
         )}
@@ -488,9 +488,9 @@ function Captura({ vista, dispositivo }: { vista: VistaProyecto; dispositivo: Di
         type="button"
         onClick={() => setRecorriendo((sigue) => !sigue)}
         aria-pressed={recorriendo}
-        className="absolute bottom-3 right-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm transition-colors hover:border-[var(--acento)]"
+        className="absolute bottom-3 right-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-lectura text-sm font-medium text-blanco backdrop-blur-sm transition-colors hover:border-[var(--acento)]"
       >
-        <span aria-hidden className={`size-1.5 ${recorriendo ? "bg-[var(--acento)] motion-safe:animate-[parpadeo_1s_steps(2,end)_infinite]" : "bg-blanco"}`} />
+        <span aria-hidden className={`size-1.5 ${recorriendo ? "bg-[var(--acento)] motion-safe:animate-[parpadeo_2.0s_ease-in-out_infinite]" : "bg-blanco"}`} />
         {recorriendo ? TEXTOS.detener : TEXTOS.recorrer}
       </button>
     </div>
@@ -547,8 +547,8 @@ function EnVivo({ proyecto, vista, dispositivo }: { proyecto: Proyecto; vista: V
         />
       ) : null}
       {!cargado ? (
-        <p className="absolute bottom-3 left-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
-          <span aria-hidden className="size-1.5 bg-[var(--acento)] motion-safe:animate-[parpadeo_1s_steps(2,end)_infinite]" />
+        <p className="absolute bottom-3 left-3 flex items-center gap-2 border border-profundo bg-negro/85 px-3 py-2 font-lectura text-sm font-medium text-blanco backdrop-blur-sm">
+          <span aria-hidden className="size-1.5 bg-[var(--acento)] motion-safe:animate-[parpadeo_2.0s_ease-in-out_infinite]" />
           {TEXTOS.cargando}
         </p>
       ) : null}
@@ -570,7 +570,7 @@ function Detalle({
 }) {
   return (
     <div className="flex flex-1 flex-col">
-      <p className="flex items-center gap-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+      <p className="flex items-center gap-3 font-lectura text-sm font-medium text-acero">
         <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
         {TIPOS[proyecto.tipo].singular} · {proyecto.rubro}
       </p>
@@ -580,7 +580,7 @@ function Detalle({
 
       {proyecto.vistas.length > 1 ? (
         <div className="mt-6">
-          <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+          <p className="font-lectura text-sm font-medium text-acero">
             {TEXTOS.paginas}
           </p>
           <div className="mt-3 flex flex-wrap gap-2">
@@ -603,7 +603,7 @@ function Detalle({
         </div>
       ) : null}
 
-      <p className="mt-7 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+      <p className="mt-7 font-lectura text-sm font-medium text-acero">
         {TEXTOS.queTiene}
       </p>
       <ul className="mt-3 flex flex-col gap-2.5">
@@ -624,11 +624,11 @@ function Detalle({
           href={vista.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex h-12 items-center justify-center gap-2 bg-blanco px-6 font-plex text-[12px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero"
+          className="rounded-full flex h-12 items-center justify-center gap-2 bg-blanco px-6 font-lectura text-sm font-medium text-negro transition-colors hover:bg-acero"
         >
           {TEXTOS.abrir} <span aria-hidden>↗</span>
         </a>
-        <p className="mt-4 hidden font-plex text-xs uppercase tracking-etiqueta text-acero lg:block">
+        <p className="mt-4 hidden font-lectura text-sm text-acero lg:block">
           {TEXTOS.teclas}
         </p>
       </div>

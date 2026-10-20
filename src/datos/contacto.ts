@@ -30,18 +30,23 @@ export const urlWhatsApp = (texto?: string) =>
 export const urlEmailMensaje = (asunto: string, cuerpo: string) =>
   `mailto:${CONTACTO.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
 
-/** Arma el mensaje del formulario de contacto, listo para WhatsApp o email. */
+/**
+ * Arma el mensaje del formulario como lo escribiría una persona, listo
+ * para WhatsApp o email: "Hola, soy Marta, de Ferremix. Les escribo porque
+ * busco un sistema para mi negocio. Mi rubro es ferretería. …".
+ */
 export function armarMensajeContacto(datos: {
   nombre: string;
   empresa: string;
   rubro: string;
+  /** Cómo sigue "Les escribo porque…" (enMensaje de la opción elegida). */
   necesidad: string;
   mensaje: string;
 }) {
   const partes = [
     `Hola, soy ${datos.nombre}${datos.empresa ? `, de ${datos.empresa}` : ""}.`,
-    datos.rubro ? `Rubro: ${datos.rubro}.` : "",
-    `Necesito: ${datos.necesidad.toLowerCase()}.`,
+    datos.necesidad ? `Les escribo porque ${datos.necesidad}.` : "",
+    datos.rubro ? `Mi rubro es ${datos.rubro.toLowerCase()}.` : "",
     datos.mensaje,
   ];
   return partes.filter(Boolean).join(" ");

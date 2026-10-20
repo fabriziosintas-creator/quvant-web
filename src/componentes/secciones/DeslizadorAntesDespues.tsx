@@ -68,7 +68,7 @@ export function DeslizadorAntesDespues({
       onPointerMove={alMover}
       onPointerUp={alSoltar}
       onPointerCancel={alSoltar}
-      className="relative select-none overflow-hidden rounded-[10px] border border-profundo touch-pan-y"
+      className="pantalla relative select-none overflow-hidden touch-pan-y"
       style={{ aspectRatio: `${antes.ancho} / ${antes.alto}` }}
     >
       <Image
@@ -91,10 +91,10 @@ export function DeslizadorAntesDespues({
         />
       </div>
 
-      <span className="pointer-events-none absolute left-3 top-3 border border-profundo bg-negro/80 px-2 py-1 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+      <span className="pointer-events-none absolute left-3 top-3 border border-profundo bg-negro/80 px-2 py-1 font-lectura text-sm font-medium text-acero">
         {etiquetaAntes}
       </span>
-      <span className="pointer-events-none absolute right-3 top-3 border border-profundo bg-negro/80 px-2 py-1 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco">
+      <span className="pointer-events-none absolute right-3 top-3 border border-profundo bg-negro/80 px-2 py-1 font-lectura text-sm font-medium text-blanco">
         {etiquetaDespues}
       </span>
 

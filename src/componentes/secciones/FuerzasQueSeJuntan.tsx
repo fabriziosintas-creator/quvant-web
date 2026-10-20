@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { Cara } from "@/componentes/estructura/Foto";
 import { NOSOTROS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
 import { CURVA, DURACION } from "@/componentes/estructura/movimiento";
@@ -127,7 +127,7 @@ function PanelCodigo({ titulo }: { titulo: string }) {
   }, [animar, letras]);
 
   return (
-    <div ref={ref} aria-hidden className="overflow-hidden rounded-[10px] border border-profundo bg-[#0a0a0c]">
+    <div ref={ref} aria-hidden className="overflow-hidden rounded-2xl border border-profundo bg-[#0a0a0c]">
       <div className="flex items-center gap-2 border-b border-profundo px-4 py-2">
         <span className="size-2 rounded-full bg-[#F26B5B]/70" />
         <span className="size-2 rounded-full bg-[#F0A33A]/70" />
@@ -154,7 +154,7 @@ function PanelCodigo({ titulo }: { titulo: string }) {
                 })}
                 {conCursor ? (
                   <span
-                    className="ml-0.5 inline-block size-[0.6em] translate-y-[1px] motion-safe:animate-[parpadeo_1.1s_steps(2,end)_infinite]"
+                    className="ml-0.5 inline-block size-[0.6em] translate-y-[1px] motion-safe:animate-[parpadeo_2.0s_ease-in-out_infinite]"
                     style={{ background: COLOR_DESARROLLO }}
                   />
                 ) : null}
@@ -197,10 +197,10 @@ function PanelCharla({ titulo }: { titulo: string }) {
   const siguiente = CHARLA[mostrados];
 
   return (
-    <div ref={ref} aria-hidden className="overflow-hidden rounded-[10px] border border-profundo bg-[#0a0a0c]">
+    <div ref={ref} aria-hidden className="overflow-hidden rounded-2xl border border-profundo bg-[#0a0a0c]">
       <div className="flex items-center gap-2 border-b border-profundo px-4 py-2">
         <span className="size-1.5" style={{ background: COLOR_COMERCIAL }} />
-        <span className="font-plex text-xs uppercase tracking-etiqueta text-acero">{titulo}</span>
+        <span className="font-lectura text-sm text-acero">{titulo}</span>
       </div>
       <div className="flex min-h-[148px] flex-col gap-2 px-4 py-3">
         {CHARLA.slice(0, mostrados).map((mensaje, i) => {
@@ -208,7 +208,7 @@ function PanelCharla({ titulo }: { titulo: string }) {
           return (
             <p
               key={`${i}-${mensaje.texto}`}
-              className={`charla-burbuja max-w-[85%] rounded-[10px] px-3 py-1.5 font-plex text-[11px] leading-snug md:text-xs ${
+              className={`charla-burbuja max-w-[85%] rounded-2xl px-3 py-1.5 font-plex text-[11px] leading-snug md:text-xs ${
                 esCliente
                   ? "self-start rounded-bl-[2px] border border-profundo text-blanco"
                   : "self-end rounded-br-[2px] text-negro"
@@ -274,7 +274,7 @@ function TarjetaFuerza({
           izquierda ? "md:ml-auto md:pr-10 lg:pr-14" : "md:mr-auto md:pl-10 lg:pl-14"
         }`}
       >
-        <p className="flex items-center gap-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-[var(--acento)]">
+        <p className="flex items-center gap-3 font-lectura text-sm font-medium text-[var(--acento)]">
           <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           {fuerza.etiqueta}
         </p>
@@ -282,18 +282,14 @@ function TarjetaFuerza({
           <span className="block font-michroma text-[clamp(4.5rem,11vw,9rem)] leading-[0.9] text-blanco">
             <Contador numero={fuerza.dato.numero} prefijo={fuerza.dato.prefijo} />
           </span>
-          <span className="mt-3 block max-w-[18rem] font-plex text-xs uppercase leading-snug tracking-etiqueta text-acero">
+          <span className="mt-3 block max-w-[18rem] font-lectura text-sm leading-snug text-acero">
             {fuerza.dato.etiqueta}
           </span>
         </p>
-        {/* Quién lleva esta fuerza. La foto, cuando esté, en blanco y negro como todas las del sitio. */}
+        {/* Quién lleva esta fuerza. La foto sale del registro (src/datos/fotos.ts): solo con permiso. */}
         {persona ? (
           <div className="mt-8 flex items-center gap-4">
-            {persona.foto ? (
-              <span className="relative block size-14 shrink-0 overflow-hidden border border-profundo">
-                <Image src={persona.foto} alt={`Foto de ${persona.nombre}`} fill sizes="56px" className="foto-bn object-cover" />
-              </span>
-            ) : null}
+            <Cara id={`nosotros-${persona.nombre.toLowerCase()}`} />
             <p className="min-w-0">
               <span className="block titulo text-lg text-blanco">{persona.nombre}</span>
               <span className="mt-0.5 block font-plex text-xs text-acero">{persona.cargo}</span>
@@ -302,7 +298,7 @@ function TarjetaFuerza({
         ) : null}
         <h3 className="mt-6 titulo text-2xl leading-snug text-blanco md:text-3xl">{fuerza.titular}</h3>
         {fuerza.parrafos.map((parrafo) => (
-          <p key={parrafo.slice(0, 20)} className="mt-4 font-lectura text-[15px] leading-relaxed text-acero md:text-base">
+          <p key={parrafo.slice(0, 20)} className="mt-4 font-lectura text-[15px] leading-relaxed text-blanco md:text-base">
             {parrafo}
           </p>
         ))}
@@ -310,7 +306,7 @@ function TarjetaFuerza({
           {fuerza.puntos.map((punto) => (
             <li
               key={punto}
-              className="flex items-center gap-2 border border-profundo px-3 py-1.5 font-plex text-xs text-blanco transition-colors hover:border-[var(--acento)]"
+              className="flex items-center gap-2 rounded-2xl bg-profundo/35 px-3 py-1.5 font-plex text-xs text-blanco transition-colors hover:border-[var(--acento)]"
             >
               <span aria-hidden className="size-1 bg-[var(--acento)]" />
               {punto}

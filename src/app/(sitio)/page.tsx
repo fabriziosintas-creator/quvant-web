@@ -5,13 +5,12 @@ import { DESLIZ_PAGINA } from "@/componentes/canales/navegacion";
 import { AuroraFondo } from "@/componentes/estructura/AuroraFondo";
 import { CintaRubros } from "@/componentes/estructura/CintaRubros";
 import { IntroTV } from "@/componentes/estructura/IntroTV";
-import { TextoTipeado } from "@/componentes/estructura/TextoTipeado";
 import { VideoPortada } from "@/componentes/estructura/VideoPortada";
 import { Vitrina } from "@/componentes/secciones/vitrina/Vitrina";
 import { DatosEstructurados } from "@/componentes/seo/DatosEstructurados";
 import { ACENTO_CANAL } from "@/datos/colores";
 import { PROYECTOS } from "@/datos/portfolio";
-import { HERO, INICIO } from "@/datos/textos";
+import { HERO, INICIO, MARCA } from "@/datos/textos";
 
 /** Los destacados de la portada: un sitio de cliente, un sistema y una app. */
 const DESTACADOS = ["grimm", "yunque", "hackfit"]
@@ -48,23 +47,21 @@ export default function Inicio() {
                 {HERO.titulo}
               </span>
               <span className="sr-only"> · </span>
-              <span className="mt-7 block max-w-xl titulo text-lg leading-snug text-blanco md:text-2xl">
-                <TextoTipeado texto={HERO.propuesta} velocidadMs={24} />
-              </span>
+              <span className="mt-7 block max-w-xl font-lectura text-base text-acero md:text-lg">{MARCA.bajada}</span>
+              <span className="mt-3 block max-w-xl titulo text-lg leading-snug text-blanco md:text-2xl">{HERO.propuesta}</span>
             </h1>
             <div className="mt-10 flex flex-wrap gap-3 md:gap-4">
               <Link
                 href={HERO.botonPrimario.destino}
                 transitionTypes={["canal-adelante"]}
-                className="inline-flex h-12 items-center justify-center gap-3 bg-blanco px-7 font-plex text-[13px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero"
+                className="rounded-full inline-flex h-12 items-center justify-center gap-3 bg-blanco px-7 font-lectura text-sm font-medium text-negro transition-colors hover:bg-acero"
               >
                 {HERO.botonPrimario.texto}
-                <span className="font-plex text-xs text-negro/50">{PROYECTOS.length}</span>
               </Link>
               <Link
                 href={HERO.botonSecundario.destino}
                 transitionTypes={["canal-adelante"]}
-                className="inline-flex h-12 items-center justify-center border border-profundo px-7 font-plex text-[13px] font-medium uppercase tracking-[0.14em] text-blanco transition-colors hover:border-acero"
+                className="rounded-full inline-flex h-12 items-center justify-center border border-profundo px-7 font-lectura text-sm font-medium text-blanco transition-colors hover:border-acero"
               >
                 {HERO.botonSecundario.texto}
               </Link>
@@ -100,10 +97,9 @@ export default function Inicio() {
               <Link
                 href="/trabajos"
                 transitionTypes={["canal-adelante"]}
-                className="group inline-flex items-center gap-3 border border-profundo px-5 py-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco transition-colors hover:border-[var(--acento)]"
+                className="group inline-flex items-center gap-3 rounded-2xl bg-profundo/35 px-5 py-3 font-lectura text-sm font-medium text-blanco transition-colors hover:border-[var(--acento)]"
               >
                 {INICIO.destacados.verTodos}
-                <span className="text-acero">{PROYECTOS.length}</span>
                 <span aria-hidden className="transition-transform group-hover:translate-x-0.5">
                   →
                 </span>
@@ -136,13 +132,13 @@ export default function Inicio() {
               {INICIO.cierre.titulo}
             </h2>
             <div className="mt-8 flex flex-col gap-8 md:mt-10 md:flex-row md:items-end md:justify-between">
-              <p data-revelar className="max-w-xl font-lectura text-base leading-relaxed text-acero md:text-xl">
+              <p data-revelar className="max-w-xl font-lectura text-base leading-relaxed text-blanco md:text-xl">
                 {INICIO.cierre.texto}
               </p>
               <Link
                 href="/contacto"
                 transitionTypes={["canal-adelante"]}
-                className="inline-flex h-14 shrink-0 items-center justify-center gap-3 self-start bg-blanco px-9 font-plex text-[13px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero md:self-auto"
+                className="inline-flex h-14 shrink-0 items-center justify-center gap-3 self-start bg-blanco px-9 font-lectura text-sm font-medium text-negro transition-colors hover:bg-acero md:self-auto"
               >
                 <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
                 {INICIO.cierre.boton}

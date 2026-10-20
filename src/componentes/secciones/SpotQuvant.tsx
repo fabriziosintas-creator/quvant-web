@@ -24,13 +24,13 @@ export function SpotQuvant() {
   };
 
   return (
-    <figure data-revelar className="overflow-hidden rounded-[10px] border border-profundo">
+    <figure data-revelar className="overflow-hidden rounded-2xl border border-profundo">
       <figcaption className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-profundo px-4 py-2.5">
         <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-        <span className="font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco">
+        <span className="font-lectura text-sm font-medium text-blanco">
           {spot.ventana}
         </span>
-        <span className="ml-auto font-plex text-xs uppercase tracking-etiqueta text-acero">
+        <span className="ml-auto font-lectura text-sm text-acero">
           {spot.nota}
         </span>
       </figcaption>
@@ -57,7 +57,7 @@ export function SpotQuvant() {
               <svg aria-hidden viewBox="0 0 12 12" className="size-3 fill-blanco">
                 <path d="M3 1.5 10.5 6 3 10.5Z" />
               </svg>
-              <span className="font-plex text-[13px] font-medium uppercase tracking-[0.14em] text-blanco">
+              <span className="font-lectura text-sm font-medium text-blanco">
                 {spot.reproducir}
               </span>
               <span className="font-plex text-[13px] text-acero">{spot.duracion}</span>

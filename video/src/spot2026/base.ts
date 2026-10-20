@@ -1,16 +1,19 @@
 import { useEffect, useState, type CSSProperties } from "react";
-import { cancelRender, continueRender, delayRender, staticFile } from "remotion";
+import { Easing, cancelRender, continueRender, delayRender, staticFile } from "remotion";
 import { cargarFuentes } from "../brand/fuentes";
 import { COLOR, TRACKING } from "../brand/tokens";
 
 /**
  * Lo que comparten las escenas del spot 2026: las letras (las del sitio
  * desde octubre de 2026: títulos en IBM Plex Sans semibold, etiquetas en
- * Plex Mono, la marca en Michroma), los colores de cada bloque y unas
- * curvas.
+ * Plex Sans sin mayúsculas, la marca en Michroma, Plex Mono solo para
+ * datos), los colores de cada bloque y unas curvas.
  */
 
-export { curvaMarca, mezcla, recorte, suave, tramo } from "../scenes/comun";
+export { mezcla, recorte, suave, tramo } from "../scenes/comun";
+
+/** La curva del sitio (web más humana): arranca y termina suave, como algo que rueda. */
+export const curvaMarca = Easing.bezier(0.25, 0.1, 0.25, 1);
 
 /** Un acento por bloque, los mismos de los canales del sitio. */
 export const ACENTO = {
@@ -63,13 +66,21 @@ export const texto = (px: number): CSSProperties => ({
   color: COLOR.acero,
 });
 
-/** Etiquetas: Plex Mono en mayúsculas con tracking +200. */
+/** Etiquetas: Plex Sans medium, en minúscula con mayúscula inicial (como las de la web). */
 export const etiqueta = (px: number): CSSProperties => ({
+  fontFamily: '"IBM Plex Sans", sans-serif',
+  fontWeight: 600,
+  fontSize: px * 1.15,
+  letterSpacing: 0,
+  color: COLOR.acero,
+});
+
+/** Datos (hora, cantidades): Plex Mono, el único lugar donde queda la monoespaciada. */
+export const dato = (px: number): CSSProperties => ({
   fontFamily: '"IBM Plex Mono", monospace',
   fontWeight: 400,
   fontSize: px,
   letterSpacing: TRACKING.etiqueta,
-  textTransform: "uppercase",
   color: COLOR.acero,
 });
 

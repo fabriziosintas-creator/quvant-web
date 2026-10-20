@@ -45,7 +45,7 @@ function Trabajos({ vivo }: { vivo: boolean }) {
           className={`object-cover object-top transition-opacity duration-(--duracion-lenta) ${i === indice ? "opacity-100" : "opacity-0"}`}
         />
       ))}
-      <span className="absolute bottom-0 right-[6%] block w-[20%] overflow-hidden rounded-[10px] border border-profundo bg-negro shadow-[0_18px_40px_-10px_rgba(0,0,0,0.9)] aspect-[600/1298] translate-y-[18%]">
+      <span className="pantalla absolute bottom-0 right-[6%] block w-[20%] overflow-hidden aspect-[600/1298] translate-y-[18%]">
         {VITRINA.map((proyecto, i) => cargar(vivo, i, indice) && (
           <Image
             key={proyecto.id}
@@ -75,7 +75,7 @@ function Servicios({ vivo }: { vivo: boolean }) {
           alt=""
           fill
           sizes="(min-width: 1024px) 40vw, 90vw"
-          className={`foto-bn object-cover transition-opacity duration-(--duracion-lenta) ${i === indice ? "opacity-100" : "opacity-0"}`}
+          className={`foto-real object-cover transition-opacity duration-(--duracion-lenta) ${i === indice ? "opacity-100" : "opacity-0"}`}
         />
       ))}
       {/* Las cuatro etapas en una línea, como en el recorrido. */}
@@ -128,14 +128,14 @@ function Nosotros() {
       <Image src="/spot/spot-poster.webp" alt="" fill sizes="(min-width: 1024px) 40vw, 90vw" className="object-cover" />
       {/* El play va en una esquina: al centro tapaba la firma del póster. */}
       <span className="absolute bottom-5 right-5">
-        <span className="flex items-center gap-3 border border-blanco/30 bg-negro/70 px-4 py-2.5 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
+        <span className="flex items-center gap-3 border border-blanco/30 bg-negro/70 px-4 py-2.5 font-lectura text-sm font-medium text-blanco backdrop-blur-sm">
           <svg aria-hidden viewBox="0 0 12 12" className="size-2.5 fill-current">
             <path d="M3 1.5 10.5 6 3 10.5Z" />
           </svg>
           0:42
         </span>
       </span>
-      <span className="absolute bottom-5 left-5 flex items-center gap-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco">
+      <span className="absolute bottom-5 left-5 flex items-center gap-3 font-lectura text-sm font-medium text-blanco">
         <span aria-hidden className="size-1.5 bg-[#F0A33A]" />
         Michel + Fabrizio
       </span>
@@ -158,7 +158,7 @@ function Contacto({ vivo }: { vivo: boolean }) {
       {CHARLA.slice(0, mostrados).map((mensaje, i) => (
         <span
           key={`${i}-${mensaje.texto}`}
-          className={`charla-burbuja max-w-[78%] rounded-[10px] px-3 py-2 font-lectura text-xs leading-snug ${
+          className={`charla-burbuja max-w-[78%] rounded-2xl px-3 py-2 font-lectura text-xs leading-snug ${
             mensaje.tuyo
               ? "self-start rounded-bl-[2px] border border-profundo bg-negro text-blanco"
               : "self-end rounded-br-[2px] bg-[#7BD389] text-negro"
@@ -173,7 +173,7 @@ function Contacto({ vivo }: { vivo: boolean }) {
 
 function Etiqueta({ color, children }: { color: string; children: string }) {
   return (
-    <span className="absolute left-4 top-4 flex items-center gap-2 bg-negro/75 px-2.5 py-1.5 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco backdrop-blur-sm">
+    <span className="absolute left-4 top-4 flex items-center gap-2 bg-negro/75 px-2.5 py-1.5 font-lectura text-sm font-medium text-blanco backdrop-blur-sm">
       <span aria-hidden className="size-1.5" style={{ background: color }} />
       {children}
     </span>

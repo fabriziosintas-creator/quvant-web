@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState, type KeyboardEvent } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import { NICHOS } from "@/datos/nucleo";
 import { Grano } from "@/componentes/estructura/Grano";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { VideoForja } from "@/componentes/secciones/VideoForja";
+import { ACENTO_NICHO } from "@/datos/colores";
 import { PLATAFORMAS } from "@/datos/textos";
 
 type Rubro = (typeof PLATAFORMAS.rubros.items)[number];
@@ -16,7 +18,7 @@ function ChipEstado({ estado }: { estado: Estado }) {
   const disponible = estado === "disponible";
   return (
     <span
-      className={`shrink-0 border px-2 py-1 font-plex text-xs font-medium uppercase tracking-etiqueta ${
+      className={`shrink-0 border px-2 py-1 font-lectura text-sm font-medium ${
         disponible ? "border-[var(--acento)] text-blanco" : "border-profundo text-acero"
       }`}
     >
@@ -30,13 +32,13 @@ function FotoRubro({ id }: { id: string }) {
   const foto = NICHOS.find((n) => n.id === id)?.foto;
   if (!foto) return null;
   return (
-    <div className="relative mb-6 aspect-[21/9] overflow-hidden rounded-[10px] border border-profundo bg-negro">
+    <div className="relative mb-6 aspect-[21/9] overflow-hidden rounded-2xl border border-profundo bg-negro">
       <Image
         src={foto.src}
         alt={foto.alt}
         fill
         sizes="(min-width: 1024px) 50vw, 100vw"
-        className="foto-bn object-cover"
+        className="foto-real object-cover"
       />
       <Grano />
       <div
@@ -56,6 +58,16 @@ export function SelectorRubros() {
   const rubros = PLATAFORMAS.rubros.items;
   const [activo, setActivo] = useState<IdRubro>(rubros[0].id);
   const botones = useRef<Array<HTMLButtonElement | null>>([]);
+
+  // "#rubro-gimnasios" (desde la cuenta: "Mirá la plantilla de tu rubro")
+  // abre ese rubro y lleva hasta los rubros.
+  useEffect(() => {
+    const id = window.location.hash.match(/^#rubro-([a-z]+)$/)?.[1];
+    const rubro = rubros.find((item) => item.id === id);
+    if (!rubro) return;
+    queueMicrotask(() => setActivo(rubro.id));
+    document.getElementById("rubros")?.scrollIntoView({ block: "start" });
+  }, [rubros]);
 
   const alTeclear = (evento: KeyboardEvent<HTMLButtonElement>, indice: number) => {
     const ultimo = rubros.length - 1;
@@ -99,9 +111,7 @@ export function SelectorRubros() {
               className="group flex w-full items-center justify-between gap-4 border-b border-profundo py-4 text-left first:border-t md:py-5"
             >
               {/* El nombre baja de renglón en vez de cortarse ("INDUSTRI…", "GIMNASIOS Y FIT…"). */}
-              <span className="flex min-w-0 items-baseline gap-3 sm:gap-4">
-                <span className="font-plex text-xs text-acero">0{indice + 1}</span>
-                <span
+              <span className="flex min-w-0 items-baseline gap-3 sm:gap-4">                <span
                   className={`min-w-0 font-michroma text-sm uppercase leading-snug tracking-[0.12em] transition-colors group-hover:text-blanco sm:text-base sm:tracking-marca lg:text-lg ${
                     seleccionado ? "text-blanco" : "text-acero"
                   }`}
@@ -131,32 +141,33 @@ export function SelectorRubros() {
             id={`panel-${item.id}`}
             aria-labelledby={`pestania-${item.id}`}
             hidden={item.id !== activo}
+            data-nicho={item.id}
           >
             <FotoRubro id={item.id} />
-            <p className="font-lectura text-[15px] leading-relaxed text-acero">{item.descripcion}</p>
+            <p className="font-lectura text-[15px] leading-relaxed text-blanco">{item.descripcion}</p>
 
             {item.productos.length > 0 ? (
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {item.productos.map((producto) => (
-                  <TarjetaViva key={producto.nombre} className="border border-profundo p-6">
+                  <TarjetaViva key={producto.nombre} className="rounded-2xl bg-profundo/35 p-6">
                     <article className="flex flex-col gap-3">
                     <div>
                       <h4 className="font-michroma text-base uppercase tracking-marca text-blanco md:text-lg">
                         {producto.nombre}
                       </h4>
                       {producto.firma ? (
-                        <p className="mt-1.5 font-plex text-xs uppercase tracking-etiqueta text-acero">
+                        <p className="mt-1.5 font-lectura text-sm text-acero">
                           {producto.firma}
                         </p>
                       ) : null}
                     </div>
-                    <p className="font-lectura text-[15px] leading-relaxed text-acero">{producto.rol}</p>
+                    <p className="font-lectura text-[15px] leading-relaxed text-blanco">{producto.rol}</p>
                     </article>
                   </TarjetaViva>
                 ))}
               </div>
             ) : (
-              <div className="mt-6 border border-profundo p-8 text-center md:p-12">
+              <div className="mt-6 rounded-2xl bg-profundo/35 p-8 text-center md:p-12">
                 <p className="font-michroma text-xl uppercase tracking-marca text-blanco md:text-2xl">
                   {PLATAFORMAS.estados[item.estado]}
                 </p>
@@ -164,6 +175,18 @@ export function SelectorRubros() {
               </div>
             )}
 
+            {/* Al registro con este rubro ya elegido (y anotado de dónde vino). */}
+            <div className="mt-6 flex flex-col gap-3 border-t border-profundo pt-6 sm:flex-row sm:items-center sm:justify-between">
+              <p className="font-lectura text-sm leading-relaxed text-acero">{PLATAFORMAS.rubros.registrarmeNota}</p>
+              <Link
+                href={`/registro?nicho=${item.id}&origen=plataformas-rubros`}
+                style={{ "--acento": ACENTO_NICHO[item.id] } as CSSProperties}
+                className="rounded-full inline-flex h-11 shrink-0 items-center justify-center gap-2 border border-[var(--acento)] px-5 font-lectura text-sm font-medium text-blanco transition-colors hover:bg-profundo/60"
+              >
+                <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
+                {PLATAFORMAS.rubros.registrarme}
+              </Link>
+            </div>
           </div>
         ))}
       </div>

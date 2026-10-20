@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, type CSSProperties } from "react";
 import { tipoTransicion } from "@/componentes/canales/navegacion";
+import { EnlaceCuenta } from "@/componentes/cuenta/EnlaceCuenta";
 import { Logotipo } from "@/componentes/marca/Logotipo";
 import { ACENTO_CANAL } from "@/datos/colores";
-import { PROYECTOS } from "@/datos/portfolio";
 import { ACCESIBILIDAD, CANALES, NAVEGACION } from "@/datos/textos";
 import { InterruptorVista } from "./InterruptorVista";
 
@@ -14,16 +14,15 @@ import { InterruptorVista } from "./InterruptorVista";
 const EN_LA_PILDORA = CANALES.filter((canal) => canal.id !== "contacto");
 const CONTACTO = CANALES.find((canal) => canal.id === "contacto")!;
 
-/** Al lado de cada canal, cuánto hay adentro (como los contadores de basement). */
-const CONTADOR: Partial<Record<string, number>> = { trabajos: PROYECTOS.length };
-
 /**
  * El encabezado fijo, translúcido.
  *
  * Computadora: la firma a la izquierda, los canales en una píldora al
  * centro (el actual en blanco, con su color) y a la derecha el interruptor
  * 3D / texto y "Hablemos".
- * Celular: la firma y "Hablemos". Los canales están en la barra de abajo
+ * Antes de "Hablemos", la cuenta: "Ingresar", "Mi cuenta" y "Panel"
+ * (solo admin), ver EnlaceCuenta.
+ * Celular: la firma, la cuenta y "Hablemos". Los canales están en la barra de abajo
  * (DockCanales), al alcance del pulgar.
  *
  * Lleva su propio nombre de transición: al cambiar de canal la página se
@@ -89,7 +88,6 @@ export function Encabezado() {
           <ul className="flex items-center gap-0.5 rounded-full border border-profundo bg-profundo/30 p-1">
             {EN_LA_PILDORA.map((canal) => {
               const activo = ruta === canal.ruta;
-              const cantidad = CONTADOR[canal.id];
               return (
                 <li key={canal.id}>
                   <Link
@@ -97,7 +95,7 @@ export function Encabezado() {
                     aria-current={activo ? "page" : undefined}
                     transitionTypes={[tipoTransicion(ruta, canal.ruta)]}
                     style={{ "--acento": ACENTO_CANAL[canal.id] } as CSSProperties}
-                    className={`group flex items-center gap-2 rounded-full px-3 py-2 font-plex text-[11px] font-medium uppercase tracking-etiqueta transition-colors lg:px-4 lg:text-xs ${
+                    className={`group flex items-center gap-2 rounded-full px-3 py-2 font-lectura text-[13px] font-medium transition-colors lg:px-4 lg:text-xs ${
                       activo ? "bg-blanco text-negro" : "text-acero hover:text-blanco"
                     }`}
                   >
@@ -108,11 +106,6 @@ export function Encabezado() {
                       }`}
                     />
                     {canal.nombre}
-                    {cantidad ? (
-                      <span className={`hidden lg:inline ${activo ? "text-negro/50" : "text-acero/60"}`}>
-                        {cantidad}
-                      </span>
-                    ) : null}
                   </Link>
                 </li>
               );
@@ -122,11 +115,13 @@ export function Encabezado() {
 
         <div className="flex shrink-0 items-center gap-3">
           <InterruptorVista corto className="hidden lg:flex" />
+          <EnlaceCuenta />
           <Link
             href={CONTACTO.ruta}
             aria-current={enContacto ? "page" : undefined}
+            data-medir="contacto"
             transitionTypes={[tipoTransicion(ruta, CONTACTO.ruta)]}
-            className={`inline-flex h-9 items-center gap-2 px-4 font-plex text-xs font-medium uppercase tracking-[0.14em] transition-colors md:h-10 md:px-5 ${
+            className={`rounded-full inline-flex h-9 items-center gap-2 px-4 font-lectura text-sm font-medium transition-colors md:h-10 md:px-5 ${
               enContacto
                 ? "border border-blanco text-blanco"
                 : "bg-blanco text-negro hover:bg-acero"

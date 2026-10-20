@@ -55,7 +55,7 @@ export function SiguienteCanal({ id }: { id: IdCanal }) {
                 "radial-gradient(ellipse 50% 70% at 50% 100%, color-mix(in srgb, var(--hacia) 18%, transparent), transparent 70%)",
             }}
           />
-          <span className="relative flex items-center justify-center gap-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+          <span className="relative flex items-center justify-center gap-3 font-lectura text-sm font-medium text-acero">
             <span aria-hidden className="size-1.5 bg-[var(--hacia)]" />
             {NAVEGACION.siguiente}
           </span>

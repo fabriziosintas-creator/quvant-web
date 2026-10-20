@@ -1,0 +1,2 @@
+Confirm signup: Confirmá tu email para entrar a Quvant
+Reset password: Elegí tu contraseña nueva de Quvant

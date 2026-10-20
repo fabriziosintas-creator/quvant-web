@@ -338,7 +338,6 @@ export function RecorridoTablero() {
                   </svg>
                   <span className="min-w-0 flex-1">
                     <span className="flex items-baseline gap-3">
-                      <span className="font-plex text-xs text-acero">0{indice + 1}</span>
                       <span
                         className={`titulo text-base leading-snug transition-colors group-hover:text-blanco md:text-[17px] ${
                           seleccionada ? "text-blanco" : "text-acero"
@@ -349,7 +348,7 @@ export function RecorridoTablero() {
                     </span>
                     {/* El texto solo se despliega en la parada activa. */}
                     <span
-                      className={`block overflow-hidden font-lectura text-[15px] leading-relaxed text-acero transition-[max-height,opacity,margin] duration-(--duracion-media) ${
+                      className={`block overflow-hidden font-lectura text-[15px] leading-relaxed text-blanco transition-[max-height,opacity,margin] duration-(--duracion-media) ${
                         seleccionada ? "mt-2 max-h-24 opacity-100" : "mt-0 max-h-0 opacity-0"
                       }`}
                     >
@@ -382,13 +381,13 @@ export function RecorridoTablero() {
             type="button"
             onClick={() => setEnPausa((pausa) => !pausa)}
             aria-label={enPausa ? recorrido.seguir : recorrido.pausar}
-            className="mt-4 flex items-center gap-2 font-plex text-xs uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco"
+            className="mt-4 flex items-center gap-2 font-lectura text-sm text-acero transition-colors hover:text-blanco"
           >
             <span
               aria-hidden
               className={`size-1.5 ${
                 recorriendo
-                  ? "bg-blanco motion-safe:animate-[parpadeo_1.4s_steps(2,end)_infinite]"
+                  ? "bg-blanco motion-safe:animate-[parpadeo_2.2s_ease-in-out_infinite]"
                   : "bg-profundo"
               }`}
             />
@@ -407,12 +406,12 @@ export function RecorridoTablero() {
         ) : null}
       </div>
 
-      {/* La ventana con la pantalla real. */}
+      {/* La pantalla real, apoyada con sombra (clase .pantalla en globals.css). */}
       <figure className="order-1 min-w-0 lg:order-2">
-        <div className="overflow-hidden rounded-[10px] border border-profundo">
-          <figcaption className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
+        <div className="pantalla overflow-hidden">
+          <figcaption className="flex items-center gap-3 px-4 py-2.5">
             <span aria-hidden className="size-1.5 bg-acero" />
-            <span className="min-w-0 truncate font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+            <span className="min-w-0 truncate font-lectura text-sm font-medium text-acero">
               {recorrido.ventana}
             </span>
           </figcaption>
@@ -449,7 +448,7 @@ export function RecorridoTablero() {
             <div
               ref={marco}
               aria-hidden
-              className="pointer-events-none absolute left-0 top-0 rounded-[6px] border border-blanco opacity-0 shadow-[0_0_0_9999px_rgba(13,13,15,0.42)]"
+              className="pointer-events-none absolute left-0 top-0 rounded-lg border border-blanco opacity-0 shadow-[0_0_0_9999px_rgba(13,13,15,0.42)]"
             />
           </div>
         </div>

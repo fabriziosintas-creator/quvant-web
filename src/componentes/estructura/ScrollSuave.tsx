@@ -39,7 +39,8 @@ export function ScrollSuave() {
   useEffect(() => {
     if (vista !== "3d") return;
 
-    const lenis = new Lenis();
+    // Menos suavizado que el de fábrica (0,1): el scroll responde más a la mano.
+    const lenis = new Lenis({ lerp: 0.16 });
     instancia.current = lenis;
     lenis.on("scroll", ScrollTrigger.update);
     const tic = (tiempo: number) => lenis.raf(tiempo * 1000);

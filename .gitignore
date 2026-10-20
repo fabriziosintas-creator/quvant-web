@@ -43,3 +43,6 @@ next-env.d.ts
 # conversaciones del chat al probar en la computadora
 /.datos/
 !.env.example
+
+# vistas previas de los emails (npm run emails:vista)
+/.emails-vista/

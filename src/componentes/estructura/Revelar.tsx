@@ -47,7 +47,7 @@ export function Revelar() {
       const simples = gsap.utils
         .toArray<HTMLElement>('[data-revelar]:not([data-revelar="grupo"])')
         .filter((elemento) => !enPantalla(elemento));
-      gsap.set(simples, { opacity: 0, y: 14 });
+      gsap.set(simples, { opacity: 0, y: 20 });
       ScrollTrigger.batch(simples, {
         start: COMIENZO,
         once: true,
@@ -55,9 +55,9 @@ export function Revelar() {
           gsap.to(lote, {
             opacity: 1,
             y: 0,
-            duration: DURACION.media,
+            duration: DURACION.lenta,
             ease: CURVA.entrar,
-            stagger: 0.05,
+            stagger: 0.1,
             overwrite: true,
           }),
       });
@@ -65,7 +65,7 @@ export function Revelar() {
       for (const grupo of gsap.utils.toArray<HTMLElement>('[data-revelar="grupo"]')) {
         if (enPantalla(grupo)) continue;
         const hijos = Array.from(grupo.children) as HTMLElement[];
-        gsap.set(hijos, { opacity: 0, y: 10 });
+        gsap.set(hijos, { opacity: 0, y: 16 });
         ScrollTrigger.create({
           trigger: grupo,
           start: COMIENZO,
@@ -74,9 +74,9 @@ export function Revelar() {
             gsap.to(hijos, {
               opacity: 1,
               y: 0,
-              duration: DURACION.media,
+              duration: DURACION.lenta,
               ease: CURVA.entrar,
-              stagger: 0.04,
+              stagger: 0.1,
             }),
         });
       }

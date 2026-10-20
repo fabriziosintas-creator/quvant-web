@@ -1,14 +1,16 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
-import { Logotipo } from "@/componentes/marca/Logotipo";
-import { CHAT, PANEL } from "@/datos/textos";
+import { CHAT, PANEL, PANEL_ADMIN } from "@/datos/textos";
 import type { Conversacion, Estado, Mensaje } from "@/servidor/chat/tipos";
 
 /**
- * El panel de mensajes: la bandeja de las charlas del chat de la web.
+ * La bandeja del panel (/panel/mensajes): las charlas del chat de la web.
  *
- * Se entra con la clave del equipo eligiendo quién sos. A la izquierda,
+ * Se entra con la cuenta de admin (el panel lo verifica en el servidor y
+ * las rutas /api/panel también); las respuestas se firman con el nombre de
+ * esa cuenta. A la izquierda,
  * la bandeja (con filtros y lo que falta leer); a la derecha, la charla
  * elegida con su pedido, sus datos de contacto y las acciones: tomarla
  * (el asistente deja de responder), devolverla al asistente, cerrarla o
@@ -20,9 +22,6 @@ import type { Conversacion, Estado, Mensaje } from "@/servidor/chat/tipos";
 
 type Info = {
   sesion: { nombre: string } | null;
-  equipo: string[];
-  configurado: boolean;
-  claveDePrueba: boolean;
   almacen?: "redis" | "archivo" | "memoria";
   ia?: string | null;
   avisos?: "callmebot" | "meta" | "ninguno";
@@ -133,7 +132,7 @@ export function PanelMensajes() {
 
   const totalSinLeer = conversaciones.reduce((suma, c) => suma + c.noLeidos, 0);
   useEffect(() => {
-    document.title = `${totalSinLeer > 0 ? `(${totalSinLeer}) ` : ""}${PANEL.titulo} · Quvant`;
+    document.title = `${totalSinLeer > 0 ? `(${totalSinLeer}) ` : ""}${PANEL.bandeja} · ${PANEL_ADMIN.titulo} · Quvant`;
   }, [totalSinLeer]);
 
   async function accion(nombre: "leer" | "tomar" | "devolver" | "cerrar" | "reabrir" | "responder", texto?: string) {
@@ -147,15 +146,8 @@ export function PanelMensajes() {
     setConversaciones((lista) => lista.map((c) => (c.id === d.conversacion.id ? d.conversacion : c)));
   }
 
-  const salir = async () => {
-    await fetch("/api/panel/sesion", { method: "DELETE" });
-    setConversaciones([]);
-    setElegida(null);
-    void cargarInfo();
-  };
-
-  if (!info) return <div className="min-h-svh bg-negro" />;
-  if (!info.sesion) return <Ingreso info={info} alEntrar={cargarInfo} />;
+  if (!info) return <div className="h-[calc(100svh-var(--alto-panel))] bg-negro" />;
+  if (!info.sesion) return <SinSesion />;
 
   const visibles = conversaciones.filter(FILTRAR[filtro]);
   const avisos = [
@@ -166,13 +158,10 @@ export function PanelMensajes() {
   ].filter(Boolean) as string[];
 
   return (
-    <div className="flex h-svh flex-col bg-negro">
-      <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-profundo px-4 md:px-6">
+    <div className="flex h-[calc(100svh-var(--alto-panel))] flex-col bg-negro">
+      <header className="flex h-12 shrink-0 items-center justify-between gap-4 border-b border-profundo px-4 md:px-6">
         <div className="flex min-w-0 items-center gap-4">
-          <Logotipo idGradiente="q-panel" className="text-[12px]" />
-          <span className="hidden font-plex text-[11px] uppercase tracking-etiqueta text-acero sm:inline">
-            {PANEL.titulo}
-          </span>
+          <span className="font-plex text-[11px] uppercase tracking-etiqueta text-acero">{PANEL.bandeja}</span>
         </div>
         <div className="flex items-center gap-3">
           {info.ia ? (
@@ -181,14 +170,6 @@ export function PanelMensajes() {
               {info.ia}
             </span>
           ) : null}
-          <span className="font-plex text-xs text-blanco">{info.sesion.nombre}</span>
-          <button
-            type="button"
-            onClick={salir}
-            className="border border-profundo px-3 py-1.5 font-plex text-[11px] uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco"
-          >
-            {PANEL.salir}
-          </button>
         </div>
       </header>
 
@@ -485,93 +466,17 @@ function Charla({
   );
 }
 
-function Ingreso({ info, alEntrar }: { info: Info; alEntrar: () => Promise<void> }) {
-  const [nombre, setNombre] = useState(info.equipo[0] ?? "");
-  const [clave, setClave] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [enviando, setEnviando] = useState(false);
-
-  const entrar = async (evento: FormEvent) => {
-    evento.preventDefault();
-    setEnviando(true);
-    setError(null);
-    try {
-      await pedirJson("/api/panel/sesion", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nombre, clave }),
-      });
-      await alEntrar();
-    } catch (falla) {
-      setError(falla instanceof Error ? falla.message : "Error");
-    } finally {
-      setEnviando(false);
-    }
-  };
-
+/** Si la sesión venció mientras la bandeja estaba abierta. */
+function SinSesion() {
   return (
-    <main className="flex min-h-svh items-center justify-center bg-negro px-5">
-      <form onSubmit={entrar} className="w-full max-w-sm border border-profundo p-7 md:p-9">
-        <Logotipo idGradiente="q-ingreso" className="text-[14px]" />
-        <h1 className="mt-8 titulo text-2xl text-blanco">{PANEL.titulo}</h1>
-        {!info.configurado ? (
-          <p className="mt-6 font-lectura text-sm text-[#F26B5B]">{PANEL.ingreso.sinConfigurar}</p>
-        ) : (
-          <>
-            <fieldset className="mt-7">
-              <legend className="font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
-                {PANEL.ingreso.quien}
-              </legend>
-              <div className="mt-3 grid grid-cols-2 gap-2">
-                {info.equipo.map((persona) => (
-                  <label
-                    key={persona}
-                    className={`cursor-pointer border px-3 py-2.5 text-center font-plex text-sm transition-colors ${
-                      persona === nombre ? "border-blanco text-blanco" : "border-profundo text-acero hover:text-blanco"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="nombre"
-                      value={persona}
-                      checked={persona === nombre}
-                      onChange={() => setNombre(persona)}
-                      className="sr-only"
-                    />
-                    {persona}
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-            <label htmlFor="panel-clave" className="mt-6 block font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero">
-              {PANEL.ingreso.clave}
-            </label>
-            <input
-              id="panel-clave"
-              type="password"
-              autoComplete="current-password"
-              value={clave}
-              onChange={(evento) => setClave(evento.target.value)}
-              className="mt-2 h-11 w-full border border-profundo bg-negro px-3 font-plex text-sm text-blanco focus:border-acero focus:outline-none"
-            />
-            {error ? (
-              <p role="alert" className="mt-3 font-lectura text-sm text-[#F26B5B]">
-                {error}
-              </p>
-            ) : null}
-            <button
-              type="submit"
-              disabled={enviando || !clave}
-              className="mt-6 h-12 w-full bg-blanco font-plex text-[12px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero disabled:opacity-40"
-            >
-              {PANEL.ingreso.entrar}
-            </button>
-            {info.claveDePrueba ? (
-              <p className="mt-4 font-lectura text-xs text-acero">{PANEL.ingreso.claveDePrueba}</p>
-            ) : null}
-          </>
-        )}
-      </form>
+    <main className="flex h-[calc(100svh-var(--alto-panel))] flex-col items-center justify-center gap-5 bg-negro px-5 text-center">
+      <p className="font-lectura text-base text-acero">{PANEL_ADMIN.bandeja.sinSesion}</p>
+      <Link
+        href="/ingresar?siguiente=/panel/mensajes"
+        className="inline-flex h-11 items-center bg-blanco px-6 font-plex text-xs font-medium uppercase tracking-[0.14em] text-negro hover:bg-acero"
+      >
+        {PANEL_ADMIN.bandeja.ingresar}
+      </Link>
     </main>
   );
 }

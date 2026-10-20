@@ -19,6 +19,8 @@ export type CasoWeb = {
   etiqueta: string;
   titulo: string;
   descripcionCliente: string;
+  /** El caso como historia, en tres momentos cortos: quiénes son, lo que vimos, lo que propusimos. */
+  historia: { quienes: string; vimos: string; propusimos: string };
   puntos: readonly string[];
   escritorio: { antes: ImagenCaso; despues: ImagenCaso };
   celular: { antes: ImagenCaso; despues: ImagenCaso };
@@ -47,6 +49,14 @@ export const CASOS: readonly CasoWeb[] = [
     titulo: "Propuesta de rediseño para Ferremix: catálogo con precio y stock desde el celular.",
     descripcionCliente:
       "Ferretería industrial de Moreno, mayorista y minorista: STIHL, Husqvarna, Niwa, Milwaukee y servicio técnico.",
+    historia: {
+      quienes:
+        "Ferremix es una ferretería industrial de Moreno. Venden STIHL, Husqvarna, Niwa y Milwaukee, al por mayor y al mostrador, y tienen servicio técnico propio.",
+      vimos:
+        "Su web no se adaptaba al celular, que es desde donde la mayoría la abre, y no mostraba precio ni stock: para saber si había algo, había que llamar.",
+      propusimos:
+        "Una web pensada primero para el celular, con el catálogo por categoría, precio y stock a la vista, y un botón para pedir presupuesto sin vueltas. Es una propuesta: Ferremix decide si la lleva adelante.",
+    },
     puntos: [
       "Pensada para el celular.",
       "Catálogo por categoría con precio y stock.",
@@ -87,7 +97,7 @@ export const CASOS: readonly CasoWeb[] = [
     },
     enlaces: {
       demo: { url: "https://yunque-rust.vercel.app/demo/ferremix#1", texto: "Pasar la demo" },
-      propuesta: { url: "https://ferremix-propuesta.vercel.app/", texto: "Ver propuesta" },
+      propuesta: { url: "https://ferremix-propuesta.vercel.app/", texto: "Ver la propuesta para Ferremix" },
     },
   },
 ];
