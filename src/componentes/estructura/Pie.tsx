@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { AuroraFondo } from "@/componentes/estructura/AuroraFondo";
-import { InterruptorVista } from "@/componentes/estructura/InterruptorVista";
 import { urlInstagram, CONTACTO } from "@/datos/contacto";
 import { CANALES, MARCA, PIE } from "@/datos/textos";
 
@@ -8,8 +7,7 @@ import { CANALES, MARCA, PIE } from "@/datos/textos";
  * Pie de página. Arriba, el cierre: QUVANT gigante en Michroma a todo el
  * ancho, letra por letra en cascada al llegar (la Q vuelve como trofeo,
  * como pedía el estudio). Es la única firma del pie: abajo van la frase,
- * los canales, Instagram y los derechos. En pantallas sin el interruptor
- * 3D / texto arriba, va acá.
+ * los canales, Instagram y los derechos.
  */
 export function Pie() {
   const letras = Array.from(MARCA.logotipo);
@@ -92,7 +90,6 @@ export function Pie() {
               {PIE.privacidad}
             </Link>
           </p>
-          <InterruptorVista className="lg:hidden" />
           <span aria-hidden className="hidden size-1.5 bg-acero lg:inline-block" />
         </div>
       </div>

@@ -7,10 +7,10 @@ import { useSyncExternalStore } from "react";
  * "texto" apaga todos los lienzos 3D, el scroll suave y las animaciones
  * grandes; la Q se muestra en SVG con el degradado del manual.
  *
- * La decisión inicial, en orden:
- *  1. La elección guardada en localStorage ("quvant-vista").
- *  2. prefers-reduced-motion → texto.
- *  3. Sin WebGL → texto (y el interruptor ni se ofrece).
+ * Ya no se elige a mano (el interruptor 3D / texto se sacó el 20-oct-2026):
+ * la decide el navegador al cargar.
+ *  1. prefers-reduced-motion → texto.
+ *  2. Sin WebGL → texto.
  * En el servidor la vista es "decidiendo" y no se dibuja ninguna variante.
  */
 
@@ -19,7 +19,6 @@ export type VistaSnapshot = Vista | "decidiendo";
 
 let vistaActual: Vista | null = null;
 let webglDecidido: boolean | null = null;
-const oyentes = new Set<() => void>();
 
 export function hayWebGL(): boolean {
   if (webglDecidido === null) {
@@ -34,16 +33,13 @@ export function hayWebGL(): boolean {
 }
 
 function decidirVistaInicial(): Vista {
-  let guardada: string | null = null;
   try {
-    guardada = localStorage.getItem("quvant-vista");
+    // La elección que dejó el interruptor viejo ya no cuenta: se borra.
+    localStorage.removeItem("quvant-vista");
   } catch {
-    // Sin localStorage (modo privado, etc.) se decide solo por capacidades.
+    // Sin localStorage (modo privado, etc.) no hay nada que borrar.
   }
-  if (guardada === "texto") return "texto";
-  if (guardada !== "3d" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    return "texto";
-  }
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return "texto";
   return hayWebGL() ? "3d" : "texto";
 }
 
@@ -62,25 +58,8 @@ export function obtenerVista(): VistaSnapshot {
 
 export const obtenerVistaEnServidor = (): VistaSnapshot => "decidiendo";
 
-export function fijarVista(vista: Vista) {
-  if (vista === "3d" && !hayWebGL()) return;
-  if (vista === vistaActual) return;
-  vistaActual = vista;
-  reflejarEnDocumento(vista);
-  try {
-    localStorage.setItem("quvant-vista", vista);
-  } catch {
-    // Si no se puede guardar, la elección vale igual durante esta pestaña.
-  }
-  for (const avisar of oyentes) avisar();
-}
-
-export function suscribirVista(avisar: () => void) {
-  oyentes.add(avisar);
-  return () => {
-    oyentes.delete(avisar);
-  };
-}
+/** La vista no cambia después de decidirse: no hay nada que escuchar. */
+const suscribirVista = () => () => {};
 
 /** La vista actual, reactiva: "decidiendo" en el servidor, "3d"/"texto" en el navegador. */
 export function useVista(): VistaSnapshot {

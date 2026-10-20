@@ -8,7 +8,6 @@ import { EnlaceCuenta } from "@/componentes/cuenta/EnlaceCuenta";
 import { Logotipo } from "@/componentes/marca/Logotipo";
 import { ACENTO_CANAL } from "@/datos/colores";
 import { ACCESIBILIDAD, CANALES, NAVEGACION } from "@/datos/textos";
-import { InterruptorVista } from "./InterruptorVista";
 
 /** Contacto va aparte, como botón: el resto son los canales de la píldora. */
 const EN_LA_PILDORA = CANALES.filter((canal) => canal.id !== "contacto");
@@ -18,8 +17,7 @@ const CONTACTO = CANALES.find((canal) => canal.id === "contacto")!;
  * El encabezado fijo, translúcido.
  *
  * Computadora: la firma a la izquierda, los canales en una píldora al
- * centro (el actual en blanco, con su color) y a la derecha el interruptor
- * 3D / texto y "Hablemos".
+ * centro (el actual en blanco, con su color) y a la derecha "Hablemos".
  * Antes de "Hablemos", la cuenta: "Ingresar", "Mi cuenta" y "Panel"
  * (solo admin), ver EnlaceCuenta.
  * Celular: la firma, la cuenta y "Hablemos". Los canales están en la barra de abajo
@@ -114,7 +112,6 @@ export function Encabezado() {
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
-          <InterruptorVista corto className="hidden lg:flex" />
           <EnlaceCuenta />
           <Link
             href={CONTACTO.ruta}

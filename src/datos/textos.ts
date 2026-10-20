@@ -113,15 +113,6 @@ export const NAVEGACION = {
   panel: "Panel",
 } as const;
 
-/** Interruptor 3D / texto: arriba en la computadora, en el pie en el celular. */
-export const INTERRUPTOR_VISTA = {
-  etiqueta: "Elegir cómo ver el sitio",
-  opcion3d: "Con animaciones",
-  opcionTexto: "Versión liviana",
-  corto3d: "Animada",
-  cortoTexto: "Liviana",
-} as const;
-
 export const ACCESIBILIDAD = {
   saltarAlContenido: "Saltar al contenido",
   irAlInicio: "Quvant — ir al inicio",
