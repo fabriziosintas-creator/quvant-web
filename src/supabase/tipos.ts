@@ -1,5 +1,3 @@
-// Generado con: npx.cmd supabase gen types typescript --linked --schema public
-// No editar a mano: se regenera después de cada migración.
 export type Json =
   | string
   | number
@@ -198,7 +196,7 @@ export type Database = {
           creado_en?: string
           es_prueba?: boolean
           fecha?: string
-          id?: number
+          id?: never
           meta_id: string
           nota?: string | null
           valor: number
@@ -208,12 +206,27 @@ export type Database = {
           creado_en?: string
           es_prueba?: boolean
           fecha?: string
-          id?: number
+          id?: never
           meta_id?: string
           nota?: string | null
           valor?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "avances_manuales_cargado_por_fkey"
+            columns: ["cargado_por"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "avances_manuales_meta_id_fkey"
+            columns: ["meta_id"]
+            isOneToOne: false
+            referencedRelation: "metas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       clientes_plantilla: {
         Row: {
@@ -419,7 +432,29 @@ export type Database = {
           nota?: string | null
           tipo?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "cobros_quvant_cargado_por_fkey"
+            columns: ["cargado_por"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cobros_quvant_cliente_plantilla_id_fkey"
+            columns: ["cliente_plantilla_id"]
+            isOneToOne: false
+            referencedRelation: "clientes_plantilla"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cobros_quvant_nicho_id_fkey"
+            columns: ["nicho_id"]
+            isOneToOne: false
+            referencedRelation: "nichos"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       eventos: {
         Row: {
@@ -469,6 +504,24 @@ export type Database = {
           },
         ]
       }
+      geocodificaciones: {
+        Row: {
+          clave: string
+          creado_en: string
+          resultado: Json
+        }
+        Insert: {
+          clave: string
+          creado_en?: string
+          resultado: Json
+        }
+        Update: {
+          clave?: string
+          creado_en?: string
+          resultado?: Json
+        }
+        Relationships: []
+      }
       indicadores_diarios: {
         Row: {
           cliente_id: string
@@ -507,24 +560,6 @@ export type Database = {
           },
         ]
       }
-      geocodificaciones: {
-        Row: {
-          clave: string
-          creado_en: string
-          resultado: Json
-        }
-        Insert: {
-          clave: string
-          creado_en?: string
-          resultado: Json
-        }
-        Update: {
-          clave?: string
-          creado_en?: string
-          resultado?: Json
-        }
-        Relationships: []
-      }
       locales: {
         Row: {
           actualizado_en: string
@@ -538,17 +573,17 @@ export type Database = {
           estado: Database["public"]["Enums"]["estado_local"]
           id: string
           latitud: number | null
+          link_google_maps: string | null
           longitud: number | null
           nicho_id: string | null
           nombre: string
           origen: Database["public"]["Enums"]["origen_local"]
-          link_google_maps: string | null
           osm_id: string | null
-          ubicacion_pendiente: boolean
           provincia: string | null
           proxima_visita: string | null
           rubro: string | null
           telefono: string | null
+          ubicacion_pendiente: boolean
           volver: Database["public"]["Enums"]["volver"] | null
           web: string | null
         }
@@ -564,17 +599,17 @@ export type Database = {
           estado?: Database["public"]["Enums"]["estado_local"]
           id?: string
           latitud?: number | null
+          link_google_maps?: string | null
           longitud?: number | null
           nicho_id?: string | null
           nombre: string
           origen?: Database["public"]["Enums"]["origen_local"]
-          link_google_maps?: string | null
           osm_id?: string | null
-          ubicacion_pendiente?: boolean
           provincia?: string | null
           proxima_visita?: string | null
           rubro?: string | null
           telefono?: string | null
+          ubicacion_pendiente?: boolean
           volver?: Database["public"]["Enums"]["volver"] | null
           web?: string | null
         }
@@ -590,17 +625,17 @@ export type Database = {
           estado?: Database["public"]["Enums"]["estado_local"]
           id?: string
           latitud?: number | null
+          link_google_maps?: string | null
           longitud?: number | null
           nicho_id?: string | null
           nombre?: string
           origen?: Database["public"]["Enums"]["origen_local"]
-          link_google_maps?: string | null
           osm_id?: string | null
-          ubicacion_pendiente?: boolean
           provincia?: string | null
           proxima_visita?: string | null
           rubro?: string | null
           telefono?: string | null
+          ubicacion_pendiente?: boolean
           volver?: Database["public"]["Enums"]["volver"] | null
           web?: string | null
         }
@@ -623,8 +658,8 @@ export type Database = {
       }
       metas: {
         Row: {
-          acumulacion: string
           actualizado_en: string
+          acumulacion: string
           archivada: boolean
           area: string
           clave_plan: string | null
@@ -650,8 +685,8 @@ export type Database = {
           unidad: string
         }
         Insert: {
-          acumulacion: string
           actualizado_en?: string
+          acumulacion: string
           archivada?: boolean
           area: string
           clave_plan?: string | null
@@ -677,8 +712,8 @@ export type Database = {
           unidad: string
         }
         Update: {
-          acumulacion?: string
           actualizado_en?: string
+          acumulacion?: string
           archivada?: boolean
           area?: string
           clave_plan?: string | null
@@ -703,7 +738,22 @@ export type Database = {
           tipo_periodo?: string
           unidad?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "metas_creado_por_fkey"
+            columns: ["creado_por"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "metas_repite_de_fkey"
+            columns: ["repite_de"]
+            isOneToOne: false
+            referencedRelation: "metas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       metas_cambios: {
         Row: {
@@ -719,7 +769,7 @@ export type Database = {
         Insert: {
           campo: string
           creado_en?: string
-          id?: number
+          id?: never
           meta_id: string
           motivo: string
           quien?: string | null
@@ -729,14 +779,29 @@ export type Database = {
         Update: {
           campo?: string
           creado_en?: string
-          id?: number
+          id?: never
           meta_id?: string
           motivo?: string
           quien?: string | null
           valor_anterior?: string | null
           valor_nuevo?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "metas_cambios_meta_id_fkey"
+            columns: ["meta_id"]
+            isOneToOne: false
+            referencedRelation: "metas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "metas_cambios_quien_fkey"
+            columns: ["quien"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       metas_cierres: {
         Row: {
@@ -754,7 +819,7 @@ export type Database = {
           cerrado_en?: string
           desde: string
           hasta: string
-          id?: number
+          id?: never
           meta: number
           meta_id: string
           porcentaje?: number | null
@@ -765,14 +830,22 @@ export type Database = {
           cerrado_en?: string
           desde?: string
           hasta?: string
-          id?: number
+          id?: never
           meta?: number
           meta_id?: string
           porcentaje?: number | null
           resultado?: string
           valor?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "metas_cierres_meta_id_fkey"
+            columns: ["meta_id"]
+            isOneToOne: false
+            referencedRelation: "metas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       metas_fotos: {
         Row: {
@@ -796,7 +869,15 @@ export type Database = {
           porcentaje?: number | null
           valor?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "metas_fotos_meta_id_fkey"
+            columns: ["meta_id"]
+            isOneToOne: false
+            referencedRelation: "metas"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       navegadores_equipo: {
         Row: {
@@ -990,7 +1071,15 @@ export type Database = {
           mes?: string
           pesos_por_dolar?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "tipo_cambio_mensual_cargado_por_fkey"
+            columns: ["cargado_por"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       visitas: {
         Row: {
@@ -1072,17 +1161,17 @@ export type Database = {
           estado: Database["public"]["Enums"]["estado_local"] | null
           id: string | null
           latitud: number | null
+          link_google_maps: string | null
           longitud: number | null
           nicho_id: string | null
           nombre: string | null
           origen: Database["public"]["Enums"]["origen_local"] | null
-          link_google_maps: string | null
           osm_id: string | null
-          ubicacion_pendiente: boolean | null
           provincia: string | null
           proxima_visita: string | null
           rubro: string | null
           telefono: string | null
+          ubicacion_pendiente: boolean | null
           ultima_visita: string | null
           ultimo_feedback: Database["public"]["Enums"]["feedback"] | null
           ultimo_visitante_id: string | null
@@ -1117,7 +1206,11 @@ export type Database = {
     Functions: {
       atencion_nicho: {
         Args: { desde: string; hasta: string; nicho: string }
-        Returns: { detalle: string; tipo: string; visitas: number }[]
+        Returns: {
+          detalle: string
+          tipo: string
+          visitas: number
+        }[]
       }
       embudo_nicho: {
         Args: { desde: string; hasta: string; nicho: string }
@@ -1139,7 +1232,10 @@ export type Database = {
       resumen_visitas: { Args: never; Returns: Json }
       visitantes_por_dia: {
         Args: { desde: string; hasta: string }
-        Returns: { dia: string; visita_id: string }[]
+        Returns: {
+          dia: string
+          visita_id: string
+        }[]
       }
     }
     Enums: {
@@ -1154,16 +1250,16 @@ export type Database = {
       origen_local: "manual" | "importado"
       rol: "usuario" | "admin"
       tipo_evento:
-        | "visita"
-        | "tiempo_nicho"
-        | "profundidad_nicho"
-        | "origen"
         | "vista_nicho"
         | "clic_demo"
         | "clic_contacto"
         | "inicio_registro"
         | "registro_completo"
         | "email_confirmado"
+        | "visita"
+        | "tiempo_nicho"
+        | "profundidad_nicho"
+        | "origen"
       volver: "si" | "mas_adelante" | "no"
     }
     CompositeTypes: {
@@ -1304,16 +1400,16 @@ export const Constants = {
       origen_local: ["manual", "importado"],
       rol: ["usuario", "admin"],
       tipo_evento: [
-        "visita",
-        "tiempo_nicho",
-        "profundidad_nicho",
-        "origen",
         "vista_nicho",
         "clic_demo",
         "clic_contacto",
         "inicio_registro",
         "registro_completo",
         "email_confirmado",
+        "visita",
+        "tiempo_nicho",
+        "profundidad_nicho",
+        "origen",
       ],
       volver: ["si", "mas_adelante", "no"],
     },
