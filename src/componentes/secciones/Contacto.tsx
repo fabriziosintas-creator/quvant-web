@@ -1,5 +1,7 @@
 import { BotonAbrirChat } from "@/componentes/chat/BotonAbrirChat";
+import { Cara } from "@/componentes/estructura/Foto";
 import { CONTACTO, urlEmail, urlInstagram, urlWhatsApp } from "@/datos/contacto";
+import { fotoDe } from "@/datos/fotos";
 import { CONTACTO_SECCION } from "@/datos/textos";
 import { FormularioContacto } from "./FormularioContacto";
 
@@ -17,16 +19,43 @@ function Directo({ url, etiqueta, valor }: { url: string; etiqueta: string; valo
   );
 }
 
+/** Las caras de quienes responden. Solo con permiso (src/datos/fotos.ts); en desarrollo, los círculos con el TODO. */
+const CARAS = ["nosotros-michel", "nosotros-fabrizio"] as const;
+
+function QuienesResponden() {
+  const { presentacion } = CONTACTO_SECCION;
+  const hayCaras = process.env.NODE_ENV !== "production" || CARAS.some((id) => fotoDe(id));
+  return (
+    <div className="mb-10 flex items-center gap-5">
+      {hayCaras ? (
+        <span className="flex shrink-0 -space-x-3">
+          {CARAS.map((id) => (
+            <Cara key={id} id={id} tamano="size-12" className="ring-2 ring-negro" />
+          ))}
+        </span>
+      ) : null}
+      <div>
+        <p className="font-lectura text-lg text-blanco md:text-xl">{presentacion.frase}</p>
+        <p className="mt-1 font-lectura text-sm leading-relaxed text-acero">
+          {presentacion.detalle}
+          {presentacion.tiempo ? ` ${presentacion.tiempo}` : ""}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 /**
- * El canal Contacto: el formulario sin servidor, suelto (sin caja), y
- * abajo, en una sola línea, las vías directas: el chat, WhatsApp, email e
- * Instagram.
+ * El canal Contacto: arriba, quiénes responden (web más humana, paso 8);
+ * el formulario corto, suelto (sin caja); y abajo, en una sola línea, las
+ * vías directas: el chat, WhatsApp, email e Instagram.
  */
 export function Contacto() {
   return (
-    <section className="border-t border-profundo">
+    <section>
       <div className="contenedor py-16 md:py-24">
         <div className="max-w-3xl">
+          <QuienesResponden />
           <FormularioContacto />
         </div>
 

@@ -156,22 +156,30 @@ export const INICIO = {
 } as const;
 
 export const CONTACTO_SECCION = {
+  /** Arriba del formulario: quiénes responden (las caras salen de src/datos/fotos.ts, solo con permiso). */
+  presentacion: {
+    frase: "Te respondemos nosotros, no un bot.",
+    detalle: "Michel y Fabrizio leen cada mensaje.",
+    // TODO: fabrizio: si hay un tiempo de respuesta real ("en el día", "antes de 24 horas"), va acá. Vacío, no se muestra.
+    tiempo: "",
+  },
   campos: {
-    nombre: { etiqueta: "Nombre", marcador: "¿Cómo te llamás?" },
-    empresa: { etiqueta: "Empresa (opcional)", marcador: "El nombre de tu empresa" },
-    rubro: { etiqueta: "Rubro", marcador: "Ferretería, gimnasio, inmobiliaria…" },
+    nombre: { etiqueta: "Tu nombre", marcador: "¿Cómo te llamás?" },
     necesidad: {
       etiqueta: "Qué necesitás",
+      /** enMensaje: cómo sigue "Les escribo porque…" en el mensaje que se arma. */
       opciones: [
-        { id: "sistema", texto: "Un sistema listo para mi rubro" },
-        { id: "app", texto: "Una app a medida" },
-        { id: "web", texto: "Una web nueva o renovada" },
+        { id: "sistema", texto: "Un sistema para mi negocio", enMensaje: "busco un sistema para mi negocio" },
+        { id: "app", texto: "Una app a medida", enMensaje: "quiero una app a medida" },
+        { id: "web", texto: "Una web", enMensaje: "necesito una web nueva o renovada" },
       ],
     },
-    mensaje: { etiqueta: "Mensaje", marcador: "Contanos tu situación en dos líneas." },
+    mensaje: { etiqueta: "Contanos un poco", marcador: "Qué hacés, qué te está trabando, qué te gustaría resolver." },
+    empresa: { etiqueta: "Empresa (opcional)", marcador: "El nombre de tu negocio" },
+    rubro: { etiqueta: "Rubro (opcional)", marcador: "Ferretería, gimnasio, inmobiliaria…" },
   },
   botones: { whatsapp: "Enviar por WhatsApp", email: "Prefiero por email" },
-  nota: "El mensaje se abre en tu WhatsApp o tu email, listo para mandar. No guardamos nada en ningún servidor.",
+  nota: "Se abre en tu WhatsApp o en tu email con el mensaje ya escrito; lo podés retocar antes de mandarlo. No guardamos nada.",
   directo: {
     titulo: "¿Ya sabés lo que querés?",
     filas: { whatsapp: "WhatsApp", email: "Email", instagram: "Instagram" },
@@ -222,6 +230,9 @@ export const WEBS = {
   notaCelular: "Con el scroll, el teléfono gira: de la web actual a la propuesta.",
   etiquetaDemo: "La demo, paso a paso",
   etiquetaQueCambio: "Qué cambió",
+  /** El caso como historia (web más humana, paso 7). */
+  historia: { quienes: "Quiénes son", vimos: "Lo que vimos", propusimos: "Lo que propusimos" },
+  testimonios: "Lo que dicen de trabajar con nosotros",
 } as const;
 
 /** El canal Plataformas (título y bajada en CANALES). */
@@ -230,9 +241,6 @@ export const PLATAFORMAS = {
   descripcion:
     "Quvant es el sistema de gestión de tu negocio: un mismo sistema que se acomoda a cómo trabaja tu rubro.",
   hoy: {
-  /** El caso como historia (web más humana, paso 7). */
-  historia: { quienes: "Quiénes son", vimos: "Lo que vimos", propusimos: "Lo que propusimos" },
-  testimonios: "Lo que dicen de trabajar con nosotros",
     etiqueta: "Lo que hace hoy",
     etiquetaResto: "Y además",
     recorrido: {

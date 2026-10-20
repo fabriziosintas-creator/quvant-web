@@ -9,13 +9,13 @@ import { EMAILS } from "@/datos/textos";
  * QUVANT) arriba, el contenido y el pie con la bajada y el contacto.
  *
  * Los emails no cargan las fuentes del sitio en todos los programas: IBM
- * Plex Mono va pedida a Google Fonts y, si no llega, cae en la monoespaciada
- * del sistema. Sin degradados (salvo la Q, que es imagen) y sin colores
- * fuera de la paleta.
+ * Plex Sans (la fuente de lectura de la web, web más humana) va pedida a
+ * Google Fonts y, si no llega, cae en la sans del sistema. Sin degradados
+ * (salvo la Q, que es imagen) y sin colores fuera de la paleta.
  */
 
 export const COLOR = { negro: "#0D0D0F", blanco: "#ECECEE", acero: "#9C9CA3", profundo: "#26262B" } as const;
-export const FUENTE = "'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace";
+export const FUENTE = "'IBM Plex Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif";
 
 export const estilos = {
   titulo: { margin: "0 0 20px", fontFamily: FUENTE, fontSize: "24px", lineHeight: "1.25", fontWeight: 600, color: COLOR.blanco },
@@ -27,12 +27,11 @@ export const estilos = {
     backgroundColor: COLOR.blanco,
     color: COLOR.negro,
     fontFamily: FUENTE,
-    fontSize: "13px",
+    fontSize: "15px",
     fontWeight: 600,
-    letterSpacing: "0.14em",
-    textTransform: "uppercase",
     textDecoration: "none",
-    padding: "16px 26px",
+    padding: "14px 26px",
+    borderRadius: "999px",
   },
   enlace: { color: COLOR.blanco, textDecoration: "underline" },
 } satisfies Record<string, CSSProperties>;
@@ -96,7 +95,7 @@ export function MarcoEmail({
         <meta name="supported-color-schemes" content="dark" />
         {/* Es un email, no una página del sitio: la regla de fuentes de Next no aplica. */}
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
       </Head>
       <Preview>{vistaPrevia}</Preview>
       <Body style={{ margin: 0, padding: "32px 0", backgroundColor: COLOR.negro }}>

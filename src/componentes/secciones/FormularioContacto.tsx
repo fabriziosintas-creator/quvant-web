@@ -5,13 +5,15 @@ import { armarMensajeContacto, urlEmailMensaje, urlWhatsApp } from "@/datos/cont
 import { CONTACTO_SECCION, PLATAFORMAS } from "@/datos/textos";
 
 /**
- * Formulario corto sin servidor: arma el mensaje con lo cargado y lo abre
- * en WhatsApp (envío principal) o en el cliente de email. Campos no
- * controlados: los datos se leen recién al enviar.
+ * Formulario corto y amable (web más humana, paso 8): nombre, qué
+ * necesitás y "contanos un poco"; empresa y rubro, opcionales y al final.
+ * Sin servidor: arma el mensaje con lo cargado, escrito como lo escribiría
+ * una persona, y lo abre en WhatsApp (envío principal) o en el email.
  */
 
 const CLASE_CAMPO =
-  "w-full border border-profundo bg-transparent px-4 py-3 font-plex text-sm text-blanco placeholder:text-acero/60 focus:border-acero focus:outline-none";
+  "w-full rounded-2xl border border-profundo bg-transparent px-4 py-3 font-lectura text-base text-blanco placeholder:text-acero/60 focus:border-acero focus:outline-none md:text-sm";
+const CLASE_ETIQUETA = "mb-2 block font-lectura text-sm font-medium text-acero";
 
 function leerDatos(formulario: HTMLFormElement) {
   const datos = new FormData(formulario);
@@ -21,7 +23,7 @@ function leerDatos(formulario: HTMLFormElement) {
     nombre: String(datos.get("nombre") ?? "").trim(),
     empresa: String(datos.get("empresa") ?? "").trim(),
     rubro: String(datos.get("rubro") ?? "").trim(),
-    necesidad: opcion?.texto ?? "",
+    necesidad: opcion?.enMensaje ?? "",
     mensaje: String(datos.get("mensaje") ?? "").trim(),
   });
 }
@@ -41,30 +43,55 @@ export function FormularioContacto() {
   };
 
   return (
-    <form onSubmit={alEnviarWhatsApp} className="flex flex-col gap-5">
+    <form onSubmit={alEnviarWhatsApp} className="flex flex-col gap-6">
+      <div>
+        <label htmlFor="contacto-nombre" className={CLASE_ETIQUETA}>
+          {campos.nombre.etiqueta}
+        </label>
+        <input
+          id="contacto-nombre"
+          name="nombre"
+          type="text"
+          required
+          autoComplete="name"
+          placeholder={campos.nombre.marcador}
+          className={CLASE_CAMPO}
+        />
+      </div>
+
+      <fieldset>
+        <legend className="mb-3 font-lectura text-sm font-medium text-acero">{campos.necesidad.etiqueta}</legend>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {campos.necesidad.opciones.map((opcion, indice) => (
+            <label
+              key={opcion.id}
+              className="flex min-h-12 cursor-pointer items-center gap-3 rounded-2xl border border-transparent bg-profundo/35 px-4 py-3 transition-colors has-[:checked]:border-acero"
+            >
+              <input type="radio" name="necesidad" value={opcion.id} defaultChecked={indice === 0} className="peer sr-only" />
+              <span aria-hidden className="size-2 shrink-0 border border-acero peer-checked:bg-blanco" />
+              <span className="font-lectura text-sm leading-snug text-acero peer-checked:text-blanco">{opcion.texto}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <div>
+        <label htmlFor="contacto-mensaje" className={CLASE_ETIQUETA}>
+          {campos.mensaje.etiqueta}
+        </label>
+        <textarea
+          id="contacto-mensaje"
+          name="mensaje"
+          required
+          rows={4}
+          placeholder={campos.mensaje.marcador}
+          className={`${CLASE_CAMPO} resize-y`}
+        />
+      </div>
+
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <label
-            htmlFor="contacto-nombre"
-            className="mb-2 block font-lectura text-sm font-medium text-acero"
-          >
-            {campos.nombre.etiqueta}
-          </label>
-          <input
-            id="contacto-nombre"
-            name="nombre"
-            type="text"
-            required
-            autoComplete="name"
-            placeholder={campos.nombre.marcador}
-            className={CLASE_CAMPO}
-          />
-        </div>
-        <div>
-          <label
-            htmlFor="contacto-empresa"
-            className="mb-2 block font-lectura text-sm font-medium text-acero"
-          >
+          <label htmlFor="contacto-empresa" className={CLASE_ETIQUETA}>
             {campos.empresa.etiqueta}
           </label>
           <input
@@ -76,74 +103,24 @@ export function FormularioContacto() {
             className={CLASE_CAMPO}
           />
         </div>
-      </div>
-
-      <div>
-        <label
-          htmlFor="contacto-rubro"
-          className="mb-2 block font-lectura text-sm font-medium text-acero"
-        >
-          {campos.rubro.etiqueta}
-        </label>
-        <input
-          id="contacto-rubro"
-          name="rubro"
-          type="text"
-          list="rubros-sugeridos"
-          placeholder={campos.rubro.marcador}
-          className={CLASE_CAMPO}
-        />
-        <datalist id="rubros-sugeridos">
-          {PLATAFORMAS.rubros.items.map((rubro) => (
-            <option key={rubro.id} value={rubro.nombre} />
-          ))}
-        </datalist>
-      </div>
-
-      <fieldset>
-        <legend className="mb-3 font-lectura text-sm font-medium text-acero">
-          {campos.necesidad.etiqueta}
-        </legend>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {campos.necesidad.opciones.map((opcion, indice) => (
-            <label
-              key={opcion.id}
-              className="flex cursor-pointer items-center gap-3 rounded-2xl border border-transparent bg-profundo/35 px-4 py-3 transition-colors has-[:checked]:border-acero"
-            >
-              <input
-                type="radio"
-                name="necesidad"
-                value={opcion.id}
-                defaultChecked={indice === 0}
-                className="peer sr-only"
-              />
-              <span
-                aria-hidden
-                className="size-2 shrink-0 border border-acero peer-checked:bg-blanco"
-              />
-              <span className="font-plex text-xs leading-snug text-acero peer-checked:text-blanco">
-                {opcion.texto}
-              </span>
-            </label>
-          ))}
+        <div>
+          <label htmlFor="contacto-rubro" className={CLASE_ETIQUETA}>
+            {campos.rubro.etiqueta}
+          </label>
+          <input
+            id="contacto-rubro"
+            name="rubro"
+            type="text"
+            list="rubros-sugeridos"
+            placeholder={campos.rubro.marcador}
+            className={CLASE_CAMPO}
+          />
+          <datalist id="rubros-sugeridos">
+            {PLATAFORMAS.rubros.items.map((rubro) => (
+              <option key={rubro.id} value={rubro.nombre} />
+            ))}
+          </datalist>
         </div>
-      </fieldset>
-
-      <div>
-        <label
-          htmlFor="contacto-mensaje"
-          className="mb-2 block font-lectura text-sm font-medium text-acero"
-        >
-          {campos.mensaje.etiqueta}
-        </label>
-        <textarea
-          id="contacto-mensaje"
-          name="mensaje"
-          required
-          rows={4}
-          placeholder={campos.mensaje.marcador}
-          className={`${CLASE_CAMPO} resize-y`}
-        />
       </div>
 
       <div className="mt-2 flex flex-wrap items-center gap-4">
@@ -161,7 +138,7 @@ export function FormularioContacto() {
           {botones.email}
         </button>
       </div>
-      <p className="font-lectura text-xs leading-relaxed text-acero">{nota}</p>
+      <p className="font-lectura text-sm leading-relaxed text-acero">{nota}</p>
     </form>
   );
 }

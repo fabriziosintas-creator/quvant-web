@@ -117,7 +117,7 @@ function Sugerencia({ perfil }: { perfil: Perfil }) {
 
   return (
     <section className="rounded-2xl bg-profundo/35 p-6 md:p-8">
-      <h2 className="flex items-start gap-3 font-plex text-xs font-medium uppercase leading-relaxed tracking-etiqueta text-acero">
+      <h2 className="flex items-start gap-3 font-lectura text-sm font-medium leading-relaxed text-acero">
         <span aria-hidden className="mt-[7px] size-1.5 shrink-0 bg-[var(--acento)]" />
         {CUENTA.objetivos.find((o) => o.id === perfil.objetivo_id)?.texto}
       </h2>
