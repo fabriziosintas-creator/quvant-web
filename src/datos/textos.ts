@@ -618,14 +618,6 @@ export const CHAT = {
 /** El panel de mensajes del equipo (/panel). */
 export const PANEL = {
   titulo: "Panel de mensajes",
-  ingreso: {
-    quien: "¿Quién sos?",
-    clave: "Clave",
-    entrar: "Entrar",
-    claveDePrueba: "En esta computadora la clave de prueba es «quvant». En producción se define con PANEL_CLAVE.",
-    sinConfigurar: "Falta configurar PANEL_CLAVE en el servidor.",
-  },
-  salir: "Salir",
   bandeja: "Bandeja",
   filtros: {
     todas: "Todas",
@@ -958,4 +950,149 @@ export const EMAILS = {
   },
   /** Para el enlace de respaldo cuando el botón no anda. */
   respaldo: "¿El botón no anda? Copiá este enlace en tu navegador:",
+} as const;
+
+/**
+ * El panel interno (solo admin): resumen de registros, rendimiento de las
+ * plantillas por rubro y la bandeja del chat. "{x}" se reemplaza en el
+ * componente.
+ */
+export const PANEL_ADMIN = {
+  titulo: "Panel",
+  secciones: [
+    { ruta: "/panel", nombre: "Resumen" },
+    { ruta: "/panel/plantillas", nombre: "Plantillas" },
+    { ruta: "/panel/mensajes", nombre: "Bandeja" },
+  ],
+  miCuenta: "Mi cuenta",
+  verWeb: "Ver la web",
+  salir: "Salir",
+  cargando: "Cargando…",
+  /** Los objetivos, cortos, para gráficos y tablas. */
+  objetivosCortos: {
+    mejorar_clientela: "Mejorar su clientela",
+    hacer_web: "Hacer su web",
+    curiosidad: "Curiosidad",
+  },
+  sinRubro: "Sin rubro",
+  resumen: {
+    titulo: "Resumen",
+    bajada: "Quiénes se registran, de qué rubro son y qué buscan. No cuenta las cuentas de admin.",
+    tiles: {
+      hoy: "Registros de hoy",
+      semana: "Esta semana",
+      mes: "Este mes",
+      confirmacion: "Confirmaron el email",
+      deTotal: "{n} de {total}",
+    },
+    porNicho: "Personas por rubro",
+    porObjetivo: "Personas por objetivo",
+    cruce: "Rubro × objetivo",
+    cruceNota: "Cada celda: cuántas personas de ese rubro buscan eso. Cuanto más clara, más personas.",
+    total: "Total",
+    personas: "personas",
+    ultimos: "Últimos registrados",
+    filtros: {
+      titulo: "Filtrar",
+      nicho: "Rubro",
+      objetivo: "Objetivo",
+      ciudad: "Ciudad",
+      desde: "Desde",
+      hasta: "Hasta",
+      novedades: "Novedades",
+      todos: "Todos",
+      si: "Sí",
+      no: "No",
+      aplicar: "Filtrar",
+      limpiar: "Limpiar",
+    },
+    exportar: "Exportar CSV",
+    exportarNota: "Exporta todas las filas del filtro, no solo las que se ven.",
+    columnas: {
+      fecha: "Alta",
+      nombre: "Nombre",
+      email: "Email",
+      nicho: "Rubro",
+      objetivo: "Objetivo",
+      empresa: "Empresa",
+      ciudad: "Ciudad",
+      telefono: "Teléfono",
+      novedades: "Novedades",
+      confirmado: "Confirmó",
+      origen: "Vino desde",
+    },
+    vacio: "No hay registros con estos filtros.",
+    mostrando: "Mostrando {n} de {total}.",
+    sinDatos: "Todavía no se registró nadie. Cuando alguien cree su cuenta, aparece acá.",
+  },
+  plantillas: {
+    titulo: "Rendimiento de plantillas",
+    bajada:
+      "Qué rubro mira la gente, cuál convierte en registros y cuál vende de verdad. Las visitas y los clics se miden en la web sin cookies de terceros; los clientes se cargan a mano abajo.",
+    rango: "Período",
+    rangos: { "7": "7 días", "30": "30 días", "90": "90 días" },
+    ordenar: "Ordenar por",
+    aplicar: "Ver",
+    metricas: {
+      vistas: "Visitas al rubro",
+      clics_demo: "Clics en la demo",
+      clics_contacto: "Clics en Hablemos",
+      inicios_registro: "Empezaron el registro",
+      registros: "Registros",
+      conversion: "Conversión",
+      activos: "Clientes activos",
+      abono: "Abono mensual",
+    },
+    conversionNota: "Registros sobre visitas al rubro.",
+    destacados: {
+      ingresos: "Más ingresos",
+      interes: "Más interés",
+      conversion: "Mejor conversión",
+      menosInteres: "Menos interés",
+      sinDatos: "Sin datos todavía",
+    },
+    clientesPorEstado: "Clientes",
+    estadosCliente: {
+      demo_mostrada: "Demo mostrada",
+      en_prueba: "En prueba",
+      activo: "Activo",
+      baja: "Baja",
+    },
+    estadosRubro: { disponible: "Disponible", "en-diseno": "En diseño", proximamente: "Próximamente", otro: "Sin plantilla" },
+    comparacion: "Comparación entre rubros",
+    sinRubroNota: "Clics en «Hablemos» del encabezado, que no son de ningún rubro.",
+    sinEventos:
+      "Todavía no hay visitas medidas en este período. La medición arranca cuando esta versión de la web esté publicada.",
+  },
+  clientes: {
+    titulo: "Clientes por plantilla",
+    bajada: "Lo que vende de verdad: cargá cada empresa a la que le mostraron una plantilla y cómo sigue.",
+    campos: {
+      empresa: "Empresa",
+      nicho: "Plantilla (rubro)",
+      estado: "Estado",
+      abono: "Abono mensual (opcional, en pesos)",
+      fecha: "Fecha",
+      notas: "Notas (opcional)",
+    },
+    agregar: "Agregar cliente",
+    agregando: "Agregando…",
+    agregado: "Listo, quedó cargado.",
+    cambiarEstado: "Cambiar estado",
+    borrar: "Borrar",
+    confirmarBorrar: "¿Borrar {empresa}? No se puede deshacer.",
+    vacio: "Todavía no hay clientes cargados.",
+    errores: {
+      empresa: "Escribí el nombre de la empresa.",
+      nicho: "Elegí el rubro de la plantilla.",
+      estado: "Elegí el estado.",
+      abono: "El abono tiene que ser un número (sin puntos de miles).",
+      fecha: "Revisá la fecha.",
+      general: "No se pudo guardar. Probá de nuevo.",
+    },
+  },
+  bandeja: {
+    sinSesion: "Tu sesión venció.",
+    ingresar: "Ingresar de nuevo",
+  },
 } as const;

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { ChatQuvant } from "@/componentes/chat/ChatQuvant";
 import { Cursor } from "@/componentes/estructura/Cursor";
+import { MedirRubros } from "@/componentes/medicion/MedirRubros";
 import { DockCanales } from "@/componentes/estructura/DockCanales";
 import { Encabezado } from "@/componentes/estructura/Encabezado";
 import { FocoTactil } from "@/componentes/estructura/FocoTactil";
@@ -30,6 +31,7 @@ export default function LayoutSitio({ children }: { children: ReactNode }) {
       <Revelar />
       <FocoTactil />
       <PausaFueraDeVista />
+      <MedirRubros />
       <Encabezado />
       <main id="contenido" className="flex-1">
         {children}

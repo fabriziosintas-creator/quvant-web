@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState, useEffect, useState } from "react";
+import { idVisita, medir } from "@/componentes/medicion/medir";
 import { CUENTA } from "@/datos/textos";
 import { reenviarConfirmacion, registrarse, type EstadoFormulario } from "@/servidor/cuenta/acciones";
 import { Aviso, CampoContrasena, Campo, Casilla } from "./Campos";
@@ -12,16 +13,6 @@ import { EleccionPerfil } from "./EleccionPerfil";
 const INICIAL: EstadoFormulario = { estado: "inicial" };
 const { campos, registro } = CUENTA;
 
-/** El id anónimo de la visita (lo crea la medición de la web; si no hay, va vacío). */
-const CLAVE_VISITA = "quvant-visita";
-
-function leerVisita() {
-  try {
-    return window.localStorage.getItem(CLAVE_VISITA) ?? "";
-  } catch {
-    return "";
-  }
-}
 
 /**
  * El registro: nombre, email y contraseña; rubro y objetivo (obligatorios);
@@ -31,11 +22,15 @@ function leerVisita() {
  */
 export function FormularioRegistro({ nicho = "", origen = "" }: { nicho?: string; origen?: string }) {
   const [estado, enviar, enviando] = useActionState(registrarse, INICIAL);
+  // El id anónimo de la visita (el mismo de la medición) viaja con el
+  // registro para unir "miró el rubro" con "se registró"; con "no rastrear"
+  // no hay id y va vacío. Y se anota que empezó el registro.
   const [visita, setVisita] = useState("");
   useEffect(() => {
-    const id = leerVisita();
+    const id = idVisita();
     if (id) queueMicrotask(() => setVisita(id));
-  }, []);
+    medir("inicio_registro", nicho || null);
+  }, [nicho]);
 
   if (estado.estado === "listo") {
     return <RevisaTuEmail email={String(estado.valores?.email ?? "")} />;

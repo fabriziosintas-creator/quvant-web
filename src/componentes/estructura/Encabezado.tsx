@@ -129,6 +129,7 @@ export function Encabezado() {
           <Link
             href={CONTACTO.ruta}
             aria-current={enContacto ? "page" : undefined}
+            data-medir="contacto"
             transitionTypes={[tipoTransicion(ruta, CONTACTO.ruta)]}
             className={`inline-flex h-9 items-center gap-2 px-4 font-plex text-xs font-medium uppercase tracking-[0.14em] transition-colors md:h-10 md:px-5 ${
               enContacto

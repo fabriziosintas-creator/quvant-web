@@ -143,6 +143,7 @@ export function SelectorRubros() {
             id={`panel-${item.id}`}
             aria-labelledby={`pestania-${item.id}`}
             hidden={item.id !== activo}
+            data-nicho={item.id}
           >
             <FotoRubro id={item.id} />
             <p className="font-lectura text-[15px] leading-relaxed text-acero">{item.descripcion}</p>

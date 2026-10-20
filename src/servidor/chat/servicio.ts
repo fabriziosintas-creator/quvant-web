@@ -51,7 +51,7 @@ async function agregar(conversacion: Conversacion, mensaje: Mensaje) {
   conversacion.ultimo = { autor: mensaje.autor, texto: mensaje.texto.slice(0, 140) };
 }
 
-const enlacePanel = (id: string) => `${SITIO.url}/panel?c=${id}`;
+const enlacePanel = (id: string) => `${SITIO.url}/panel/mensajes?c=${id}`;
 
 function textoAvisoPedido(id: string, p: Omit<Pedido, "registrado">) {
   return [

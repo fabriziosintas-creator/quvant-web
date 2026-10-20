@@ -5,12 +5,14 @@ import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { WEBS } from "@/datos/textos";
 import { DeslizadorAntesDespues } from "./DeslizadorAntesDespues";
 
-function EnlaceExterno({ url, texto }: { url: string; texto: string }) {
+function EnlaceExterno({ url, texto, medir, nicho }: { url: string; texto: string; medir?: "demo" | "contacto"; nicho?: string }) {
   return (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer"
+      data-medir={medir}
+      data-nicho={nicho}
       className="group inline-flex items-center gap-3 border border-profundo px-5 py-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco transition-colors hover:border-acero"
     >
       <span
@@ -89,7 +91,7 @@ function Caso({ caso }: { caso: CasoWeb }) {
                 <p className="titulo text-base text-blanco">{caso.demo.titulo}</p>
                 <p className="font-lectura text-[15px] leading-relaxed text-acero">{caso.demo.nota}</p>
                 <div className="mt-2">
-                  <EnlaceExterno url={caso.enlaces.demo.url} texto={caso.enlaces.demo.texto} />
+                  <EnlaceExterno url={caso.enlaces.demo.url} texto={caso.enlaces.demo.texto} medir="demo" nicho="industria" />
                 </div>
               </div>
             )}

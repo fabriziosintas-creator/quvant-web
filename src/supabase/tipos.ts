@@ -466,7 +466,19 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      metricas_nichos: {
+        Args: { desde: string }
+        Returns: {
+          clics_contacto: number
+          clics_demo: number
+          confirmados: number
+          inicios_registro: number
+          nicho_id: string
+          registros: number
+          vistas: number
+        }[]
+      }
+      resumen_registros: { Args: never; Returns: Json }
     }
     Enums: {
       estado_cliente: "demo_mostrada" | "en_prueba" | "activo" | "baja"
