@@ -230,6 +230,9 @@ export const PLATAFORMAS = {
   descripcion:
     "Quvant es el sistema de gestión de tu negocio: un mismo sistema que se acomoda a cómo trabaja tu rubro.",
   hoy: {
+  /** El caso como historia (web más humana, paso 7). */
+  historia: { quienes: "Quiénes son", vimos: "Lo que vimos", propusimos: "Lo que propusimos" },
+  testimonios: "Lo que dicen de trabajar con nosotros",
     etiqueta: "Lo que hace hoy",
     etiquetaResto: "Y además",
     recorrido: {

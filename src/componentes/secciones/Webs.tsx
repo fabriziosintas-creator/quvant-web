@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { TelefonoCasoDiferido } from "@/componentes/3d/TelefonoCasoDiferido";
 import { CASOS, CASO_PROXIMO, type CasoWeb } from "@/datos/casos";
+import { Foto } from "@/componentes/estructura/Foto";
 import { TarjetaViva } from "@/componentes/estructura/TarjetaViva";
 import { WEBS } from "@/datos/textos";
 import { DeslizadorAntesDespues } from "./DeslizadorAntesDespues";
@@ -24,6 +25,18 @@ function EnlaceExterno({ url, texto, medir, nicho }: { url: string; texto: strin
   );
 }
 
+function Momento({ titulo, texto }: { titulo: string; texto: string }) {
+  return (
+    <div>
+      <p className="flex items-center gap-3 font-lectura text-sm font-medium text-acero">
+        <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
+        {titulo}
+      </p>
+      <p className="mt-3 max-w-2xl font-lectura text-[15px] leading-relaxed text-blanco md:text-base">{texto}</p>
+    </div>
+  );
+}
+
 function Caso({ caso }: { caso: CasoWeb }) {
   return (
     <article>
@@ -38,11 +51,21 @@ function Caso({ caso }: { caso: CasoWeb }) {
       <h3 className="mt-5 max-w-3xl titulo text-xl leading-snug text-blanco md:text-2xl">
         {caso.titulo}
       </h3>
-      <p className="mt-3 max-w-2xl font-lectura text-[15px] leading-relaxed text-blanco">
-        {caso.descripcionCliente}
-      </p>
+      {/* La historia en tres momentos: quiénes son, lo que vimos y lo que propusimos (el deslizador). */}
+      <div className="mt-8 grid gap-8 md:grid-cols-2">
+        <Momento titulo={WEBS.historia.quienes} texto={caso.historia.quienes} />
+        <Momento titulo={WEBS.historia.vimos} texto={caso.historia.vimos} />
+      </div>
+      {/* Las fotos del local, solo con permiso de Ferremix (src/datos/fotos.ts). */}
+      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        <Foto id="ferremix-local" sizes="(min-width: 640px) 50vw, 100vw" proporcion="aspect-[4/3]" />
+        <Foto id="ferremix-mostrador" sizes="(min-width: 640px) 50vw, 100vw" proporcion="aspect-[4/3]" />
+      </div>
+      <div className="mt-10">
+        <Momento titulo={WEBS.historia.propusimos} texto={caso.historia.propusimos} />
+      </div>
 
-      <div className="mt-8">
+      <div className="mt-6">
         <DeslizadorAntesDespues
           antes={caso.escritorio.antes}
           despues={caso.escritorio.despues}
@@ -122,9 +145,7 @@ export function CasoFerremix() {
           className="border border-dashed border-profundo p-10 text-center md:p-14"
           data-revelar
         >
-          <p className="font-michroma text-lg uppercase tracking-marca text-blanco md:text-xl">
-            {CASO_PROXIMO.titulo}
-          </p>
+          <p className="titulo text-xl text-blanco md:text-2xl">{CASO_PROXIMO.titulo}</p>
           <p className="mt-3 font-lectura text-sm text-acero md:text-base">{CASO_PROXIMO.texto}</p>
           <div className="mt-6 flex justify-center">
             <Link
