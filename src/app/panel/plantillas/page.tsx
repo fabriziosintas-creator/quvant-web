@@ -86,7 +86,8 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/pla
         clics_contacto: m.clics_contacto,
         inicios_registro: m.inicios_registro,
         registros: m.registros,
-        conversion: m.vistas > 0 ? m.registros / m.vistas : 0,
+        // Sin visitas medidas suficientes (más registros que visitas: la medición del rubro empezó después), no hay conversión.
+        conversion: m.vistas > 0 && m.registros <= m.vistas ? m.registros / m.vistas : 0,
         clientes: porEstado,
         activos: porEstado.activo ?? 0,
         abono: propios.filter((c) => c.estado === "activo").reduce((suma, c) => suma + (c.abono_mensual ?? 0), 0),
@@ -105,8 +106,9 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/pla
   const conVistas = tarjetas.filter((t) => t.vistas > 0);
   const menosInteres = conVistas.length > 1 ? [...conVistas].sort((a, b) => a.vistas - b.vistas || a.registros - b.registros)[0] : null;
 
+  const conversionTexto = (t: Tarjeta) => (t.vistas > 0 && t.registros <= t.vistas ? porcentaje(t.registros, t.vistas) : "—");
   const formatoDe = (m: Metrica, t: Tarjeta) =>
-    m === "abono" ? pesos(t.abono) : m === "conversion" ? porcentaje(t.registros, t.vistas) : numero(valorDe(t, m));
+    m === "abono" ? pesos(t.abono) : m === "conversion" ? conversionTexto(t) : numero(valorDe(t, m));
 
   return (
     <>
@@ -114,7 +116,7 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/pla
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Destacado etiqueta={T.destacados.ingresos} tarjeta={mejor("abono")} valor={(t) => `${pesos(t.abono)}/mes`} />
         <Destacado etiqueta={T.destacados.interes} tarjeta={mejor("vistas")} valor={(t) => `${numero(t.vistas)} ${T.metricas.vistas.toLowerCase()}`} />
-        <Destacado etiqueta={T.destacados.conversion} tarjeta={mejor("conversion")} valor={(t) => porcentaje(t.registros, t.vistas)} />
+        <Destacado etiqueta={T.destacados.conversion} tarjeta={mejor("conversion")} valor={conversionTexto} />
         <Destacado etiqueta={T.destacados.menosInteres} tarjeta={menosInteres} valor={(t) => `${numero(t.vistas)} ${T.metricas.vistas.toLowerCase()}`} />
       </div>
 
@@ -142,7 +144,7 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/pla
         {ordenadas.map((t) => (
           <article key={t.id} className="flex flex-col gap-4 border border-profundo p-4 md:p-5">
             <header className="flex items-start justify-between gap-3">
-              <h3 className="flex items-center gap-2 font-michroma text-sm uppercase tracking-marca text-blanco">
+              <h3 className="flex min-w-0 items-center gap-2 break-words font-michroma text-sm uppercase tracking-marca text-blanco">
                 <PuntoRubro acento={acentoDe(t.id)} />
                 {t.nombre}
               </h3>
