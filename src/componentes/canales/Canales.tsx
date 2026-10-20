@@ -308,7 +308,7 @@ export function Canales() {
           <div
             ref={monitor}
             style={{ "--acento": ACENTO_CANAL[canal.id as IdCanal] } as CSSProperties}
-            className="relative overflow-hidden rounded-[10px] border border-profundo bg-negro transition-colors duration-(--duracion-media)"
+            className="relative overflow-hidden rounded-2xl border border-profundo bg-negro transition-colors duration-(--duracion-media)"
           >
             {/* El puerto donde llegan los cables. */}
             <span aria-hidden className="absolute -left-px top-1/2 z-10 block h-6 w-[3px] -translate-y-1/2 bg-[var(--acento)]" />
@@ -318,7 +318,7 @@ export function Canales() {
                 <span className="size-1.5 bg-profundo" />
                 <span className="size-1.5 bg-profundo" />
               </span>
-              <span className="min-w-0 flex-1 truncate font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+              <span className="min-w-0 flex-1 truncate font-lectura text-sm font-medium text-acero">
                 {NAVEGACION.canal} {numeroCanal(canal.id)} · {canal.nombre}
               </span>
               {/* "En vivo" es también el control del recorrido: pausa y sigue. */}
@@ -328,7 +328,7 @@ export function Canales() {
                   onClick={() => setEnPausa((pausa) => !pausa)}
                   aria-pressed={enPausa}
                   aria-label={enPausa ? TEXTOS.seguir : TEXTOS.pausar}
-                  className="flex items-center gap-2 font-plex text-xs uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco"
+                  className="flex items-center gap-2 font-lectura text-sm text-acero transition-colors hover:text-blanco"
                 >
                   <span
                     aria-hidden
@@ -376,7 +376,7 @@ export function Canales() {
                   />
                 ))}
               </span>
-              <span aria-hidden className="shrink-0 font-plex text-xs font-medium uppercase tracking-etiqueta text-blanco">
+              <span aria-hidden className="shrink-0 font-lectura text-sm font-medium text-blanco">
                 {TEXTOS.entrar} →
               </span>
             </div>
@@ -417,7 +417,7 @@ export function Canales() {
                 <Link
                   href={c.ruta}
                   transitionTypes={[tipoTransicion("/", c.ruta)]}
-                  className={`group block overflow-hidden rounded-[10px] border bg-negro transition-colors active:border-[var(--acento)] ${
+                  className={`group block overflow-hidden rounded-2xl border bg-negro transition-colors active:border-[var(--acento)] ${
                     encendida ? "border-[var(--acento)]" : "border-profundo"
                   }`}
                 >

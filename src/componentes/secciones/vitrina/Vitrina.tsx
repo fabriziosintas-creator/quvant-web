@@ -175,7 +175,7 @@ export function Vitrina({
                 type="button"
                 aria-pressed={activa}
                 onClick={() => filtrar(opcion.valor)}
-                className={`flex items-center gap-2.5 border px-3.5 py-2 font-plex text-xs font-medium uppercase tracking-etiqueta transition-colors ${
+                className={`flex items-center gap-2.5 border px-3.5 py-2 font-lectura text-sm font-medium transition-colors ${
                   activa
                     ? "border-blanco bg-blanco text-negro"
                     : "border-profundo text-acero hover:border-acero hover:text-blanco"

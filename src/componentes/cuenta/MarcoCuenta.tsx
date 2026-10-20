@@ -34,13 +34,13 @@ export function MarcoCuenta({
         }}
       />
       <div className={`contenedor relative pb-20 pt-28 md:pb-28 md:pt-36 ${ancho === "angosto" ? "max-w-2xl" : "max-w-3xl"}`}>
-        <p className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-acero">
+        <p className="flex items-center gap-3 font-lectura text-sm font-medium text-acero">
           <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           {etiqueta}
         </p>
         <h1 className="mt-6 titulo text-[clamp(2rem,6vw,3.25rem)] leading-[1.08] text-blanco">{titulo}</h1>
         {bajada ? (
-          <p className="mt-5 font-lectura text-base leading-relaxed text-acero md:text-lg">{bajada}</p>
+          <p className="mt-5 font-lectura text-base leading-relaxed text-blanco md:text-lg">{bajada}</p>
         ) : null}
         <div className="mt-10 md:mt-12">{children}</div>
       </div>

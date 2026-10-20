@@ -19,7 +19,7 @@ export function Capitulo({ id, etiqueta, children, sinContenedor = false }: Prop
     <h2
       id={`${id}-titulo`}
       data-revelar
-      className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-acero"
+      className="flex items-center gap-3 font-lectura text-sm font-medium text-acero"
     >
       <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
       {etiqueta}
@@ -31,7 +31,7 @@ export function Capitulo({ id, etiqueta, children, sinContenedor = false }: Prop
       id={id}
       data-capitulo={id}
       aria-labelledby={`${id}-titulo`}
-      className="scroll-mt-32 border-t border-profundo md:scroll-mt-36"
+      className="scroll-mt-32 md:scroll-mt-36"
     >
       {sinContenedor ? (
         <>
@@ -39,7 +39,7 @@ export function Capitulo({ id, etiqueta, children, sinContenedor = false }: Prop
           {children}
         </>
       ) : (
-        <div className="contenedor py-16 md:py-24">
+        <div className="contenedor py-20 md:py-32">
           {titulo}
           <div className="mt-8 md:mt-10">{children}</div>
         </div>

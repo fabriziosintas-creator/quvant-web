@@ -19,7 +19,7 @@ export function LoQueHaceHoy() {
 
       {/* Lo que no entró en el recorrido, en una fila de fichas. */}
       <div className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-3">
-        <span className="mr-2 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+        <span className="mr-2 font-lectura text-sm font-medium text-acero">
           {PLATAFORMAS.hoy.etiquetaResto}
         </span>
         {PLATAFORMAS.hoy.resto.map((item) => (
@@ -35,10 +35,10 @@ export function LoQueHaceHoy() {
 
       {/* Lo que viene: una línea, con el punto que late (está en camino, todavía no llegó). */}
       <div data-revelar className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-profundo pt-6">
-        <h3 className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">{integraciones.etiqueta}</h3>
+        <h3 className="font-lectura text-sm font-medium text-acero">{integraciones.etiqueta}</h3>
         <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
           {integraciones.items.map((item, indice) => (
-            <li key={item} className="flex items-center gap-2.5 font-plex text-xs uppercase tracking-etiqueta text-blanco">
+            <li key={item} className="flex items-center gap-2.5 font-lectura text-sm text-blanco">
               <span
                 aria-hidden
                 className="size-1.5 bg-[var(--acento)] motion-safe:animate-[parpadeo_1.8s_steps(2,end)_infinite]"

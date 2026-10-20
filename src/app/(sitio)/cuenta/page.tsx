@@ -116,13 +116,13 @@ function Sugerencia({ perfil }: { perfil: Perfil }) {
         : "/trabajos";
 
   return (
-    <section className="border border-profundo p-6 md:p-8">
+    <section className="rounded-2xl bg-profundo/35 p-6 md:p-8">
       <h2 className="flex items-start gap-3 font-plex text-xs font-medium uppercase leading-relaxed tracking-etiqueta text-acero">
         <span aria-hidden className="mt-[7px] size-1.5 shrink-0 bg-[var(--acento)]" />
         {CUENTA.objetivos.find((o) => o.id === perfil.objetivo_id)?.texto}
       </h2>
       <p className="mt-5 titulo text-2xl text-blanco md:text-3xl">{sugerencia.titulo}</p>
-      <p className="mt-3 font-lectura text-base leading-relaxed text-acero">
+      <p className="mt-3 font-lectura text-base leading-relaxed text-blanco">
         {sugerencia.texto.replace("{rubro}", rubro.toLowerCase())}
       </p>
       <Link href={destino} className={`mt-6 ${CLASE_BOTON}`}>

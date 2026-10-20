@@ -155,8 +155,8 @@ function RevisaTuEmail({ email }: { email: string }) {
   const { listo } = registro;
   return (
     <div className="flex flex-col gap-6" aria-live="polite">
-      <div className="border border-profundo p-6 md:p-8">
-        <p className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-blanco">
+      <div className="rounded-2xl bg-profundo/35 p-6 md:p-8">
+        <p className="flex items-center gap-3 font-lectura text-sm font-medium text-blanco">
           <span aria-hidden className="size-2.5 bg-blanco" />
           {listo.titulo}
         </p>

@@ -7,7 +7,7 @@ function Directo({ url, etiqueta, valor }: { url: string; etiqueta: string; valo
   return (
     <li>
       <a href={url} target="_blank" rel="noopener noreferrer" className="group flex flex-col gap-1">
-        <span className="flex items-center gap-2.5 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+        <span className="flex items-center gap-2.5 font-lectura text-sm font-medium text-acero">
           <span aria-hidden className="inline-block size-1 bg-profundo transition-colors group-hover:bg-blanco" />
           {etiqueta}
         </span>

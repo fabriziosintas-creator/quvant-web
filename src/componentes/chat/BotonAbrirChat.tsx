@@ -9,7 +9,7 @@ export function BotonAbrirChat({ className = "" }: { className?: string }) {
     <button
       type="button"
       onClick={() => abrirChat()}
-      className={`inline-flex h-11 items-center justify-center gap-3 border border-[#7BD389]/70 px-5 font-plex text-xs font-medium uppercase tracking-[0.14em] text-blanco transition-colors hover:border-[#7BD389] ${className}`}
+      className={`rounded-full inline-flex h-11 items-center justify-center gap-3 border border-[#7BD389]/70 px-5 font-lectura text-sm font-medium text-blanco transition-colors hover:border-[#7BD389] ${className}`}
     >
       <span aria-hidden className="size-1.5 bg-[#7BD389] motion-safe:animate-[parpadeo_1.6s_steps(2,end)_infinite]" />
       {CHAT.abrirDesdeContacto}

@@ -18,7 +18,7 @@ function ChipEstado({ estado }: { estado: Estado }) {
   const disponible = estado === "disponible";
   return (
     <span
-      className={`shrink-0 border px-2 py-1 font-plex text-xs font-medium uppercase tracking-etiqueta ${
+      className={`shrink-0 border px-2 py-1 font-lectura text-sm font-medium ${
         disponible ? "border-[var(--acento)] text-blanco" : "border-profundo text-acero"
       }`}
     >
@@ -32,7 +32,7 @@ function FotoRubro({ id }: { id: string }) {
   const foto = NICHOS.find((n) => n.id === id)?.foto;
   if (!foto) return null;
   return (
-    <div className="relative mb-6 aspect-[21/9] overflow-hidden rounded-[10px] border border-profundo bg-negro">
+    <div className="relative mb-6 aspect-[21/9] overflow-hidden rounded-2xl border border-profundo bg-negro">
       <Image
         src={foto.src}
         alt={foto.alt}
@@ -146,30 +146,30 @@ export function SelectorRubros() {
             data-nicho={item.id}
           >
             <FotoRubro id={item.id} />
-            <p className="font-lectura text-[15px] leading-relaxed text-acero">{item.descripcion}</p>
+            <p className="font-lectura text-[15px] leading-relaxed text-blanco">{item.descripcion}</p>
 
             {item.productos.length > 0 ? (
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {item.productos.map((producto) => (
-                  <TarjetaViva key={producto.nombre} className="border border-profundo p-6">
+                  <TarjetaViva key={producto.nombre} className="rounded-2xl bg-profundo/35 p-6">
                     <article className="flex flex-col gap-3">
                     <div>
                       <h4 className="font-michroma text-base uppercase tracking-marca text-blanco md:text-lg">
                         {producto.nombre}
                       </h4>
                       {producto.firma ? (
-                        <p className="mt-1.5 font-plex text-xs uppercase tracking-etiqueta text-acero">
+                        <p className="mt-1.5 font-lectura text-sm text-acero">
                           {producto.firma}
                         </p>
                       ) : null}
                     </div>
-                    <p className="font-lectura text-[15px] leading-relaxed text-acero">{producto.rol}</p>
+                    <p className="font-lectura text-[15px] leading-relaxed text-blanco">{producto.rol}</p>
                     </article>
                   </TarjetaViva>
                 ))}
               </div>
             ) : (
-              <div className="mt-6 border border-profundo p-8 text-center md:p-12">
+              <div className="mt-6 rounded-2xl bg-profundo/35 p-8 text-center md:p-12">
                 <p className="font-michroma text-xl uppercase tracking-marca text-blanco md:text-2xl">
                   {PLATAFORMAS.estados[item.estado]}
                 </p>
@@ -183,7 +183,7 @@ export function SelectorRubros() {
               <Link
                 href={`/registro?nicho=${item.id}&origen=plataformas-rubros`}
                 style={{ "--acento": ACENTO_NICHO[item.id] } as CSSProperties}
-                className="inline-flex h-11 shrink-0 items-center justify-center gap-2 border border-[var(--acento)] px-5 font-plex text-xs font-medium uppercase tracking-[0.14em] text-blanco transition-colors hover:bg-profundo/60"
+                className="rounded-full inline-flex h-11 shrink-0 items-center justify-center gap-2 border border-[var(--acento)] px-5 font-lectura text-sm font-medium text-blanco transition-colors hover:bg-profundo/60"
               >
                 <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
                 {PLATAFORMAS.rubros.registrarme}

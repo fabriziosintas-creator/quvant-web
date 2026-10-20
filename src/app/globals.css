@@ -48,7 +48,14 @@
 @theme inline {
   --font-michroma: var(--fuente-michroma), sans-serif;
   --font-plex: var(--fuente-plex), ui-monospace, SFMono-Regular, Menlo, monospace;
-  /* Párrafos largos: Plex Sans (decisión del 18-oct-2026: la mono cansaba al leer). */
+  /*
+   * Excepción al manual aprobada por fabrizio el 18-oct-2026 (y confirmada
+   * con "web más humana" el 20-oct): IBM Plex Sans para todo lo que se lee
+   * (párrafos, bajadas, etiquetas, botones). La Mono queda para datos y
+   * números; Michroma, para la marca, los números grandes y títulos de una
+   * a tres palabras. Para volver a la opción B (todo en Mono), cambiar
+   * acá --fuente-lectura por --fuente-plex: es la única línea.
+   */
   --font-lectura: var(--fuente-lectura), system-ui, sans-serif;
 }
 

@@ -100,14 +100,14 @@ export function RecorridoObjetivo() {
           {ETAPAS.map((etapa, i) => (
             <li
               key={etapa.id}
-              className="border border-profundo p-6"
+              className="rounded-2xl bg-profundo/35 p-6"
               style={{ "--acento": color } as CSSProperties}
             >
-              <p className="font-michroma text-xs uppercase tracking-etiqueta text-[var(--acento)]">
+              <p className="font-lectura text-sm font-medium text-[var(--acento)]">
                 0{i + 1} · {etapa.nombre}
               </p>
               <h3 className="mt-3 titulo text-xl text-blanco">{etapa.titular}</h3>
-              <p className="mt-3 font-lectura text-[15px] leading-relaxed text-acero">{etapa.texto}</p>
+              <p className="mt-3 font-lectura text-[15px] leading-relaxed text-blanco">{etapa.texto}</p>
             </li>
           ))}
         </ol>
@@ -163,7 +163,7 @@ export function RecorridoObjetivo() {
                 {/* En celular solo se nombra la etapa activa, en su color; las
                     de las puntas se alinean hacia adentro para no cortarse. */}
                 <span
-                  className={`pointer-events-none absolute top-full mt-2 whitespace-nowrap font-plex text-xs uppercase tracking-etiqueta text-acero sm:block ${
+                  className={`pointer-events-none absolute top-full mt-2 whitespace-nowrap font-lectura text-sm text-acero sm:block ${
                     i === activa ? "max-sm:text-[var(--nodo)]" : "hidden"
                   } ${i === 0 ? "max-sm:left-0" : ""} ${i === CANTIDAD - 1 ? "max-sm:right-0" : ""}`}
                 >
@@ -193,13 +193,13 @@ export function RecorridoObjetivo() {
                       visible ? "opacity-100 translate-y-0" : "pointer-events-none opacity-0 translate-y-3"
                     }`}
                   >
-                    <p className="font-michroma text-xs uppercase tracking-etiqueta text-[var(--acento)]">
+                    <p className="font-lectura text-sm font-medium text-[var(--acento)]">
                       0{i + 1} · {etapa.nombre}
                     </p>
                     <h3 className="mt-3 titulo text-xl leading-tight text-blanco md:text-3xl">
                       {etapa.titular}
                     </h3>
-                    <p className="mt-3 max-w-xl font-lectura text-[15px] leading-relaxed text-acero md:text-base">
+                    <p className="mt-3 max-w-xl font-lectura text-[15px] leading-relaxed text-blanco md:text-base">
                       {etapa.texto}
                     </p>
                     <p className="mt-4 flex items-center gap-3 font-plex text-sm font-bold text-blanco">
@@ -212,7 +212,7 @@ export function RecorridoObjetivo() {
             </div>
 
             {/* La foto de la etapa: blanco y negro, grano y la capa de la marca encima. */}
-            <div className="relative order-first aspect-[21/9] overflow-hidden rounded-[10px] border border-profundo bg-negro lg:order-none lg:aspect-[16/10]">
+            <div className="relative order-first aspect-[21/9] overflow-hidden rounded-2xl border border-profundo bg-negro lg:order-none lg:aspect-[16/10]">
               {ETAPAS.map((etapa, i) => {
                 const visual = OBJETIVO_VISUAL[etapa.id];
                 return (
@@ -243,7 +243,7 @@ export function RecorridoObjetivo() {
               ))}
               <p
                 aria-hidden={activa !== 0}
-                className={`absolute bottom-4 left-4 flex items-center gap-2 font-plex text-xs uppercase tracking-etiqueta text-blanco transition-opacity duration-(--duracion-media) ${
+                className={`absolute bottom-4 left-4 flex items-center gap-2 font-lectura text-sm text-blanco transition-opacity duration-(--duracion-media) ${
                   activa === 0 ? "opacity-100" : "opacity-0"
                 }`}
               >
@@ -261,7 +261,7 @@ export function RecorridoObjetivo() {
 function Cabecera() {
   return (
     <>
-      <p className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-acero">
+      <p className="flex items-center gap-3 font-lectura text-sm font-medium text-acero">
         <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
         {OBJETIVO.etiqueta}
       </p>

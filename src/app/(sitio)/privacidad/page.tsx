@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function Privacidad() {
   return (
     <MarcoCuenta etiqueta={PRIVACIDAD.metaTitulo} titulo={PRIVACIDAD.titulo} bajada={PRIVACIDAD.actualizada} ancho="lectura">
-      <p className="mb-10 flex items-center gap-3 border border-profundo px-4 py-3 font-plex text-xs uppercase tracking-etiqueta text-acero">
+      <p className="mb-10 flex items-center gap-3 rounded-2xl bg-profundo/35 px-4 py-3 font-lectura text-sm text-acero">
         <span aria-hidden className="size-1.5 bg-acero" />
         {PRIVACIDAD.borrador}
       </p>
@@ -24,7 +24,7 @@ export default function Privacidad() {
           <section key={seccion.titulo}>
             <h2 className="titulo text-xl text-blanco md:text-2xl">{seccion.titulo}</h2>
             {seccion.parrafos.map((parrafo) => (
-              <p key={parrafo.slice(0, 40)} className="mt-4 font-lectura text-base leading-relaxed text-acero">
+              <p key={parrafo.slice(0, 40)} className="mt-4 font-lectura text-base leading-relaxed text-blanco">
                 {parrafo}
               </p>
             ))}

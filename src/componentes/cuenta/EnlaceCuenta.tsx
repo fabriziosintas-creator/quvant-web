@@ -34,7 +34,7 @@ async function averiguarQuien(): Promise<Quien> {
 }
 
 const CLASE =
-  "inline-flex h-9 items-center gap-2 font-plex text-[11px] font-medium uppercase tracking-[0.14em] transition-colors md:h-10 md:text-xs";
+  "inline-flex h-9 items-center gap-2 font-lectura text-[13px] font-medium transition-colors md:h-10 md:text-xs";
 
 /** "Ingresar", "Mi cuenta" y, solo para admin, "Panel". */
 export function EnlaceCuenta() {

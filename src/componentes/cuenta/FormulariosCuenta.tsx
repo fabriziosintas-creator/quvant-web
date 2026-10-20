@@ -26,7 +26,7 @@ export type PerfilEditable = {
 };
 
 const titulo = (texto: string) => (
-  <h2 className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-blanco">
+  <h2 className="flex items-center gap-3 font-lectura text-sm font-medium text-blanco">
     <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
     {texto}
   </h2>

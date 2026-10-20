@@ -39,7 +39,7 @@ export function Pie() {
         </p>
 
         <nav aria-label={PIE.etiquetaSecciones} data-revelar>
-          <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+          <p className="font-lectura text-sm font-medium text-acero">
             {PIE.etiquetaSecciones}
           </p>
           <ul className="mt-5 flex flex-col gap-3">
@@ -62,7 +62,7 @@ export function Pie() {
         </nav>
 
         <div data-revelar>
-          <p className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+          <p className="font-lectura text-sm font-medium text-acero">
             {PIE.etiquetaSeguinos}
           </p>
           <ul className="mt-5">

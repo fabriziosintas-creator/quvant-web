@@ -84,7 +84,7 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
             />
           ) : null}
           {/* La versión de celular, asomando por la esquina. */}
-          <span className="telefono-web absolute bottom-0 right-[5%] block w-[22%] overflow-hidden rounded-[10px] border border-profundo bg-negro shadow-[0_18px_50px_-12px_rgba(0,0,0,0.9)] aspect-[600/1298]">
+          <span className="telefono-web absolute bottom-0 right-[5%] block w-[22%] overflow-hidden rounded-2xl border border-profundo bg-negro shadow-[0_18px_50px_-12px_rgba(0,0,0,0.9)] aspect-[600/1298]">
             <Image src={vista.portadaCelular.src} alt="" fill sizes="(min-width: 768px) 11vw, 20vw" className="object-cover object-top" />
           </span>
         </>
@@ -106,7 +106,7 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
         aria-label={`${WEBS.vitrina.entrar}: ${proyecto.nombre}, ${TIPOS[proyecto.tipo].singular.toLowerCase()} · ${proyecto.rubro}`}
         data-cursor-texto={WEBS.vitrina.entrar}
         data-al-frente={alFrente ? "si" : "no"}
-        className="ficha-web group relative flex h-full w-full flex-col overflow-hidden rounded-[10px] border border-profundo bg-negro text-left transition-colors duration-(--duracion-rapida) hover:border-[var(--acento)] focus-visible:border-[var(--acento)] data-[al-frente=si]:border-[var(--acento)]"
+        className="ficha-web group relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-profundo bg-negro text-left transition-colors duration-(--duracion-rapida) hover:border-[var(--acento)] focus-visible:border-[var(--acento)] data-[al-frente=si]:border-[var(--acento)]"
       >
         {/* El brillo del color del proyecto, donde está el puntero. */}
         <span
@@ -158,7 +158,7 @@ export function TarjetaProyecto({ proyecto, numero, alFrente, visorAbierto, boto
               </span>
             </span>
           </span>
-          <span className="shrink-0 border border-profundo px-2 py-1 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero transition-colors group-hover:border-[var(--acento)] group-hover:text-blanco">
+          <span className="shrink-0 rounded-2xl bg-profundo/35 px-2 py-1 font-lectura text-sm font-medium text-acero transition-colors group-hover:border-[var(--acento)] group-hover:text-blanco">
             {TIPOS[proyecto.tipo].singular}
           </span>
         </span>

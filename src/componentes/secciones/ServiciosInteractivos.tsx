@@ -27,7 +27,7 @@ type Servicio = (typeof NOSOTROS.servicios.items)[number];
  */
 function ImagenViva({ id, src, alt, cajaRef }: { id: IdServicio; src: string; alt: string; cajaRef: Ref<HTMLSpanElement> }) {
   return (
-    <span ref={cajaRef} className="imagen-viva relative block aspect-[16/10] overflow-hidden rounded-[10px] bg-negro">
+    <span ref={cajaRef} className="imagen-viva relative block aspect-[16/10] overflow-hidden rounded-2xl bg-negro">
       <span className="imagen-viva-capa absolute -inset-[4%]">
         <Image
           src={src}
@@ -295,12 +295,12 @@ export function ServiciosInteractivos() {
                   <span className="block titulo text-2xl leading-tight text-blanco md:text-4xl">
                     <Letras texto={item.nombre} />
                   </span>
-                  <span className="mt-3 block max-w-xl font-lectura text-[15px] leading-relaxed text-acero md:text-base">
+                  <span className="mt-3 block max-w-xl font-lectura text-[15px] leading-relaxed text-blanco md:text-base">
                     {item.texto}
                   </span>
                   <span
                     aria-hidden
-                    className="ver-como mt-4 inline-flex items-center gap-2 font-plex text-xs font-medium uppercase tracking-etiqueta text-[var(--acento)]"
+                    className="ver-como mt-4 inline-flex items-center gap-2 font-lectura text-sm font-medium text-[var(--acento)]"
                   >
                     {NOSOTROS.servicios.verComo}
                     <span className="ver-como-flecha inline-block">↓</span>
@@ -333,11 +333,11 @@ export function ServiciosInteractivos() {
         role="tabpanel"
         id="panel-servicio"
         aria-labelledby={`servicio-${activo}`}
-        className="mt-6 overflow-hidden rounded-[10px] border border-profundo md:mt-8"
+        className="mt-6 overflow-hidden rounded-2xl border border-profundo md:mt-8"
       >
         <figcaption className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
           <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-          <span className="font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+          <span className="font-lectura text-sm font-medium text-acero">
             {servicio.ventana}
           </span>
         </figcaption>
@@ -355,7 +355,7 @@ export function ServiciosInteractivos() {
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1 border-t border-profundo px-4 py-2.5">
           <p className="font-plex text-xs text-acero">{servicio.pie}</p>
           {/* Aclaración de honestidad: tiene que leerse, no ser un susurro. */}
-          <p className="font-plex text-xs uppercase tracking-etiqueta text-acero">
+          <p className="font-lectura text-sm text-acero">
             {NOSOTROS.servicios.nota}
           </p>
         </div>

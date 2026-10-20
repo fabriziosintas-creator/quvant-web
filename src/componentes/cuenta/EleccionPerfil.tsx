@@ -28,7 +28,7 @@ export function EleccionPerfil({
   return (
     <>
       <fieldset aria-describedby={errores.nicho ? "nicho-error" : undefined}>
-        <legend className="mb-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+        <legend className="mb-3 font-lectura text-sm font-medium text-acero">
           {CUENTA.campos.nicho}
         </legend>
         <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
@@ -38,7 +38,7 @@ export function EleccionPerfil({
               <label
                 key={item.id}
                 style={{ "--acento": acento } as CSSProperties}
-                className="group relative flex min-h-24 cursor-pointer flex-col justify-between gap-3 border border-profundo p-3.5 transition-colors hover:border-acero/60 has-[:checked]:border-[var(--acento)] has-[:checked]:bg-profundo/40 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blanco sm:p-4"
+                className="group relative flex min-h-24 cursor-pointer flex-col justify-between gap-3 rounded-2xl border border-profundo p-3.5 transition-colors hover:border-acero/60 has-[:checked]:border-[var(--acento)] has-[:checked]:bg-profundo/40 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blanco sm:p-4"
               >
                 <input
                   type="radio"
@@ -79,14 +79,14 @@ export function EleccionPerfil({
       ) : null}
 
       <fieldset aria-describedby={errores.objetivo ? "objetivo-error" : undefined}>
-        <legend className="mb-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+        <legend className="mb-3 font-lectura text-sm font-medium text-acero">
           {CUENTA.campos.objetivo}
         </legend>
         <div className="flex flex-col gap-2.5">
           {CUENTA.objetivos.map((item) => (
             <label
               key={item.id}
-              className="group relative flex min-h-14 cursor-pointer items-center gap-3 border border-profundo px-4 py-3 transition-colors hover:border-acero/60 has-[:checked]:border-blanco has-[:checked]:bg-profundo/40 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blanco"
+              className="group relative flex min-h-14 cursor-pointer items-center gap-3 rounded-2xl border border-transparent bg-profundo/35 px-4 py-3 transition-colors hover:border-acero/60 has-[:checked]:border-blanco has-[:checked]:bg-profundo/40 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blanco"
             >
               <input
                 type="radio"

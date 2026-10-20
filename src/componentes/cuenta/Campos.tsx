@@ -100,7 +100,7 @@ export function CampoContrasena({ etiqueta, error, ayuda, id, className, ...rest
           onClick={() => setVisible((v) => !v)}
           aria-pressed={visible}
           aria-controls={idCampo}
-          className="absolute inset-y-0 right-0 px-4 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-acero hover:text-blanco"
+          className="absolute inset-y-0 right-0 px-4 font-lectura text-[13px] font-medium text-acero hover:text-blanco"
         >
           {visible ? CUENTA.campos.ocultar : CUENTA.campos.mostrar}
         </button>

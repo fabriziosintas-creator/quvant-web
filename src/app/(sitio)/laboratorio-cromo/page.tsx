@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function LaboratorioCromo() {
   return (
     <div className="contenedor pb-24 pt-32 md:pt-36">
-      <p className="font-michroma text-xs uppercase tracking-etiqueta text-acero">
+      <p className="font-lectura text-sm font-medium text-acero">
         Laboratorio · Interno
       </p>
       <h1 className="mt-4 max-w-2xl titulo text-2xl text-blanco md:text-3xl">

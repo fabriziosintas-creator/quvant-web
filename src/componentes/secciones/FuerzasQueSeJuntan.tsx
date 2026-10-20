@@ -127,7 +127,7 @@ function PanelCodigo({ titulo }: { titulo: string }) {
   }, [animar, letras]);
 
   return (
-    <div ref={ref} aria-hidden className="overflow-hidden rounded-[10px] border border-profundo bg-[#0a0a0c]">
+    <div ref={ref} aria-hidden className="overflow-hidden rounded-2xl border border-profundo bg-[#0a0a0c]">
       <div className="flex items-center gap-2 border-b border-profundo px-4 py-2">
         <span className="size-2 rounded-full bg-[#F26B5B]/70" />
         <span className="size-2 rounded-full bg-[#F0A33A]/70" />
@@ -197,10 +197,10 @@ function PanelCharla({ titulo }: { titulo: string }) {
   const siguiente = CHARLA[mostrados];
 
   return (
-    <div ref={ref} aria-hidden className="overflow-hidden rounded-[10px] border border-profundo bg-[#0a0a0c]">
+    <div ref={ref} aria-hidden className="overflow-hidden rounded-2xl border border-profundo bg-[#0a0a0c]">
       <div className="flex items-center gap-2 border-b border-profundo px-4 py-2">
         <span className="size-1.5" style={{ background: COLOR_COMERCIAL }} />
-        <span className="font-plex text-xs uppercase tracking-etiqueta text-acero">{titulo}</span>
+        <span className="font-lectura text-sm text-acero">{titulo}</span>
       </div>
       <div className="flex min-h-[148px] flex-col gap-2 px-4 py-3">
         {CHARLA.slice(0, mostrados).map((mensaje, i) => {
@@ -208,7 +208,7 @@ function PanelCharla({ titulo }: { titulo: string }) {
           return (
             <p
               key={`${i}-${mensaje.texto}`}
-              className={`charla-burbuja max-w-[85%] rounded-[10px] px-3 py-1.5 font-plex text-[11px] leading-snug md:text-xs ${
+              className={`charla-burbuja max-w-[85%] rounded-2xl px-3 py-1.5 font-plex text-[11px] leading-snug md:text-xs ${
                 esCliente
                   ? "self-start rounded-bl-[2px] border border-profundo text-blanco"
                   : "self-end rounded-br-[2px] text-negro"
@@ -274,7 +274,7 @@ function TarjetaFuerza({
           izquierda ? "md:ml-auto md:pr-10 lg:pr-14" : "md:mr-auto md:pl-10 lg:pl-14"
         }`}
       >
-        <p className="flex items-center gap-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-[var(--acento)]">
+        <p className="flex items-center gap-3 font-lectura text-sm font-medium text-[var(--acento)]">
           <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           {fuerza.etiqueta}
         </p>
@@ -302,7 +302,7 @@ function TarjetaFuerza({
         ) : null}
         <h3 className="mt-6 titulo text-2xl leading-snug text-blanco md:text-3xl">{fuerza.titular}</h3>
         {fuerza.parrafos.map((parrafo) => (
-          <p key={parrafo.slice(0, 20)} className="mt-4 font-lectura text-[15px] leading-relaxed text-acero md:text-base">
+          <p key={parrafo.slice(0, 20)} className="mt-4 font-lectura text-[15px] leading-relaxed text-blanco md:text-base">
             {parrafo}
           </p>
         ))}
@@ -310,7 +310,7 @@ function TarjetaFuerza({
           {fuerza.puntos.map((punto) => (
             <li
               key={punto}
-              className="flex items-center gap-2 border border-profundo px-3 py-1.5 font-plex text-xs text-blanco transition-colors hover:border-[var(--acento)]"
+              className="flex items-center gap-2 rounded-2xl bg-profundo/35 px-3 py-1.5 font-plex text-xs text-blanco transition-colors hover:border-[var(--acento)]"
             >
               <span aria-hidden className="size-1 bg-[var(--acento)]" />
               {punto}

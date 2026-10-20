@@ -100,7 +100,7 @@ export function Encabezado() {
                     aria-current={activo ? "page" : undefined}
                     transitionTypes={[tipoTransicion(ruta, canal.ruta)]}
                     style={{ "--acento": ACENTO_CANAL[canal.id] } as CSSProperties}
-                    className={`group flex items-center gap-2 rounded-full px-3 py-2 font-plex text-[11px] font-medium uppercase tracking-etiqueta transition-colors lg:px-4 lg:text-xs ${
+                    className={`group flex items-center gap-2 rounded-full px-3 py-2 font-lectura text-[13px] font-medium transition-colors lg:px-4 lg:text-xs ${
                       activo ? "bg-blanco text-negro" : "text-acero hover:text-blanco"
                     }`}
                   >
@@ -131,7 +131,7 @@ export function Encabezado() {
             aria-current={enContacto ? "page" : undefined}
             data-medir="contacto"
             transitionTypes={[tipoTransicion(ruta, CONTACTO.ruta)]}
-            className={`inline-flex h-9 items-center gap-2 px-4 font-plex text-xs font-medium uppercase tracking-[0.14em] transition-colors md:h-10 md:px-5 ${
+            className={`rounded-full inline-flex h-9 items-center gap-2 px-4 font-lectura text-sm font-medium transition-colors md:h-10 md:px-5 ${
               enContacto
                 ? "border border-blanco text-blanco"
                 : "bg-blanco text-negro hover:bg-acero"

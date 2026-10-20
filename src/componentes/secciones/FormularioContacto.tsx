@@ -46,7 +46,7 @@ export function FormularioContacto() {
         <div>
           <label
             htmlFor="contacto-nombre"
-            className="mb-2 block font-plex text-xs font-medium uppercase tracking-etiqueta text-acero"
+            className="mb-2 block font-lectura text-sm font-medium text-acero"
           >
             {campos.nombre.etiqueta}
           </label>
@@ -63,7 +63,7 @@ export function FormularioContacto() {
         <div>
           <label
             htmlFor="contacto-empresa"
-            className="mb-2 block font-plex text-xs font-medium uppercase tracking-etiqueta text-acero"
+            className="mb-2 block font-lectura text-sm font-medium text-acero"
           >
             {campos.empresa.etiqueta}
           </label>
@@ -81,7 +81,7 @@ export function FormularioContacto() {
       <div>
         <label
           htmlFor="contacto-rubro"
-          className="mb-2 block font-plex text-xs font-medium uppercase tracking-etiqueta text-acero"
+          className="mb-2 block font-lectura text-sm font-medium text-acero"
         >
           {campos.rubro.etiqueta}
         </label>
@@ -101,14 +101,14 @@ export function FormularioContacto() {
       </div>
 
       <fieldset>
-        <legend className="mb-3 font-plex text-xs font-medium uppercase tracking-etiqueta text-acero">
+        <legend className="mb-3 font-lectura text-sm font-medium text-acero">
           {campos.necesidad.etiqueta}
         </legend>
         <div className="grid gap-3 sm:grid-cols-3">
           {campos.necesidad.opciones.map((opcion, indice) => (
             <label
               key={opcion.id}
-              className="flex cursor-pointer items-center gap-3 border border-profundo px-4 py-3 transition-colors has-[:checked]:border-acero"
+              className="flex cursor-pointer items-center gap-3 rounded-2xl border border-transparent bg-profundo/35 px-4 py-3 transition-colors has-[:checked]:border-acero"
             >
               <input
                 type="radio"
@@ -132,7 +132,7 @@ export function FormularioContacto() {
       <div>
         <label
           htmlFor="contacto-mensaje"
-          className="mb-2 block font-plex text-xs font-medium uppercase tracking-etiqueta text-acero"
+          className="mb-2 block font-lectura text-sm font-medium text-acero"
         >
           {campos.mensaje.etiqueta}
         </label>
@@ -149,14 +149,14 @@ export function FormularioContacto() {
       <div className="mt-2 flex flex-wrap items-center gap-4">
         <button
           type="submit"
-          className="inline-flex h-12 items-center justify-center bg-blanco px-7 font-plex text-[13px] font-medium uppercase tracking-[0.14em] text-negro transition-colors hover:bg-acero"
+          className="rounded-full inline-flex h-12 items-center justify-center bg-blanco px-7 font-lectura text-sm font-medium text-negro transition-colors hover:bg-acero"
         >
           {botones.whatsapp}
         </button>
         <button
           type="button"
           onClick={alPreferirEmail}
-          className="inline-flex h-12 items-center justify-center border border-profundo px-7 font-plex text-[13px] font-medium uppercase tracking-[0.14em] text-blanco transition-colors hover:border-acero"
+          className="rounded-full inline-flex h-12 items-center justify-center border border-profundo px-7 font-lectura text-sm font-medium text-blanco transition-colors hover:border-acero"
         >
           {botones.email}
         </button>

@@ -275,7 +275,7 @@ export function ChatQuvant() {
             style={{ "--verde": VERDE } as CSSProperties}
           >
             <IsotipoQ idGradiente="q-chat-boton" className="size-6" />
-            <span className="font-plex text-xs font-medium uppercase tracking-[0.14em] text-blanco">
+            <span className="font-lectura text-sm font-medium text-blanco">
               {CHAT.lanzador}
             </span>
             <span
@@ -302,7 +302,7 @@ export function ChatQuvant() {
         >
           {/* Arriba: quién responde. */}
           <header className="flex items-center gap-3 border-b border-profundo px-4 py-3">
-            <span className="relative flex size-10 shrink-0 items-center justify-center rounded-[10px] border border-profundo">
+            <span className="relative flex size-10 shrink-0 items-center justify-center rounded-2xl border border-profundo">
               <IsotipoQ idGradiente="q-chat-cabecera" className="size-6" />
               <span
                 aria-hidden
@@ -341,7 +341,7 @@ export function ChatQuvant() {
                     key={sugerencia}
                     type="button"
                     onClick={() => void enviar(sugerencia)}
-                    className="border border-profundo px-3 py-2 text-left font-lectura text-[13px] text-blanco transition-colors hover:border-[var(--verde)]"
+                    className="rounded-2xl bg-profundo/35 px-3 py-2 text-left font-lectura text-[13px] text-blanco transition-colors hover:border-[var(--verde)]"
                     style={{ "--verde": VERDE } as CSSProperties}
                   >
                     {sugerencia}
@@ -408,7 +408,7 @@ export function ChatQuvant() {
 function Burbuja({ autor, texto, nombre }: { autor: Mensaje["autor"]; texto: string; nombre?: string | null }) {
   if (autor === "sistema") {
     return (
-      <p className="charla-burbuja flex items-center gap-2 self-center px-2 text-center font-plex text-xs uppercase tracking-etiqueta text-acero">
+      <p className="charla-burbuja flex items-center gap-2 self-center px-2 text-center font-lectura text-sm text-acero">
         <span aria-hidden className="size-1" style={{ background: VERDE }} />
         {texto}
       </p>
@@ -418,13 +418,13 @@ function Burbuja({ autor, texto, nombre }: { autor: Mensaje["autor"]; texto: str
   return (
     <div className={`charla-burbuja flex max-w-[86%] flex-col ${delVisitante ? "self-end items-end" : "self-start"}`}>
       {autor === "humano" ? (
-        <span className="mb-1 flex items-center gap-2 font-plex text-xs uppercase tracking-etiqueta" style={{ color: VERDE }}>
+        <span className="mb-1 flex items-center gap-2 font-lectura text-sm" style={{ color: VERDE }}>
           <span aria-hidden className="size-1.5" style={{ background: VERDE }} />
           {nombre} · {CHAT.equipo}
         </span>
       ) : null}
       <p
-        className={`whitespace-pre-line rounded-[10px] px-3.5 py-2.5 font-lectura text-[14.5px] leading-relaxed ${
+        className={`whitespace-pre-line rounded-2xl px-3.5 py-2.5 font-lectura text-[14.5px] leading-relaxed ${
           delVisitante
             ? "rounded-br-[3px] bg-blanco text-negro"
             : autor === "humano"
@@ -471,7 +471,7 @@ function ConLinks({ texto }: { texto: string }) {
 function TarjetaPedido({ pedido }: { pedido: Pedido }) {
   return (
     <div className="charla-burbuja mt-1 border p-4" style={{ borderColor: VERDE }}>
-      <p className="flex items-center gap-2 font-plex text-xs font-medium uppercase tracking-etiqueta" style={{ color: VERDE }}>
+      <p className="flex items-center gap-2 font-lectura text-sm font-medium" style={{ color: VERDE }}>
         <span aria-hidden className="size-1.5" style={{ background: VERDE }} />
         {CHAT.pedido.titulo}
       </p>

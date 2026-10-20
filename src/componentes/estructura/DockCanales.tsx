@@ -35,7 +35,7 @@ export function DockCanales() {
           aria-current={activo ? "page" : undefined}
           transitionTypes={[tipoTransicion(ruta, canal.ruta)]}
           style={{ "--acento": ACENTO_CANAL[canal.id as IdCanal] } as CSSProperties}
-          className={`relative flex h-full flex-col items-center justify-center gap-1 rounded-[10px] px-0.5 py-2 transition-colors ${
+          className={`relative flex h-full flex-col items-center justify-center gap-1 rounded-2xl px-0.5 py-2 transition-colors ${
             activo ? "bg-profundo/70 text-blanco" : "text-acero active:bg-profundo/50"
           }`}
         >
@@ -46,7 +46,7 @@ export function DockCanales() {
             }`}
           />
           <IconoCanal id={canal.id as IdCanal} className={`size-5 ${activo ? "text-[var(--acento)]" : ""}`} />
-          <span className="max-w-full truncate font-plex text-[10px] font-medium uppercase tracking-[0.04em] max-[380px]:tracking-normal">
+          <span className="max-w-full truncate font-lectura text-xs font-medium max-[380px]:tracking-normal">
             {canal.corto}
           </span>
         </Link>
@@ -68,7 +68,7 @@ export function DockCanales() {
             type="button"
             onClick={() => abrirChat()}
             aria-label={sinLeer > 0 ? `${CHAT.abrir} (${sinLeer} ${CHAT.sinLeer})` : CHAT.abrir}
-            className="relative flex h-full w-full flex-col items-center justify-center gap-1 rounded-[10px] py-2 text-blanco active:bg-profundo/50"
+            className="relative flex h-full w-full flex-col items-center justify-center gap-1 rounded-2xl py-2 text-blanco active:bg-profundo/50"
           >
             <span className="relative">
               <IsotipoQ idGradiente="q-dock" className="size-6" />
@@ -79,7 +79,7 @@ export function DockCanales() {
                 style={{ background: ACENTO_CANAL.contacto }}
               />
             </span>
-            <span className="font-plex text-[10px] font-medium uppercase tracking-[0.04em]">{NAVEGACION.chat}</span>
+            <span className="font-lectura text-xs font-medium">{NAVEGACION.chat}</span>
             {sinLeer > 0 ? (
               <span
                 aria-hidden
