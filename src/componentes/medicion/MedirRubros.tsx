@@ -3,8 +3,14 @@
 import { useEffect } from "react";
 import { medir } from "./medir";
 
+/** Cuánto tiene que estar la página a la vista para contar como visita. */
+const ESPERA_VISITA_MS = 2000;
+
 /**
  * Mide la web pública sin tocar los componentes que ya existen:
+ *  · visita: una por pestaña, cuando la página estuvo a la vista dos
+ *    segundos (lo que se abre de fondo y se cierra sin mirar no cuenta).
+ *    La base la limita a una cada 30 minutos por navegador.
  *  · cuando un rubro entra en pantalla y queda (más de la mitad visible
  *    durante un segundo), vista_nicho. Vale para los paneles del selector
  *    (data-nicho en su panel) y para cualquier bloque marcado con
@@ -16,6 +22,21 @@ import { medir } from "./medir";
  */
 export function MedirRubros() {
   useEffect(() => {
+    let esperaVisita: ReturnType<typeof setTimeout> | null = null;
+    const contarVisita = () => {
+      if (document.visibilityState !== "visible") {
+        if (esperaVisita) clearTimeout(esperaVisita);
+        esperaVisita = null;
+        return;
+      }
+      esperaVisita ??= setTimeout(() => {
+        document.removeEventListener("visibilitychange", contarVisita);
+        medir("visita");
+      }, ESPERA_VISITA_MS);
+    };
+    document.addEventListener("visibilitychange", contarVisita);
+    contarVisita();
+
     const vistos = new Set<string>();
     const temporizadores = new Map<Element, ReturnType<typeof setTimeout>>();
 
@@ -71,6 +92,8 @@ export function MedirRubros() {
     document.addEventListener("click", alTocar, true);
 
     return () => {
+      if (esperaVisita) clearTimeout(esperaVisita);
+      document.removeEventListener("visibilitychange", contarVisita);
       observador.disconnect();
       mutaciones.disconnect();
       temporizadores.forEach(clearTimeout);

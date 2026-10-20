@@ -118,6 +118,24 @@ export async function cargarResumen(supabase: Cliente): Promise<Resumen> {
   return data as unknown as Resumen;
 }
 
+// ── Visitas y registros ───────────────────────────────────────────────
+export type PeriodoVisitas = "hoy" | "semana" | "mes";
+export type Visitas = {
+  /** Cuándo se midió la primera visita (null: todavía ninguna). */
+  medido_desde: string | null;
+  periodos: Record<PeriodoVisitas, { desde: string; personas: number; registros: number }>;
+};
+
+/** null si la base todavía no tiene la medición de visitas (migración sin aplicar). */
+export async function cargarVisitas(supabase: Cliente): Promise<Visitas | null> {
+  const { data, error } = await supabase.rpc("resumen_visitas");
+  if (error) {
+    console.error("[panel] visitas:", error.message);
+    return null;
+  }
+  return data as unknown as Visitas;
+}
+
 // ── Rendimiento de plantillas ─────────────────────────────────────────
 export const RANGOS = [7, 30, 90] as const;
 export type Rango = (typeof RANGOS)[number];

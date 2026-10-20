@@ -799,6 +799,7 @@ export type Database = {
     }
   }
 }
+      resumen_visitas: { Args: never; Returns: Json }
 
 type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
@@ -812,6 +813,7 @@ export type Tables<
     schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        | "visita"
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
@@ -943,3 +945,4 @@ export const Constants = {
     },
   },
 } as const
+        "visita",

@@ -6,8 +6,8 @@ import { crearClienteServidor } from "@/supabase/servidor";
 import type { Enums } from "@/supabase/tipos";
 
 /**
- * Recibe los eventos de la web pública (ver componentes/medicion): qué
- * rubro se miró, dónde se tocó "demo" o "Hablemos", y los pasos del
+ * Recibe los eventos de la web pública (ver componentes/medicion): las
+ * visitas, qué rubro se miró, dónde se tocó "demo" o "Hablemos", y los pasos del
  * registro. Lo que llega, lo guarda el servidor con la clave secreta
  * (nadie inserta eventos por la API de Supabase).
  *
@@ -19,6 +19,7 @@ import type { Enums } from "@/supabase/tipos";
  */
 
 const TIPOS: readonly Enums<"tipo_evento">[] = [
+  "visita",
   "vista_nicho",
   "clic_demo",
   "clic_contacto",
@@ -27,14 +28,21 @@ const TIPOS: readonly Enums<"tipo_evento">[] = [
   "email_confirmado",
 ];
 /** Lo que el navegador puede mandar (los de registro los anota la base). */
-const DESDE_LA_WEB: readonly Enums<"tipo_evento">[] = ["vista_nicho", "clic_demo", "clic_contacto", "inicio_registro"];
+const DESDE_LA_WEB: readonly Enums<"tipo_evento">[] = ["visita", "vista_nicho", "clic_demo", "clic_contacto", "inicio_registro"];
 
 const noRastrear = (pedido: NextRequest) =>
   pedido.headers.get("dnt") === "1" || pedido.headers.get("sec-gpc") === "1";
 
+/** Robots que ejecutan JavaScript (buscadores, vistas previas, pruebas de velocidad): no son personas. */
+const ROBOT = /bot|crawl|spider|slurp|headless|lighthouse|pagespeed|preview|prerender|phantom|selenium|puppeteer|playwright/i;
+const esRobot = (pedido: NextRequest) => {
+  const agente = pedido.headers.get("user-agent") ?? "";
+  return agente === "" || ROBOT.test(agente);
+};
+
 export async function POST(pedido: NextRequest) {
-  // Sin configurar o con "no rastrear": como si nada (200 para que el navegador no reintente).
-  if (!configSupabase() || noRastrear(pedido)) return new NextResponse(null, { status: 204 });
+  // Sin configurar, con "no rastrear" o de un robot: como si nada (204 para que el navegador no reintente).
+  if (!configSupabase() || noRastrear(pedido) || esRobot(pedido)) return new NextResponse(null, { status: 204 });
 
   let cuerpo: { eventos?: unknown };
   try {
@@ -62,9 +70,14 @@ export async function POST(pedido: NextRequest) {
     perfil = data?.claims?.sub ?? null;
   }
 
-  const { error } = await crearClienteAdmin()
-    .from("eventos")
-    .insert(filas.map((fila) => ({ ...fila, perfil_id: perfil })));
-  if (error) console.error("[eventos]", error.message);
+  // Las visitas van aparte: si la base todavía no tiene el tipo "visita"
+  // (migración sin aplicar), solo fallan ellas y el resto se guarda.
+  const admin = crearClienteAdmin();
+  const tandas = [filas.filter((f) => f.tipo !== "visita"), filas.filter((f) => f.tipo === "visita")];
+  for (const tanda of tandas) {
+    if (tanda.length === 0) continue;
+    const { error } = await admin.from("eventos").insert(tanda.map((fila) => ({ ...fila, perfil_id: perfil })));
+    if (error) console.error("[eventos]", error.message);
+  }
   return new NextResponse(null, { status: 204 });
 }

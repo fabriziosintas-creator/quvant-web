@@ -1,17 +1,27 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { Barras, Bloque, Indicador, PuntoRubro, TituloPanel } from "@/componentes/panel/Graficos";
-import { fechaHora, numero, porcentaje } from "@/componentes/panel/formato";
+import { fechaHora, numero, porcentaje, porcentajeFino } from "@/componentes/panel/formato";
 import { ACENTO_NICHO } from "@/datos/colores";
 import { CUENTA, PANEL_ADMIN } from "@/datos/textos";
 import { exigirAdmin } from "@/servidor/panel/acceso";
-import { cargarNichos, cargarRegistros, cargarResumen, filtrosEnUrl, leerFiltros, type Filtros } from "@/servidor/panel/datos";
+import {
+  cargarNichos,
+  cargarRegistros,
+  cargarResumen,
+  cargarVisitas,
+  filtrosEnUrl,
+  leerFiltros,
+  type Filtros,
+  type PeriodoVisitas,
+  type Visitas,
+} from "@/servidor/panel/datos";
 
 const T = PANEL_ADMIN.resumen;
 const acentoDe = (nicho: string) => (nicho in ACENTO_NICHO ? ACENTO_NICHO[nicho as keyof typeof ACENTO_NICHO] : undefined);
 const objetivoCorto = (id: string) => PANEL_ADMIN.objetivosCortos[id as keyof typeof PANEL_ADMIN.objetivosCortos] ?? id;
 
-/** 6.1 Resumen: los registrados, por rubro y por objetivo, y la lista con filtros y CSV. */
+/** 6.1 Resumen: cuántos entran y se registran, los registrados por rubro y por objetivo, y la lista con filtros y CSV. */
 export default function Resumen({ searchParams }: PageProps<"/panel">) {
   return (
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-8 md:px-6 md:py-10">
@@ -26,8 +36,9 @@ export default function Resumen({ searchParams }: PageProps<"/panel">) {
 async function Contenido({ searchParams }: { searchParams: PageProps<"/panel">["searchParams"] }) {
   const { supabase } = await exigirAdmin("/panel");
   const filtros = leerFiltros(await searchParams);
-  const [resumen, nichos, { filas, total }] = await Promise.all([
+  const [resumen, visitas, nichos, { filas, total }] = await Promise.all([
     cargarResumen(supabase),
+    cargarVisitas(supabase),
     cargarNichos(supabase),
     cargarRegistros(supabase, filtros),
   ]);
@@ -36,6 +47,8 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel">["
 
   return (
     <>
+      <EntraronYSeRegistraron visitas={visitas} />
+
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <Indicador etiqueta={T.tiles.hoy} valor={numero(resumen.hoy)} />
         <Indicador etiqueta={T.tiles.semana} valor={numero(resumen.semana)} />
@@ -96,6 +109,48 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel">["
         )}
       </Bloque>
     </>
+  );
+}
+
+/**
+ * Cuántas personas entraron hoy, esta semana y este mes, y qué parte se
+ * registró. Si la medición empezó en medio del período, la tarjeta dice
+ * desde cuándo cuenta (la base ya recorta los registros a esa fecha).
+ */
+function EntraronYSeRegistraron({ visitas }: { visitas: Visitas | null }) {
+  const V = T.visitas;
+  const periodos: PeriodoVisitas[] = ["hoy", "semana", "mes"];
+  const medidoDesde = visitas?.medido_desde ? new Date(visitas.medido_desde).getTime() : null;
+
+  return (
+    <Bloque titulo={V.titulo} nota={V.nota}>
+      {!visitas || medidoDesde === null ? (
+        <p className="border border-profundo p-6 font-lectura text-sm text-acero">{visitas ? V.sinMedir : V.sinMigracion}</p>
+      ) : (
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {periodos.map((periodo) => {
+            const { desde, personas, registros } = visitas.periodos[periodo];
+            const recortado = new Date(desde).getTime() === medidoDesde;
+            const tasa = porcentajeFino(registros, personas);
+            return (
+              <Indicador
+                key={periodo}
+                etiqueta={V.tiles[periodo]}
+                valor={numero(personas)}
+                detalle={
+                  <>
+                    {(registros === 1 ? V.registro : V.registraron.replace("{n}", numero(registros))).replace("{p}", tasa)}
+                    {recortado ? (
+                      <span className="mt-1 block text-acero/70">{V.desde.replace("{fecha}", fechaHora(desde))}</span>
+                    ) : null}
+                  </>
+                }
+              />
+            );
+          })}
+        </div>
+      )}
+    </Bloque>
   );
 }
 

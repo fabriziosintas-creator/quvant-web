@@ -1,6 +1,6 @@
 /**
- * La medición propia de la web: qué rubro se mira, dónde se toca "demo" o
- * "Hablemos", y los pasos del registro. Sin cookies de terceros ni Google
+ * La medición propia de la web: cuántas personas entran, qué rubro se
+ * mira, dónde se toca "demo" o "Hablemos", y los pasos del registro. Sin cookies de terceros ni Google
  * Analytics: un id anónimo que vive en el localStorage de este navegador
  * (el mismo que el registro guarda como visita_id), y nada más.
  *
@@ -9,7 +9,7 @@
  * se juntan y van de a tandas con sendBeacon (no frenan la navegación).
  */
 
-export type TipoEvento = "vista_nicho" | "clic_demo" | "clic_contacto" | "inicio_registro";
+export type TipoEvento = "visita" | "vista_nicho" | "clic_demo" | "clic_contacto" | "inicio_registro";
 
 export const CLAVE_VISITA = "quvant-visita";
 

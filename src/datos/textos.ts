@@ -984,7 +984,17 @@ export const PANEL_ADMIN = {
   sinRubro: "Sin rubro",
   resumen: {
     titulo: "Resumen",
-    bajada: "Quiénes se registran, de qué rubro son y qué buscan. No cuenta las cuentas de admin.",
+    bajada: "Cuántos entran, quiénes se registran, de qué rubro son y qué buscan. No cuenta las cuentas de admin.",
+    visitas: {
+      titulo: "Entraron y se registraron",
+      nota: "Personas distintas que entraron a la web (cada navegador cuenta una vez) y qué parte creó su cuenta. No cuenta robots ni a quien pidió no ser medido, así que es un piso: entraron al menos estas.",
+      tiles: { hoy: "Entraron hoy", semana: "Esta semana", mes: "Este mes" },
+      registraron: "{n} se registraron · {p}",
+      registro: "1 se registró · {p}",
+      desde: "Contando desde el {fecha}",
+      sinMedir: "Todavía no hay visitas medidas. Se empiezan a contar apenas entre la primera persona con el cambio publicado.",
+      sinMigracion: "Falta aplicar en la base la medición de visitas (migraciones 20261022…). Ver docs/publicar.md.",
+    },
     tiles: {
       hoy: "Registros de hoy",
       semana: "Esta semana",
