@@ -73,4 +73,36 @@ Leé esto primero. Trabajé de corrido la Parte A (medición del sistema con Pos
 
 **Pendiente de la Parte B:** aplicar la migración; cargar los clientes reales en `clientes_sistema` (hay un script de prueba, `supabase/pruebas/datos-nucleos-de-prueba.sql`, que se borra entero con `privado.borrar_nucleos_de_prueba()`); las claves; "Dejar novedad en su sistema" (necesita A.5, el botón está deshabilitado con la nota); mover la caché de Claude a la tabla.
 
-*(las secciones siguientes se completan paso a paso)*
+## Verificación final (21-oct, madrugada)
+
+| Qué | Resultado |
+|---|---|
+| `npm.cmd run lint` (todo el repo) | sin errores ni avisos |
+| `npx.cmd tsc --noEmit` | 0 errores |
+| `npm.cmd test` (24 pruebas: 14 de la medición, 10 de los indicadores) | 24/24 |
+| `npm.cmd run build` | compila; `/panel/nucleos`, `/panel/nucleos/[nucleo]`, `/panel/nucleos/[nucleo]/[cliente]` y `/api/nucleos/actualizar` quedan registradas |
+| Migración `20261021140000_nucleos.sql` | validada en un Postgres local con todas las anteriores; un anónimo no lee nada |
+| Rutas sin sesión | las tres de Núcleos redirigen a `/ingresar`; el cron responde 401 sin clave y con clave equivocada |
+| Web pública | sigue igual (sin PostHog: cero menciones en la portada) |
+| **Pantallas de Núcleos vistas con un admin** | **No.** Para entrar hay que crear un admin de prueba en la base real y la regla de esta noche era no tocarla. Lo ves vos en un minuto (abajo). |
+
+## Resumen para la mañana
+
+**Qué quedó hecho.** La Parte A como paquete listo para el repo del sistema (`medicion-sistema/`, con su `LEEME.md`) y la Parte B entera en el panel (`/panel/nucleos`, tres vistas, indicadores, alertas, proceso diario, 3D, Claude, email). Tres commits en `panel-nucleos-noche`: medición, Núcleos y este resumen.
+
+**Qué quedó con datos de ejemplo.** Toda la sección Núcleos (9 clientes inventados con cartel "Datos de ejemplo"), el análisis de Claude (armado con los indicadores, marcado "sin Claude") y el proceso diario (no calcula nada hasta tener PostHog y tablas). Nada de esto se guarda en la base.
+
+**Qué claves faltan** (en `.env.local` y después en Vercel; ver `.env.example`):
+- `POSTHOG_HOST`, `POSTHOG_PROJECT_ID`, `POSTHOG_PERSONAL_API_KEY` (clave personal `phx_…` con alcance mínimo de consulta y acceso solo a este proyecto) → el panel lee datos reales.
+- `ANTHROPIC_API_KEY` → el bloque de Claude de verdad (la misma del chat).
+- `CRON_SECRET` → el proceso diario desde Vercel Cron.
+- `NUCLEOS_ALERTAS_PARA` → los emails de alertas rojas (vacío = apagado).
+- Para el sistema (otro repo): `NEXT_PUBLIC_POSTHOG_KEY` (`phc_…`), `POSTHOG_HOST`, `MEDICION_SAL`.
+
+**Qué decisiones revisar primero.** (1) **0.1**: dónde está el repo del sistema, para hacer A.4 y A.6. (2) **A.3**: las funciones clave de gimnasios (son propuesta mía). (3) **B.6**: el semáforo sin colores (si querés un color funcional, decime cuál). (4) **B.4**: Vercel Cron en vez de pg_cron.
+
+**Cómo ver el panel.** En `quvant-web`: `git checkout panel-nucleos-noche`, `npm.cmd run dev`, entrar en `http://localhost:3000/ingresar` con tu cuenta (ya es admin) y tocar **Núcleos** en el menú del panel, o ir directo a `http://localhost:3000/panel/nucleos`. Desde ahí: un núcleo (por ejemplo "Industria y comercio") y un cliente (por ejemplo "Repuestos Avellaneda (ejemplo)", que tiene alertas, un acompañamiento y el botón "Analizar este cliente"). Probá "Vista 3D / Vista lista" y achicá la ventana a 375 px.
+
+**Cómo descartar todo si no te gusta.** `git checkout registro-y-panel` y `git branch -D panel-nucleos-noche`. Nada salió de esta computadora: no hubo push, deploy, ni cambios en Vercel, Supabase, PostHog o Resend. Después, `git stash pop` recupera lo que había sin guardar antes de empezar.
+
+**Lo que sigue, si aprobás.** Mergear `panel-nucleos-noche` en `registro-y-panel`; aplicar la migración y regenerar tipos; cargar las claves; cargar los clientes reales en `clientes_sistema` (o probar con `supabase/pruebas/datos-nucleos-de-prueba.sql`); conseguir el repo del sistema para instrumentar los módulos; y retomar "web más humana" (paso 2, en pausa).
