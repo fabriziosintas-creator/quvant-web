@@ -29,6 +29,12 @@ export function IconoEstado({ estado, tamano = 12 }: { estado: EstadoMeta; taman
         </>
       ) : null}
       {estado === "atrasado" || estado === "no_cumplido" ? <path d="M2.5 2.5l7 7M9.5 2.5l-7 7" stroke={color} strokeWidth="1.8" /> : null}
+      {estado === "por_empezar" ? (
+        <>
+          <circle cx="6" cy="6" r="4.5" fill="none" stroke={color} strokeWidth="1.2" />
+          <path d="M6 3.5V6l1.8 1.2" fill="none" stroke={color} strokeWidth="1.2" />
+        </>
+      ) : null}
       {estado === "sin_datos" ? <rect x="2.5" y="2.5" width="7" height="7" fill="none" stroke={color} strokeWidth="1.2" strokeDasharray="2 1.5" /> : null}
     </svg>
   );

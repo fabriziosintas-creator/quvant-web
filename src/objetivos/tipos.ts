@@ -70,4 +70,4 @@ export type DatosObjetivos = {
   avances: Array<{ metaId: string; fecha: Dia; valor: number }>;
 };
 
-export type EstadoMeta = "cumplido" | "en_camino" | "en_riesgo" | "atrasado" | "sin_datos" | "no_cumplido";
+export type EstadoMeta = "cumplido" | "en_camino" | "en_riesgo" | "atrasado" | "sin_datos" | "no_cumplido" | "por_empezar";

@@ -56,4 +56,5 @@ export const COLOR_ESTADO = {
   atrasado: "#F8717A",
   no_cumplido: "#F8717A",
   sin_datos: "#9C9CA3",
+  por_empezar: "#9C9CA3",
 } as const;

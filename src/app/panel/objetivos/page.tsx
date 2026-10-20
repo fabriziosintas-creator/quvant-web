@@ -20,9 +20,9 @@ export const metadata: Metadata = { title: `${T.titulo} · ${PANEL_ADMIN.titulo}
 
 const ETAPAS = ["todas", "90_dias", "6_meses", "12_meses", "libre"] as const;
 const AREAS = Object.keys(T.areas) as Area[];
-const ESTADOS = ["cumplido", "en_camino", "en_riesgo", "atrasado", "sin_datos", "no_cumplido"] as const;
+const ESTADOS = ["cumplido", "en_camino", "en_riesgo", "atrasado", "sin_datos", "no_cumplido", "por_empezar"] as const;
 /** Lo más urgente primero. */
-const URGENCIA: Record<EstadoMeta, number> = { atrasado: 0, en_riesgo: 1, sin_datos: 2, en_camino: 3, cumplido: 4, no_cumplido: 5 };
+const URGENCIA: Record<EstadoMeta, number> = { atrasado: 0, en_riesgo: 1, sin_datos: 2, en_camino: 3, cumplido: 4, no_cumplido: 5, por_empezar: 6 };
 
 type Parametros = Record<string, string | string[] | undefined>;
 const uno = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v) ?? "";

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { COLOR_ESTADO } from "@/datos/colores";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { cadaDia, diasEntre } from "@/objetivos/fechas";
@@ -42,8 +42,16 @@ export function GraficoMeta({
   const quieto = useReducedMotion();
   const id = useId();
   const [x, setX] = useState<number | null>(null);
-  const ancho = 720;
-  const alto = 260;
+  // Se dibuja al ancho real de la caja: en el celular las letras quedan de su tamaño (no un dibujo de 720 achicado).
+  const caja = useRef<HTMLDivElement>(null);
+  const [ancho, setAncho] = useState(720);
+  useEffect(() => {
+    if (!caja.current) return;
+    const observador = new ResizeObserver(([entrada]) => setAncho(Math.max(280, Math.round(entrada.contentRect.width))));
+    observador.observe(caja.current);
+    return () => observador.disconnect();
+  }, []);
+  const alto = ancho < 500 ? 220 : 260;
   const m = { izq: 56, der: 16, arr: 16, aba: 28 };
   const total = Math.max(1, diasEntre(desde, hasta));
   const base = acumulacion === "valor_al_cierre" ? (inicio ?? 0) : 0;
@@ -71,7 +79,7 @@ export function GraficoMeta({
 
   return (
     <figure className="flex flex-col gap-3">
-      <div className="relative">
+      <div ref={caja} className="relative">
         <svg viewBox={`0 0 ${ancho} ${alto}`} className="h-auto w-full touch-pan-y" role="img" aria-labelledby={`${id}-tabla`} onPointerMove={alMover} onPointerLeave={() => setX(null)}>
           {marcas.map((v) => (
             <g key={v}>
@@ -118,7 +126,7 @@ export function GraficoMeta({
           ) : null}
         </svg>
         {elegido ? (
-          <div className="pointer-events-none absolute left-14 top-3 flex flex-col gap-0.5 border border-profundo bg-negro/95 px-3 py-2 font-plex text-xs">
+          <div className="pointer-events-none absolute left-12 top-2 flex flex-col gap-0.5 border border-profundo bg-negro/95 px-3 py-2 font-plex text-xs">
             <span className="text-acero">{diaCorto(elegido.dia)}</span>
             <span className="text-blanco">
               {T.real}: {conUnidad(elegido.valor, unidad)}

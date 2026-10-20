@@ -52,7 +52,7 @@ export function calcularAvance(datos: DatosObjetivos, meta: Meta, hoy: Dia): Ava
   const base: Omit<Avance, "estado" | "avance" | "esperado" | "proyeccion" | "falta"> = { valor, transcurrido, diasRestantes, ritmo, abierto, inicio };
 
   if (valor === null || (meta.meta <= 0 && meta.direccion === "mas_es_mejor")) {
-    return { ...base, avance: null, esperado: null, proyeccion: null, falta: null, estado: hoy < meta.desde ? "en_camino" : "sin_datos" };
+    return { ...base, avance: null, esperado: null, proyeccion: null, falta: null, estado: hoy < meta.desde ? "por_empezar" : "sin_datos" };
   }
 
   // ── Menos es mejor (churn, tiempo de respuesta): cumplir es quedar por debajo.
