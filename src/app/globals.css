@@ -1172,3 +1172,14 @@ html[data-vista="texto"] .linea-canales {
     animation: none;
   }
 }
+
+/* ── Nichos: en las coordenadas paralelas, la línea que se toca se queda y el resto se apaga ── */
+.paralelas .linea-paralela {
+  transition: opacity var(--duracion-rapida, 200ms) ease, stroke-width 200ms ease;
+}
+.paralelas:has(.linea-paralela:hover) .linea-paralela:not(:hover) {
+  opacity: 0.15;
+}
+.paralelas .linea-paralela:hover {
+  stroke-width: 4;
+}
