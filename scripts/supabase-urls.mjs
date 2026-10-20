@@ -21,7 +21,7 @@ const base = `https://api.supabase.com/v1/projects/${ref}/config/auth`;
 const cabeceras = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
 
 const SITIO = "https://www.quvant.com.ar";
-const PERMITIDAS = ["http://localhost:3000/**", "https://www.quvant.com.ar/**", "https://quvant.com.ar/**", "https://*-fabriziosintas-6814.vercel.app/**"];
+const PERMITIDAS = ["http://localhost:3000/**", "https://www.quvant.com.ar/**", "https://quvant.com.ar/**", "https://*-yunque2.vercel.app/**"];
 
 const actual = await (await fetch(base, { headers: cabeceras })).json();
 console.log("site_url actual:", actual.site_url);

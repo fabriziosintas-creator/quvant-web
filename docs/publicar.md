@@ -41,7 +41,7 @@ console.cloud.google.com → APIs & Services → Credentials → Create credenti
 
 ## 3. Supabase
 
-- **URLs de Auth**: hoy `site_url` es `http://localhost:3000` y las plantillas de email usan `{{ .SiteURL }}`, así que los enlaces de confirmación llevan a localhost. Hay que dejar `site_url = https://www.quvant.com.ar` y permitir `http://localhost:3000/**`, `https://www.quvant.com.ar/**`, `https://quvant.com.ar/**` y las vistas previas de Vercel: `node scripts/supabase-urls.mjs --aplicar` (o en el panel de Supabase: Authentication → URL Configuration).
+- **URLs de Auth**: hoy `site_url` es `http://localhost:3000` y las plantillas de email usan `{{ .SiteURL }}`, así que los enlaces de confirmación llevan a localhost. Hay que dejar `site_url = https://www.quvant.com.ar` y permitir `http://localhost:3000/**`, `https://www.quvant.com.ar/**`, `https://quvant.com.ar/**` y las vistas previas de Vercel (`https://*-yunque2.vercel.app/**`): `node scripts/supabase-urls.mjs --aplicar` (o en el panel de Supabase: Authentication → URL Configuration).
 - **Plantillas de email**: se regeneraron con el tono nuevo (`supabase/plantillas/`), falta subirlas: `npm run emails:supabase -- --subir`.
 - **Migración de Núcleos**: `npx supabase db push --linked` aplica `20261021140000_nucleos.sql` (las anteriores ya están). Después, `npx supabase gen types typescript --linked --schema public > src/supabase/tipos.ts`.
 - **Datos de prueba**: antes de publicar, `select privado.borrar_datos_de_prueba();` (por `npx supabase db query --linked -f archivo.sql`). Borra las 24 personas, 180 eventos y 7 clientes del script `supabase/pruebas/datos-de-prueba.sql`; se vuelven a cargar con ese archivo si hacen falta.
