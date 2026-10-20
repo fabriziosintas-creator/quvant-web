@@ -16,6 +16,172 @@ export type Database = {
   }
   public: {
     Tables: {
+      acompanamientos: {
+        Row: {
+          alerta_id: string | null
+          cliente_id: string
+          creado_en: string
+          es_prueba: boolean
+          fecha: string
+          id: string
+          nota: string | null
+          quien: string | null
+          tipo: string
+        }
+        Insert: {
+          alerta_id?: string | null
+          cliente_id: string
+          creado_en?: string
+          es_prueba?: boolean
+          fecha?: string
+          id?: string
+          nota?: string | null
+          quien?: string | null
+          tipo: string
+        }
+        Update: {
+          alerta_id?: string | null
+          cliente_id?: string
+          creado_en?: string
+          es_prueba?: boolean
+          fecha?: string
+          id?: string
+          nota?: string | null
+          quien?: string | null
+          tipo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "acompanamientos_alerta_id_fkey"
+            columns: ["alerta_id"]
+            isOneToOne: false
+            referencedRelation: "alertas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "acompanamientos_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes_sistema"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "acompanamientos_quien_fkey"
+            columns: ["quien"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      alertas: {
+        Row: {
+          cliente_id: string
+          detalle: Json
+          es_prueba: boolean
+          estado: string
+          fecha: string
+          funcion_clave: string | null
+          gravedad: string
+          id: string
+          resolucion: string | null
+          resuelta_en: string | null
+          resuelta_por: string | null
+          tipo: string
+        }
+        Insert: {
+          cliente_id: string
+          detalle?: Json
+          es_prueba?: boolean
+          estado?: string
+          fecha?: string
+          funcion_clave?: string | null
+          gravedad?: string
+          id?: string
+          resolucion?: string | null
+          resuelta_en?: string | null
+          resuelta_por?: string | null
+          tipo: string
+        }
+        Update: {
+          cliente_id?: string
+          detalle?: Json
+          es_prueba?: boolean
+          estado?: string
+          fecha?: string
+          funcion_clave?: string | null
+          gravedad?: string
+          id?: string
+          resolucion?: string | null
+          resuelta_en?: string | null
+          resuelta_por?: string | null
+          tipo?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alertas_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes_sistema"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "alertas_resuelta_por_fkey"
+            columns: ["resuelta_por"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      analisis_claude: {
+        Row: {
+          alcance: string
+          cliente_id: string | null
+          creado_en: string
+          dia: string
+          id: number
+          modelo: string
+          nucleo_id: string | null
+          respuesta: Json
+        }
+        Insert: {
+          alcance: string
+          cliente_id?: string | null
+          creado_en?: string
+          dia?: string
+          id?: never
+          modelo: string
+          nucleo_id?: string | null
+          respuesta: Json
+        }
+        Update: {
+          alcance?: string
+          cliente_id?: string | null
+          creado_en?: string
+          dia?: string
+          id?: never
+          modelo?: string
+          nucleo_id?: string | null
+          respuesta?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "analisis_claude_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes_sistema"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "analisis_claude_nucleo_id_fkey"
+            columns: ["nucleo_id"]
+            isOneToOne: false
+            referencedRelation: "nucleos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clientes_plantilla: {
         Row: {
           abono_mensual: number | null
@@ -90,6 +256,72 @@ export type Database = {
           },
         ]
       }
+      clientes_sistema: {
+        Row: {
+          actualizado_en: string
+          alta: string
+          cliente_plantilla_id: string | null
+          creado_en: string
+          es_prueba: boolean
+          id: string
+          modulos_activos: string[]
+          nombre: string
+          nucleo_id: string
+          organizacion_id: string
+          plan: string | null
+          responsable: string
+          sucursales_contratadas: number
+          usuarios_contratados: number
+        }
+        Insert: {
+          actualizado_en?: string
+          alta?: string
+          cliente_plantilla_id?: string | null
+          creado_en?: string
+          es_prueba?: boolean
+          id?: string
+          modulos_activos?: string[]
+          nombre: string
+          nucleo_id: string
+          organizacion_id: string
+          plan?: string | null
+          responsable?: string
+          sucursales_contratadas?: number
+          usuarios_contratados?: number
+        }
+        Update: {
+          actualizado_en?: string
+          alta?: string
+          cliente_plantilla_id?: string | null
+          creado_en?: string
+          es_prueba?: boolean
+          id?: string
+          modulos_activos?: string[]
+          nombre?: string
+          nucleo_id?: string
+          organizacion_id?: string
+          plan?: string | null
+          responsable?: string
+          sucursales_contratadas?: number
+          usuarios_contratados?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clientes_sistema_cliente_plantilla_id_fkey"
+            columns: ["cliente_plantilla_id"]
+            isOneToOne: false
+            referencedRelation: "clientes_plantilla"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clientes_sistema_nucleo_id_fkey"
+            columns: ["nucleo_id"]
+            isOneToOne: false
+            referencedRelation: "nucleos"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       eventos: {
         Row: {
           creado_en: string
@@ -131,6 +363,44 @@ export type Database = {
             columns: ["perfil_id"]
             isOneToOne: false
             referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      indicadores_diarios: {
+        Row: {
+          cliente_id: string
+          creado_en: string
+          datos: Json
+          dia: string
+          id: number
+          salud: number | null
+          semaforo: string | null
+        }
+        Insert: {
+          cliente_id: string
+          creado_en?: string
+          datos: Json
+          dia: string
+          id?: never
+          salud?: number | null
+          semaforo?: string | null
+        }
+        Update: {
+          cliente_id?: string
+          creado_en?: string
+          datos?: Json
+          dia?: string
+          id?: never
+          salud?: number | null
+          semaforo?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "indicadores_diarios_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes_sistema"
             referencedColumns: ["id"]
           },
         ]
@@ -246,6 +516,30 @@ export type Database = {
           nombre?: string
           orden?: number
           tiene_plantilla?: boolean
+        }
+        Relationships: []
+      }
+      nucleos: {
+        Row: {
+          estado: string
+          id: string
+          nombre: string
+          orden: number
+          plantilla: string | null
+        }
+        Insert: {
+          estado?: string
+          id: string
+          nombre: string
+          orden: number
+          plantilla?: string | null
+        }
+        Update: {
+          estado?: string
+          id?: string
+          nombre?: string
+          orden?: number
+          plantilla?: string | null
         }
         Relationships: []
       }
