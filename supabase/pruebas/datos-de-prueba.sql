@@ -12,6 +12,7 @@ security definer
 set search_path = ''
 as $$
 begin
+  delete from public.promo_lugares where es_prueba;
   delete from public.clientes_plantilla where es_prueba;
   delete from public.visitas where es_prueba;
   delete from public.locales where es_prueba;

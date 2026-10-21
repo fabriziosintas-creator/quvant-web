@@ -223,6 +223,37 @@ begin
     select count(*) into filas from public.visitas;
     res := res || format(E'Ana no ve las visitas\t%s', case when filas = 0 then 'OK' else 'FALLA: ve ' || filas end);
 
+    -- ── Primeros 100 (Ana, ya confirmada, reserva desde su cuenta) ───
+    texto := public.reservar_lugar_promo('sistema_2_meses')::text;
+    res := res || format(E'Ana (gimnasios) reserva los 2 meses del sistema\t%s',
+      case when texto like '%reservado%' or texto like '%espera%' then 'OK (' || texto || ')' else 'FALLA: ' || texto end);
+
+    select count(*) into filas from public.promo_lugares;
+    res := res || format(E'Ana ve solo su lugar de la promo\t%s', case when filas = 1 then 'OK' else 'FALLA: ve ' || filas end);
+
+    update public.promo_lugares set estado = 'usado';
+    get diagnostics filas = row_count;
+    res := res || format(E'Ana no puede cambiar el estado de su lugar\t%s', case when filas = 0 then 'OK' else 'FALLA: cambió ' || filas end);
+
+    begin
+      insert into public.promo_lugares (perfil_id, beneficio) values (ana, 'web_app_50');
+      res := res || E'Nadie inserta lugares de la promo por la API\tFALLA: lo dejó';
+    exception when others then
+      res := res || format(E'Nadie inserta lugares de la promo por la API\tOK (%s)', sqlerrm);
+    end;
+
+    perform set_config('request.jwt.claims', '{"role":"anon"}', true);
+    perform set_config('role', 'anon', true);
+    texto := public.estado_promo()::text;
+    res := res || format(E'La web (anónima) lee solo los números de la promo\t%s',
+      case when texto like '%quedan%' and texto not like '%perfil%' then 'OK' else 'FALLA: ' || texto end);
+    begin
+      select count(*) into filas from public.promo_lugares;
+      res := res || E'Un anónimo no lee los lugares de la promo\tFALLA: lo dejó';
+    exception when others then
+      res := res || format(E'Un anónimo no lee los lugares de la promo\tOK (%s)', sqlerrm);
+    end;
+
     raise exception 'deshacer_pruebas';
   exception when others then
     if sqlerrm <> 'deshacer_pruebas' then
