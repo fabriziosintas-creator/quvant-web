@@ -6,6 +6,8 @@ import { PRUEBA, PruebaShaders, QSola } from "./compositions/PruebaShaders";
 import { HERO, HERO_CUADROS, HeroLoop } from "./compositions/HeroLoop";
 import { SPOT, SPOT_CUADROS, SpotCompleto } from "./compositions/SpotCompleto";
 import { SPOT_2026, Spot2026 } from "./spot2026/Spot2026";
+import { DURACION as PROMO100_DURACION, FPS as PROMO100_FPS } from "./promo100/guion";
+import { Promo100 } from "./promo100/Promo100";
 
 /**
  * Composiciones del video: el hero-loop y el spot-completo (las dos piezas
@@ -14,6 +16,9 @@ import { SPOT_2026, Spot2026 } from "./spot2026/Spot2026";
 export const Raiz: React.FC = () => {
   return (
     <>
+      {/* "Primeros 100" (42 s, tres capítulos): 16:9 para la web y 9:16 para Reels y Stories. */}
+      <Composition id="Promo100" component={Promo100} durationInFrames={PROMO100_DURACION * PROMO100_FPS} fps={PROMO100_FPS} width={1920} height={1080} />
+      <Composition id="Promo100-Vertical" component={Promo100} durationInFrames={PROMO100_DURACION * PROMO100_FPS} fps={PROMO100_FPS} width={1080} height={1920} />
       {/* El spot 2026 (42 s, cortado a su música): 1080p para la web y 4K para redes. */}
       <Composition
         id="Spot2026"

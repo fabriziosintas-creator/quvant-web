@@ -57,6 +57,10 @@
     "preparar-spot-2026": "node scripts/preparar-spot-2026.mjs",
     "entregas-2026": "node scripts/entregas-2026.mjs",
     "render-2026": "remotion render src/index.ts Spot2026 out/spot2026/spot2026-imagen.mp4 --gl=angle --concurrency=3 --muted --crf=16 --jpeg-quality=92",
-    "sonido-intro-web": "tsx scripts/sonido-intro-web.ts"
+    "sonido-intro-web": "tsx scripts/sonido-intro-web.ts",
+    "preparar-promo100": "node scripts/preparar-promo100.mjs",
+    "render-promo100": "remotion render src/index.ts Promo100 out/promo100/promo-100-1080.mp4 --gl=angle --concurrency=3 --crf=18",
+    "render-promo100-vertical": "remotion render src/index.ts Promo100-Vertical out/promo100/promo-100-vertical.mp4 --gl=angle --concurrency=3 --crf=18",
+    "promo100-vtt": "tsx scripts/promo100-vtt.ts"
   }
 }

@@ -20,6 +20,34 @@ export const PROMO = {
   rubrosSistema: ["industria", "gimnasios"],
 } as const;
 
+/**
+ * El video de la promo (docs/promo-primeros-100.md, sección 6). Mientras
+ * `archivo` sea null, la página muestra solo las demostraciones: nunca un
+ * reproductor vacío. Cuando esté (el render de video/ con la composición
+ * Promo100, o uno grabado con el celular), se copia a public/promo100/ y
+ * se completan las rutas. Cada capítulo es una situación: la página los
+ * ofrece como botones y cada situación tiene su "Ver en el video".
+ */
+export type IdSituacion = "sin-internet" | "aumento" | "stock";
+export const VIDEO_PROMO: {
+  archivo: string | null;
+  archivoWebm: string | null;
+  poster: string | null;
+  /** Subtítulos en WebVTT (casi todos lo miran sin sonido). */
+  subtitulos: string | null;
+  capitulos: ReadonlyArray<{ id: IdSituacion; titulo: string; desde: number }>;
+} = {
+  archivo: null, // TODO: "/promo100/promo-100-1080.mp4"
+  archivoWebm: null, // TODO: "/promo100/promo-100-1080.webm"
+  poster: null, // TODO: "/promo100/promo-100-poster.webp"
+  subtitulos: null, // TODO: "/promo100/promo-100.es.vtt"
+  capitulos: [
+    { id: "sin-internet", titulo: "Se cortó internet", desde: 0 },
+    { id: "aumento", titulo: "La lista nueva del proveedor", desde: 13 },
+    { id: "stock", titulo: "Se está terminando algo", desde: 26 },
+  ],
+};
+
 export type IdBeneficio = "web_app_50" | "sistema_2_meses";
 export const BENEFICIOS: readonly IdBeneficio[] = ["web_app_50", "sistema_2_meses"];
 export const esBeneficio = (valor: unknown): valor is IdBeneficio => typeof valor === "string" && (BENEFICIOS as readonly string[]).includes(valor);

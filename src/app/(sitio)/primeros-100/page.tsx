@@ -5,6 +5,7 @@ import { CLASE_BOTON, CLASE_BOTON_SECUNDARIO } from "@/componentes/cuenta/estilo
 import { BotonLugar } from "@/componentes/promo/BotonLugar";
 import { Contador } from "@/componentes/promo/Contador";
 import { MedirPromo } from "@/componentes/promo/MedirPromo";
+import { VerEnVideo, VideoPromo } from "@/componentes/promo/VideoPromo";
 import { DemoAumento, DemoSinInternet, DemoStock } from "@/componentes/promo/Demos";
 import { ACENTO_CANAL } from "@/datos/colores";
 import { PROMO, PROMO_TEXTOS as T } from "@/datos/promo";
@@ -43,9 +44,9 @@ export default async function PrimerosCien() {
   const botonPrincipal = cerrada ? T.botones.espera : T.botones.quiero;
 
   const situaciones = [
-    { id: "sin-internet", textos: T.situaciones.sinInternet, Demo: DemoSinInternet },
-    { id: "aumento", textos: T.situaciones.aumento, Demo: DemoAumento },
-    { id: "stock", textos: T.situaciones.stock, Demo: DemoStock },
+    { id: "sin-internet" as const, textos: T.situaciones.sinInternet, Demo: DemoSinInternet },
+    { id: "aumento" as const, textos: T.situaciones.aumento, Demo: DemoAumento },
+    { id: "stock" as const, textos: T.situaciones.stock, Demo: DemoStock },
   ];
 
   return (
@@ -87,6 +88,10 @@ export default async function PrimerosCien() {
       {/* Las tres situaciones, para tocar. */}
       <Capitulo id="situaciones" etiqueta={T.situaciones.etiqueta}>
         <p className="max-w-2xl font-lectura text-base leading-relaxed text-blanco md:text-lg">{T.situaciones.bajada}</p>
+        {/* El video, cuando esté (VIDEO_PROMO en datos/promo.ts); mientras tanto, nada. */}
+        <div className="mt-10 max-w-4xl empty:hidden">
+          <VideoPromo />
+        </div>
         <div className="mt-10 grid gap-12 lg:grid-cols-3 lg:gap-6">
           {situaciones.map(({ id, textos, Demo }) => (
             <article key={id} className="flex flex-col gap-5">
@@ -94,6 +99,7 @@ export default async function PrimerosCien() {
                 <h3 className="titulo text-2xl text-blanco">{textos.titulo}</h3>
                 <p className="mt-3 font-lectura text-[15px] leading-relaxed text-acero md:text-base">{textos.texto}</p>
               </div>
+              <VerEnVideo id={id} />
               <div className="flex-1">
                 <Demo />
               </div>
