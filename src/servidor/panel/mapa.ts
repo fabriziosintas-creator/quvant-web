@@ -54,7 +54,10 @@ export type Local = {
 export type Visita = Pick<
   Tables<"visitas">,
   "id" | "local_id" | "fecha" | "visitante_id" | "feedback" | "volver" | "nota" | "siguiente_paso" | "es_prueba" | "creado_en"
->;
+> & {
+  /** Si se dejó la tarjeta de "Primeros 100" (columna de la migración de la promo). */
+  tarjeta_promo?: boolean;
+};
 
 export type Admin = { id: string; nombre: string; apellido: string | null };
 
@@ -98,7 +101,8 @@ export async function cargarLocales(supabase: Cliente): Promise<Local[]> {
 export async function cargarVisitas(supabase: Cliente): Promise<Record<string, Visita[]>> {
   const { data, error } = await supabase
     .from("visitas")
-    .select("id, local_id, fecha, visitante_id, feedback, volver, nota, siguiente_paso, es_prueba, creado_en")
+    // Todas las columnas: tarjeta_promo existe recién con la migración de la promo.
+    .select("*")
     .order("fecha", { ascending: false })
     .order("creado_en", { ascending: false })
     .limit(5000);

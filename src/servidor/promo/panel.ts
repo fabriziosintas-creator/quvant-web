@@ -60,6 +60,13 @@ export async function cargarLugares(supabase: unknown): Promise<LugarPanel[]> {
   return (data ?? []) as unknown as LugarPanel[];
 }
 
+/** Cuántas visitas del mapa dejaron la tarjeta con el QR de la promo. */
+export async function contarTarjetas(supabase: unknown): Promise<number> {
+  const { count, error } = await sinTipos(supabase).from("visitas").select("id", { count: "exact", head: true }).eq("tarjeta_promo", true);
+  if (error) return 0;
+  return count ?? 0;
+}
+
 export type PasoEmbudo = { tipo: string; visitas: number; total: number };
 
 /** El embudo de la medición propia (security invoker: RLS de eventos, solo admin). */

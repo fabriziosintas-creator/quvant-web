@@ -1165,6 +1165,7 @@ export const PANEL_ADMIN = {
       prueba: "Prueba",
       sinCoordenadas: "Sin ubicación en el mapa: tocá «Ubicarlo donde estoy» parado en la puerta del local.",
       fue: "Fue {nombre}",
+      tarjeta: "Le dejaron la tarjeta de Primeros 100.",
     },
     visita: {
       titulo: "Cargar visita",
@@ -1175,6 +1176,7 @@ export const PANEL_ADMIN = {
       nota: "Nota (opcional)",
       siguiente: "Siguiente paso (opcional)",
       proxima: "Próxima visita (opcional)",
+      tarjeta: "Le dejé la tarjeta de Primeros 100",
       guardar: "Guardar visita",
       guardando: "Guardando…",
       guardada: "Listo, visita cargada.",

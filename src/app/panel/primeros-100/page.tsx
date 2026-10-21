@@ -9,7 +9,7 @@ import { PANEL_ADMIN } from "@/datos/textos";
 import { exigirAdmin } from "@/servidor/panel/acceso";
 import { cargarNichos } from "@/servidor/panel/datos";
 import { cambiarPromoActiva, guardarLugar } from "@/servidor/promo/accionesPanel";
-import { ESTADOS_EDITABLES, canalDe, cargarConfigPromo, cargarEmbudo, cargarLugares, type LugarPanel } from "@/servidor/promo/panel";
+import { ESTADOS_EDITABLES, canalDe, cargarConfigPromo, cargarEmbudo, cargarLugares, contarTarjetas, type LugarPanel } from "@/servidor/promo/panel";
 
 const T = PROMO_TEXTOS.panel;
 const BENEFICIO = PROMO_TEXTOS.beneficiosCortos;
@@ -34,7 +34,7 @@ async function Contenido() {
   const config = await cargarConfigPromo(supabase);
   if (!config) return <p className="border border-profundo p-6 font-lectura text-sm text-acero">{T.sinBase}</p>;
 
-  const [lugares, embudo, nichos] = await Promise.all([cargarLugares(supabase), cargarEmbudo(supabase), cargarNichos(supabase)]);
+  const [lugares, embudo, nichos, tarjetas] = await Promise.all([cargarLugares(supabase), cargarEmbudo(supabase), cargarNichos(supabase), contarTarjetas(supabase)]);
   const conNumero = lugares.filter((l) => l.numero !== null);
   const espera = lugares.filter((l) => l.estado === "espera");
   const pedidos = lugares.filter((l) => l.estado === "pedido");
@@ -56,6 +56,11 @@ async function Contenido() {
         <Indicador etiqueta={I.pedidos} valor={numero(pedidos.length)} />
         <Indicador etiqueta={I.web} valor={numero(conNumero.filter((l) => l.beneficio === "web_app_50").length)} />
         <Indicador etiqueta={I.sistema} valor={numero(conNumero.filter((l) => l.beneficio === "sistema_2_meses").length)} />
+        <Indicador
+          etiqueta={I.tarjetas}
+          valor={numero(tarjetas)}
+          detalle={I.porVisita.replace("{n}", numero(conNumero.filter((l) => canalDe(l.perfil?.origen) === "visita").length))}
+        />
       </div>
 
       <Bloque titulo={T.control.titulo}>

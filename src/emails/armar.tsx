@@ -11,6 +11,7 @@ import {
   type DatosAviso,
   type DatosBienvenida,
 } from "./EmailsCuenta";
+import { EmailNovedadPromo, type DatosNovedad } from "./NovedadPromo";
 
 /**
  * Arma cada email listo para mandar: asunto, HTML y versión de texto plano
@@ -45,6 +46,10 @@ export const armarAvisoRegistro = (datos: DatosAviso, urlImagenes?: string) => {
       : PROMO_TEXTOS.emails.aviso.asuntoEspera;
   return armarEmail(asunto.replace("{nombre}", datos.nombre).replace("{rubro}", rubro), <EmailAvisoRegistro datos={datos} urlImagenes={urlImagenes} />);
 };
+
+/** "Primeros 100" a quienes ya tienen cuenta y aceptaron novedades (scripts/promo-novedades.tsx). */
+export const armarNovedadPromo = (datos: DatosNovedad, urlImagenes?: string) =>
+  armarEmail(PROMO_TEXTOS.novedad.asunto, <EmailNovedadPromo datos={datos} urlImagenes={urlImagenes} />);
 
 export const armarConfirmacion = (saludo: string, enlace: string, urlImagenes?: string) =>
   armarEmail(EMAILS.confirmacion.asunto, <EmailConfirmacion saludo={saludo} enlace={enlace} urlImagenes={urlImagenes} />);

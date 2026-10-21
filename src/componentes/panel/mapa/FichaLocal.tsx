@@ -180,6 +180,7 @@ export function FichaLocal({
                 </p>
                 {v.nota ? <p className="font-lectura text-sm text-acero">{v.nota}</p> : null}
                 {v.siguiente_paso ? <p className="font-lectura text-sm text-blanco">→ {v.siguiente_paso}</p> : null}
+                {v.tarjeta_promo ? <p className="font-plex text-xs text-acero">{T.ficha.tarjeta}</p> : null}
               </li>
             ))}
           </ol>

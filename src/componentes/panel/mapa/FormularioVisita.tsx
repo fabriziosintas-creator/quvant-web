@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect, useRef } from "react";
-import { Aviso, Campo, ErrorCampo } from "@/componentes/cuenta/Campos";
+import { Aviso, Campo, Casilla, ErrorCampo } from "@/componentes/cuenta/Campos";
 import { enviarSinReiniciar } from "@/componentes/cuenta/enviarSinReiniciar";
 import { CLASE_BOTON, CLASE_CAMPO, CLASE_ETIQUETA } from "@/componentes/cuenta/estilos";
 import { hoyEnBuenosAires } from "@/componentes/panel/formato";
@@ -80,6 +80,7 @@ export function FormularioVisita({ localId, admins, yo, alGuardar }: { localId: 
       </fieldset>
 
       <Campo name="nota" etiqueta={T.visita.nota} defaultValue={v.nota} maxLength={2000} />
+      <Casilla name="tarjeta_promo">{T.visita.tarjeta}</Casilla>
       <div className="grid gap-4 sm:grid-cols-2">
         <Campo name="siguiente" etiqueta={T.visita.siguiente} defaultValue={v.siguiente} maxLength={500} />
         <Campo name="proxima" type="date" etiqueta={T.visita.proxima} defaultValue={v.proxima} error={e.proxima} />

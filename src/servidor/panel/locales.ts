@@ -120,7 +120,10 @@ export async function cargarVisita(_previo: EstadoFormulario, datos: FormData): 
   if (valores.nota.length > 2000 || valores.siguiente.length > 500) errores.general = E.general;
   if (Object.keys(errores).length > 0) return { estado: "error", errores, valores };
 
+  // tarjeta_promo solo si se marcó (la columna llega con la migración de la promo).
+  const tarjeta = datos.get("tarjeta_promo") === "on" ? { tarjeta_promo: true } : {};
   const { error } = await supabase.from("visitas").insert({
+    ...(tarjeta as Record<string, never>),
     local_id: valores.local_id,
     fecha: valores.fecha,
     visitante_id: valores.visitante,

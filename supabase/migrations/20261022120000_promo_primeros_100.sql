@@ -25,6 +25,10 @@ alter type public.tipo_evento add value if not exists 'play_video_promo';
 alter type public.tipo_evento add value if not exists 'inicio_registro_promo';
 alter type public.tipo_evento add value if not exists 'lugar_asignado';
 
+-- En el mapa de prospección: si en la visita se dejó la tarjeta con el QR
+-- de la promo (para cruzar con los lugares que vienen de utm_source=visita).
+alter table public.visitas add column tarjeta_promo boolean not null default false;
+
 -- ── Configuración (una sola fila) ────────────────────────────────────
 create table public.promo_config (
   id boolean primary key default true check (id),

@@ -205,6 +205,22 @@ export const PROMO_TEXTOS = {
     },
   },
 
+  /** El email a quienes ya tienen cuenta y aceptaron novedades (se manda solo con el OK de fabrizio). */
+  novedad: {
+    asunto: "Primeros 100: 2 meses gratis del sistema o 50 % en tu web",
+    vistaPrevia: "Para las primeras 100 personas. Quedan {n} lugares.",
+    titulo: "Hola, {nombre}.",
+    texto: "Como tenés cuenta en Quvant y nos dijiste que querías recibir novedades, te lo contamos antes que a nadie: arrancamos con Primeros 100.",
+    beneficios: [
+      "2 meses gratis del sistema para administrar tu negocio (Industria y comercio; Gimnasios y fitness).",
+      "O 50 % en el desarrollo de tu web o tu app, para cualquier rubro.",
+    ],
+    quedan: "Quedan {n} de {tope} lugares, hasta el {hasta}.",
+    boton: "Reservar mi lugar",
+    bases: "Las bases y condiciones están en quvant.com.ar/primeros-100.",
+    porque: "Recibís este email porque aceptaste recibir novedades de Quvant. Si no querés más, desmarcá la opción en tu cuenta.",
+  },
+
   /** Lo que suman la bienvenida y el aviso interno cuando hay lugar. */
   emails: {
     asuntoLugar: "Tu lugar N° {n} de Primeros 100 está reservado",
@@ -240,6 +256,8 @@ export const PROMO_TEXTOS = {
       pedidos: "Sin confirmar el email",
       web: "Eligieron la web o app",
       sistema: "Eligieron el sistema",
+      tarjetas: "Tarjetas dejadas en visitas",
+      porVisita: "{n} lugares vinieron del QR",
       deTope: "de {tope}",
       hasta: "Hasta el {hasta}",
     },
