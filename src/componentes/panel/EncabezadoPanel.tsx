@@ -29,7 +29,7 @@ export function EncabezadoPanel({ nombre }: { nombre: string }) {
               {PANEL_ADMIN.titulo}
             </span>
           </Link>
-          <nav aria-label={PANEL_ADMIN.titulo} className="hidden md:block">
+          <nav aria-label={PANEL_ADMIN.titulo} className="hidden min-w-0 overflow-x-auto [scrollbar-width:none] md:block">
             <Secciones actual={actual} />
           </nav>
         </div>
@@ -61,6 +61,7 @@ const ACENTO_SECCION: Record<string, string> = {
   "/panel": ACENTO_CANAL.contacto,
   "/panel/resumen": AURORA[0],
   "/panel/comercial": ACENTO_CANAL.servicios,
+  "/panel/clientes": ACENTO_NICHO.gimnasios,
   "/panel/plantillas": ACENTO_NICHO.industria,
   "/panel/nichos": ACENTO_NICHO.kioscos,
   "/panel/nucleos": ACENTO_NICHO.pymes,

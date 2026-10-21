@@ -71,6 +71,9 @@ export function CartelEjemplo({ motivo }: { motivo: string | null }) {
       </span>
       <span className="text-acero">{T.ejemplo.explicacion}</span>
       {motivo ? <span className="text-acero">· {motivo}</span> : null}
+      <Link href="/panel/clientes/nuevo" className="text-blanco underline decoration-profundo underline-offset-4 hover:decoration-blanco">
+        {PANEL_ADMIN.clientesSistema.nuevo}
+      </Link>
     </div>
   );
 }

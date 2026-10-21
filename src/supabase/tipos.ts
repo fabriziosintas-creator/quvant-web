@@ -315,11 +315,12 @@ export type Database = {
           empresa: string
           es_prueba: boolean
           estado: Database["public"]["Enums"]["estado_cliente"]
-          fecha: string
           fecha_alta: string | null
           fecha_baja: string | null
+          fecha: string
           id: string
           local_id: string | null
+          motivo_baja: string | null
           nicho_id: string
           notas: string | null
         }
@@ -331,11 +332,12 @@ export type Database = {
           empresa: string
           es_prueba?: boolean
           estado?: Database["public"]["Enums"]["estado_cliente"]
-          fecha?: string
           fecha_alta?: string | null
           fecha_baja?: string | null
+          fecha?: string
           id?: string
           local_id?: string | null
+          motivo_baja?: string | null
           nicho_id: string
           notas?: string | null
         }
@@ -347,11 +349,12 @@ export type Database = {
           empresa?: string
           es_prueba?: boolean
           estado?: Database["public"]["Enums"]["estado_cliente"]
-          fecha?: string
           fecha_alta?: string | null
           fecha_baja?: string | null
+          fecha?: string
           id?: string
           local_id?: string | null
+          motivo_baja?: string | null
           nicho_id?: string
           notas?: string | null
         }
@@ -397,7 +400,9 @@ export type Database = {
           es_prueba: boolean
           id: string
           modulos_activos: string[]
+          motivo_baja: string | null
           nombre: string
+          nota_baja: string | null
           nucleo_id: string
           organizacion_id: string
           plan: string | null
@@ -415,7 +420,9 @@ export type Database = {
           es_prueba?: boolean
           id?: string
           modulos_activos?: string[]
+          motivo_baja?: string | null
           nombre: string
+          nota_baja?: string | null
           nucleo_id: string
           organizacion_id: string
           plan?: string | null
@@ -433,7 +440,9 @@ export type Database = {
           es_prueba?: boolean
           id?: string
           modulos_activos?: string[]
+          motivo_baja?: string | null
           nombre?: string
+          nota_baja?: string | null
           nucleo_id?: string
           organizacion_id?: string
           plan?: string | null
@@ -1267,6 +1276,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      permisos_metricas: {
+        Row: {
+          accion: string
+          cargado_por: string | null
+          cliente_id: string
+          creado_en: string
+          detalle: string | null
+          fecha: string
+          id: number
+          medio: string
+          quien: string
+        }
+        Insert: {
+          accion: string
+          cargado_por?: string | null
+          cliente_id: string
+          creado_en?: string
+          detalle?: string | null
+          fecha?: string
+          id?: number
+          medio: string
+          quien: string
+        }
+        Update: {
+          accion?: string
+          cargado_por?: string | null
+          cliente_id?: string
+          creado_en?: string
+          detalle?: string | null
+          fecha?: string
+          id?: number
+          medio?: string
+          quien?: string
+        }
+        Relationships: []
       }
       tipo_cambio_mensual: {
         Row: {

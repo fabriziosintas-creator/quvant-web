@@ -116,6 +116,11 @@ async function Contenido({ params }: { params: PageProps<"/panel/comercial/[id]"
               {F.cliente}
             </Link>
           ) : null}
+          {o.etapa === "ganado" || o.etapa === "negociacion" ? (
+            <Link href={`/panel/clientes/nuevo?oportunidad=${o.id}`} className={boton}>
+              {PANEL_ADMIN.clientesSistema.sinCuenta.alta}
+            </Link>
+          ) : null}
         </div>
       </header>
 
