@@ -5,6 +5,8 @@ import { calcularAvance, resultadoDelCierre } from "@/objetivos/estado";
 import { diaBA, diasEntre, limitesDelMes, sumarDias } from "@/objetivos/fechas";
 import type { Dia, Meta } from "@/objetivos/tipos";
 import type { Database } from "@/supabase/tipos";
+import { avisoDeObjetivo } from "@/avisos/avisos";
+import { crearAviso } from "@/servidor/avisos/crear";
 import { cargarDatos, cargarMetas, desdeNecesario } from "./datos";
 
 /**
@@ -42,8 +44,23 @@ export async function fotografiar(supabase: Cliente, hoy = hoyBA()) {
     const estado = a.estado === "no_cumplido" ? "atrasado" : a.estado;
     return { meta_id: m.id, dia: hoy, valor: a.valor, porcentaje: a.avance === null ? null : Math.round(a.avance * 10_000) / 100, estado };
   });
+  // Antes de guardar: la foto anterior de cada objetivo, para avisar si bajó a "en riesgo" o si se cumplió.
+  const { data: anteriores } = await supabase.from("metas_fotos").select("meta_id, dia, estado").in("meta_id", metas.map((m) => m.id)).lt("dia", hoy).order("dia", { ascending: false });
+  const previa = new Map<string, string>();
+  for (const f of anteriores ?? []) if (!previa.has(f.meta_id)) previa.set(f.meta_id, f.estado);
   const { error } = await supabase.from("metas_fotos").upsert(fotos, { onConflict: "meta_id,dia" });
   if (error) throw new Error(`metas_fotos: ${error.message}`);
+  for (const f of fotos) {
+    const tipo = avisoDeObjetivo(previa.get(f.meta_id) ?? null, f.estado);
+    const meta = metas.find((m) => m.id === f.meta_id)!;
+    if (tipo && !meta.esPrueba)
+      await crearAviso({
+        tipo,
+        titulo: tipo === "objetivo_cumplido" ? `Objetivo cumplido: ${meta.nombre}` : `Objetivo en riesgo: ${meta.nombre}`,
+        enlace: `/panel/objetivos/${meta.id}`,
+        clave: `meta:${meta.id}:${hoy}:${f.estado}`,
+      });
+  }
   return fotos.length;
 }
 

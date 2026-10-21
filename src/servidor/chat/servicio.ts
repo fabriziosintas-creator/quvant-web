@@ -3,6 +3,7 @@ import { SITIO } from "@/datos/sitio";
 import { almacen } from "./almacen";
 import { hayIA, responderConIA, responderGuiado, type Acciones } from "./asistente";
 import type { Autor, Conversacion, Mensaje, Necesidad, Pedido, VistaVisitante } from "./tipos";
+import { crearAviso } from "@/servidor/avisos/crear";
 import { oportunidadDesdeChat } from "@/servidor/comercial/desdeChat";
 import { avisarPorWhatsApp } from "./whatsapp";
 
@@ -75,12 +76,14 @@ function accionesDe(conversacion: Conversacion): Acciones {
       conversacion.pedido = { ...pedido, registrado: Date.now() };
       await almacen().guardar(conversacion);
       await avisarPorWhatsApp(textoAvisoPedido(conversacion.id, pedido));
-      // Entra al seguimiento comercial (oportunidad de origen "chat").
+      // Entra al seguimiento comercial (oportunidad de origen "chat") y a los avisos del panel.
       await oportunidadDesdeChat(conversacion.id, pedido);
+      await crearAviso({ tipo: "chat", titulo: `Pedido en el chat: ${pedido.nombre}`, texto: pedido.detalle, enlace: `/panel/mensajes?c=${conversacion.id}`, clave: `chat:${conversacion.id}:pedido`, sinWhatsApp: true });
     },
     async pedirPersona(motivo) {
       if (conversacion.estado === "bot") conversacion.estado = "espera-humano";
       await almacen().guardar(conversacion);
+      await crearAviso({ tipo: "chat", titulo: "Alguien quiere hablar con una persona", texto: motivo || undefined, enlace: `/panel/mensajes?c=${conversacion.id}`, clave: `chat:${conversacion.id}:persona`, sinWhatsApp: true });
       await avisarPorWhatsApp(
         [
           "■ Alguien quiere hablar con una persona en la web de Quvant",

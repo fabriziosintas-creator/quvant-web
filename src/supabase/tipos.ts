@@ -228,6 +228,84 @@ export type Database = {
           },
         ]
       }
+      avisos: {
+        Row: {
+          clave: string
+          creado_en: string
+          enlace: string | null
+          es_prueba: boolean
+          id: number
+          para_perfil: string | null
+          prioridad: string
+          texto: string | null
+          tipo: string
+          titulo: string
+        }
+        Insert: {
+          clave: string
+          creado_en?: string
+          enlace?: string | null
+          es_prueba?: boolean
+          id?: number
+          para_perfil?: string | null
+          prioridad?: string
+          texto?: string | null
+          tipo: string
+          titulo: string
+        }
+        Update: {
+          clave?: string
+          creado_en?: string
+          enlace?: string | null
+          es_prueba?: boolean
+          id?: number
+          para_perfil?: string | null
+          prioridad?: string
+          texto?: string | null
+          tipo?: string
+          titulo?: string
+        }
+        Relationships: []
+      }
+      avisos_leidos: {
+        Row: {
+          aviso_id: number
+          leido_en: string
+          perfil_id: string
+        }
+        Insert: {
+          aviso_id: number
+          leido_en?: string
+          perfil_id: string
+        }
+        Update: {
+          aviso_id?: number
+          leido_en?: string
+          perfil_id?: string
+        }
+        Relationships: []
+      }
+      avisos_preferencias: {
+        Row: {
+          actualizado_en: string
+          apagados: string[]
+          perfil_id: string
+          por_whatsapp: string[]
+        }
+        Insert: {
+          actualizado_en?: string
+          apagados?: string[]
+          perfil_id: string
+          por_whatsapp?: string[]
+        }
+        Update: {
+          actualizado_en?: string
+          apagados?: string[]
+          perfil_id?: string
+          por_whatsapp?: string[]
+        }
+        Relationships: []
+      }
       clientes_plantilla: {
         Row: {
           abono_mensual: number | null
@@ -1345,6 +1423,7 @@ export type Database = {
       }
     }
     Functions: {
+      revisar_visitas_interesantes: { Args: never; Returns: number }
       atencion_nicho: {
         Args: { desde: string; hasta: string; nicho: string }
         Returns: {

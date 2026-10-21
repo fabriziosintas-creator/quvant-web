@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { CSSProperties } from "react";
 import { Logotipo } from "@/componentes/marca/Logotipo";
+import { Campanita } from "@/componentes/panel/avisos/Campanita";
 import { ACENTO_CANAL, ACENTO_NICHO, AURORA } from "@/datos/colores";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { salir } from "@/servidor/cuenta/acciones";
@@ -33,6 +34,7 @@ export function EncabezadoPanel({ nombre }: { nombre: string }) {
           </nav>
         </div>
         <div className="flex shrink-0 items-center gap-3 font-plex text-[11px] uppercase tracking-[0.14em]">
+          <Campanita />
           <span className="hidden normal-case tracking-normal text-blanco lg:inline">{nombre}</span>
           <Link href="/cuenta" className="text-acero hover:text-blanco">
             {PANEL_ADMIN.miCuenta}
