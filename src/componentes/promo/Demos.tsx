@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { PROMO_TEXTOS } from "@/datos/promo";
+import { usoDemo } from "./MedirPromo";
 
 /**
  * Las tres situaciones de la promo como mini demostraciones: el visitante
@@ -58,6 +59,7 @@ export function DemoSinInternet() {
   useEffect(() => () => temporizadores.current.forEach((t) => window.clearTimeout(t)), []);
 
   const cobrar = () => {
+    usoDemo("sin-internet");
     const n = siguiente.current++;
     const minutos = 42 + n * 3;
     const hora = `${10 + Math.floor(minutos / 60)}:${String(minutos % 60).padStart(2, "0")}`;
@@ -66,6 +68,7 @@ export function DemoSinInternet() {
   };
 
   const alternar = () => {
+    usoDemo("sin-internet");
     if (conectado) return setConectado(false);
     setConectado(true);
     // Vuelve la conexión: lo pendiente se manda solo, de a una.
@@ -163,7 +166,10 @@ export function DemoAumento() {
           max={40}
           step={1}
           value={aumento}
-          onChange={(e) => setAumento(Number(e.target.value))}
+          onChange={(e) => {
+            usoDemo("aumento");
+            setAumento(Number(e.target.value));
+          }}
           className="w-full accent-[#ECECEE]"
         />
       </label>
@@ -172,7 +178,10 @@ export function DemoAumento() {
         {T.redondeo}
         <select
           value={modo}
-          onChange={(e) => setModo(e.target.value as Redondeo)}
+          onChange={(e) => {
+            usoDemo("aumento");
+            setModo(e.target.value as Redondeo);
+          }}
           className="h-10 rounded-full border border-profundo bg-negro px-4 font-lectura text-sm text-blanco focus:border-acero focus:outline-none"
         >
           {T.opciones.map((o) => (
@@ -248,7 +257,12 @@ export function DemoStock() {
       <p className="font-plex text-xs tabular-nums text-blanco">{T.unidades.replace("{n}", String(stock))}</p>
 
       <div className="flex flex-wrap gap-2">
-        <button type="button" onClick={() => setStock((s) => Math.max(0, s - 1))} disabled={stock === 0} className={`${CLASE_BOTON_CHICO} h-12 bg-blanco text-negro hover:bg-acero`}>
+        <button
+          type="button"
+          onClick={() => {
+            usoDemo("stock");
+            setStock((s) => Math.max(0, s - 1));
+          }} disabled={stock === 0} className={`${CLASE_BOTON_CHICO} h-12 bg-blanco text-negro hover:bg-acero`}>
           {T.vender}
         </button>
         <button type="button" onClick={() => setStock(INICIAL)} className={`${CLASE_BOTON_CHICO} h-12 border border-profundo text-blanco hover:border-acero`}>

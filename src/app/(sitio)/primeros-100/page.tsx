@@ -4,6 +4,7 @@ import { Capitulo } from "@/componentes/canales/Capitulo";
 import { CLASE_BOTON, CLASE_BOTON_SECUNDARIO } from "@/componentes/cuenta/estilos";
 import { BotonLugar } from "@/componentes/promo/BotonLugar";
 import { Contador } from "@/componentes/promo/Contador";
+import { MedirPromo } from "@/componentes/promo/MedirPromo";
 import { DemoAumento, DemoSinInternet, DemoStock } from "@/componentes/promo/Demos";
 import { ACENTO_CANAL } from "@/datos/colores";
 import { PROMO, PROMO_TEXTOS as T } from "@/datos/promo";
@@ -54,6 +55,8 @@ export default async function PrimerosCien() {
         className="pointer-events-none absolute inset-x-0 top-0 h-[70vh]"
         style={{ background: "radial-gradient(ellipse 55% 65% at 12% 0%, color-mix(in srgb, var(--acento) 16%, transparent), transparent 70%)" }}
       />
+
+      <MedirPromo />
 
       {/* Qué es y cuántos lugares quedan. */}
       <header className="contenedor relative pb-16 pt-28 md:pb-24 md:pt-40">

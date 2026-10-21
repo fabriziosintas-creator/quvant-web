@@ -18,16 +18,23 @@ import type { Enums } from "@/supabase/tipos";
  * (privado.limitar_eventos): acá solo se valida la forma.
  */
 
-const TIPOS: readonly Enums<"tipo_evento">[] = [
+/**
+ * Lo que el navegador puede mandar. Los del registro (registro_completo,
+ * email_confirmado) y el lugar asignado de la promo los anota la base.
+ */
+const DESDE_LA_WEB = [
   "vista_nicho",
   "clic_demo",
   "clic_contacto",
   "inicio_registro",
-  "registro_completo",
-  "email_confirmado",
-];
-/** Lo que el navegador puede mandar (los de registro los anota la base). */
-const DESDE_LA_WEB: readonly Enums<"tipo_evento">[] = ["vista_nicho", "clic_demo", "clic_contacto", "inicio_registro"];
+  "vista_cinta_promo",
+  "cierre_cinta_promo",
+  "clic_cinta_promo",
+  "vista_promo",
+  "uso_demo_promo",
+  "play_video_promo",
+  "inicio_registro_promo",
+] as const;
 
 const noRastrear = (pedido: NextRequest) =>
   pedido.headers.get("dnt") === "1" || pedido.headers.get("sec-gpc") === "1";
@@ -45,13 +52,14 @@ export async function POST(pedido: NextRequest) {
   const lista = Array.isArray(cuerpo.eventos) ? cuerpo.eventos.slice(0, 20) : [];
 
   const filas = lista.flatMap((e: Record<string, unknown>) => {
-    const tipo = TIPOS.find((t) => t === e.tipo);
-    if (!tipo || !DESDE_LA_WEB.includes(tipo)) return [];
+    const tipo = DESDE_LA_WEB.find((t) => t === e.tipo);
+    if (!tipo) return [];
     const visita = typeof e.visita === "string" && uuidValido(e.visita) ? e.visita : null;
     if (!visita) return [];
     const nicho = typeof e.nicho === "string" && esNicho(e.nicho) ? e.nicho : null;
     const pagina = typeof e.pagina === "string" ? e.pagina.replace(/[?#].*$/, "").slice(0, 200) : null;
-    return [{ tipo, nicho_id: nicho, pagina, visita_id: visita }];
+    // Los tipos de la promo entran a los tipos generados al aplicar su migración.
+    return [{ tipo: tipo as Enums<"tipo_evento">, nicho_id: nicho, pagina, visita_id: visita }];
   });
   if (filas.length === 0) return new NextResponse(null, { status: 204 });
 

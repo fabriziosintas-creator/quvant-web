@@ -9,7 +9,19 @@
  * se juntan y van de a tandas con sendBeacon (no frenan la navegación).
  */
 
-export type TipoEvento = "vista_nicho" | "clic_demo" | "clic_contacto" | "inicio_registro";
+export type TipoEvento =
+  | "vista_nicho"
+  | "clic_demo"
+  | "clic_contacto"
+  | "inicio_registro"
+  // La promo "Primeros 100" (el lugar asignado lo anota la base).
+  | "vista_cinta_promo"
+  | "cierre_cinta_promo"
+  | "clic_cinta_promo"
+  | "vista_promo"
+  | "uso_demo_promo"
+  | "play_video_promo"
+  | "inicio_registro_promo";
 
 export const CLAVE_VISITA = "quvant-visita";
 
@@ -48,12 +60,16 @@ function enviar() {
   if (esperando.length > 0) enviar();
 }
 
-/** Anota un evento. Se manda enseguida si la página se oculta; si no, en un segundo. */
-export function medir(tipo: TipoEvento, nicho?: string | null) {
+/**
+ * Anota un evento. Se manda enseguida si la página se oculta; si no, en un
+ * segundo. `pagina` reemplaza a la dirección actual cuando el evento
+ * necesita decir algo más (por ejemplo, qué demostración se usó).
+ */
+export function medir(tipo: TipoEvento, nicho?: string | null, pagina?: string) {
   if (typeof window === "undefined" || noRastrear()) return;
   const visita = idVisita();
   if (!visita) return;
-  esperando.push({ tipo, nicho: nicho ?? null, pagina: window.location.pathname, visita });
+  esperando.push({ tipo, nicho: nicho ?? null, pagina: pagina ?? window.location.pathname, visita });
   if (!escuchando) {
     escuchando = true;
     document.addEventListener("visibilitychange", () => document.visibilityState === "hidden" && enviar());

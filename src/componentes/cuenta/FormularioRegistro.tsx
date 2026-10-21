@@ -39,7 +39,8 @@ export function FormularioRegistro({ nicho = "", origen = "", promo = null }: { 
     const id = idVisita();
     if (id) queueMicrotask(() => setVisita(id));
     medir("inicio_registro", nicho || null);
-  }, [nicho]);
+    if (promo) medir("inicio_registro_promo", nicho || null);
+  }, [nicho, promo]);
 
   const v = estado.valores ?? {};
   const e = estado.errores ?? {};

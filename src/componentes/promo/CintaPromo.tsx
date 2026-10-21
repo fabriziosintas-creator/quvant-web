@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { medir } from "@/componentes/medicion/medir";
 import { PROMO, PROMO_TEXTOS } from "@/datos/promo";
 import { CLAVE_CINTA } from "./cintaDecision";
 
@@ -22,9 +24,24 @@ const SIN_CINTA = [PROMO.ruta, "/registro", "/cuenta", "/ingresar"];
  */
 export function CintaPromo({ quedan }: { quedan: number }) {
   const ruta = usePathname();
-  if (SIN_CINTA.some((r) => ruta === r || ruta.startsWith(`${r}/`))) return null;
+  const oculta = SIN_CINTA.some((r) => ruta === r || ruta.startsWith(`${r}/`));
+
+  // Se anota que se vio, una vez por pestaña (y solo si no estaba cerrada).
+  useEffect(() => {
+    if (oculta || document.documentElement.dataset.cintaCerrada === "si") return;
+    try {
+      if (sessionStorage.getItem(CLAVE_CINTA)) return;
+      sessionStorage.setItem(CLAVE_CINTA, "vista");
+    } catch {
+      return;
+    }
+    medir("vista_cinta_promo");
+  }, [oculta]);
+
+  if (oculta) return null;
 
   const cerrar = () => {
+    medir("cierre_cinta_promo");
     try {
       localStorage.setItem(CLAVE_CINTA, String(Date.now()));
     } catch {
@@ -40,6 +57,7 @@ export function CintaPromo({ quedan }: { quedan: number }) {
       <div className="contenedor flex h-8 items-center justify-center gap-3">
         <Link
           href={`${PROMO.ruta}?utm_source=cinta`}
+          onClick={() => medir("clic_cinta_promo")}
           className="group flex min-w-0 items-center gap-2.5 font-lectura text-[13px] text-acero transition-colors hover:text-blanco"
         >
           <span aria-hidden className="size-1.5 shrink-0 bg-[var(--acento-promo)]" />
