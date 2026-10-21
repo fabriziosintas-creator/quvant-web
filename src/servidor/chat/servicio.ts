@@ -3,6 +3,7 @@ import { SITIO } from "@/datos/sitio";
 import { almacen } from "./almacen";
 import { hayIA, responderConIA, responderGuiado, type Acciones } from "./asistente";
 import type { Autor, Conversacion, Mensaje, Necesidad, Pedido, VistaVisitante } from "./tipos";
+import { oportunidadDesdeChat } from "@/servidor/comercial/desdeChat";
 import { avisarPorWhatsApp } from "./whatsapp";
 
 /**
@@ -74,6 +75,8 @@ function accionesDe(conversacion: Conversacion): Acciones {
       conversacion.pedido = { ...pedido, registrado: Date.now() };
       await almacen().guardar(conversacion);
       await avisarPorWhatsApp(textoAvisoPedido(conversacion.id, pedido));
+      // Entra al seguimiento comercial (oportunidad de origen "chat").
+      await oportunidadDesdeChat(conversacion.id, pedido);
     },
     async pedirPersona(motivo) {
       if (conversacion.estado === "bot") conversacion.estado = "espera-humano";

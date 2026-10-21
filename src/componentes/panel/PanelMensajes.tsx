@@ -382,6 +382,9 @@ function Charla({
             <p className="flex items-center gap-2 font-plex text-[11px] font-medium uppercase tracking-etiqueta text-[#7BD389]">
               <span aria-hidden className="size-1.5 bg-[#7BD389]" />
               {PANEL.pedido} · {hora(c.pedido.registrado)}
+              <Link href={`/panel/comercial/nueva?conversacion=${c.id}`} className="ml-auto font-plex text-[10px] uppercase tracking-etiqueta text-blanco underline decoration-profundo underline-offset-4 hover:decoration-blanco">
+                {PANEL_ADMIN.comercial.crearDesde}
+              </Link>
             </p>
             <dl className="mt-3 grid gap-x-4 gap-y-1.5 font-lectura text-sm sm:grid-cols-[auto_1fr]">
               <dt className="text-acero">{CHAT.pedido.nombre}</dt>

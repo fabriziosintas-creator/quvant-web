@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { CLASE_BOTON_SECUNDARIO, CLASE_CAMPO, CLASE_ETIQUETA } from "@/componentes/cuenta/estilos";
@@ -126,6 +127,9 @@ export function FichaLocal({
         <a href={urlVerEnGoogle(local)} target="_blank" rel="noopener noreferrer" className={`${CLASE_BOTON_SECUNDARIO} h-11 px-5`}>
           {T.ficha.verEnGoogle}
         </a>
+        <Link href={`/panel/comercial/nueva?local=${local.id}`} className={`${CLASE_BOTON_SECUNDARIO} h-11 px-5`}>
+          {PANEL_ADMIN.comercial.crearDesde}
+        </Link>
         {local.telefono ? (
           <a href={`tel:${local.telefono.replace(/[^\d+]/g, "")}`} className={`${CLASE_BOTON_SECUNDARIO} h-11 px-5`}>
             {T.ficha.llamar}

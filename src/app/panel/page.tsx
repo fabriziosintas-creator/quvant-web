@@ -293,6 +293,7 @@ function ListaRegistros({
           <li key={f.id} className="flex flex-col gap-1.5 border border-profundo p-4 font-plex text-xs">
             <div className="flex items-start justify-between gap-3">
               <span className="font-lectura text-[15px] font-semibold text-blanco">{[f.nombre, f.apellido].filter(Boolean).join(" ")}</span>
+              <Link href={`/panel/comercial/nueva?perfil=${f.id}`} className="shrink-0 font-plex text-[10px] uppercase tracking-etiqueta text-acero hover:text-blanco">+ {PANEL_ADMIN.comercial.crearDesde}</Link>
               <span className="shrink-0 text-acero">{fechaHora(f.creado_en)}</span>
             </div>
             <a href={`mailto:${f.email}`} className="break-all text-acero underline decoration-profundo underline-offset-4">
@@ -325,7 +326,10 @@ function ListaRegistros({
             {filas.map((f) => (
               <tr key={f.id} className="border-t border-profundo text-blanco hover:bg-profundo/30">
                 <td className="whitespace-nowrap p-3 tabular-nums text-acero">{fechaHora(f.creado_en)}</td>
-                <td className="p-3">{[f.nombre, f.apellido].filter(Boolean).join(" ")}</td>
+                <td className="p-3">
+                  {[f.nombre, f.apellido].filter(Boolean).join(" ")}
+                  <Link href={`/panel/comercial/nueva?perfil=${f.id}`} className="ml-2 font-plex text-[10px] uppercase tracking-etiqueta text-acero hover:text-blanco">+ {PANEL_ADMIN.comercial.crearDesde}</Link>
+                </td>
                 <td className="p-3">
                   <a href={`mailto:${f.email}`} className="underline decoration-profundo underline-offset-4 hover:decoration-blanco">
                     {f.email}
