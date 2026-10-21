@@ -127,10 +127,28 @@ const PRODUCTOS = [
 ];
 const MARGEN = 40;
 
+const PESOS_CENTAVOS = new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS", minimumFractionDigits: 2, maximumFractionDigits: 2 });
+type Redondeo = (typeof S.aumento.opciones)[number]["id"];
+
+/** Como el sistema: al múltiplo más cercano, terminado en ,99 o sin redondear. */
+function redondear(valor: number, modo: Redondeo) {
+  if (modo === "sin") return Math.round(valor * 100) / 100;
+  if (modo === "99") return Math.ceil(valor) - 0.01;
+  const paso = Number(modo);
+  return Math.max(paso, Math.round(valor / paso) * paso);
+}
+const formatoPrecio = (valor: number, modo: Redondeo) => (modo === "99" || modo === "sin" ? PESOS_CENTAVOS : PESOS).format(valor);
+
 export function DemoAumento() {
   const T = S.aumento;
   const [aumento, setAumento] = useState(12);
-  const precio = (costo: number) => Math.round(costo * (1 + MARGEN / 100));
+  const [modo, setModo] = useState<Redondeo>("10");
+  const precio = (costo: number) => redondear(costo * (1 + MARGEN / 100), modo);
+  const filas = PRODUCTOS.map((p) => {
+    const nuevoCosto = Math.round(p.costo * (1 + aumento / 100));
+    return { ...p, nuevoCosto, hoy: redondear(p.costo * (1 + MARGEN / 100), "10"), nuevo: precio(nuevoCosto) };
+  });
+  const margenPromedio = filas.reduce((suma, f) => suma + (f.nuevo / f.nuevoCosto - 1), 0) / filas.length;
 
   return (
     <Marco titulo="Precios · Lista del proveedor">
@@ -150,6 +168,21 @@ export function DemoAumento() {
         />
       </label>
 
+      <label className="flex items-center justify-between gap-3 font-lectura text-sm text-acero">
+        {T.redondeo}
+        <select
+          value={modo}
+          onChange={(e) => setModo(e.target.value as Redondeo)}
+          className="h-10 rounded-full border border-profundo bg-negro px-4 font-lectura text-sm text-blanco focus:border-acero focus:outline-none"
+        >
+          {T.opciones.map((o) => (
+            <option key={o.id} value={o.id}>
+              {o.texto}
+            </option>
+          ))}
+        </select>
+      </label>
+
       <div className="overflow-x-auto">
         <table className="w-full min-w-[19rem] border-collapse font-plex text-xs">
           <thead>
@@ -160,32 +193,26 @@ export function DemoAumento() {
             </tr>
           </thead>
           <tbody>
-            {PRODUCTOS.map((p) => {
-              const nuevoCosto = Math.round(p.costo * (1 + aumento / 100));
-              return (
-                <tr key={p.nombre} className="border-t border-profundo/70">
-                  <th scope="row" className="py-2 pr-2 text-left font-lectura font-normal text-blanco">
-                    {p.nombre}
-                    <span className="block font-plex text-[11px] text-acero">
-                      {T.columnas.costo}: {PESOS.format(nuevoCosto)}
-                    </span>
-                  </th>
-                  <td className="py-2 pr-2 text-right tabular-nums text-acero">{PESOS.format(precio(p.costo))}</td>
-                  <td className="py-2 text-right tabular-nums text-blanco">{PESOS.format(precio(nuevoCosto))}</td>
-                </tr>
-              );
-            })}
+            {filas.map((f) => (
+              <tr key={f.nombre} className="border-t border-profundo/70">
+                <th scope="row" className="py-2 pr-2 text-left font-lectura font-normal text-blanco">
+                  {f.nombre}
+                  <span className="block font-plex text-[11px] text-acero">
+                    {T.columnas.costo}: {PESOS.format(f.nuevoCosto)}
+                  </span>
+                </th>
+                <td className="py-2 pr-2 text-right tabular-nums text-acero">{PESOS.format(f.hoy)}</td>
+                <td className="py-2 text-right tabular-nums text-blanco">{formatoPrecio(f.nuevo, modo)}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
 
       <p className="mt-auto flex items-center gap-2 font-lectura text-sm text-acero">
         <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-        {T.margen.replace("{m}", String(MARGEN))}
+        {T.margen.replace("{m}", (margenPromedio * 100).toLocaleString("es-AR", { maximumFractionDigits: 1 }))}
       </p>
-      {process.env.NODE_ENV !== "production" ? (
-        <p className="rounded-lg border border-dashed border-profundo p-2 font-plex text-[11px] text-acero">{T.redondeoTodo}</p>
-      ) : null}
     </Marco>
   );
 }

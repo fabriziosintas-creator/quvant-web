@@ -53,11 +53,20 @@ export const PROMO_TEXTOS = {
     },
     aumento: {
       titulo: "Llegó la lista nueva del proveedor.",
-      texto: "Escribís cuánto aumentaron los costos y ves cómo quedan los precios y tu margen, antes de aplicar nada.",
+      texto:
+        "Escribís cuánto aumentaron los costos y el sistema te muestra los precios nuevos, ya redondeados como vos quieras, y tu margen, antes de aplicar nada.",
       cuanto: "¿Cuánto aumentaron los costos?",
+      redondeo: "Redondeo",
+      // Las mismas opciones que el sistema (verificado en la demo el 21-oct-2026).
+      opciones: [
+        { id: "10", texto: "A $10" },
+        { id: "100", texto: "A $100" },
+        { id: "1000", texto: "A $1.000" },
+        { id: "99", texto: "Terminado en ,99" },
+        { id: "sin", texto: "Sin redondeo" },
+      ],
       columnas: { producto: "Producto", costo: "Costo nuevo", hoy: "Precio hoy", nuevo: "Precio nuevo" },
-      margen: "Tu margen sigue en {m} %.",
-      redondeoTodo: "TODO fabrizio: ¿el sistema redondea los precios? Si sí, se muestra acá; si no, no se promete.",
+      margen: "Margen promedio: {m} %.",
     },
     stock: {
       titulo: "Se está terminando algo.",
