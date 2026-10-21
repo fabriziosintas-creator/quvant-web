@@ -86,8 +86,17 @@ En este orden:
 - Sin lugar y con lugares libres: "Reservar mi lugar" (decisión 10).
 - En lista de espera: lo dice, con su posición.
 
-### E. Entradas secundarias
-Una línea con link en los rubros disponibles de `/plataformas`, en `/contacto` (arriba del formulario) y en el pie. Para Instagram, un link con `?utm_source=instagram` que la medición ya guarda como origen.
+### E. Entradas secundarias (dentro del sitio)
+- Una línea con link en los rubros disponibles de `/plataformas`, en `/contacto` (arriba del formulario) y en el pie.
+- **El chat "Hablemos ahora"**: sumale al asistente la promo (qué es, cuántos lugares quedan, el link) para que la mencione cuando alguien pregunta por precios o por el sistema. Sin insistir: una vez por conversación.
+
+### F. Los canales de afuera (los que traen gente nueva)
+La web hoy tiene poco tráfico propio: la cinta atrapa a quien ya llega, pero a la mayoría hay que traerla. Cada canal con su propio `?utm_source=` para ver en el panel cuál funciona (la medición ya guarda el origen):
+- **Visitas a locales** (`utm_source=visita`): una tarjeta para imprimir (A6 y tamaño tarjeta personal) con la frase de la promo y un **QR** a `/primeros-100`. Generá el QR y la tarjeta como PDF en `marca/promo/`, con la tipografía y los colores del manual. En el mapa de prospección, al cargar una visita, una casilla "Le dejé la tarjeta de Primeros 100".
+- **Instagram** (`utm_source=instagram`): el link de la bio, los Reels con el video y una historia con el contador. Dejá en `marca/promo/` los textos de tres publicaciones y tres historias (sin inventar números: el contador se completa el día que se publica).
+- **WhatsApp** (`utm_source=whatsapp`): un mensaje corto para mandarles a los contactos y para el estado, con el link.
+- **Email a quienes ya se registraron** (`utm_source=email`): solo a quienes aceptaron recibir novedades (`acepta_novedades`). Dejá el email armado y la vista previa; **no lo mandes** sin mi OK.
+- **Google**: la página se indexa recién cuando se publique la promo. Publicidad paga, no: PREGUNTAR (cuesta plata).
 
 ---
 
@@ -153,12 +162,12 @@ Eventos nuevos en la tabla `eventos`, con el mismo `medir()` (respeta Do Not Tra
 1. **Verificación**: recorré la demo, sacá capturas de las tres situaciones y confirmá qué se puede prometer (regla 2). Anotá lo que no pudiste verificar. Si el redondeo no existe, PREGUNTAR antes de seguir con ese texto.
 2. **Base de datos**: migración, funciones, RLS, pruebas de seguridad y la prueba de las dos confirmaciones al mismo tiempo en PGlite.
 3. **Registro y cuenta**: el paso "Elegí tu beneficio", el teléfono, la reserva desde /cuenta, la lista de espera.
-4. **La cinta** y las entradas secundarias.
+4. **La cinta**, las entradas secundarias y el chat.
 5. **La página `/primeros-100`** con las tres demostraciones y las bases.
 6. **Emails** (vista previa, sin envíos reales).
 7. **Panel** "Primeros 100".
 8. **Medición** y el embudo en el panel.
-9. **Video**: guion, composición `Promo100` con las capturas, cuadros de muestra y `src/datos/promo.ts` listo para enchufar.
+9. **Video y canales de afuera**: guion, composición `Promo100` con las capturas, cuadros de muestra y `src/datos/promo.ts` listo para enchufar; la tarjeta con QR, los textos para Instagram y WhatsApp y el email a quienes aceptaron novedades (sin mandarlo).
 10. **Revisión final**: 375 px y 1440 px, teclado, lector de pantalla, "menos movimiento", sin WebGL; pruebas de punta a punta con usuarios de prueba (incluida una carrera por el lugar 100, que se borran solas al terminar); `npm run lint`, `npm test`, `npm run build`; Lighthouse en celular de `/` y `/primeros-100` (la cinta no puede empeorar la portada). Resumen corto: qué quedó, qué decisiones usaron el valor por defecto, qué TODO quedan (bases, precio del abono, video) y los comandos para aplicar la migración y publicar.
 
 ---
