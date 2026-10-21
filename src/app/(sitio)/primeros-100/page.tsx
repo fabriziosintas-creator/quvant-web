@@ -1,27 +1,46 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import type { CSSProperties } from "react";
 import { Capitulo } from "@/componentes/canales/Capitulo";
 import { CLASE_BOTON, CLASE_BOTON_SECUNDARIO } from "@/componentes/cuenta/estilos";
+import { BotonLugar } from "@/componentes/promo/BotonLugar";
 import { Contador } from "@/componentes/promo/Contador";
 import { DemoAumento, DemoSinInternet, DemoStock } from "@/componentes/promo/Demos";
 import { ACENTO_CANAL } from "@/datos/colores";
 import { PROMO, PROMO_TEXTOS as T } from "@/datos/promo";
+import { obtenerEstadoPromo, promoAbierta } from "@/servidor/promo/estado";
 
-export const metadata: Metadata = {
-  title: `${T.metaTitulo} | Quvant`,
-  // Ejemplo: no se indexa hasta que la promo esté lista para publicarse.
-  robots: { index: false, follow: false },
-};
+/** Se indexa solo con la promo andando en la base (y con lugares). */
+export async function generateMetadata(): Promise<Metadata> {
+  const estado = await obtenerEstadoPromo();
+  return {
+    title: `${T.metaTitulo} | Quvant`,
+    description: T.bajada,
+    alternates: { canonical: PROMO.ruta },
+    robots: promoAbierta(estado) ? undefined : { index: false, follow: false },
+  };
+}
+
+const FECHA_LARGA = new Intl.DateTimeFormat("es-AR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 
 /**
  * La página de la promo "Primeros 100" (docs/promo-primeros-100.md):
  * qué es y cuántos lugares quedan, las tres situaciones para tocar, los
  * dos beneficios, cómo funciona, las bases y el cierre.
  *
- * EJEMPLO: el contador usa un número de muestra (PROMO.EJEMPLO_DADOS).
+ * Los números (lugares, tope, fecha) salen de la base, en caché un
+ * minuto. Sin la promo en la base: en desarrollo, un contador de ejemplo
+ * marcado como tal; en producción, sin números.
  */
-export default function PrimerosCien() {
+export default async function PrimerosCien() {
+  const estado = await obtenerEstadoPromo();
+  const abierta = promoAbierta(estado);
+  const cerrada = Boolean(estado) && !abierta;
+  const ejemplo = !estado && process.env.NODE_ENV !== "production";
+  const tope = estado?.tope ?? PROMO.tope;
+  const hasta = estado ? FECHA_LARGA.format(new Date(`${estado.hasta}T00:00:00Z`)) : "31 de enero de 2027";
+  const bases = T.bases.items.map((item) => item.replace("{tope}", String(tope)).replace("{hasta}", hasta));
+  const botonPrincipal = cerrada ? T.botones.espera : T.botones.quiero;
+
   const situaciones = [
     { id: "sin-internet", textos: T.situaciones.sinInternet, Demo: DemoSinInternet },
     { id: "aumento", textos: T.situaciones.aumento, Demo: DemoAumento },
@@ -42,18 +61,20 @@ export default function PrimerosCien() {
           <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           <span className="text-blanco">{T.etiqueta}</span>
         </p>
-        <h1 className="mt-6 max-w-4xl titulo text-[clamp(2rem,6vw,4rem)] leading-[1.08] text-blanco">{T.titulo}</h1>
-        <p className="mt-6 max-w-2xl font-lectura text-base leading-relaxed text-blanco md:text-lg">{T.bajada}</p>
+        <h1 className="mt-6 max-w-4xl titulo text-[clamp(2rem,6vw,4rem)] leading-[1.08] text-blanco">{cerrada ? T.cerrada.titulo : T.titulo}</h1>
+        <p className="mt-6 max-w-2xl font-lectura text-base leading-relaxed text-blanco md:text-lg">{cerrada ? T.cerrada.texto : T.bajada}</p>
 
-        <div className="mt-12">
-          <Contador dados={PROMO.EJEMPLO_DADOS} tope={PROMO.tope} ejemplo />
-        </div>
+        {estado || ejemplo ? (
+          <div className="mt-12">
+            <Contador dados={estado ? Math.min(estado.dados, tope) : PROMO.EJEMPLO_DADOS} tope={tope} ejemplo={ejemplo} />
+          </div>
+        ) : null}
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <Link href={PROMO.registro} className={CLASE_BOTON}>
+          <BotonLugar className={CLASE_BOTON}>
             <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-            {T.botones.quiero}
-          </Link>
+            {botonPrincipal}
+          </BotonLugar>
           <a href="#como-funciona" className={CLASE_BOTON_SECUNDARIO}>
             {T.botones.comoFunciona}
           </a>
@@ -128,7 +149,7 @@ export default function PrimerosCien() {
             </span>
           </summary>
           <ul className="mt-5 flex flex-col gap-3">
-            {T.bases.items.map((item) => (
+            {bases.map((item) => (
               <li key={item.slice(0, 30)} className="flex gap-3 font-lectura text-sm leading-relaxed text-acero">
                 <span aria-hidden className="mt-2 size-1 shrink-0 bg-acero" />
                 {item}
@@ -145,10 +166,10 @@ export default function PrimerosCien() {
             <p className="titulo text-3xl text-blanco md:text-4xl">{T.cierre.titulo}</p>
             <p className="mt-3 font-lectura text-base text-acero">{T.cierre.texto}</p>
           </div>
-          <Link href={PROMO.registro} className={CLASE_BOTON}>
+          <BotonLugar className={CLASE_BOTON}>
             <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-            {T.botones.quiero}
-          </Link>
+            {botonPrincipal}
+          </BotonLugar>
         </div>
       </section>
     </div>

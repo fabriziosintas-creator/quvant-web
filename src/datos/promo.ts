@@ -36,7 +36,12 @@ export const PROMO_TEXTOS = {
     ejemplo: "Número de ejemplo: el real sale de los registros.",
     lleno: "Se completaron los 100 lugares.",
   },
-  botones: { quiero: "Quiero mi lugar", comoFunciona: "Ver cómo funciona" },
+  botones: { quiero: "Quiero mi lugar", espera: "Anotarme en la lista de espera", comoFunciona: "Ver cómo funciona" },
+  /** Cuando se completan los lugares o pasa la fecha. */
+  cerrada: {
+    titulo: "Se completaron los 100 lugares.",
+    texto: "Gracias a todos los que se sumaron. Si te registrás igual eligiendo un beneficio, quedás en la lista de espera: si se libera un lugar, te escribimos.",
+  },
 
   situaciones: {
     etiqueta: "Tres momentos que conocés",
@@ -121,9 +126,10 @@ export const PROMO_TEXTOS = {
 
   bases: {
     titulo: "Bases y condiciones",
+    /** {tope} y {hasta} se completan con lo que dice la base (promo_config). */
     // TODO: revisar con un abogado antes de difundir (Ley 24.240). Valores por defecto del prompt.
     items: [
-      "Vigencia: desde la publicación hasta completar 100 lugares o hasta el 31 de enero de 2027, lo que pase primero.",
+      "Vigencia: desde la publicación hasta completar {tope} lugares o hasta el {hasta}, lo que pase primero.",
       "Un lugar por persona y por negocio. El lugar se asigna al confirmar el email, en el orden en que se confirman.",
       "Cada lugar da un solo beneficio, a elección: 50 % sobre el presupuesto de desarrollo de una web o una app, o dos meses sin cargo del sistema de gestión.",
       "El 50 % se aplica sobre el presupuesto aprobado. No incluye dominio, hosting, mantenimiento mensual ni carga de contenidos. El presupuesto tiene que aprobarse dentro de los 90 días de asignado el lugar.",
