@@ -248,7 +248,7 @@ export const PROMO_TEXTOS = {
   panel: {
     titulo: "Primeros 100",
     bajada: "Quiénes tienen lugar, qué eligieron, en qué están y de dónde vinieron. El número lo da la base, en el orden en que confirmaron el email.",
-    sinBase: "La base todavía no tiene la promo: falta aplicar la migración 20261022120000_promo_primeros_100.sql.",
+    sinBase: "La base todavía no tiene la promo: falta aplicar la migración 20261024120000_promo_primeros_100.sql.",
     indicadores: {
       dados: "Lugares dados",
       quedan: "Quedan",
