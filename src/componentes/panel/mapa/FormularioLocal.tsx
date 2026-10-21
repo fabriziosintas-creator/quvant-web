@@ -8,6 +8,7 @@ import { CLASE_BOTON, CLASE_BOTON_SECUNDARIO, CLASE_CAMPO, CLASE_ETIQUETA } from
 import { PANEL_ADMIN } from "@/datos/textos";
 import { agregarLocal, buscarDireccion, direccionAca, leerLinkGoogle, type EstadoFormulario } from "@/servidor/panel/locales";
 import type { Lugar } from "@/servidor/panel/nominatim";
+import { conCola } from "@/sinconexion/sincronizador";
 
 const T = PANEL_ADMIN.mapa.local;
 const INICIAL: EstadoFormulario = { estado: "inicial" };
@@ -62,7 +63,8 @@ export function FormularioLocal({ nichos }: { nichos: Array<{ id: string; nombre
   };
 
   const [estado, enviar, enviando] = useActionState(async (previo: EstadoFormulario, datos: FormData) => {
-    const resultado = await agregarLocal(previo, datos);
+    // Sin señal se guarda en el teléfono y se manda solo al volver (con su clave única: no se duplica).
+    const resultado = await conCola("local", agregarLocal, (d) => PANEL_ADMIN.sinSenal.tituloLocal.replace("{n}", String(d.get("nombre") ?? "")), { estado: "listo", mensaje: PANEL_ADMIN.sinSenal.guardado } as EstadoFormulario)(previo, datos);
     if (resultado.estado === "listo") {
       setValores(VACIO);
       setPegado("");
@@ -148,7 +150,8 @@ export function FormularioLocal({ nichos }: { nichos: Array<{ id: string; nombre
         setPrecision(accuracy <= 30 ? "exacta" : "aproximada");
         setNota({ tipo: "listo", texto: T.ubicado.replace("{m}", String(Math.round(accuracy))) });
         iniciar(async () => {
-          const lugar = await direccionAca(latitud, longitud);
+          // Sin señal no hay dirección: el local se guarda con las coordenadas igual.
+          const lugar = navigator.onLine === false ? null : await direccionAca(latitud, longitud).catch(() => null);
           setOcupado("");
           if (!lugar) return;
           setValores((v) => ({

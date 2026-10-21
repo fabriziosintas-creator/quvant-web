@@ -17,6 +17,9 @@ import { exigirAdmin } from "@/servidor/panel/acceso";
 export const metadata: Metadata = {
   title: `${PANEL_ADMIN.titulo} · Quvant`,
   robots: { index: false, follow: false },
+  // App instalable solo para el panel (la web pública no enlaza manifiesto).
+  manifest: "/manifiesto-panel",
+  appleWebApp: { capable: true, title: "Quvant", statusBarStyle: "black-translucent" },
 };
 
 export default function LayoutPanel({ children }: { children: ReactNode }) {

@@ -8,6 +8,7 @@ import { fecha } from "@/componentes/panel/formato";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { borrarLocal, cambiarEstadoLocal, ubicarLocal } from "@/servidor/panel/locales";
 import type { Admin, Local, Visita } from "@/servidor/panel/mapa";
+import { encolar, esErrorDeRed } from "@/sinconexion/sincronizador";
 import { FormularioVisita } from "./FormularioVisita";
 import { Marcador, descripcionDe } from "./Marcador";
 
@@ -69,7 +70,22 @@ export function FichaLocal({
     );
   };
 
-  const confirmarBorrado = (evento: React.FormEvent<HTMLFormElement>) => {
+  // Sin señal, el cambio de estado queda en el teléfono y se manda solo al volver.
+  const [estadoGuardado, setEstadoGuardado] = useState(false);
+  const guardarEstado = async (datos: FormData) => {
+    const titulo = PANEL_ADMIN.sinSenal.tituloEstado.replace("{n}", local.nombre);
+    const aDatos = () => Object.fromEntries([...datos.entries()].map(([k, v]) => [k, String(v)]));
+    if (navigator.onLine === false) return setEstadoGuardado(await encolar("estado", aDatos(), titulo));
+    try {
+      await cambiarEstadoLocal(datos);
+      setEstadoGuardado(false);
+    } catch (error) {
+      if (!esErrorDeRed(error)) throw error;
+      setEstadoGuardado(await encolar("estado", aDatos(), titulo));
+    }
+  };
+
+  const confirmarBorrado =(evento: React.FormEvent<HTMLFormElement>) => {
     if (!window.confirm(T.ficha.confirmarBorrar.replace("{nombre}", local.nombre))) evento.preventDefault();
   };
 
@@ -143,12 +159,13 @@ export function FichaLocal({
 
       {cargando ? (
         <section aria-label={T.visita.titulo} className="border-t border-profundo pt-5">
-          <FormularioVisita localId={local.id} admins={admins} yo={yo} alGuardar={() => setCargando(false)} />
+          <FormularioVisita localId={local.id} nombreLocal={local.nombre} admins={admins} yo={yo} alGuardar={() => setCargando(false)} />
         </section>
       ) : null}
 
       {/* Estado, volver y próxima visita: lo que no sale de una visita. */}
-      <form action={cambiarEstadoLocal} className="grid gap-3 border-t border-profundo pt-5 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end">
+      {estadoGuardado ? <p role="status" className="font-plex text-xs text-acero">{PANEL_ADMIN.sinSenal.guardado}</p> : null}
+      <form action={guardarEstado} className="grid gap-3 border-t border-profundo pt-5 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end">
         <input type="hidden" name="id" value={local.id} />
         <label>
           <span className={CLASE_ETIQUETA}>{T.ficha.estado}</span>

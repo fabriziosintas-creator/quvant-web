@@ -8,6 +8,16 @@ import { Campanita } from "@/componentes/panel/avisos/Campanita";
 import { ACENTO_CANAL, ACENTO_NICHO, AURORA } from "@/datos/colores";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { salir } from "@/servidor/cuenta/acciones";
+import { borrarTodoLoGuardado, leerCola } from "@/sinconexion/almacen";
+import { IndicadorConexion } from "./IndicadorConexion";
+
+/** Al cerrar sesión se borra todo lo guardado en el teléfono (avisando si quedaban cargas sin mandar). */
+async function salirYBorrar() {
+  const pendientes = (await leerCola().catch(() => [])).length;
+  if (pendientes > 0 && !window.confirm(PANEL_ADMIN.sinSenal.confirmarSalir.replace("{n}", String(pendientes)))) return;
+  await borrarTodoLoGuardado();
+  await salir();
+}
 
 /**
  * El encabezado del panel: la firma, las secciones y quién está adentro.
@@ -34,6 +44,7 @@ export function EncabezadoPanel({ nombre }: { nombre: string }) {
           </nav>
         </div>
         <div className="flex shrink-0 items-center gap-3 font-plex text-[11px] uppercase tracking-[0.14em]">
+          <IndicadorConexion />
           <Campanita />
           <span className="hidden normal-case tracking-normal text-blanco lg:inline">{nombre}</span>
           <Link href="/cuenta" className="text-acero hover:text-blanco">
@@ -42,7 +53,7 @@ export function EncabezadoPanel({ nombre }: { nombre: string }) {
           <Link href="/" className="hidden text-acero hover:text-blanco sm:inline">
             {PANEL_ADMIN.verWeb}
           </Link>
-          <form action={salir}>
+          <form action={salirYBorrar}>
             <button type="submit" className="border border-profundo px-3 py-1.5 text-acero transition-colors hover:text-blanco">
               {PANEL_ADMIN.salir}
             </button>
@@ -77,6 +88,15 @@ function Secciones({ actual }: { actual: (ruta: string) => boolean }) {
         <li key={seccion.ruta} className="flex">
           <Link
             href={seccion.ruta}
+            // Sin señal, el mapa se abre de la copia guardada (navegación completa: la sirve el service worker).
+            onClick={(e) => {
+              if (navigator.onLine === false && seccion.ruta === "/panel/mapa") {
+                e.preventDefault();
+                // Adrede: router.push pediría datos al servidor, y sin señal no hay.
+                // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+                window.location.assign("/panel/mapa");
+              }
+            }}
             aria-current={actual(seccion.ruta) ? "page" : undefined}
             style={{ "--acento": ACENTO_SECCION[seccion.ruta] ?? "#ececee" } as CSSProperties}
             className="group relative flex items-center gap-2 whitespace-nowrap font-plex text-xs font-medium uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco aria-[current=page]:text-blanco"

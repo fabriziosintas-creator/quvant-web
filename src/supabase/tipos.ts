@@ -673,10 +673,11 @@ export type Database = {
           actualizado_en: string
           cargado_por: string | null
           ciudad: string | null
+          clave_cliente: string | null
           contacto: string | null
           creado_en: string
-          direccion: string | null
           direccion_normalizada: string | null
+          direccion: string | null
           es_prueba: boolean
           estado: Database["public"]["Enums"]["estado_local"]
           id: string
@@ -699,10 +700,11 @@ export type Database = {
           actualizado_en?: string
           cargado_por?: string | null
           ciudad?: string | null
+          clave_cliente?: string | null
           contacto?: string | null
           creado_en?: string
-          direccion?: string | null
           direccion_normalizada?: string | null
+          direccion?: string | null
           es_prueba?: boolean
           estado?: Database["public"]["Enums"]["estado_local"]
           id?: string
@@ -725,10 +727,11 @@ export type Database = {
           actualizado_en?: string
           cargado_por?: string | null
           ciudad?: string | null
+          clave_cliente?: string | null
           contacto?: string | null
           creado_en?: string
-          direccion?: string | null
           direccion_normalizada?: string | null
+          direccion?: string | null
           es_prueba?: boolean
           estado?: Database["public"]["Enums"]["estado_local"]
           id?: string
@@ -1347,6 +1350,7 @@ export type Database = {
       }
       visitas: {
         Row: {
+          clave_cliente: string | null
           creado_en: string
           es_prueba: boolean
           fecha: string
@@ -1360,6 +1364,7 @@ export type Database = {
           volver: Database["public"]["Enums"]["volver"] | null
         }
         Insert: {
+          clave_cliente?: string | null
           creado_en?: string
           es_prueba?: boolean
           fecha?: string
@@ -1373,6 +1378,7 @@ export type Database = {
           volver?: Database["public"]["Enums"]["volver"] | null
         }
         Update: {
+          clave_cliente?: string | null
           creado_en?: string
           es_prueba?: boolean
           fecha?: string

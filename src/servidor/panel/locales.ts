@@ -51,6 +51,22 @@ const coordenada = (valor: string) => (valor === "" ? null : Number(valor.replac
 
 const normalizarDireccion = (direccion: string) => direccion.trim().toLowerCase().replace(/\s+/g, " ");
 
+/** La clave única que generó el teléfono (cargas sin señal), o null. */
+const claveCliente = (datos: FormData) => {
+  const clave = texto(datos, "clave_cliente").toLowerCase();
+  return /^[0-9a-f-]{36}$/.test(clave) ? clave : null;
+};
+
+/**
+ * Inserta con la clave del teléfono; si la columna todavía no existe (falta
+ * la migración 20261023140000_clave_cliente), inserta sin ella.
+ */
+async function insertarConClave<R extends { error: { code?: string; message: string } | null }>(conClave: () => PromiseLike<R>, sinClave: () => PromiseLike<R>): Promise<R> {
+  const r = await conClave();
+  if (r.error && (r.error.code === "42703" || r.error.code === "PGRST204" || /clave_cliente/.test(r.error.message)) && r.error.code !== "23505") return sinClave();
+  return r;
+}
+
 // ── Duplicados ────────────────────────────────────────────────────────
 type Candidato = { link?: string | null; osm_id?: string | null; latitud?: number | null; longitud?: number | null; nombre?: string; direccion?: string | null };
 
@@ -199,6 +215,13 @@ export async function agregarLocal(_previo: EstadoFormulario, datos: FormData): 
   }
   if (Object.keys(errores).length > 0) return { estado: "error", errores, valores };
 
+  // Cargado sin señal: si esa clave ya llegó, es el mismo local.
+  const clave = claveCliente(datos);
+  if (clave) {
+    const { data: ya } = await supabase.from("locales").select("id").eq("clave_cliente", clave).maybeSingle();
+    if (ya) return { estado: "listo", mensaje: T.local.agregado, localId: ya.id };
+  }
+
   const repetido = await buscarRepetido(supabase, {
     link: valores.link_google_maps || null,
     osm_id: valores.osm_id || null,
@@ -209,26 +232,30 @@ export async function agregarLocal(_previo: EstadoFormulario, datos: FormData): 
   });
   if (repetido) return { estado: "repetido", mensaje: T.local.repetido, localId: repetido };
 
-  const { data, error } = await supabase
-    .from("locales")
-    .insert({
-      nombre: valores.nombre,
-      nicho_id: valores.nicho || null,
-      rubro: valores.rubro || null,
-      direccion: valores.direccion || null,
-      ciudad: valores.ciudad || null,
-      provincia: valores.provincia || null,
-      telefono: valores.telefono || null,
-      contacto: valores.contacto || null,
-      web: valores.web || null,
-      latitud,
-      longitud,
-      osm_id: valores.osm_id || null,
-      link_google_maps: valores.link_google_maps || null,
-      cargado_por: perfil.id,
-    })
-    .select("id")
-    .single();
+  const fila: TablesInsert<"locales"> = {
+    nombre: valores.nombre,
+    nicho_id: valores.nicho || null,
+    rubro: valores.rubro || null,
+    direccion: valores.direccion || null,
+    ciudad: valores.ciudad || null,
+    provincia: valores.provincia || null,
+    telefono: valores.telefono || null,
+    contacto: valores.contacto || null,
+    web: valores.web || null,
+    latitud,
+    longitud,
+    osm_id: valores.osm_id || null,
+    link_google_maps: valores.link_google_maps || null,
+    cargado_por: perfil.id,
+  };
+  const { data, error } = await insertarConClave(
+    () => supabase.from("locales").insert({ ...fila, clave_cliente: clave }).select("id").single(),
+    () => supabase.from("locales").insert(fila).select("id").single(),
+  );
+  if (error?.code === "23505" && clave) {
+    const { data: ya } = await supabase.from("locales").select("id").eq("clave_cliente", clave).maybeSingle();
+    if (ya) return { estado: "listo", mensaje: T.local.agregado, localId: ya.id };
+  }
   if (error || !data) {
     console.error("[locales] agregar:", error?.message);
     return { estado: "error", mensaje: E.general, valores };
@@ -263,7 +290,14 @@ export async function cargarVisita(_previo: EstadoFormulario, datos: FormData): 
   if (valores.nota.length > 2000 || valores.siguiente.length > 500 || valores.mostrado.length > 200) errores.general = E.general;
   if (Object.keys(errores).length > 0) return { estado: "error", errores, valores };
 
-  const { error } = await supabase.from("visitas").insert({
+  // Cargada sin señal: si esa clave ya llegó, no se crea dos veces.
+  const clave = claveCliente(datos);
+  if (clave) {
+    const { data: ya, error: sinColumna } = await supabase.from("visitas").select("id").eq("clave_cliente", clave).maybeSingle();
+    if (ya) return { estado: "listo", mensaje: T.visita.guardada, localId: valores.local_id };
+    if (sinColumna) console.error("[visitas] clave:", sinColumna.message);
+  }
+  const fila: TablesInsert<"visitas"> = {
     local_id: valores.local_id,
     fecha: valores.fecha,
     visitante_id: valores.visitante,
@@ -272,7 +306,9 @@ export async function cargarVisita(_previo: EstadoFormulario, datos: FormData): 
     nota: valores.nota || null,
     que_se_mostro: valores.mostrado || null,
     siguiente_paso: valores.siguiente || null,
-  });
+  };
+  const { error } = await insertarConClave(() => supabase.from("visitas").insert({ ...fila, clave_cliente: clave }), () => supabase.from("visitas").insert(fila));
+  if (error?.code === "23505" && clave) return { estado: "listo", mensaje: T.visita.guardada, localId: valores.local_id };
   if (error) {
     console.error("[visitas] cargar:", error.message);
     return { estado: "error", mensaje: E.general, valores };
