@@ -30,6 +30,14 @@ export const urlWhatsApp = (texto?: string) =>
 export const urlEmailMensaje = (asunto: string, cuerpo: string) =>
   `mailto:${CONTACTO.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
 
+/** El WhatsApp de otra persona a partir de su teléfono argentino: solo números, con 54 y el 9 de celular. */
+export function whatsappDe(telefono: string | null | undefined, texto?: string) {
+  let digitos = (telefono ?? "").replace(/\D/g, "").replace(/^0+/, "");
+  if (digitos.length < 8) return null;
+  if (!digitos.startsWith("54")) digitos = `549${digitos}`;
+  return `https://wa.me/${digitos}${texto ? `?text=${encodeURIComponent(texto)}` : ""}`;
+}
+
 /**
  * Arma el mensaje del formulario como lo escribiría una persona, listo
  * para WhatsApp o email: "Hola, soy Marta, de Ferremix. Les escribo porque

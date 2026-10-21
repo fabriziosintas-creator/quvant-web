@@ -2,20 +2,14 @@ import type { NextRequest } from "next/server";
 import { hoyEnBuenosAires } from "@/componentes/panel/formato";
 import { CUENTA, PANEL_ADMIN } from "@/datos/textos";
 import { adminDelPedido } from "@/servidor/panel/acceso";
+import { armarCsv } from "@/servidor/panel/celdaCsv";
 import { cargarNichos, leerFiltros, todosLosRegistros } from "@/servidor/panel/datos";
 
 /**
  * Los registrados en CSV, con el filtro de la pantalla (para campañas por
- * rubro). Pensado para Excel en castellano: separador ";", BOM para que
- * lea bien los acentos, y las celdas que empiezan con = + - @ van con un
- * apóstrofo adelante para que Excel no las tome como fórmulas.
+ * rubro). Pensado para Excel en castellano (ver celdaCsv): separador ";",
+ * BOM para los acentos y nada que Excel tome como fórmula.
  */
-
-const celda = (valor: unknown) => {
-  let texto = valor === null || valor === undefined ? "" : String(valor);
-  if (/^[=+\-@\t\r]/.test(texto)) texto = `'${texto}`;
-  return /[";\n\r]/.test(texto) ? `"${texto.replace(/"/g, '""')}"` : texto;
-};
 
 export async function GET(pedido: NextRequest) {
   const admin = await adminDelPedido();
@@ -44,7 +38,7 @@ export async function GET(pedido: NextRequest) {
       f.origen,
     ]),
   ];
-  const csv = `﻿${lineas.map((linea) => linea.map(celda).join(";")).join("\r\n")}\r\n`;
+  const csv = armarCsv(lineas);
 
   return new Response(csv, {
     headers: {

@@ -1,5 +1,5 @@
 import { Section, Text } from "@react-email/components";
-import { urlWhatsApp } from "@/datos/contacto";
+import { urlWhatsApp, whatsappDe } from "@/datos/contacto";
 import { PROMO_TEXTOS, type IdBeneficio } from "@/datos/promo";
 import { SITIO } from "@/datos/sitio";
 import { CUENTA, EMAILS, PLATAFORMAS } from "@/datos/textos";
@@ -128,14 +128,6 @@ export type DatosAviso = {
   telefono?: string | null;
   promo?: LugarEmail | null;
 };
-
-/** Un teléfono argentino como lo entiende wa.me: solo números, con 54 y el 9 de celular. */
-export function whatsappDe(telefono: string | null | undefined) {
-  let digitos = (telefono ?? "").replace(/\D/g, "").replace(/^0+/, "");
-  if (digitos.length < 8) return null;
-  if (!digitos.startsWith("54")) digitos = `549${digitos}`;
-  return `https://wa.me/${digitos}`;
-}
 
 export const nombreRubro = (nicho: string, otro?: string | null) =>
   nicho === "otro" && otro ? `Otro: ${otro}` : (CUENTA.nichos.find((n) => n.id === nicho)?.nombre ?? nicho);

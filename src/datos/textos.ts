@@ -969,6 +969,7 @@ export const PANEL_ADMIN = {
     { ruta: "/panel/plantillas", nombre: "Plantillas" },
     { ruta: "/panel/nucleos", nombre: "Núcleos" },
     { ruta: "/panel/mapa", nombre: "Mapa" },
+    { ruta: "/panel/primeros-100", nombre: "Primeros 100" },
     { ruta: "/panel/mensajes", nombre: "Bandeja" },
   ],
   miCuenta: "Mi cuenta",
