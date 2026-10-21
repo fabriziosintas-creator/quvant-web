@@ -22,6 +22,7 @@ import { cargarAdminsConSocio, cargarCambios, cargarCierres, cargarDatos, cargar
 import { hoyBA } from "@/servidor/objetivos/proceso";
 import { exigirAdmin } from "@/servidor/panel/acceso";
 import { cargarNichos } from "@/servidor/panel/datos";
+import { Historial } from "@/componentes/panel/bitacora/Historial";
 
 const T = PANEL_ADMIN.objetivos;
 const D = T.detalle;
@@ -199,6 +200,7 @@ async function Contenido({ params }: { params: PageProps<"/panel/objetivos/[id]"
             </ol>
           )}
         </Bloque>
+        <Historial tabla="metas" registroId={meta.id} />
       </div>
     </Vista>
   );

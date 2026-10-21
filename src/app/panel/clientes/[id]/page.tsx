@@ -11,6 +11,7 @@ import { diaBA } from "@/objetivos/fechas";
 import { cargarFichaCliente } from "@/servidor/clientes/datos";
 import { uuidValido } from "@/servidor/cuenta/validacion";
 import { exigirAdmin } from "@/servidor/panel/acceso";
+import { Historial } from "@/componentes/panel/bitacora/Historial";
 
 const T = PANEL_ADMIN.clientesSistema;
 export const metadata: Metadata = { title: `${T.titulo} · ${PANEL_ADMIN.titulo} · Quvant` };
@@ -117,6 +118,7 @@ async function Contenido({ params }: { params: PageProps<"/panel/clientes/[id]">
           </div>
         </Bloque>
       ) : null}
+      <Historial tabla="clientes_sistema" registroId={s.id} />
     </>
   );
 }

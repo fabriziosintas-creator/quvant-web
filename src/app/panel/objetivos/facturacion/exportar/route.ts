@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { hoyEnBuenosAires } from "@/componentes/panel/formato";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { limitesDelMes } from "@/objetivos/fechas";
+import { anotarExportacion } from "@/servidor/bitacora/datos";
 import { adminDelPedido } from "@/servidor/panel/acceso";
 
 /**
@@ -20,6 +21,7 @@ export async function GET(pedido: NextRequest) {
   const admin = await adminDelPedido();
   if (!admin) return new Response("Sin permiso", { status: 401 });
   const parametro = pedido.nextUrl.searchParams.get("mes") ?? "";
+  await anotarExportacion(admin.supabase, "facturacion", { mes: parametro });
   const mes = /^\d{4}-\d{2}$/.test(parametro) ? parametro : hoyEnBuenosAires().slice(0, 7);
   const { desde, hasta } = limitesDelMes(`${mes}-01`);
   const { data, error } = await admin.supabase.from("cobros_quvant").select("*").gte("fecha", desde).lte("fecha", hasta).eq("es_prueba", false).order("fecha");

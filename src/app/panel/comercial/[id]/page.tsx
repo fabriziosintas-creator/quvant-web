@@ -14,6 +14,7 @@ import { uuidValido } from "@/servidor/cuenta/validacion";
 import { FaltaMigracion } from "@/servidor/objetivos/datos";
 import { exigirAdmin } from "@/servidor/panel/acceso";
 import { cargarNichos } from "@/servidor/panel/datos";
+import { Historial } from "@/componentes/panel/bitacora/Historial";
 
 const T = PANEL_ADMIN.comercial;
 const F = T.ficha;
@@ -169,6 +170,7 @@ async function Contenido({ params }: { params: PageProps<"/panel/comercial/[id]"
           }}
         />
       </Bloque>
+      <Historial tabla="oportunidades" registroId={o.id} />
     </Vista>
   );
 }

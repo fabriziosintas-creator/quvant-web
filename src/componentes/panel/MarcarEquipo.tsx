@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { CLAVE_EQUIPO, idVisita } from "@/componentes/medicion/medir";
+import { anotarIngreso } from "@/servidor/bitacora/acciones";
 import { marcarNavegadorDelEquipo } from "@/servidor/panel/equipo";
 
 /**
@@ -20,6 +21,15 @@ export function MarcarEquipo() {
       // Sin localStorage la web tampoco mide este navegador.
     }
     if (id) void marcarNavegadorDelEquipo(id);
+    // El ingreso al panel, para la bitácora: uno por pestaña (la base además anota uno cada 8 horas).
+    try {
+      if (!window.sessionStorage.getItem("quvant:ingreso")) {
+        window.sessionStorage.setItem("quvant:ingreso", "si");
+        void anotarIngreso().catch(() => undefined);
+      }
+    } catch {
+      // Sin sessionStorage, no se anota el ingreso: no cambia nada más.
+    }
   }, []);
   return null;
 }

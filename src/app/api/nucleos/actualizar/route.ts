@@ -22,11 +22,14 @@ export async function GET(pedido: NextRequest) {
   if (!secreto || pedido.headers.get("authorization") !== `Bearer ${secreto}`) {
     return NextResponse.json({ error: "Sin permiso" }, { status: 401 });
   }
-  const [nucleos, objetivos, avisos] = await Promise.allSettled([
+  const [nucleos, objetivos, avisos, bitacora] = await Promise.allSettled([
     correrProcesoDiario(),
     Promise.resolve().then(() => procesoDiarioObjetivos(crearClienteAdmin())),
     Promise.resolve().then(() => procesoDiarioAvisos(crearClienteAdmin())),
+    // La retención de la bitácora (2 años), por si pg_cron no está corriendo.
+    Promise.resolve().then(async () => (await crearClienteAdmin().rpc("limpiar_bitacora")).data ?? 0),
   ]);
+  if (bitacora.status === "rejected") console.error("[bitácora] retención:", bitacora.reason);
   if (nucleos.status === "rejected") console.error("[nucleos] proceso diario:", nucleos.reason);
   if (objetivos.status === "rejected") console.error("[objetivos] proceso diario:", objetivos.reason);
   if (avisos.status === "rejected") console.error("[avisos] proceso diario:", avisos.reason);

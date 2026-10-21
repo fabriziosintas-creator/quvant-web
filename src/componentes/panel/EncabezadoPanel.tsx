@@ -79,6 +79,7 @@ const ACENTO_SECCION: Record<string, string> = {
   "/panel/objetivos": ACENTO_NICHO.holistica,
   "/panel/mapa": ACENTO_CANAL.contacto,
   "/panel/mensajes": ACENTO_CANAL.trabajos,
+  "/panel/bitacora": AURORA[1],
 };
 
 function Secciones({ actual }: { actual: (ruta: string) => boolean }) {

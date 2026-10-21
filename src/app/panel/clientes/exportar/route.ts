@@ -1,6 +1,7 @@
 import { PANEL_ADMIN } from "@/datos/textos";
 import { diaBA } from "@/objetivos/fechas";
 import { cargarClientes } from "@/servidor/clientes/datos";
+import { anotarExportacion } from "@/servidor/bitacora/datos";
 import { adminDelPedido } from "@/servidor/panel/acceso";
 
 /** Los clientes del sistema en CSV (";", BOM y celdas protegidas, como las otras exportaciones). */
@@ -15,6 +16,7 @@ export async function GET() {
   if (!admin) return new Response("Sin permiso", { status: 401 });
   const datos = await cargarClientes(admin.supabase);
   if (!datos) return new Response("Faltan las tablas de clientes", { status: 503 });
+  await anotarExportacion(admin.supabase, "clientes");
   const T = PANEL_ADMIN.clientesSistema;
   const C = T.columnas;
   const lineas = [

@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { hoyEnBuenosAires } from "@/componentes/panel/formato";
 import { CUENTA, PANEL_ADMIN } from "@/datos/textos";
+import { anotarExportacion } from "@/servidor/bitacora/datos";
 import { adminDelPedido } from "@/servidor/panel/acceso";
 import { cargarNichos, leerFiltros, todosLosRegistros } from "@/servidor/panel/datos";
 
@@ -22,6 +23,7 @@ export async function GET(pedido: NextRequest) {
   if (!admin) return new Response("Sin permiso", { status: 401 });
 
   const filtros = leerFiltros(Object.fromEntries(pedido.nextUrl.searchParams));
+  await anotarExportacion(admin.supabase, "registros", Object.fromEntries(pedido.nextUrl.searchParams));
   const [filas, nichos] = await Promise.all([todosLosRegistros(admin.supabase, filtros), cargarNichos(admin.supabase)]);
   const C = PANEL_ADMIN.resumen.columnas;
   const si = PANEL_ADMIN.resumen.filtros.si;

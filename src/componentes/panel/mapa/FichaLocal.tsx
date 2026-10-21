@@ -11,6 +11,7 @@ import type { Admin, Local, Visita } from "@/servidor/panel/mapa";
 import { encolar, esErrorDeRed } from "@/sinconexion/sincronizador";
 import { FormularioVisita } from "./FormularioVisita";
 import { Marcador, descripcionDe } from "./Marcador";
+import { Historial } from "@/componentes/panel/bitacora/Historial";
 
 const T = PANEL_ADMIN.mapa;
 
@@ -225,6 +226,7 @@ export function FichaLocal({
           {T.ficha.borrar}
         </button>
       </form>
+      <Historial tabla="locales" registroId={local.id} />
     </article>
   );
 }

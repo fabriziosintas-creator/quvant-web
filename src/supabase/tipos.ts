@@ -306,6 +306,45 @@ export type Database = {
         }
         Relationships: []
       }
+      bitacora: {
+        Row: {
+          accion: string
+          cambios: Json | null
+          creado_en: string
+          detalle: Json | null
+          id: number
+          quien: string | null
+          registro_id: string | null
+          resumen: string | null
+          sistema: boolean
+          tabla: string
+        }
+        Insert: {
+          accion: string
+          cambios?: Json | null
+          creado_en?: string
+          detalle?: Json | null
+          id?: number
+          quien?: string | null
+          registro_id?: string | null
+          resumen?: string | null
+          sistema?: boolean
+          tabla: string
+        }
+        Update: {
+          accion?: string
+          cambios?: Json | null
+          creado_en?: string
+          detalle?: Json | null
+          id?: number
+          quien?: string | null
+          registro_id?: string | null
+          resumen?: string | null
+          sistema?: boolean
+          tabla?: string
+        }
+        Relationships: []
+      }
       clientes_plantilla: {
         Row: {
           abono_mensual: number | null
@@ -1474,6 +1513,9 @@ export type Database = {
       }
     }
     Functions: {
+      anotar_en_bitacora: { Args: { p_accion: string; p_detalle?: Json; p_tabla: string }; Returns: undefined }
+      deshacer_cambio: { Args: { p_id: number }; Returns: string }
+      limpiar_bitacora: { Args: never; Returns: number }
       revisar_visitas_interesantes: { Args: never; Returns: number }
       atencion_nicho: {
         Args: { desde: string; hasta: string; nicho: string }

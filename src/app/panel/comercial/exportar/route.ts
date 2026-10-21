@@ -3,6 +3,7 @@ import { diaBA } from "@/objetivos/fechas";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { valorAnual } from "@/comercial/comercial";
 import { aOportunidad, cargarComercial } from "@/servidor/comercial/datos";
+import { anotarExportacion } from "@/servidor/bitacora/datos";
 import { adminDelPedido } from "@/servidor/panel/acceso";
 
 /** Las oportunidades en CSV, con el filtro de la lista (";", BOM y celdas protegidas, como las otras exportaciones). */
@@ -16,6 +17,7 @@ export async function GET(pedido: NextRequest) {
   const admin = await adminDelPedido();
   if (!admin) return new Response("Sin permiso", { status: 401 });
   const q = pedido.nextUrl.searchParams;
+  await anotarExportacion(admin.supabase, "comercial", Object.fromEntries(q));
   const hoy = diaBA(new Date());
   let filas;
   try {
