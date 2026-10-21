@@ -68,6 +68,13 @@ export type DatosObjetivos = {
   saludClientes: Array<{ dia: Dia; clienteId: string; nucleo: string; salud: number | null; semaforo: string }>;
   alertas: Array<{ fecha: Dia; resuelta: boolean; nucleo: string | null }>;
   avances: Array<{ metaId: string; fecha: Dia; valor: number }>;
+  /** El seguimiento comercial (oportunidades y su actividad), o null si todavía no está la tabla. */
+  comercial: DatosComercial | null;
+};
+
+export type DatosComercial = {
+  oportunidades: Array<{ id: string; creadoEn: string; etapa: string; valorAbono: number | null; valorProyecto: number | null; probabilidad: number | null; nicho: string | null; etapaDesde: string }>;
+  actividades: Array<{ oportunidadId: string; tipo: "cambio_etapa" | "llamada" | "mensaje" | "reunion" | "demo" | "propuesta" | "nota"; etapaAnterior: string | null; etapaNueva: string | null; creadoEn: string }>;
 };
 
 export type EstadoMeta = "cumplido" | "en_camino" | "en_riesgo" | "atrasado" | "sin_datos" | "no_cumplido" | "por_empezar";

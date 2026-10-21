@@ -72,8 +72,9 @@ export type DatosNicho = {
   prospectos: ProspectoNicho[];
   visitas: VisitaNicho[];
   objetivos: ObjetivoDelNicho[];
-  /** Interesados registrados en el período anterior y en el actual (para la tendencia). */
   funcionesClave: string[];
+  /** El seguimiento comercial del nicho: cuántas llegaron a cada etapa y el pipeline ponderado (null sin la tabla). */
+  comercial: { pasos: Array<{ etapa: string; llegaron: number }>; ponderado: number; abiertas: number } | null;
 };
 
 /** Las tarjetas de la comparación entre nichos. */

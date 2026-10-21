@@ -1325,6 +1325,7 @@ export const PANEL_ADMIN = {
       conversion: "Conversión de la web",
       visitasLocales: "Visitas a locales",
       calientes: "Prospectos calientes",
+      pipeline: "Pipeline del nicho",
       vsAnterior: "{signo}{n} contra el período anterior",
       sinCambio: "igual que el período anterior",
       fuentes: {
@@ -1336,6 +1337,7 @@ export const PANEL_ADMIN = {
         conversion: "Registros sobre navegadores que vieron la sección del nicho, con intervalo de confianza.",
         visitasLocales: "Visitas cargadas en el mapa a locales de este nicho.",
         calientes: "Prospectos interesados o con «volver: sí».",
+        pipeline: "{n} oportunidades abiertas, por su probabilidad.",
       },
     },
     socios: {
@@ -1394,6 +1396,9 @@ export const PANEL_ADMIN = {
         visitados: "Visitados",
         interesados: "Interesados",
         socios: "Socios",
+        oportunidades: "Oportunidades",
+        demo: "Demo hecha",
+        propuesta: "Propuesta",
       },
       tasa: "{p} ({bajo} a {alto})",
       chica: "muestra chica",

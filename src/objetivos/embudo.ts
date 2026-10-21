@@ -1,6 +1,7 @@
 import { METRICA } from "./catalogo";
 import { ABONO_DEL_PLAN, CASOS_MINIMOS, TASAS_DEL_PLAN } from "./configuracion";
-import { enRango, sumarDias } from "./fechas";
+import { contarHitos } from "../comercial/comercial";
+import { diaBA, enRango, sumarDias } from "./fechas";
 import type { DatosObjetivos, Dia, Meta } from "./tipos";
 
 /**
@@ -47,9 +48,14 @@ export function tasasReales(datos: DatosObjetivos, hoy: Dia, metas: Meta[]): Tas
   const visitantes = new Set(datos.visitantes.filter((v) => en(v.dia)).map((v) => v.id)).size;
   const registros = datos.personas.filter((p) => en(p.creado)).length;
   const visitasLocales = datos.visitasLocales.filter((v) => en(v.fecha)).length;
+  // Con el seguimiento comercial, las demos y los ganados son reales; si no, las demos cargadas a mano.
   const idsDemos = new Set(metas.filter((m) => m.metrica === "demos").map((m) => m.id));
-  const demos = datos.avances.filter((a) => idsDemos.has(a.metaId) && en(a.fecha)).reduce((s, a) => s + a.valor, 0);
-  const clientes = datos.clientes.filter((c) => c.alta !== null && en(c.alta)).length;
+  const demos = datos.comercial
+    ? contarHitos(datos.comercial.actividades, "demo", desde, hoy, diaBA)
+    : datos.avances.filter((a) => idsDemos.has(a.metaId) && en(a.fecha)).reduce((s, a) => s + a.valor, 0);
+  const clientes = datos.comercial
+    ? new Set(datos.comercial.actividades.filter((a) => a.tipo === "cambio_etapa" && a.etapaNueva === "ganado" && en(diaBA(a.creadoEn))).map((a) => a.oportunidadId)).size
+    : datos.clientes.filter((c) => c.alta !== null && en(c.alta)).length;
   return {
     webARegistro: tasa(registros, visitantes, TASAS_DEL_PLAN.webARegistro),
     localADemo: tasa(demos, visitasLocales, TASAS_DEL_PLAN.localADemo),

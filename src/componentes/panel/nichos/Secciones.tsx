@@ -52,7 +52,13 @@ export function Pulso({ d, acento }: { d: DatosNicho; acento: string }) {
       <div {...entra(4)}><Indicador etiqueta={P.interesados} valor={<Numero valor={e?.registros ?? 0} />} acento={AURORA[1]} detalle={e && a ? tendencia(e.registros, a.registros) : P.fuentes.interesados} /></div>
       <div {...entra(5)}><Indicador etiqueta={P.conversion} valor={conversion ? pct(conversion.p) : "—"} acento={AURORA[0]} medidor={conversion?.p ?? 0} detalle={conversion ? `${pct(conversion.bajo)} a ${pct(conversion.alto)}${conversion.chica ? ` · ${T.embudo.chica}` : ""}` : P.fuentes.conversion} /></div>
       <div {...entra(6)}><Indicador etiqueta={P.visitasLocales} valor={<Numero valor={visitasPeriodo} />} acento={ACENTO_CANAL.contacto} detalle={P.fuentes.visitasLocales} /></div>
-      <div {...entra(7)}><Indicador etiqueta={P.calientes} valor={<Numero valor={calientes} />} acento={AURORA[2]} detalle={P.fuentes.calientes} /></div>
+      <div {...entra(7)}>
+        {d.comercial ? (
+          <Indicador etiqueta={P.pipeline} valor={conUnidad(d.comercial.ponderado, "ars")} acento={AURORA[2]} detalle={P.fuentes.pipeline.replace("{n}", String(d.comercial.abiertas))} />
+        ) : (
+          <Indicador etiqueta={P.calientes} valor={<Numero valor={calientes} />} acento={AURORA[2]} detalle={P.fuentes.calientes} />
+        )}
+      </div>
     </section>
   );
 }
@@ -133,12 +139,23 @@ export function Embudo({ d, acento }: { d: DatosNicho; acento: string }) {
   const visitados = d.prospectos.filter((p) => p.visitas > 0).length;
   const interesados = d.prospectos.filter((p) => p.estado === "interesado" || p.estado === "cliente").length;
   const socios = d.prospectos.filter((p) => p.estado === "cliente").length;
-  const calle: Paso[] = [
-    { etiqueta: E.pasos.prospectos, n: d.prospectos.length },
-    { etiqueta: E.pasos.visitados, n: visitados },
-    { etiqueta: E.pasos.interesados, n: interesados },
-    { etiqueta: E.pasos.socios, n: socios },
-  ];
+  // Con el seguimiento comercial, la calle sigue hasta la demo, la propuesta y el cliente ganado.
+  const llego = (etapa: string) => d.comercial?.pasos.find((p) => p.etapa === etapa)?.llegaron ?? 0;
+  const calle: Paso[] = d.comercial
+    ? [
+        { etiqueta: E.pasos.prospectos, n: d.prospectos.length },
+        { etiqueta: E.pasos.visitados, n: visitados },
+        { etiqueta: E.pasos.oportunidades, n: llego("nuevo") },
+        { etiqueta: E.pasos.demo, n: llego("demo_hecha") },
+        { etiqueta: E.pasos.propuesta, n: llego("propuesta") },
+        { etiqueta: E.pasos.socios, n: llego("ganado") },
+      ]
+    : [
+        { etiqueta: E.pasos.prospectos, n: d.prospectos.length },
+        { etiqueta: E.pasos.visitados, n: visitados },
+        { etiqueta: E.pasos.interesados, n: interesados },
+        { etiqueta: E.pasos.socios, n: socios },
+      ];
   const comparacion = a ? dosProporciones(Math.min(a.registros, a.vistas), a.vistas, Math.min(e.registros, e.vistas), e.vistas) : null;
   const sePasa = e.registros > e.inicios || e.inicios > e.vistas;
   return (
@@ -166,9 +183,9 @@ export function Embudo({ d, acento }: { d: DatosNicho; acento: string }) {
           <figcaption className="font-plex text-[11px] uppercase tracking-etiqueta text-blanco">{E.calle}</figcaption>
           <Sankey id="sankey-calle" pasos={calle} color={ACENTO_CANAL.contacto} />
           <ul className="grid grid-cols-2 gap-3">
-            <TasaPaso de={d.prospectos.length} a={visitados} etiqueta={`${E.pasos.prospectos} → ${E.pasos.visitados}`} />
-            <TasaPaso de={visitados} a={interesados} etiqueta={`${E.pasos.visitados} → ${E.pasos.interesados}`} />
-            <TasaPaso de={interesados} a={socios} etiqueta={`${E.pasos.interesados} → ${E.pasos.socios}`} />
+            {calle.slice(0, -1).map((paso, i) => (
+              <TasaPaso key={paso.etiqueta} de={paso.n} a={calle[i + 1].n} etiqueta={`${paso.etiqueta} → ${calle[i + 1].etiqueta}`} />
+            ))}
           </ul>
         </figure>
       </div>

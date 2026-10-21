@@ -70,6 +70,7 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/obj
     saludClientes: [],
     alertas: [],
     avances: [],
+    comercial: null,
     clientes: (clientes.data ?? []).map((c) => ({ id: c.id, nicho: c.nicho_id, abono: c.abono_mensual === null ? null : Number(c.abono_mensual), alta: c.fecha_alta, baja: c.fecha_baja })),
   };
   const mrr = METRICA.mrr.calcular(datosMrr, { desde, hasta, corte: hasta < hoyEnBuenosAires() ? hasta : hoyEnBuenosAires(), filtros: {}, metaId: "", acumulacion: "valor_al_cierre" }) ?? 0;

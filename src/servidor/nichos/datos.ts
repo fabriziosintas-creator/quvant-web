@@ -2,7 +2,9 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { cacheLife, cacheTag } from "next/cache";
 import { FUNCIONES_CLAVE, PLANTILLAS, type Plantilla } from "../../../medicion-sistema/catalogo";
+import { embudoComercial, valorPonderado } from "@/comercial/comercial";
 import type { DatosNicho, EmbudoWeb, Periodo, ResumenNicho, SocioNicho } from "@/nichos/tipos";
+import { aActividad, aOportunidad } from "@/servidor/comercial/datos";
 import { calcularAvance } from "@/objetivos/estado";
 import { diaBA, limitesDelMes, sumarDias } from "@/objetivos/fechas";
 import { conUnidad } from "@/objetivos/formato";
@@ -210,6 +212,23 @@ async function armar(supabase: Cliente, nichoId: string, dias: Periodo, hoy: str
     // Sin la migración de Objetivos: la sección se oculta.
   }
 
+  // ── Seguimiento comercial del nicho ──
+  let comercial: DatosNicho["comercial"] = null;
+  const [{ data: ops, error: errorOps }, { data: acts }] = await Promise.all([
+    supabase.from("oportunidades").select("*").eq("nicho_id", nichoId).eq("es_prueba", false),
+    supabase.from("oportunidades_actividad").select("*").eq("es_prueba", false),
+  ]);
+  if (!errorOps && ops) {
+    const oportunidades = ops.map(aOportunidad);
+    const ids = new Set(oportunidades.map((o) => o.id));
+    const actividades = (acts ?? []).filter((a) => ids.has(a.oportunidad_id)).map(aActividad);
+    comercial = {
+      pasos: embudoComercial(oportunidades, actividades).map((p) => ({ etapa: p.etapa, llegaron: p.llegaron })),
+      ponderado: Math.round(valorPonderado(oportunidades)),
+      abiertas: oportunidades.filter((o) => o.etapa !== "ganado" && o.etapa !== "perdido").length,
+    };
+  }
+
   return {
     nicho: { id: nicho.id, nombre: nicho.nombre, tienePlantilla: nicho.tiene_plantilla, enRegistro: nicho.en_registro },
     hoy,
@@ -225,6 +244,7 @@ async function armar(supabase: Cliente, nichoId: string, dias: Periodo, hoy: str
     visitas,
     objetivos,
     funcionesClave: esPlantilla ? FUNCIONES_CLAVE[nichoId as Plantilla].map((f) => f.id) : [],
+    comercial,
   };
 }
 

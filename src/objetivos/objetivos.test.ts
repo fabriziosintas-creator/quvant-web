@@ -18,6 +18,7 @@ const VACIO: DatosObjetivos = {
   saludClientes: [],
   alertas: [],
   avances: [],
+  comercial: null,
 };
 
 const meta = (parcial: Partial<Meta>): Meta => ({
@@ -211,6 +212,41 @@ describe("estado", () => {
   it("la serie real va día por día hasta hoy", () => {
     const s = serieReal(conRegistros(3), meta({}), "2026-11-04");
     assert.deepEqual(s.map((p) => p.valor), [0, 1, 2, 3]);
+  });
+});
+
+describe("métricas del seguimiento comercial", () => {
+  const com: DatosObjetivos = {
+    ...VACIO,
+    comercial: {
+      oportunidades: [
+        { id: "a", creadoEn: "2026-11-02T12:00:00Z", etapa: "ganado", valorAbono: 150_000, valorProyecto: null, probabilidad: null, nicho: "industria", etapaDesde: "2026-11-10T12:00:00Z" },
+        { id: "b", creadoEn: "2026-11-03T12:00:00Z", etapa: "propuesta", valorAbono: 100_000, valorProyecto: 0, probabilidad: null, nicho: "gimnasios", etapaDesde: "2026-11-05T12:00:00Z" },
+      ],
+      actividades: [
+        { oportunidadId: "a", tipo: "llamada", etapaAnterior: null, etapaNueva: null, creadoEn: "2026-11-02T18:00:00Z" },
+        { oportunidadId: "a", tipo: "demo", etapaAnterior: null, etapaNueva: null, creadoEn: "2026-11-04T15:00:00Z" },
+        { oportunidadId: "a", tipo: "cambio_etapa", etapaAnterior: "negociacion", etapaNueva: "ganado", creadoEn: "2026-11-10T15:00:00Z" },
+        { oportunidadId: "b", tipo: "cambio_etapa", etapaAnterior: "demo_hecha", etapaNueva: "propuesta", creadoEn: "2026-11-05T15:00:00Z" },
+      ],
+    },
+  };
+  const v = (metrica: string, extra: Partial<Meta> = {}) => calcularValor(com, meta({ metrica, ...extra }), "2026-11-30");
+  it("demos, propuestas y ganadas salen solas, con filtro de rubro", () => {
+    assert.equal(v("demos"), 1);
+    assert.equal(v("propuestas"), 1);
+    assert.equal(v("oportunidades_ganadas"), 1);
+    assert.equal(v("demos", { filtros: { nicho: "gimnasios" } }), 0);
+  });
+  it("tiempo al primer contacto en horas hábiles (la que no tuvo contacto no cuenta)", () => {
+    assert.equal(v("tiempo_primer_contacto", { acumulacion: "promedio", direccion: "menos_es_mejor" }), 6);
+  });
+  it("valor del pipeline: lo abierto por su probabilidad", () => {
+    assert.equal(v("valor_pipeline", { acumulacion: "valor_al_cierre", unidad: "ars" }), 600_000);
+  });
+  it("sin la tabla, las demos vuelven a lo cargado a mano", () => {
+    const manual: DatosObjetivos = { ...VACIO, avances: [{ metaId: "m1", fecha: "2026-11-04", valor: 3 }] };
+    assert.equal(calcularValor(manual, meta({ metrica: "demos" }), "2026-11-30"), 3);
   });
 });
 

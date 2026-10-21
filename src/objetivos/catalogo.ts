@@ -1,5 +1,6 @@
-import { contarDias, enRango, mesDe, mesesDe, minDia, sumarDias } from "./fechas";
-import type { Acumulacion, Area, DatosObjetivos, Dia, Direccion, Filtros, Unidad } from "./tipos";
+import { contarHitos, horasAlPrimerContacto, valorPonderado, type Etapa } from "../comercial/comercial";
+import { contarDias, diaBA, enRango, mesDe, mesesDe, minDia, sumarDias } from "./fechas";
+import type { Acumulacion, Area, DatosComercial, DatosObjetivos, Dia, Direccion, Filtros, Unidad } from "./tipos";
 
 /**
  * El catálogo cerrado de métricas de Objetivos: cada una sabe qué mide, de
@@ -80,6 +81,13 @@ function ultimaSalud(d: DatosObjetivos, c: Contexto) {
 
 const registrosDe = (d: DatosObjetivos, c: Contexto) =>
   d.personas.filter((p) => enPeriodo(p.creado, c) && delNicho(p.nicho, c) && (!c.filtros.objetivo || p.objetivo === c.filtros.objetivo));
+
+/** La actividad de las oportunidades del rubro del filtro (o de todas). */
+const actividadesDelNicho = (com: DatosComercial, c: Contexto) => {
+  if (!c.filtros.nicho) return com.actividades;
+  const ids = new Set(com.oportunidades.filter((o) => o.nicho === c.filtros.nicho).map((o) => o.id));
+  return com.actividades.filter((a) => ids.has(a.oportunidadId));
+};
 
 const visitantesDe = (d: DatosObjetivos, c: Contexto) => new Set(d.visitantes.filter((v) => enPeriodo(v.dia, c)).map((v) => v.id)).size;
 
@@ -251,43 +259,72 @@ export const METRICAS: Metrica[] = [
   },
   {
     ...base,
-    automatica: false,
-    sinFuente: true,
     clave: "demos",
     nombre: "Demos realizadas",
-    explicacion: "Sin fuente todavía (falta el seguimiento de leads): se carga a mano con «Cargar avance».",
+    explicacion: "Del seguimiento comercial: actividades de demo o pasos a «demo hecha» del período (una por oportunidad y día).",
     unidad: "numero",
     area: "comercial",
-    filtros: [],
+    filtros: ["nicho"],
     acumulacion: "suma_del_periodo",
-    calcular: manual,
+    calcular: (d, c) => (d.comercial ? contarHitos(actividadesDelNicho(d.comercial, c), "demo", c.desde, c.corte, diaBA) : manual(d, c)),
   },
   {
     ...base,
-    automatica: false,
-    sinFuente: true,
     clave: "propuestas",
     nombre: "Propuestas enviadas",
-    explicacion: "Sin fuente todavía (falta el seguimiento de leads): se carga a mano.",
+    explicacion: "Del seguimiento comercial: propuestas enviadas o pasos a «propuesta» del período.",
     unidad: "numero",
     area: "comercial",
-    filtros: [],
+    filtros: ["nicho"],
     acumulacion: "suma_del_periodo",
-    calcular: manual,
+    calcular: (d, c) => (d.comercial ? contarHitos(actividadesDelNicho(d.comercial, c), "propuesta", c.desde, c.corte, diaBA) : manual(d, c)),
   },
   {
     ...base,
-    automatica: false,
-    sinFuente: true,
     clave: "tiempo_primer_contacto",
     nombre: "Tiempo hasta el primer contacto",
-    explicacion: "Horas hábiles desde el registro hasta el primer contacto. Sin fuente todavía: se carga a mano. Menos es mejor.",
+    explicacion: "Del seguimiento comercial: horas hábiles promedio desde que entra una oportunidad hasta la primera llamada, mensaje, reunión o demo. Menos es mejor.",
     unidad: "horas",
     area: "comercial",
-    filtros: [],
+    filtros: ["nicho"],
     acumulacion: "promedio",
     direccion: "menos_es_mejor",
-    calcular: manual,
+    calcular: (d, c) => {
+      if (!d.comercial) return manual(d, c);
+      const horas = d.comercial.oportunidades
+        .filter((o) => enPeriodo(diaBA(o.creadoEn), c) && delNicho(o.nicho, c))
+        .flatMap((o) => {
+          const h = horasAlPrimerContacto(o, d.comercial!.actividades);
+          return h === null ? [] : [h];
+        });
+      return horas.length ? redondear(suma(horas) / horas.length, 1) : null;
+    },
+  },
+  {
+    ...base,
+    clave: "oportunidades_ganadas",
+    nombre: "Oportunidades ganadas",
+    explicacion: "Del seguimiento comercial: oportunidades que pasaron a «ganado» en el período.",
+    unidad: "numero",
+    area: "comercial",
+    filtros: ["nicho"],
+    acumulacion: "suma_del_periodo",
+    calcular: (d, c) =>
+      d.comercial
+        ? new Set(actividadesDelNicho(d.comercial, c).filter((a) => a.tipo === "cambio_etapa" && a.etapaNueva === "ganado" && enPeriodo(diaBA(a.creadoEn), c)).map((a) => a.oportunidadId)).size
+        : null,
+  },
+  {
+    ...base,
+    clave: "valor_pipeline",
+    nombre: "Valor del pipeline (ponderado)",
+    explicacion: "Del seguimiento comercial: lo abierto hoy, por su probabilidad (abono por 12 más el proyecto).",
+    unidad: "ars",
+    area: "comercial",
+    filtros: ["nicho"],
+    acumulacion: "valor_al_cierre",
+    calcular: (d, c) =>
+      d.comercial ? Math.round(valorPonderado(d.comercial.oportunidades.filter((o) => delNicho(o.nicho, c)).map((o) => ({ ...o, etapa: o.etapa as Etapa })))) : null,
   },
   {
     ...base,

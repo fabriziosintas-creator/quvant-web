@@ -59,7 +59,7 @@ export async function cargarDatos(supabase: Cliente, desde: Dia, hoy: Dia, conPr
   ]);
 
   // Núcleos puede no tener datos reales (modo ejemplo): sin tablas, sin fotos.
-  const nucleos = await cargarNucleos(supabase, desdeIso, conPrueba);
+  const [nucleos, comercial] = await Promise.all([cargarNucleos(supabase, desdeIso, conPrueba), cargarComercialDeObjetivos(supabase, conPrueba)]);
 
   const nichoDelLocal = new Map(locales.map((l) => [l.id, l.nicho_id]));
   const socios = new Map(admins.map((a) => [a.id, socioDe(a.nombre)]));
@@ -75,7 +75,25 @@ export async function cargarDatos(supabase: Cliente, desde: Dia, hoy: Dia, conPr
     saludClientes: nucleos.salud,
     alertas: nucleos.alertas,
     avances: sinPrueba(avances).map((a) => ({ metaId: a.meta_id, fecha: a.fecha, valor: Number(a.valor) })),
+    comercial,
   };
+}
+
+/** El seguimiento comercial para las métricas (o null si todavía no está la tabla). */
+async function cargarComercialDeObjetivos(supabase: Cliente, conPrueba: boolean): Promise<DatosObjetivos["comercial"]> {
+  try {
+    const [ops, acts] = await Promise.all([
+      todas((a, b) => supabase.from("oportunidades").select("id, creado_en, etapa, valor_abono, valor_proyecto, probabilidad, nicho_id, etapa_desde, es_prueba").range(a, b), "oportunidades"),
+      todas((a, b) => supabase.from("oportunidades_actividad").select("oportunidad_id, tipo, etapa_anterior, etapa_nueva, creado_en, es_prueba").range(a, b), "oportunidades_actividad"),
+    ]);
+    return {
+      oportunidades: ops.filter((o) => conPrueba || !o.es_prueba).map((o) => ({ id: o.id, creadoEn: o.creado_en, etapa: o.etapa, valorAbono: o.valor_abono === null ? null : Number(o.valor_abono), valorProyecto: o.valor_proyecto === null ? null : Number(o.valor_proyecto), probabilidad: o.probabilidad, nicho: o.nicho_id, etapaDesde: o.etapa_desde })),
+      actividades: acts.filter((a) => conPrueba || !a.es_prueba).map((a) => ({ oportunidadId: a.oportunidad_id, tipo: a.tipo as NonNullable<DatosObjetivos["comercial"]>["actividades"][number]["tipo"], etapaAnterior: a.etapa_anterior, etapaNueva: a.etapa_nueva, creadoEn: a.creado_en })),
+    };
+  } catch (error) {
+    if (error instanceof FaltaMigracion) return null;
+    throw error;
+  }
 }
 
 /** Fotos de salud y alertas de Núcleos (sin tablas o sin datos: vacío). */
