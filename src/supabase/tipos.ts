@@ -1513,6 +1513,10 @@ export type Database = {
       }
     }
     Functions: {
+      buscar_panel: {
+        Args: { limite?: number; texto: string }
+        Returns: { contexto: string; enlace: string; id: string; nicho: string | null; puntaje: number; tipo: string; titulo: string }[]
+      }
       anotar_en_bitacora: { Args: { p_accion: string; p_detalle?: Json; p_tabla: string }; Returns: undefined }
       deshacer_cambio: { Args: { p_id: number }; Returns: string }
       limpiar_bitacora: { Args: never; Returns: number }

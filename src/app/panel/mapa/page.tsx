@@ -78,9 +78,10 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/map
         nombresNicho={nombresNicho}
         ubicados={filtrados.filter((l) => l.latitud !== null).length}
         abrirId={abrir}
+        abrirVisita={parametros.visita === "si"}
       />
 
-      <Bloque titulo={T.local.titulo} nota={T.local.bajada}>
+      <Bloque titulo={T.local.titulo} nota={T.local.bajada} id="agregar-local">
         <FormularioLocal nichos={nichos.filter((n) => n.id !== "otro").map((n) => ({ id: n.id, nombre: n.nombre }))} />
       </Bloque>
 

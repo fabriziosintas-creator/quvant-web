@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function LayoutPanel({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-svh bg-negro [--alto-panel:6.25rem] md:[--alto-panel:3.5rem]">
+    <div className="min-h-svh bg-negro [--alto-panel:6.25rem]">
       <Suspense fallback={<div className="h-[var(--alto-panel)] border-b border-profundo" />}>
         <Guardia>{children}</Guardia>
       </Suspense>

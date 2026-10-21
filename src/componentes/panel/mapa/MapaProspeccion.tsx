@@ -34,6 +34,7 @@ export function MapaProspeccion({
   nombresNicho,
   ubicados: totalUbicados,
   abrirId,
+  abrirVisita = false,
 }: {
   locales: Local[];
   visitas: Record<string, Visita[]>;
@@ -43,6 +44,8 @@ export function MapaProspeccion({
   ubicados: number;
   /** Un local para abrir apenas carga (el recién agregado o el repetido). */
   abrirId?: string | null;
+  /** Abrir ese local con el formulario de visita ya desplegado ("nueva visita a…" del buscador). */
+  abrirVisita?: boolean;
 }) {
   const [elegidoId, setElegidoId] = useState<string | null>(abrirId ?? null);
   const [orden, setOrden] = useState<Orden>("ultima");
@@ -214,7 +217,7 @@ export function MapaProspeccion({
       )}
 
       <div className="flex flex-col gap-3 lg:h-[72vh] lg:overflow-y-auto lg:pr-1">
-        <div ref={ficha}>{elegido ? <FichaLocal local={elegido} visitas={visitas[elegido.id] ?? []} admins={admins} yo={yo} nombreNicho={nombreNicho} alCerrar={() => setElegidoId(null)} /> : null}</div>
+        <div ref={ficha}>{elegido ? <FichaLocal key={elegido.id} conVisita={abrirVisita && elegido.id === abrirId} local={elegido} visitas={visitas[elegido.id] ?? []} admins={admins} yo={yo} nombreNicho={nombreNicho} alCerrar={() => setElegidoId(null)} /> : null}</div>
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="font-plex text-xs text-acero">{T.lista.mostrando.replace("{n}", String(locales.length)).replace("{ubicados}", String(totalUbicados))}</p>

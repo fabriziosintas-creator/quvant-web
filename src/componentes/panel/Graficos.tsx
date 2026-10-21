@@ -106,9 +106,9 @@ export function Barras({
 }
 
 /** Un bloque del panel con título y una línea de explicación. */
-export function Bloque({ titulo, nota, acciones, children }: { titulo: string; nota?: string; acciones?: ReactNode; children: ReactNode }) {
+export function Bloque({ titulo, nota, acciones, id, children }: { titulo: string; nota?: string; acciones?: ReactNode; /** Para llegar directo (las acciones del buscador). */ id?: string; children: ReactNode }) {
   return (
-    <section className="flex min-w-0 flex-col gap-4">
+    <section id={id} className="flex min-w-0 scroll-mt-28 flex-col gap-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="min-w-0">
           <h2 className="flex items-center gap-3 font-michroma text-xs uppercase tracking-etiqueta text-blanco">

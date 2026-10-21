@@ -112,7 +112,7 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/obj
         </div>
       ) : null}
 
-      <Bloque titulo={F.cargar}>
+      <Bloque titulo={F.cargar} id="cargar-cobro">
         <FormCobro clientes={[...new Set((clientes.data ?? []).map((c) => c.empresa))].sort()} nichos={nichosRegistro} />
       </Bloque>
 
@@ -152,7 +152,7 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/obj
         )}
       </Bloque>
 
-      <Bloque titulo={F.tipoCambio}>
+      <Bloque titulo={F.tipoCambio} id="tipo-cambio">
         <FormTipoCambio mes={pedido} actual={tc} />
       </Bloque>
     </>

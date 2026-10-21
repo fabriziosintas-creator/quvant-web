@@ -9,6 +9,7 @@ import { ACENTO_CANAL, ACENTO_NICHO, AURORA } from "@/datos/colores";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { salir } from "@/servidor/cuenta/acciones";
 import { borrarTodoLoGuardado, leerCola } from "@/sinconexion/almacen";
+import { Buscador } from "./Buscador";
 import { IndicadorConexion } from "./IndicadorConexion";
 
 /** Al cerrar sesión se borra todo lo guardado en el teléfono (avisando si quedaban cargas sin mandar). */
@@ -21,8 +22,8 @@ async function salirYBorrar() {
 
 /**
  * El encabezado del panel: la firma, las secciones y quién está adentro.
- * En el celular las secciones van en una segunda fila que se desliza de
- * costado. Mide lo mismo siempre (--alto-panel), así la bandeja puede
+ * Las secciones van en una segunda fila (en el celular se desliza de
+ * costado). Mide lo mismo siempre (--alto-panel), así la bandeja puede
  * ocupar justo el resto de la pantalla.
  */
 export function EncabezadoPanel({ nombre }: { nombre: string }) {
@@ -39,11 +40,9 @@ export function EncabezadoPanel({ nombre }: { nombre: string }) {
               {PANEL_ADMIN.titulo}
             </span>
           </Link>
-          <nav aria-label={PANEL_ADMIN.titulo} className="hidden min-w-0 overflow-x-auto [scrollbar-width:none] md:block">
-            <Secciones actual={actual} />
-          </nav>
         </div>
         <div className="flex shrink-0 items-center gap-3 font-plex text-[11px] uppercase tracking-[0.14em]">
+          <Buscador />
           <IndicadorConexion />
           <Campanita />
           <span className="hidden normal-case tracking-normal text-blanco lg:inline">{nombre}</span>
@@ -60,7 +59,8 @@ export function EncabezadoPanel({ nombre }: { nombre: string }) {
           </form>
         </div>
       </div>
-      <nav aria-label={PANEL_ADMIN.titulo} className="overflow-x-auto border-t border-profundo px-4 md:hidden">
+      {/* Las secciones van siempre en su propia fila (son muchas para compartir con la firma): en el celular se deslizan de costado. */}
+      <nav aria-label={PANEL_ADMIN.titulo} className="overflow-x-auto border-t border-profundo px-4 [scrollbar-width:thin] md:px-6">
         <Secciones actual={actual} />
       </nav>
     </header>
@@ -84,7 +84,7 @@ const ACENTO_SECCION: Record<string, string> = {
 
 function Secciones({ actual }: { actual: (ruta: string) => boolean }) {
   return (
-    <ul className="flex h-11 items-stretch gap-5 md:h-14">
+    <ul className="flex h-11 items-stretch gap-5 lg:gap-6">
       {PANEL_ADMIN.secciones.map((seccion) => (
         <li key={seccion.ruta} className="flex">
           <Link

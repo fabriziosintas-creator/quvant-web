@@ -146,7 +146,9 @@ async function Contenido({ searchParams }: { searchParams: PageProps<"/panel/obj
     <Vista nivel={0}>
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         {acciones}
-        <BotonCerrar />
+        <div id="cerrar-periodo" className="scroll-mt-28">
+          <BotonCerrar />
+        </div>
       </div>
 
       {cierres.length > 0 ? (

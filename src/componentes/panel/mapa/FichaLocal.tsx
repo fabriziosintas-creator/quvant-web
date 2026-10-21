@@ -34,6 +34,7 @@ export function FichaLocal({
   yo,
   nombreNicho,
   alCerrar,
+  conVisita = false,
 }: {
   local: Local;
   visitas: Visita[];
@@ -41,9 +42,11 @@ export function FichaLocal({
   yo: string;
   nombreNicho: (id: string | null) => string;
   alCerrar: () => void;
+  /** Abrir con el formulario de visita desplegado. */
+  conVisita?: boolean;
 }) {
   const router = useRouter();
-  const [cargando, setCargando] = useState(false);
+  const [cargando, setCargando] = useState(conVisita);
   const [ubicando, setUbicando] = useState<"" | "buscando" | "error">("");
   const [, iniciar] = useTransition();
   const nombreDe = (id: string) => {
