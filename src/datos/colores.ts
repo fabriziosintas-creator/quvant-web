@@ -43,3 +43,18 @@ export function aRgb(hex: string) {
   const n = parseInt(hex.slice(1), 16);
   return `${(n >> 16) & 255} ${(n >> 8) & 255} ${n & 255}`;
 }
+
+/**
+ * Colores de estado de los objetivos del panel (prompt de Objetivos, 20-oct-2026).
+ * Siempre van con ícono y palabra, nunca solos (para quien no distingue colores).
+ * Todos con contraste de sobra contra el negro #0D0D0F.
+ */
+export const COLOR_ESTADO = {
+  cumplido: "#34D399",
+  en_camino: "#3DD9EB",
+  en_riesgo: "#FFB547",
+  atrasado: "#F8717A",
+  no_cumplido: "#F8717A",
+  sin_datos: "#9C9CA3",
+  por_empezar: "#9C9CA3",
+} as const;

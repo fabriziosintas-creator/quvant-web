@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense, type ReactNode } from "react";
 import { EncabezadoPanel } from "@/componentes/panel/EncabezadoPanel";
+import { MarcarEquipo } from "@/componentes/panel/MarcarEquipo";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { exigirAdmin } from "@/servidor/panel/acceso";
 
@@ -16,11 +17,14 @@ import { exigirAdmin } from "@/servidor/panel/acceso";
 export const metadata: Metadata = {
   title: `${PANEL_ADMIN.titulo} · Quvant`,
   robots: { index: false, follow: false },
+  // App instalable solo para el panel (la web pública no enlaza manifiesto).
+  manifest: "/manifiesto-panel",
+  appleWebApp: { capable: true, title: "Quvant", statusBarStyle: "black-translucent" },
 };
 
 export default function LayoutPanel({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-svh bg-negro [--alto-panel:6.25rem] md:[--alto-panel:3.5rem]">
+    <div className="min-h-svh bg-negro [--alto-panel:6.25rem]">
       <Suspense fallback={<div className="h-[var(--alto-panel)] border-b border-profundo" />}>
         <Guardia>{children}</Guardia>
       </Suspense>
@@ -32,6 +36,7 @@ async function Guardia({ children }: { children: ReactNode }) {
   const { perfil } = await exigirAdmin("/panel");
   return (
     <>
+      <MarcarEquipo />
       <EncabezadoPanel nombre={perfil.nombre} />
       {children}
     </>

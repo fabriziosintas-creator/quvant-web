@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { esNicho, texto, type Errores } from "@/servidor/cuenta/validacion";
 import type { Enums } from "@/supabase/tipos";
@@ -51,6 +51,7 @@ export async function agregarCliente(_previo: EstadoClientes, datos: FormData): 
     console.error("[clientes]", error.message);
     return { estado: "error", mensaje: E.general, valores };
   }
+  updateTag("nichos");
   revalidatePath("/panel/plantillas");
   return { estado: "listo", mensaje: PANEL_ADMIN.clientes.agregado };
 }
@@ -62,6 +63,7 @@ export async function cambiarEstadoCliente(datos: FormData) {
   if (!id || !esEstado(estado)) return;
   const { error } = await supabase.from("clientes_plantilla").update({ estado }).eq("id", id);
   if (error) console.error("[clientes] cambiar estado:", error.message);
+  updateTag("nichos");
   revalidatePath("/panel/plantillas");
 }
 
@@ -71,5 +73,6 @@ export async function borrarCliente(datos: FormData) {
   if (!id) return;
   const { error } = await supabase.from("clientes_plantilla").delete().eq("id", id);
   if (error) console.error("[clientes] borrar:", error.message);
+  updateTag("nichos");
   revalidatePath("/panel/plantillas");
 }

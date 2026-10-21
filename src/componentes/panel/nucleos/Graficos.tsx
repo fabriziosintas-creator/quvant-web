@@ -16,8 +16,11 @@ const CURVA = [0.25, 0.1, 0.25, 1] as const;
 
 export type Serie = { id: string; nombre: string; valores: number[] };
 
+/** "2026-10-19" → "19/10". Va acá adentro: una función no puede pasar del servidor a este componente. */
+const etiquetaSemana = (s: string) => s.slice(5).split("-").reverse().join("/");
+
 /** Líneas por núcleo: la elegida en blanco, el resto en acero. Con tooltip por semana. */
-export function LineasActividad({ series, semanas, elegida, etiquetaSemana = (s) => s }: { series: Serie[]; semanas: string[]; elegida?: string; etiquetaSemana?: (s: string) => string }) {
+export function LineasActividad({ series, semanas, elegida }: { series: Serie[]; semanas: string[]; elegida?: string }) {
   const quieto = useReducedMotion();
   const [x, setX] = useState<number | null>(null);
   const id = useId();

@@ -1096,3 +1096,121 @@ html[data-vista="texto"] .linea-canales {
     mask-composite: intersect;
   }
 }
+
+/* ── Mapa de prospección (/panel/mapa) ───────────────────────────────
+   Los controles de MapLibre (zoom, mi ubicación, atribución) con la
+   paleta: cajas negras con borde profundo y los íconos en claro. La
+   atribución "© OpenStreetMap" es obligatoria: queda siempre a la vista. */
+.mapa-quvant .maplibregl-ctrl-group {
+  background: var(--color-negro);
+  border: 1px solid var(--color-profundo);
+  border-radius: 0;
+  box-shadow: none;
+}
+.mapa-quvant .maplibregl-ctrl-group button {
+  width: 40px;
+  height: 40px;
+}
+.mapa-quvant .maplibregl-ctrl-group button + button {
+  border-top: 1px solid var(--color-profundo);
+}
+.mapa-quvant .maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+  filter: invert(1) brightness(0.9);
+}
+.mapa-quvant .maplibregl-ctrl-group button:focus-visible {
+  outline: 1px solid var(--color-blanco);
+  outline-offset: -3px;
+}
+.mapa-quvant .maplibregl-ctrl-attrib {
+  background: rgb(13 13 15 / 0.8);
+  color: var(--color-acero);
+  font-family: var(--font-plex);
+  font-size: 10px;
+}
+.mapa-quvant .maplibregl-ctrl-attrib a {
+  color: var(--color-acero);
+}
+.mapa-quvant .maplibregl-ctrl-attrib a:hover {
+  color: var(--color-blanco);
+}
+
+/* ── Panel: las barras crecen desde su base al aparecer ───────────── */
+.barra-crece {
+  transform-origin: left center;
+  animation: barra-crece 900ms var(--ease-quvant) both;
+}
+@keyframes barra-crece {
+  from {
+    transform: scaleX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .barra-crece {
+    animation: none;
+  }
+}
+
+/* ── Panel: el punto cuadrado late una vez (un objetivo cumplido, un cierre) ── */
+@keyframes latido {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.8);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [class*="animate-[latido"] {
+    animation: none;
+  }
+}
+
+/* ── Objetivos: el embudo al revés se ensancha desde el centro, de abajo hacia arriba ── */
+.embudo-crece {
+  transform-origin: center;
+  animation: barra-crece 800ms var(--ease-quvant) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .embudo-crece {
+    animation: none;
+  }
+}
+
+/* ── Panel: entrar a un nicho ─────────────────────────────────────────
+   El punto del nicho (en la tarjeta de Plantillas o en Nichos) se vuelve la
+   cabecera de la página del nicho; cada bloque que llega se enciende en su
+   lugar, uno detrás del otro. Con "menos movimiento", nada se mueve. */
+::view-transition-group(.entrar-nicho) {
+  animation-duration: 700ms;
+  animation-timing-function: var(--ease-quvant);
+}
+.nicho-entra {
+  animation: nicho-entra 700ms var(--ease-quvant) both;
+}
+@keyframes nicho-entra {
+  from {
+    opacity: 0;
+    transform: perspective(900px) translateZ(-60px) translateY(14px);
+    filter: blur(4px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(.entrar-nicho) {
+    animation: none;
+  }
+  .nicho-entra {
+    animation: none;
+  }
+}
+
+/* ── Nichos: en las coordenadas paralelas, la línea que se toca se queda y el resto se apaga ── */
+.paralelas .linea-paralela {
+  transition: opacity var(--duracion-rapida, 200ms) ease, stroke-width 200ms ease;
+}
+.paralelas:has(.linea-paralela:hover) .linea-paralela:not(:hover) {
+  opacity: 0.15;
+}
+.paralelas .linea-paralela:hover {
+  stroke-width: 4;
+}

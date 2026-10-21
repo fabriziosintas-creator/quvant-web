@@ -35,7 +35,9 @@ export type Local = {
   provincia: string | null;
   latitud: number | null;
   longitud: number | null;
-  place_id: string | null;
+  osm_id: string | null;
+  link_google_maps: string | null;
+  ubicacion_pendiente: boolean;
   telefono: string | null;
   contacto: string | null;
   web: string | null;
@@ -53,7 +55,7 @@ export type Local = {
 
 export type Visita = Pick<
   Tables<"visitas">,
-  "id" | "local_id" | "fecha" | "visitante_id" | "feedback" | "volver" | "nota" | "siguiente_paso" | "es_prueba" | "creado_en"
+  "id" | "local_id" | "fecha" | "visitante_id" | "feedback" | "volver" | "nota" | "que_se_mostro" | "siguiente_paso" | "es_prueba" | "creado_en"
 > & {
   /** Si se dejó la tarjeta de "Primeros 100" (columna de la migración de la promo). */
   tarjeta_promo?: boolean;
@@ -77,7 +79,9 @@ export async function cargarLocales(supabase: Cliente): Promise<Local[]> {
             provincia: fila.provincia,
             latitud: fila.latitud,
             longitud: fila.longitud,
-            place_id: fila.place_id,
+            osm_id: fila.osm_id,
+            link_google_maps: fila.link_google_maps,
+            ubicacion_pendiente: fila.ubicacion_pendiente ?? false,
             telefono: fila.telefono,
             contacto: fila.contacto,
             web: fila.web,

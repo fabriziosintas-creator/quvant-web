@@ -17,5 +17,5 @@ const usadas = new Set<string>();
 export function usoDemo(id: string) {
   if (usadas.has(id)) return;
   usadas.add(id);
-  medir("uso_demo_promo", null, `/primeros-100/demo/${id}`);
+  medir("uso_demo_promo", null, id);
 }

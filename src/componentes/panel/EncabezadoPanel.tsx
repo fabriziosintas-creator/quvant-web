@@ -2,14 +2,28 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import type { CSSProperties } from "react";
 import { Logotipo } from "@/componentes/marca/Logotipo";
+import { Campanita } from "@/componentes/panel/avisos/Campanita";
+import { ACENTO_CANAL, ACENTO_NICHO, AURORA } from "@/datos/colores";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { salir } from "@/servidor/cuenta/acciones";
+import { borrarTodoLoGuardado, leerCola } from "@/sinconexion/almacen";
+import { Buscador } from "./Buscador";
+import { IndicadorConexion } from "./IndicadorConexion";
+
+/** Al cerrar sesión se borra todo lo guardado en el teléfono (avisando si quedaban cargas sin mandar). */
+async function salirYBorrar() {
+  const pendientes = (await leerCola().catch(() => [])).length;
+  if (pendientes > 0 && !window.confirm(PANEL_ADMIN.sinSenal.confirmarSalir.replace("{n}", String(pendientes)))) return;
+  await borrarTodoLoGuardado();
+  await salir();
+}
 
 /**
  * El encabezado del panel: la firma, las secciones y quién está adentro.
- * En el celular las secciones van en una segunda fila que se desliza de
- * costado. Mide lo mismo siempre (--alto-panel), así la bandeja puede
+ * Las secciones van en una segunda fila (en el celular se desliza de
+ * costado). Mide lo mismo siempre (--alto-panel), así la bandeja puede
  * ocupar justo el resto de la pantalla.
  */
 export function EncabezadoPanel({ nombre }: { nombre: string }) {
@@ -26,11 +40,11 @@ export function EncabezadoPanel({ nombre }: { nombre: string }) {
               {PANEL_ADMIN.titulo}
             </span>
           </Link>
-          <nav aria-label={PANEL_ADMIN.titulo} className="hidden md:block">
-            <Secciones actual={actual} />
-          </nav>
         </div>
         <div className="flex shrink-0 items-center gap-3 font-plex text-[11px] uppercase tracking-[0.14em]">
+          <Buscador />
+          <IndicadorConexion />
+          <Campanita />
           <span className="hidden normal-case tracking-normal text-blanco lg:inline">{nombre}</span>
           <Link href="/cuenta" className="text-acero hover:text-blanco">
             {PANEL_ADMIN.miCuenta}
@@ -38,31 +52,60 @@ export function EncabezadoPanel({ nombre }: { nombre: string }) {
           <Link href="/" className="hidden text-acero hover:text-blanco sm:inline">
             {PANEL_ADMIN.verWeb}
           </Link>
-          <form action={salir}>
+          <form action={salirYBorrar}>
             <button type="submit" className="border border-profundo px-3 py-1.5 text-acero transition-colors hover:text-blanco">
               {PANEL_ADMIN.salir}
             </button>
           </form>
         </div>
       </div>
-      <nav aria-label={PANEL_ADMIN.titulo} className="overflow-x-auto border-t border-profundo px-4 md:hidden">
+      {/* Las secciones van siempre en su propia fila (son muchas para compartir con la firma): en el celular se deslizan de costado. */}
+      <nav aria-label={PANEL_ADMIN.titulo} className="overflow-x-auto border-t border-profundo px-4 [scrollbar-width:thin] md:px-6">
         <Secciones actual={actual} />
       </nav>
     </header>
   );
 }
 
+/** Un acento por sección (de la paleta de colores.ts): el punto y la línea de abajo. */
+const ACENTO_SECCION: Record<string, string> = {
+  "/panel": ACENTO_CANAL.contacto,
+  "/panel/resumen": AURORA[0],
+  "/panel/comercial": ACENTO_CANAL.servicios,
+  "/panel/clientes": ACENTO_NICHO.gimnasios,
+  "/panel/plantillas": ACENTO_NICHO.industria,
+  "/panel/nichos": ACENTO_NICHO.kioscos,
+  "/panel/nucleos": ACENTO_NICHO.pymes,
+  "/panel/objetivos": ACENTO_NICHO.holistica,
+  "/panel/mapa": ACENTO_CANAL.contacto,
+  "/panel/mensajes": ACENTO_CANAL.trabajos,
+  "/panel/bitacora": AURORA[1],
+};
+
 function Secciones({ actual }: { actual: (ruta: string) => boolean }) {
   return (
-    <ul className="flex h-11 items-stretch gap-5 md:h-14">
+    <ul className="flex h-11 items-stretch gap-5 lg:gap-6">
       {PANEL_ADMIN.secciones.map((seccion) => (
         <li key={seccion.ruta} className="flex">
           <Link
             href={seccion.ruta}
+            // Sin señal, el mapa se abre de la copia guardada (navegación completa: la sirve el service worker).
+            onClick={(e) => {
+              if (navigator.onLine === false && seccion.ruta === "/panel/mapa") {
+                e.preventDefault();
+                // Adrede: router.push pediría datos al servidor, y sin señal no hay.
+                // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+                window.location.assign("/panel/mapa");
+              }
+            }}
             aria-current={actual(seccion.ruta) ? "page" : undefined}
-            className="flex items-center gap-2 whitespace-nowrap border-b-2 border-transparent font-plex text-xs font-medium uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco aria-[current=page]:border-blanco aria-[current=page]:text-blanco"
+            style={{ "--acento": ACENTO_SECCION[seccion.ruta] ?? "#ececee" } as CSSProperties}
+            className="group relative flex items-center gap-2 whitespace-nowrap font-plex text-xs font-medium uppercase tracking-etiqueta text-acero transition-colors hover:text-blanco aria-[current=page]:text-blanco"
           >
+            {/* El punto aparece al pasar (y queda en la actual); la línea crece desde la izquierda. */}
+            <span aria-hidden className="size-1.5 scale-0 bg-(--acento) transition-transform duration-300 group-hover:scale-100 group-aria-[current=page]:scale-100" />
             {seccion.nombre}
+            <span aria-hidden className="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-(--acento) transition-transform duration-300 ease-(--ease-quvant) group-hover:scale-x-100 group-aria-[current=page]:scale-x-100" />
           </Link>
         </li>
       ))}

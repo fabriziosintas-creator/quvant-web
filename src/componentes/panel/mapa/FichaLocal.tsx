@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { CLASE_BOTON_SECUNDARIO, CLASE_CAMPO, CLASE_ETIQUETA } from "@/componentes/cuenta/estilos";
@@ -7,16 +8,23 @@ import { fecha } from "@/componentes/panel/formato";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { borrarLocal, cambiarEstadoLocal, ubicarLocal } from "@/servidor/panel/locales";
 import type { Admin, Local, Visita } from "@/servidor/panel/mapa";
+import { encolar, esErrorDeRed } from "@/sinconexion/sincronizador";
 import { FormularioVisita } from "./FormularioVisita";
 import { Marcador, descripcionDe } from "./Marcador";
+import { Historial } from "@/componentes/panel/bitacora/Historial";
 
 const T = PANEL_ADMIN.mapa;
 
-/** Cómo llegar: con coordenadas si las hay; si no, por nombre y dirección. */
-function urlComoLlegar(local: Local) {
-  const destino = local.latitud !== null && local.longitud !== null ? `${local.latitud},${local.longitud}` : [local.nombre, local.direccion, local.ciudad].filter(Boolean).join(", ");
-  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destino)}`;
-}
+/**
+ * Los dos botones de Google son solo links: abren la app o la web de
+ * Google Maps, sin API ni clave. Con coordenadas si las hay; si no, por
+ * nombre y dirección.
+ */
+const destinoDe = (local: Local) =>
+  local.latitud !== null && local.longitud !== null ? `${local.latitud},${local.longitud}` : [local.nombre, local.direccion, local.ciudad].filter(Boolean).join(", ");
+const urlComoLlegar = (local: Local) => `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destinoDe(local))}`;
+/** El link guardado del local (el que se pegó) es el mejor: abre la ficha de Google del lugar. */
+const urlVerEnGoogle = (local: Local) => local.link_google_maps ?? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(destinoDe(local))}`;
 
 /** La ficha de un local: qué pasó, qué sigue y los botones para actuar desde la calle. */
 export function FichaLocal({
@@ -26,6 +34,7 @@ export function FichaLocal({
   yo,
   nombreNicho,
   alCerrar,
+  conVisita = false,
 }: {
   local: Local;
   visitas: Visita[];
@@ -33,9 +42,11 @@ export function FichaLocal({
   yo: string;
   nombreNicho: (id: string | null) => string;
   alCerrar: () => void;
+  /** Abrir con el formulario de visita desplegado. */
+  conVisita?: boolean;
 }) {
   const router = useRouter();
-  const [cargando, setCargando] = useState(false);
+  const [cargando, setCargando] = useState(conVisita);
   const [ubicando, setUbicando] = useState<"" | "buscando" | "error">("");
   const [, iniciar] = useTransition();
   const nombreDe = (id: string) => {
@@ -63,7 +74,22 @@ export function FichaLocal({
     );
   };
 
-  const confirmarBorrado = (evento: React.FormEvent<HTMLFormElement>) => {
+  // Sin señal, el cambio de estado queda en el teléfono y se manda solo al volver.
+  const [estadoGuardado, setEstadoGuardado] = useState(false);
+  const guardarEstado = async (datos: FormData) => {
+    const titulo = PANEL_ADMIN.sinSenal.tituloEstado.replace("{n}", local.nombre);
+    const aDatos = () => Object.fromEntries([...datos.entries()].map(([k, v]) => [k, String(v)]));
+    if (navigator.onLine === false) return setEstadoGuardado(await encolar("estado", aDatos(), titulo));
+    try {
+      await cambiarEstadoLocal(datos);
+      setEstadoGuardado(false);
+    } catch (error) {
+      if (!esErrorDeRed(error)) throw error;
+      setEstadoGuardado(await encolar("estado", aDatos(), titulo));
+    }
+  };
+
+  const confirmarBorrado =(evento: React.FormEvent<HTMLFormElement>) => {
     if (!window.confirm(T.ficha.confirmarBorrar.replace("{nombre}", local.nombre))) evento.preventDefault();
   };
 
@@ -81,6 +107,7 @@ export function FichaLocal({
             </p>
             <p className="mt-1 font-plex text-[11px] uppercase tracking-etiqueta text-acero">
               {descripcionDe(local)}
+              {local.contacto ? ` · ${T.ficha.atendio.replace("{nombre}", local.contacto)}` : ""}
               {local.origen === "importado" ? ` · ${T.ficha.importado}` : ""}
               {local.es_prueba ? ` · ${T.ficha.prueba}` : ""}
             </p>
@@ -106,7 +133,9 @@ export function FichaLocal({
         </div>
       </dl>
 
-      {local.latitud === null ? <p className="border border-profundo p-3 font-lectura text-sm text-acero">{T.ficha.sinCoordenadas}</p> : null}
+      {local.latitud === null ? (
+        <p className="border border-profundo p-3 font-lectura text-sm text-acero">{local.ubicacion_pendiente ? T.ficha.ubicandoImportado : T.ficha.sinCoordenadas}</p>
+      ) : null}
 
       <div className="flex flex-wrap gap-2">
         <button type="button" onClick={() => setCargando((c) => !c)} aria-expanded={cargando} className="rounded-full inline-flex h-11 items-center bg-blanco px-5 font-lectura text-sm font-medium text-negro hover:bg-acero">
@@ -115,6 +144,12 @@ export function FichaLocal({
         <a href={urlComoLlegar(local)} target="_blank" rel="noopener noreferrer" className={`${CLASE_BOTON_SECUNDARIO} h-11 px-5`}>
           {T.ficha.comoLlegar}
         </a>
+        <a href={urlVerEnGoogle(local)} target="_blank" rel="noopener noreferrer" className={`${CLASE_BOTON_SECUNDARIO} h-11 px-5`}>
+          {T.ficha.verEnGoogle}
+        </a>
+        <Link href={`/panel/comercial/nueva?local=${local.id}`} className={`${CLASE_BOTON_SECUNDARIO} h-11 px-5`}>
+          {PANEL_ADMIN.comercial.crearDesde}
+        </Link>
         {local.telefono ? (
           <a href={`tel:${local.telefono.replace(/[^\d+]/g, "")}`} className={`${CLASE_BOTON_SECUNDARIO} h-11 px-5`}>
             {T.ficha.llamar}
@@ -128,12 +163,13 @@ export function FichaLocal({
 
       {cargando ? (
         <section aria-label={T.visita.titulo} className="border-t border-profundo pt-5">
-          <FormularioVisita localId={local.id} admins={admins} yo={yo} alGuardar={() => setCargando(false)} />
+          <FormularioVisita localId={local.id} nombreLocal={local.nombre} admins={admins} yo={yo} alGuardar={() => setCargando(false)} />
         </section>
       ) : null}
 
       {/* Estado, volver y próxima visita: lo que no sale de una visita. */}
-      <form action={cambiarEstadoLocal} className="grid gap-3 border-t border-profundo pt-5 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end">
+      {estadoGuardado ? <p role="status" className="font-plex text-xs text-acero">{PANEL_ADMIN.sinSenal.guardado}</p> : null}
+      <form action={guardarEstado} className="grid gap-3 border-t border-profundo pt-5 sm:grid-cols-[1fr_1fr_1fr_auto] sm:items-end">
         <input type="hidden" name="id" value={local.id} />
         <label>
           <span className={CLASE_ETIQUETA}>{T.ficha.estado}</span>
@@ -178,6 +214,7 @@ export function FichaLocal({
                   {v.volver ? ` · ${T.ficha.volver.toLowerCase()}: ${T.volver[v.volver].toLowerCase()}` : ""}
                   <span className="text-acero"> · {T.ficha.fue.replace("{nombre}", nombreDe(v.visitante_id))}</span>
                 </p>
+                {v.que_se_mostro ? <p className="font-plex text-xs text-acero">{T.ficha.mostramos.replace("{que}", v.que_se_mostro)}</p> : null}
                 {v.nota ? <p className="font-lectura text-sm text-acero">{v.nota}</p> : null}
                 {v.siguiente_paso ? <p className="font-lectura text-sm text-blanco">→ {v.siguiente_paso}</p> : null}
                 {v.tarjeta_promo ? <p className="font-plex text-xs text-acero">{T.ficha.tarjeta}</p> : null}
@@ -193,6 +230,7 @@ export function FichaLocal({
           {T.ficha.borrar}
         </button>
       </form>
+      <Historial tabla="locales" registroId={local.id} />
     </article>
   );
 }

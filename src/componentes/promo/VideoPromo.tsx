@@ -27,7 +27,7 @@ export function VideoPromo() {
     setActual(id);
     v.currentTime = capitulo.desde;
     void v.play().catch(() => {});
-    medir("play_video_promo", null, `/primeros-100/video/${id}`);
+    medir("play_video_promo", null, id);
     if (desplazar) marco.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
@@ -69,7 +69,7 @@ export function VideoPromo() {
           preload="none"
           poster={VIDEO_PROMO.poster ?? undefined}
           onTimeUpdate={alAvanzar}
-          onPlay={() => medir("play_video_promo", null, `/primeros-100/video/${actual}`)}
+          onPlay={() => medir("play_video_promo", null, actual)}
           className="block aspect-video w-full bg-negro"
         >
           {VIDEO_PROMO.archivoWebm ? <source src={VIDEO_PROMO.archivoWebm} type="video/webm" /> : null}

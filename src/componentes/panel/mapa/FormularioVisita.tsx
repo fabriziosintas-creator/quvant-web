@@ -8,6 +8,7 @@ import { hoyEnBuenosAires } from "@/componentes/panel/formato";
 import { PANEL_ADMIN } from "@/datos/textos";
 import { cargarVisita, type EstadoFormulario } from "@/servidor/panel/locales";
 import type { Admin } from "@/servidor/panel/mapa";
+import { conCola } from "@/sinconexion/sincronizador";
 
 const T = PANEL_ADMIN.mapa;
 const INICIAL: EstadoFormulario = { estado: "inicial" };
@@ -17,8 +18,12 @@ const INICIAL: EstadoFormulario = { estado: "inicial" };
  * (hoy), quién fue (quien está logueado), cómo nos fue en tres botones
  * grandes, si volver, y dos renglones opcionales.
  */
-export function FormularioVisita({ localId, admins, yo, alGuardar }: { localId: string; admins: Admin[]; yo: string; alGuardar?: () => void }) {
-  const [estado, enviar, enviando] = useActionState(cargarVisita, INICIAL);
+export function FormularioVisita({ localId, nombreLocal, admins, yo, alGuardar }: { localId: string; nombreLocal: string; admins: Admin[]; yo: string; alGuardar?: () => void }) {
+  // Sin señal se guarda en el teléfono y se manda sola al volver (con su clave única: no se duplica).
+  const [estado, enviar, enviando] = useActionState(
+    conCola("visita", cargarVisita, () => PANEL_ADMIN.sinSenal.tituloVisita.replace("{n}", nombreLocal), { estado: "listo", mensaje: PANEL_ADMIN.sinSenal.guardado, localId } as EstadoFormulario),
+    INICIAL,
+  );
   const formulario = useRef<HTMLFormElement>(null);
   const e = estado.errores ?? {};
   const v = estado.valores ?? {};
@@ -80,6 +85,12 @@ export function FormularioVisita({ localId, admins, yo, alGuardar }: { localId: 
       </fieldset>
 
       <Campo name="nota" etiqueta={T.visita.nota} defaultValue={v.nota} maxLength={2000} />
+      <Campo name="mostrado" etiqueta={T.visita.mostrado} defaultValue={v.mostrado} maxLength={200} list={`visita-mostrado-${localId}`} />
+      <datalist id={`visita-mostrado-${localId}`}>
+        {T.visita.mostradoOpciones.map((opcion) => (
+          <option key={opcion} value={opcion} />
+        ))}
+      </datalist>
       <Casilla name="tarjeta_promo">{T.visita.tarjeta}</Casilla>
       <div className="grid gap-4 sm:grid-cols-2">
         <Campo name="siguiente" etiqueta={T.visita.siguiente} defaultValue={v.siguiente} maxLength={500} />

@@ -1,7 +1,7 @@
 "use server";
 
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { PANEL_ADMIN } from "@/datos/textos";
 import type { Acompanamiento } from "@/nucleos/tipos";
 import { texto } from "@/servidor/cuenta/validacion";
@@ -23,6 +23,7 @@ const tabla = (supabase: Awaited<ReturnType<typeof exigirAdmin>>["supabase"], no
 export async function actualizarAhora(): Promise<ResultadoProceso> {
   await exigirAdmin("/panel/nucleos");
   const resultado = await correrProcesoDiario();
+  updateTag("nichos");
   revalidatePath("/panel/nucleos", "layout");
   return resultado;
 }
@@ -45,6 +46,7 @@ export async function registrarAcompanamiento(_previo: Estado, datos: FormData):
   });
   if (error) return { estado: "error", mensaje: `${T.cliente.acompanamientoError} (${error.message})` };
   if (alertaId) await tabla(supabase, "alertas").update({ estado: "resuelta", resuelta_en: new Date().toISOString(), resolucion: `Acompañamiento: ${tipo}` }).eq("id", alertaId);
+  updateTag("nichos");
   revalidatePath("/panel/nucleos", "layout");
   return { estado: "listo", mensaje: T.cliente.acompanamientoListo };
 }
@@ -57,6 +59,7 @@ export async function cambiarEstadoAlerta(datos: FormData) {
   const cierre = estado === "resuelta" || estado === "descartada" ? { resuelta_por: perfil.id, resuelta_en: new Date().toISOString(), resolucion: texto(datos, "resolucion").slice(0, 1000) || null } : {};
   const { error } = await tabla(supabase, "alertas").update({ estado, ...cierre }).eq("id", id);
   if (error) console.error("[nucleos] alerta:", error.message);
+  updateTag("nichos");
   revalidatePath("/panel/nucleos", "layout");
 }
 

@@ -304,7 +304,7 @@ grant execute on function public.mi_lugar_promo() to authenticated;
 
 -- El embudo de la promo para el panel: visitas distintas y eventos por tipo.
 -- security invoker: lo calcula con los permisos de quien pregunta (RLS de
--- eventos: solo admin).
+-- eventos: solo admin). Sin los navegadores del equipo (20261022120300).
 create function public.embudo_promo(desde timestamptz)
 returns table (tipo public.tipo_evento, visitas bigint, total bigint)
 language sql
@@ -316,10 +316,20 @@ as $$
   from public.eventos e
   where e.creado_en >= desde
     and (e.tipo::text like '%_promo' or e.tipo::text = 'lugar_asignado')
+    and not exists (select 1 from public.navegadores_equipo n where n.visita_id = e.visita_id)
   group by e.tipo;
 $$;
 revoke all on function public.embudo_promo(timestamptz) from public;
 grant execute on function public.embudo_promo(timestamptz) to authenticated;
+
+-- La bitácora del panel (20261023150000) también anota la promo: quién
+-- pausó o reabrió la promo y quién cambió el estado de un lugar.
+create trigger promo_lugares_bitacora
+  after insert or update or delete on public.promo_lugares
+  for each row execute function privado.anotar_bitacora();
+create trigger promo_config_bitacora
+  after update on public.promo_config
+  for each row execute function privado.anotar_bitacora();
 
 -- ── Seguridad ────────────────────────────────────────────────────────
 alter table public.promo_config enable row level security;

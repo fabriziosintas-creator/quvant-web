@@ -4,6 +4,7 @@ import { armarAvisoRegistro, armarBienvenida } from "@/emails/armar";
 import type { LugarEmail } from "@/emails/EmailsCuenta";
 import type { IdBeneficio } from "@/datos/promo";
 import { crearClienteAdmin } from "@/supabase/admin";
+import { whatsappSiCorresponde } from "@/servidor/avisos/crear";
 import { enviarEmail } from "./enviar";
 
 /**
@@ -57,6 +58,9 @@ export async function despuesDeConfirmar(idPerfil: string) {
     // Queda sin marcar para poder mandarla de nuevo más adelante.
     await admin.from("perfiles").update({ bienvenida_enviada_en: null }).eq("id", idPerfil);
   }
+
+  // El aviso del panel lo crea la base al registrarse; por WhatsApp sale al confirmar, si algún socio lo pidió.
+  await whatsappSiCorresponde("registro", `Se registró ${perfil.nombre}${perfil.empresa ? ` (${perfil.empresa})` : ""}`, `Rubro: ${perfil.nicho_id} · Objetivo: ${perfil.objetivo_id}`, "/panel/comercial");
 
   const para = (process.env.AVISO_REGISTROS_PARA ?? "")
     .split(",")
