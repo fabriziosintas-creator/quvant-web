@@ -522,6 +522,27 @@ export type Database = {
         }
         Relationships: []
       }
+      hoy_pospuestas: {
+        Row: {
+          clave: string
+          creado_en: string
+          hasta: string
+          perfil_id: string
+        }
+        Insert: {
+          clave: string
+          creado_en?: string
+          hasta: string
+          perfil_id: string
+        }
+        Update: {
+          clave?: string
+          creado_en?: string
+          hasta?: string
+          perfil_id?: string
+        }
+        Relationships: []
+      }
       indicadores_diarios: {
         Row: {
           cliente_id: string

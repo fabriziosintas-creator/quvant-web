@@ -1,3 +1,4 @@
+import { revalidateTag } from "next/cache";
 import { NextResponse, type NextRequest } from "next/server";
 import { ipDe } from "@/servidor/chat/sesion";
 import { LimiteExcedido, novedadesParaVisitante, recibirDelVisitante } from "@/servidor/chat/servicio";
@@ -26,6 +27,8 @@ export async function POST(pedido: NextRequest) {
 
   try {
     const vista = await recibirDelVisitante({ id, texto, pagina, ip: ipDe(pedido) });
+    // Una charla nueva o un mensaje nuevo: "Hoy" lo muestra en el próximo pedido.
+    revalidateTag("hoy", "max");
     return NextResponse.json(vista);
   } catch (error) {
     if (error instanceof LimiteExcedido) {

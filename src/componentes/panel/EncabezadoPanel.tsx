@@ -56,7 +56,8 @@ export function EncabezadoPanel({ nombre }: { nombre: string }) {
 
 /** Un acento por sección (de la paleta de colores.ts): el punto y la línea de abajo. */
 const ACENTO_SECCION: Record<string, string> = {
-  "/panel": AURORA[0],
+  "/panel": ACENTO_CANAL.contacto,
+  "/panel/resumen": AURORA[0],
   "/panel/comercial": ACENTO_CANAL.servicios,
   "/panel/plantillas": ACENTO_NICHO.industria,
   "/panel/nichos": ACENTO_NICHO.kioscos,

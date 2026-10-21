@@ -53,7 +53,7 @@ async function Contenido({ params }: { params: PageProps<"/panel/comercial/[id]"
   const etapa = (esEtapa(o.etapa) ? o.etapa : "nuevo") as Etapa;
   const acento = o.nicho_id && o.nicho_id in ACENTO_NICHO ? ACENTO_NICHO[o.nicho_id as keyof typeof ACENTO_NICHO] : "#9C9CA3";
   const whatsapp = linkWhatsApp(o.telefono, F.mensajeWhatsApp.replace("{nombre}", o.contacto?.split(" ")[0] ?? "").replace("{quien}", perfil.nombre));
-  const origen = o.perfil_id ? "/panel" : o.local_id ? `/panel/mapa?local=${o.local_id}` : o.conversacion_id ? `/panel/mensajes?c=${o.conversacion_id}` : null;
+  const origen = o.perfil_id ? "/panel/resumen" : o.local_id ? `/panel/mapa?local=${o.local_id}` : o.conversacion_id ? `/panel/mensajes?c=${o.conversacion_id}` : null;
   const nombreDe = (pid: string | null) => admins?.find((a) => a.id === pid)?.nombre ?? "—";
   const boton = "inline-flex h-11 items-center justify-center gap-2 border border-profundo px-4 font-plex text-xs uppercase tracking-[0.14em] text-blanco hover:border-acero";
 
