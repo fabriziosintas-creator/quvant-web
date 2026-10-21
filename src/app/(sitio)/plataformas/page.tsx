@@ -3,6 +3,7 @@ import { Capitulo } from "@/componentes/canales/Capitulo";
 import { metadatosCanal } from "@/componentes/canales/metadatos";
 import { PaginaCanal } from "@/componentes/canales/PaginaCanal";
 import { LoQueHaceHoy } from "@/componentes/secciones/Plataformas";
+import { EntradaPromo } from "@/componentes/promo/EntradaPromo";
 import { SelectorRubros } from "@/componentes/secciones/SelectorRubros";
 import { CANALES } from "@/datos/textos";
 
@@ -19,6 +20,7 @@ export default function Plataformas() {
       </Capitulo>
       <Capitulo id={RUBROS.id} etiqueta={RUBROS.nombre}>
         <SelectorRubros />
+        <EntradaPromo origen="sistemas" className="mt-10" />
       </Capitulo>
     </PaginaCanal>
   );

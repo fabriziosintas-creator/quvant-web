@@ -1,5 +1,6 @@
 import { BotonAbrirChat } from "@/componentes/chat/BotonAbrirChat";
 import { Cara } from "@/componentes/estructura/Foto";
+import { EntradaPromo } from "@/componentes/promo/EntradaPromo";
 import { CONTACTO, urlEmail, urlInstagram, urlWhatsApp } from "@/datos/contacto";
 import { fotoDe } from "@/datos/fotos";
 import { CONTACTO_SECCION } from "@/datos/textos";
@@ -55,6 +56,7 @@ export function Contacto() {
     <section>
       <div className="contenedor py-16 md:py-24">
         <div className="max-w-3xl">
+          <EntradaPromo origen="contacto" className="mb-10" />
           <QuienesResponden />
           <FormularioContacto />
         </div>

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Michroma } from "next/font/google";
 import "./globals.css";
 import { DECIDIR_INTRO } from "@/componentes/estructura/introDecision";
+import { DECIDIR_CINTA } from "@/componentes/promo/cintaDecision";
 import { SITIO } from "@/datos/sitio";
 import { MARCA } from "@/datos/textos";
 
@@ -68,6 +69,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         {/* Decide la intro de la tele antes de pintar (ver IntroTV). */}
         <script dangerouslySetInnerHTML={{ __html: DECIDIR_INTRO }} />
+        {/* Si la cinta de "Primeros 100" estaba cerrada, ni se dibuja (ver CintaPromo). */}
+        <script dangerouslySetInnerHTML={{ __html: DECIDIR_CINTA }} />
       </head>
       {/* En el celular, aire abajo para la barra de canales (solo donde la hay). */}
       <body className="flex min-h-svh flex-col max-md:has-[[data-dock]]:pb-[calc(5.5rem+env(safe-area-inset-bottom))]">

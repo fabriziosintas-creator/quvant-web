@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, type CSSProperties } from "react";
 import { tipoTransicion } from "@/componentes/canales/navegacion";
 import { EnlaceCuenta } from "@/componentes/cuenta/EnlaceCuenta";
+import { CintaPromo } from "@/componentes/promo/CintaPromo";
 import { Logotipo } from "@/componentes/marca/Logotipo";
 import { ACENTO_CANAL } from "@/datos/colores";
 import { ACCESIBILIDAD, CANALES, NAVEGACION } from "@/datos/textos";
@@ -31,7 +32,7 @@ const CONTACTO = CANALES.find((canal) => canal.id === "contacto")!;
  * comiéndose la pantalla. Arriba de todo, con el chat o el visor abiertos,
  * o con el foco adentro, está siempre.
  */
-export function Encabezado() {
+export function Encabezado({ promo = null }: { promo?: { quedan: number } | null }) {
   const ruta = usePathname();
   const enContacto = ruta === CONTACTO.ruta;
 
@@ -72,6 +73,8 @@ export function Encabezado() {
       style={{ viewTransitionName: "encabezado" }}
       className="encabezado-fijo fixed inset-x-0 top-0 z-50 border-b border-profundo/70 bg-negro/80 backdrop-blur-md"
     >
+      {/* La cinta de "Primeros 100", arriba de todo (solo mientras queden lugares). */}
+      {promo ? <CintaPromo quedan={promo.quedan} /> : null}
       <div className="contenedor flex h-16 items-center justify-between gap-4 md:h-20">
         <Link
           href="/"

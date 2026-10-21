@@ -9,6 +9,7 @@ import { Pie } from "@/componentes/estructura/Pie";
 import { Revelar } from "@/componentes/estructura/Revelar";
 import { ScrollSuave } from "@/componentes/estructura/ScrollSuave";
 import { ACCESIBILIDAD } from "@/datos/textos";
+import { obtenerEstadoPromo, promoAbierta } from "@/servidor/promo/estado";
 
 /**
  * El sitio público: todo lo que rodea a cada página (encabezado, pie,
@@ -17,7 +18,9 @@ import { ACCESIBILIDAD } from "@/datos/textos";
  * visor del portfolio busca "body > header" y "body > footer" para
  * dejarlos inertes.
  */
-export default function LayoutSitio({ children }: { children: ReactNode }) {
+export default async function LayoutSitio({ children }: { children: ReactNode }) {
+  // Los lugares de "Primeros 100" (en caché un minuto) para la cinta del encabezado.
+  const estadoPromo = await obtenerEstadoPromo();
   return (
     <>
       <a
@@ -31,7 +34,7 @@ export default function LayoutSitio({ children }: { children: ReactNode }) {
       <FocoTactil />
       <PausaFueraDeVista />
       <MedirRubros />
-      <Encabezado />
+      <Encabezado promo={promoAbierta(estadoPromo) && estadoPromo ? { quedan: estadoPromo.quedan } : null} />
       <main id="contenido" className="flex-1">
         {children}
       </main>

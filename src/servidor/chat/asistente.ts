@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { betaTool } from "@anthropic-ai/sdk/helpers/beta/json-schema";
+import { contextoPromo } from "@/servidor/promo/chat";
 import { INSTRUCCIONES } from "./conocimiento";
 import type { Borrador, Mensaje, Necesidad, Pedido } from "./tipos";
 
@@ -139,6 +140,9 @@ export async function responderConIA(mensajes: Mensaje[], acciones: Acciones): P
     ? {}
     : { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" as const };
 
+  // La promo vigente va en un bloque aparte: cambia sola y no rompe la caché de las instrucciones.
+  const promo = await contextoPromo().catch(() => null);
+
   try {
     const final = await anthropic().beta.messages.toolRunner({
       model: MODELO,
@@ -146,7 +150,10 @@ export async function responderConIA(mensajes: Mensaje[], acciones: Acciones): P
       ...respaldo,
       // Es una charla: con esfuerzo bajo alcanza y responde más rápido.
       output_config: { effort: "low" },
-      system: [{ type: "text", text: INSTRUCCIONES, cache_control: { type: "ephemeral" } }],
+      system: [
+        { type: "text", text: INSTRUCCIONES, cache_control: { type: "ephemeral" } },
+        ...(promo ? [{ type: "text" as const, text: promo }] : []),
+      ],
       tools: herramientas(acciones),
       messages: historial,
       max_iterations: 4,

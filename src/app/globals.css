@@ -340,6 +340,37 @@ html[data-liviano="si"] [class*="backdrop-blur"] {
   }
 }
 
+/*
+ * La cinta de "Primeros 100" (CintaPromo), primera fila del encabezado
+ * fijo: 2rem. Cerrada hace menos de 7 días, ni se dibuja (lo decide
+ * cintaDecision antes de pintar). Cuando se ve, el contenido y lo que se
+ * pega debajo del encabezado bajan su alto. Mientras corre la intro de la
+ * tele queda invisible (ocupando su lugar) y aparece al terminar.
+ */
+html[data-cinta-cerrada="si"] .cinta-promo {
+  display: none;
+}
+.cinta-promo {
+  transition: opacity var(--duracion-lenta) var(--ease-quvant);
+}
+html[data-intro="si"] .cinta-promo {
+  opacity: 0;
+}
+html:not([data-cinta-cerrada="si"]):has(.cinta-promo) {
+  scroll-padding-top: 10.5rem;
+}
+html:not([data-cinta-cerrada="si"]) body:has(.cinta-promo) #contenido {
+  padding-top: 2rem;
+}
+html:not([data-cinta-cerrada="si"]) body:has(.cinta-promo) .barra-capitulos {
+  top: 6rem;
+}
+@media (min-width: 48rem) {
+  html:not([data-cinta-cerrada="si"]) body:has(.cinta-promo) .barra-capitulos {
+    top: 7rem;
+  }
+}
+
 /* Lo que se mueve en bucle y no se ve, en pausa (PausaFueraDeVista). */
 [data-pausa="si"],
 [data-pausa="si"] * {

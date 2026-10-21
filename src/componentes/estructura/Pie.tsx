@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AuroraFondo } from "@/componentes/estructura/AuroraFondo";
+import { EntradaPromo } from "@/componentes/promo/EntradaPromo";
 import { urlInstagram, CONTACTO } from "@/datos/contacto";
 import { CANALES, MARCA, PIE } from "@/datos/textos";
 
@@ -31,10 +32,13 @@ export function Pie() {
       </div>
 
       <div className="contenedor grid gap-12 py-16 md:grid-cols-[1.5fr_1fr_1fr] md:py-20">
-        <p data-revelar className="flex items-start gap-3 font-plex text-sm text-acero md:text-base">
-          <span aria-hidden className="mt-[0.45em] inline-block size-1.5 shrink-0 bg-blanco" />
-          {MARCA.bajada}
-        </p>
+        <div className="flex flex-col gap-8">
+          <p data-revelar className="flex items-start gap-3 font-plex text-sm text-acero md:text-base">
+            <span aria-hidden className="mt-[0.45em] inline-block size-1.5 shrink-0 bg-blanco" />
+            {MARCA.bajada}
+          </p>
+          <EntradaPromo origen="pie" className="max-w-sm" />
+        </div>
 
         <nav aria-label={PIE.etiquetaSecciones} data-revelar>
           <p className="font-lectura text-sm font-medium text-acero">
