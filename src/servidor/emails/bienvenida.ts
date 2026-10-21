@@ -1,5 +1,8 @@
 import "server-only";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import { armarAvisoRegistro, armarBienvenida } from "@/emails/armar";
+import type { LugarEmail } from "@/emails/EmailsCuenta";
+import type { IdBeneficio } from "@/datos/promo";
 import { crearClienteAdmin } from "@/supabase/admin";
 import { enviarEmail } from "./enviar";
 
@@ -16,7 +19,20 @@ import { enviarEmail } from "./enviar";
  *
  * El aviso interno se activa con AVISO_REGISTROS_PARA (emails separados por
  * coma, en .env.local y en Vercel; no en el repo, que es público).
+ *
+ * Con "Primeros 100": la base da el lugar al confirmar (antes de que esto
+ * corra), así que acá se lee y los dos emails lo dicen.
  */
+
+/** El lugar de la promo, si lo pidió. Sin la tabla (migración sin aplicar), null. */
+async function lugarDe(admin: SupabaseClient, idPerfil: string): Promise<LugarEmail | null> {
+  const [{ data: lugar }, { data: config }] = await Promise.all([
+    admin.from("promo_lugares").select("numero, beneficio, estado").eq("perfil_id", idPerfil).maybeSingle(),
+    admin.from("promo_config").select("tope").maybeSingle(),
+  ]);
+  if (!lugar || lugar.estado === "pedido") return null;
+  return { numero: lugar.numero as number | null, beneficio: lugar.beneficio as IdBeneficio, tope: (config?.tope as number | undefined) ?? 100 };
+}
 export async function despuesDeConfirmar(idPerfil: string) {
   const admin = crearClienteAdmin();
   const { data: perfil, error } = await admin
@@ -33,7 +49,8 @@ export async function despuesDeConfirmar(idPerfil: string) {
   }
   if (!perfil) return; // ya se había mandado
 
-  const bienvenida = await armarBienvenida({ nombre: perfil.nombre, nicho: perfil.nicho_id, objetivo: perfil.objetivo_id });
+  const promo = await lugarDe(admin as unknown as SupabaseClient, idPerfil).catch(() => null);
+  const bienvenida = await armarBienvenida({ nombre: perfil.nombre, nicho: perfil.nicho_id, objetivo: perfil.objetivo_id, promo });
   const resultado = await enviarEmail(perfil.email, bienvenida);
   if (!resultado.ok) {
     console.error("[emails] bienvenida:", resultado.motivo);
@@ -58,6 +75,8 @@ export async function despuesDeConfirmar(idPerfil: string) {
     ciudad: perfil.ciudad,
     novedades: perfil.acepta_novedades,
     origen: perfil.origen,
+    telefono: perfil.telefono,
+    promo,
   });
   const avisado = await enviarEmail(para, aviso);
   if (!avisado.ok) console.error("[emails] aviso interno:", avisado.motivo);

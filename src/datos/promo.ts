@@ -177,6 +177,29 @@ export const PROMO_TEXTOS = {
     },
   },
 
+  /** Lo que suman la bienvenida y el aviso interno cuando hay lugar. */
+  emails: {
+    asuntoLugar: "Tu lugar N° {n} de Primeros 100 está reservado",
+    asuntoEspera: "Quedaste en la lista de espera de Primeros 100",
+    lugar: "Tu lugar: N° {n} de {tope}.",
+    espera: "Se completaron los lugares justo antes de que confirmaras: quedaste en la lista de espera. Si se libera uno, te escribimos.",
+    beneficio: "Tu beneficio: {beneficio}.",
+    queSigue: "Te escribimos por WhatsApp para arrancar, por orden de lugar. Si querés adelantarte, escribinos vos.",
+    plazos: {
+      web_app_50: "Para usarlo, el presupuesto se aprueba dentro de los 90 días.",
+      sistema_2_meses: "Los dos meses se activan dentro de los 60 días. Sin tarjeta y sin débito automático.",
+    },
+    boton: "Escribirnos por WhatsApp",
+    aviso: {
+      asunto: "Primeros 100 · lugar N° {n}: {nombre} · {rubro}",
+      asuntoEspera: "Primeros 100 · lista de espera: {nombre} · {rubro}",
+      lugar: "Lugar",
+      beneficio: "Beneficio",
+      telefono: "Teléfono",
+      escribirle: "Escribirle por WhatsApp",
+    },
+  },
+
   /** La cuenta: el lugar de la persona o el botón para reservarlo. */
   cuenta: {
     etiqueta: "Primeros 100",

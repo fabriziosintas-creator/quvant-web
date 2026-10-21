@@ -80,6 +80,29 @@ async function vista() {
         base,
       ),
     ],
+    // Primeros 100: con lugar, en lista de espera, y el aviso interno con lugar.
+    ["bienvenida-promo-lugar", await armarBienvenida({ ...ejemplo, objetivo: "hacer_web", promo: { numero: 37, beneficio: "web_app_50", tope: 100 } }, base)],
+    ["bienvenida-promo-espera", await armarBienvenida({ ...ejemplo, objetivo: "mejorar_clientela", promo: { numero: null, beneficio: "sistema_2_meses", tope: 100 } }, base)],
+    [
+      "aviso-interno-promo",
+      await armarAvisoRegistro(
+        {
+          nombre: "Ana",
+          apellido: "Pérez",
+          email: "ana@ejemplo.com",
+          nicho: "gimnasios",
+          nichoOtro: null,
+          objetivo: "mejorar_clientela",
+          empresa: "Gimnasio de ejemplo",
+          ciudad: "Rosario",
+          novedades: true,
+          origen: "primeros-100/visita",
+          telefono: "11 2481-1956",
+          promo: { numero: 37, beneficio: "sistema_2_meses", tope: 100 },
+        },
+        base,
+      ),
+    ],
   ];
 
   for (const [nombre, email] of emails) {

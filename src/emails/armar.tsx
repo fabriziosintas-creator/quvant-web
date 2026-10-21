@@ -1,5 +1,6 @@
 import { render } from "@react-email/components";
 import type { ReactElement } from "react";
+import { PROMO_TEXTOS } from "@/datos/promo";
 import { EMAILS } from "@/datos/textos";
 import {
   EmailAvisoRegistro,
@@ -24,14 +25,26 @@ export async function armarEmail(asunto: string, email: ReactElement): Promise<E
   return { asunto, html, texto };
 }
 
-export const armarBienvenida = (datos: DatosBienvenida, urlImagenes?: string) =>
-  armarEmail(EMAILS.bienvenida.asunto, <EmailBienvenida datos={datos} urlImagenes={urlImagenes} />);
+/** Con lugar de "Primeros 100", el asunto lo dice (o dice la lista de espera). */
+const asuntoBienvenida = (datos: DatosBienvenida) => {
+  if (!datos.promo) return EMAILS.bienvenida.asunto;
+  return datos.promo.numero !== null
+    ? PROMO_TEXTOS.emails.asuntoLugar.replace("{n}", String(datos.promo.numero))
+    : PROMO_TEXTOS.emails.asuntoEspera;
+};
 
-export const armarAvisoRegistro = (datos: DatosAviso, urlImagenes?: string) =>
-  armarEmail(
-    EMAILS.avisoInterno.asunto.replace("{nombre}", datos.nombre).replace("{rubro}", nombreRubro(datos.nicho, datos.nichoOtro)),
-    <EmailAvisoRegistro datos={datos} urlImagenes={urlImagenes} />,
-  );
+export const armarBienvenida = (datos: DatosBienvenida, urlImagenes?: string) =>
+  armarEmail(asuntoBienvenida(datos), <EmailBienvenida datos={datos} urlImagenes={urlImagenes} />);
+
+export const armarAvisoRegistro = (datos: DatosAviso, urlImagenes?: string) => {
+  const rubro = nombreRubro(datos.nicho, datos.nichoOtro);
+  const asunto = !datos.promo
+    ? EMAILS.avisoInterno.asunto
+    : datos.promo.numero !== null
+      ? PROMO_TEXTOS.emails.aviso.asunto.replace("{n}", String(datos.promo.numero))
+      : PROMO_TEXTOS.emails.aviso.asuntoEspera;
+  return armarEmail(asunto.replace("{nombre}", datos.nombre).replace("{rubro}", rubro), <EmailAvisoRegistro datos={datos} urlImagenes={urlImagenes} />);
+};
 
 export const armarConfirmacion = (saludo: string, enlace: string, urlImagenes?: string) =>
   armarEmail(EMAILS.confirmacion.asunto, <EmailConfirmacion saludo={saludo} enlace={enlace} urlImagenes={urlImagenes} />);

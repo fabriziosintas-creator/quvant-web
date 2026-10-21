@@ -1,5 +1,6 @@
 import { Section, Text } from "@react-email/components";
 import { urlWhatsApp } from "@/datos/contacto";
+import { PROMO_TEXTOS, type IdBeneficio } from "@/datos/promo";
 import { SITIO } from "@/datos/sitio";
 import { CUENTA, EMAILS, PLATAFORMAS } from "@/datos/textos";
 import { Boton, COLOR, Cuadradito, estilos, FUENTE, MarcoEmail } from "./MarcoEmail";
@@ -42,7 +43,37 @@ export function EmailRecuperacion({ saludo, enlace, urlImagenes }: { saludo: str
 }
 
 // ── Bienvenida (web + Resend) ─────────────────────────────────────────
-export type DatosBienvenida = { nombre: string; nicho: string; objetivo: string };
+/** El lugar de "Primeros 100", si la persona lo pidió (numero null = lista de espera). */
+export type LugarEmail = { numero: number | null; beneficio: IdBeneficio; tope: number };
+
+export type DatosBienvenida = { nombre: string; nicho: string; objetivo: string; promo?: LugarEmail | null };
+
+/** El mensaje de WhatsApp para coordinar el beneficio. */
+const mensajeLugar = (nombre: string, lugar: LugarEmail) =>
+  PROMO_TEXTOS.cuenta.mensaje
+    .replace("{nombre}", nombre)
+    .replace("{n}", String(lugar.numero ?? "—"))
+    .replace("{beneficio}", PROMO_TEXTOS.beneficiosCortos[lugar.beneficio].toLowerCase());
+
+/** El bloque de "Primeros 100" en la bienvenida: número, beneficio, qué sigue y el plazo. */
+function BloqueLugar({ lugar }: { lugar: LugarEmail }) {
+  const t = PROMO_TEXTOS.emails;
+  return (
+    <Section style={{ border: `1px solid ${COLOR.profundo}`, borderRadius: "16px", padding: "18px 20px", margin: "20px 0 0" }}>
+      <Text style={{ ...estilos.textoClaro, margin: "0 0 8px", fontWeight: 600 }}>
+        <Cuadradito />
+        {lugar.numero !== null ? t.lugar.replace("{n}", String(lugar.numero)).replace("{tope}", String(lugar.tope)) : t.espera}
+      </Text>
+      <Text style={{ ...estilos.texto, margin: "0 0 8px" }}>{t.beneficio.replace("{beneficio}", PROMO_TEXTOS.beneficiosCortos[lugar.beneficio])}</Text>
+      {lugar.numero !== null ? (
+        <>
+          <Text style={{ ...estilos.texto, margin: "0 0 8px" }}>{t.queSigue}</Text>
+          <Text style={{ ...estilos.chico, margin: 0 }}>{t.plazos[lugar.beneficio]}</Text>
+        </>
+      ) : null}
+    </Section>
+  );
+}
 
 /** El único botón, según lo que la trajo: su plantilla, pedir la web o hablar. */
 export function destinoBienvenida({ nicho, objetivo }: DatosBienvenida) {
@@ -63,12 +94,19 @@ export function EmailBienvenida({ datos, urlImagenes }: { datos: DatosBienvenida
     <MarcoEmail vistaPrevia={t.vistaPrevia} urlImagenes={urlImagenes}>
       <Text style={estilos.titulo}>{t.titulo.replace("{nombre}", datos.nombre)}</Text>
       <Text style={estilos.texto}>{t.texto}</Text>
-      <Section style={{ borderLeft: `2px solid ${COLOR.blanco}`, padding: "2px 0 2px 16px", margin: "8px 0 0" }}>
+      {datos.promo ? <BloqueLugar lugar={datos.promo} /> : null}
+      <Section style={{ borderLeft: `2px solid ${COLOR.blanco}`, padding: "2px 0 2px 16px", margin: "20px 0 0" }}>
         <Text style={{ ...estilos.textoClaro, margin: 0 }}>{rubro}</Text>
       </Section>
-      <Boton href={destinoBienvenida(datos)} respaldo={false}>
-        {boton}
-      </Boton>
+      {datos.promo && datos.promo.numero !== null ? (
+        <Boton href={urlWhatsApp(mensajeLugar(datos.nombre, datos.promo))} respaldo={false}>
+          {PROMO_TEXTOS.emails.boton}
+        </Boton>
+      ) : (
+        <Boton href={destinoBienvenida(datos)} respaldo={false}>
+          {boton}
+        </Boton>
+      )}
       <Text style={estilos.texto}>{t.cierre}</Text>
       <Text style={{ ...estilos.textoClaro, margin: 0 }}>{t.firma}</Text>
     </MarcoEmail>
@@ -87,7 +125,17 @@ export type DatosAviso = {
   ciudad: string | null;
   novedades: boolean;
   origen: string | null;
+  telefono?: string | null;
+  promo?: LugarEmail | null;
 };
+
+/** Un teléfono argentino como lo entiende wa.me: solo números, con 54 y el 9 de celular. */
+export function whatsappDe(telefono: string | null | undefined) {
+  let digitos = (telefono ?? "").replace(/\D/g, "").replace(/^0+/, "");
+  if (digitos.length < 8) return null;
+  if (!digitos.startsWith("54")) digitos = `549${digitos}`;
+  return `https://wa.me/${digitos}`;
+}
 
 export const nombreRubro = (nicho: string, otro?: string | null) =>
   nicho === "otro" && otro ? `Otro: ${otro}` : (CUENTA.nichos.find((n) => n.id === nicho)?.nombre ?? nicho);
@@ -103,7 +151,15 @@ export function EmailAvisoRegistro({ datos, urlImagenes }: { datos: DatosAviso; 
     [t.campos.ciudad, datos.ciudad || t.sinDato],
     [t.campos.novedades, datos.novedades ? t.si : t.no],
     [t.campos.origen, datos.origen || t.sinDato],
+    ...(datos.promo
+      ? ([
+          [PROMO_TEXTOS.emails.aviso.lugar, datos.promo.numero !== null ? `N° ${datos.promo.numero} de ${datos.promo.tope}` : PROMO_TEXTOS.cuenta.espera],
+          [PROMO_TEXTOS.emails.aviso.beneficio, PROMO_TEXTOS.beneficiosCortos[datos.promo.beneficio]],
+          [PROMO_TEXTOS.emails.aviso.telefono, datos.telefono || t.sinDato],
+        ] as Array<[string, string]>)
+      : []),
   ];
+  const whatsapp = datos.promo ? whatsappDe(datos.telefono) : null;
   return (
     <MarcoEmail vistaPrevia={t.vistaPrevia} urlImagenes={urlImagenes} porque={false}>
       <Text style={estilos.titulo}>
@@ -143,7 +199,12 @@ export function EmailAvisoRegistro({ datos, urlImagenes }: { datos: DatosAviso; 
           ))}
         </tbody>
       </table>
-      <Boton href={`${SITIO.url}/panel`} respaldo={false}>
+      {whatsapp ? (
+        <Boton href={whatsapp} respaldo={false}>
+          {PROMO_TEXTOS.emails.aviso.escribirle}
+        </Boton>
+      ) : null}
+      <Boton href={`${SITIO.url}/panel${datos.promo ? "/primeros-100" : ""}`} respaldo={false}>
         {t.boton}
       </Boton>
     </MarcoEmail>
