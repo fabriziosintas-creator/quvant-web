@@ -971,6 +971,126 @@ export type Database = {
         }
         Relationships: []
       }
+      oportunidades: {
+        Row: {
+          actualizado_en: string
+          ciudad: string | null
+          cliente_plantilla_id: string | null
+          contacto: string | null
+          conversacion_id: string | null
+          creado_en: string
+          email: string | null
+          es_prueba: boolean
+          etapa: string
+          etapa_desde: string
+          id: string
+          local_id: string | null
+          motivo_perdida: string | null
+          motivo_perdida_texto: string | null
+          negocio: string
+          nicho_id: string | null
+          origen: string
+          perfil_id: string | null
+          probabilidad: number | null
+          proximo_paso: string | null
+          proximo_paso_fecha: string | null
+          responsable: string
+          telefono: string | null
+          valor_abono: number | null
+          valor_proyecto: number | null
+        }
+        Insert: {
+          actualizado_en?: string
+          ciudad?: string | null
+          cliente_plantilla_id?: string | null
+          contacto?: string | null
+          conversacion_id?: string | null
+          creado_en?: string
+          email?: string | null
+          es_prueba?: boolean
+          etapa?: string
+          etapa_desde?: string
+          id?: string
+          local_id?: string | null
+          motivo_perdida?: string | null
+          motivo_perdida_texto?: string | null
+          negocio: string
+          nicho_id?: string | null
+          origen: string
+          perfil_id?: string | null
+          probabilidad?: number | null
+          proximo_paso?: string | null
+          proximo_paso_fecha?: string | null
+          responsable?: string
+          telefono?: string | null
+          valor_abono?: number | null
+          valor_proyecto?: number | null
+        }
+        Update: {
+          actualizado_en?: string
+          ciudad?: string | null
+          cliente_plantilla_id?: string | null
+          contacto?: string | null
+          conversacion_id?: string | null
+          creado_en?: string
+          email?: string | null
+          es_prueba?: boolean
+          etapa?: string
+          etapa_desde?: string
+          id?: string
+          local_id?: string | null
+          motivo_perdida?: string | null
+          motivo_perdida_texto?: string | null
+          negocio?: string
+          nicho_id?: string | null
+          origen?: string
+          perfil_id?: string | null
+          probabilidad?: number | null
+          proximo_paso?: string | null
+          proximo_paso_fecha?: string | null
+          responsable?: string
+          telefono?: string | null
+          valor_abono?: number | null
+          valor_proyecto?: number | null
+        }
+        Relationships: []
+      }
+      oportunidades_actividad: {
+        Row: {
+          creado_en: string
+          es_prueba: boolean
+          etapa_anterior: string | null
+          etapa_nueva: string | null
+          id: number
+          oportunidad_id: string
+          quien: string | null
+          resultado: string | null
+          tipo: string
+        }
+        Insert: {
+          creado_en?: string
+          es_prueba?: boolean
+          etapa_anterior?: string | null
+          etapa_nueva?: string | null
+          id?: number
+          oportunidad_id: string
+          quien?: string | null
+          resultado?: string | null
+          tipo: string
+        }
+        Update: {
+          creado_en?: string
+          es_prueba?: boolean
+          etapa_anterior?: string | null
+          etapa_nueva?: string | null
+          id?: number
+          oportunidad_id?: string
+          quien?: string | null
+          resultado?: string | null
+          tipo?: string
+        }
+        Relationships: []
+      }
       perfiles: {
         Row: {
           acepta_novedades: boolean
