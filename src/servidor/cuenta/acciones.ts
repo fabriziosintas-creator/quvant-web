@@ -4,6 +4,7 @@ import type { AuthError } from "@supabase/supabase-js";
 import { refresh } from "next/cache";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { PROMO, PROMO_TEXTOS, esBeneficio } from "@/datos/promo";
 import { CUENTA } from "@/datos/textos";
 import { configSupabase } from "@/supabase/entorno";
 import { crearClienteServidor } from "@/supabase/servidor";
@@ -94,9 +95,18 @@ export async function registrarse(_previo: EstadoFormulario, datos: FormData): P
   const email = texto(datos, "email").toLowerCase();
   const contrasena = String(datos.get("contrasena") ?? "");
   const privacidad = marcado(datos, "privacidad");
-  const valores = { ...valoresDePerfil(perfil), email, privacidad };
+  // La promo "Primeros 100": el beneficio elegido y el teléfono, obligatorio para coordinar.
+  const conPromo = texto(datos, "promo") === PROMO.id;
+  const beneficio = texto(datos, "promo_beneficio");
+  const valores = { ...valoresDePerfil(perfil), email, privacidad, ...(conPromo ? { promo_beneficio: beneficio } : {}) };
 
   const errores = erroresPerfil(perfil);
+  if (conPromo) {
+    const E = PROMO_TEXTOS.registro.errores;
+    if (!esBeneficio(beneficio)) errores.promo_beneficio = E.beneficio;
+    else if (beneficio === "sistema_2_meses" && !(PROMO.rubrosSistema as readonly string[]).includes(perfil.nicho)) errores.promo_beneficio = E.noDisponible;
+    if (!perfil.telefono) errores.telefono = E.telefono;
+  }
   if (!emailValido(email)) errores.email = ERROR.email;
   const problemaContrasena = errorContrasena(contrasena);
   if (problemaContrasena) errores.contrasena = problemaContrasena;
@@ -120,10 +130,13 @@ export async function registrarse(_previo: EstadoFormulario, datos: FormData): P
         objetivo: perfil.objetivo,
         empresa: perfil.empresa,
         ciudad: perfil.ciudad,
+        telefono: perfil.telefono,
         acepta_novedades: perfil.novedades,
         acepta_privacidad: true,
         origen: origenSeguro(texto(datos, "origen")),
         visita_id: uuidValido(visita) ? visita : null,
+        // La base anota el pedido y da el lugar al confirmar el email (ver la migración de la promo).
+        ...(conPromo ? { promo_beneficio: beneficio } : {}),
       },
     },
   });
@@ -136,7 +149,7 @@ export async function registrarse(_previo: EstadoFormulario, datos: FormData): P
       valores,
     };
   }
-  return { estado: "listo", valores: { email } };
+  return { estado: "listo", valores: { email, promo: conPromo } };
 }
 
 /** Manda de nuevo el enlace de confirmación (desde "Revisá tu email" o desde el ingreso). */

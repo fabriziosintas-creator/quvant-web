@@ -10,12 +10,19 @@
  */
 
 export const PROMO = {
+  id: "primeros-100",
   ruta: "/primeros-100",
   tope: 100,
-  /** Ejemplo: cuántos lugares ya se dieron. El real sale de lugares_restantes() en la base. */
+  /** Ejemplo: cuántos lugares ya se dieron (solo si la base todavía no tiene la promo). */
   EJEMPLO_DADOS: 37,
   registro: "/registro?promo=primeros-100",
+  /** Los rubros que pueden elegir los 2 meses del sistema (el dato real está en promo_config). */
+  rubrosSistema: ["industria", "gimnasios"],
 } as const;
+
+export type IdBeneficio = "web_app_50" | "sistema_2_meses";
+export const BENEFICIOS: readonly IdBeneficio[] = ["web_app_50", "sistema_2_meses"];
+export const esBeneficio = (valor: unknown): valor is IdBeneficio => typeof valor === "string" && (BENEFICIOS as readonly string[]).includes(valor);
 
 export const PROMO_TEXTOS = {
   metaTitulo: "Primeros 100",
@@ -129,5 +136,69 @@ export const PROMO_TEXTOS = {
   cierre: {
     titulo: "¿Te sumás?",
     texto: "Te respondemos nosotros, no un bot.",
+  },
+
+  /** Los beneficios en una línea (cuenta, emails, panel). */
+  beneficiosCortos: { web_app_50: "50 % en tu web o tu app", sistema_2_meses: "2 meses gratis del sistema" },
+
+  /** La cinta de arriba del encabezado. */
+  cinta: {
+    largo: "Lanzamiento: los primeros 100 eligen 50 % en su web o 2 meses gratis del sistema",
+    corto: "Primeros 100: 50 % en tu web o 2 meses gratis",
+    quedan: "Quedan {n}",
+    cerrar: "Cerrar el aviso",
+  },
+
+  /** Una línea con link, para Sistemas, Contacto y el pie. */
+  entrada: {
+    texto: "Primeros 100: elegí 50 % en tu web o 2 meses gratis del sistema.",
+    link: "Ver cómo",
+  },
+
+  /** El registro con ?promo=primeros-100. */
+  registro: {
+    etiqueta: "Primeros 100",
+    abierta: "Quedan {n} de {tope}. Elegí tu beneficio abajo: cuando confirmes tu email, tu lugar queda reservado con su número.",
+    llena: "Se completaron los {tope} lugares. Si te registrás igual con un beneficio elegido, quedás en la lista de espera.",
+    eleccion: "Elegí tu beneficio",
+    noDisponible: "Para tu rubro todavía no hay sistema: el beneficio de la web sí te sirve.",
+    telefono: { etiqueta: "Teléfono", marcador: "Para coordinar por WhatsApp", ayuda: "Lo usamos solo para coordinar tu beneficio." },
+    confirmar: "Cuando confirmes tu email, tu lugar de Primeros 100 queda reservado con su número.",
+    errores: {
+      beneficio: "Elegí uno de los dos beneficios.",
+      telefono: "Dejanos un teléfono para coordinar tu beneficio.",
+      noDisponible: "Los 2 meses del sistema todavía no están disponibles para tu rubro.",
+    },
+  },
+
+  /** La cuenta: el lugar de la persona o el botón para reservarlo. */
+  cuenta: {
+    etiqueta: "Primeros 100",
+    tuLugar: "Tu lugar: N° {n} de {tope}",
+    pedido: "Pediste un lugar",
+    espera: "Lista de espera",
+    beneficio: "Tu beneficio: {beneficio}.",
+    estados: {
+      pedido: "Confirmá tu email y tu lugar queda reservado con su número.",
+      espera: "Estás en la lista de espera, en el puesto {n}. Si se libera un lugar, te escribimos.",
+      reservado: "Tu lugar está reservado. Te escribimos por WhatsApp para arrancar, por orden de lugar.",
+      coordinando: "Estamos coordinando con vos para arrancar.",
+      en_uso: "Ya lo estás usando.",
+      usado: "Ya lo usaste. ¡Gracias por sumarte!",
+      vencido: "Venció el plazo para usarlo. Si querés, escribinos y vemos.",
+      cancelado: "Este lugar se canceló. Si es un error, escribinos.",
+    },
+    whatsapp: "Escribirnos por WhatsApp",
+    mensaje: "Hola, soy {nombre}. Tengo el lugar {n} de Primeros 100 ({beneficio}).",
+    reservar: {
+      titulo: "Quedan {n} lugares de Primeros 100",
+      texto: "Elegí tu beneficio y reservá tu lugar. Lo coordinamos por WhatsApp, por orden de lugar.",
+      boton: "Reservar mi lugar",
+      reservando: "Reservando…",
+      listo: "Listo: tu lugar quedó reservado.",
+      espera: "Se completaron los lugares justo ahora: quedaste en la lista de espera.",
+      error: "No se pudo reservar. Probá de nuevo en un rato.",
+    },
+    bases: "Ver las bases y condiciones",
   },
 } as const;

@@ -273,6 +273,31 @@ $$;
 revoke all on function public.reservar_lugar_promo(public.beneficio_promo) from public;
 grant execute on function public.reservar_lugar_promo(public.beneficio_promo) to authenticated;
 
+-- El lugar de quien pregunta: número, estado, beneficio y, si está en
+-- espera, en qué posición (sin ver a nadie más). Null si no pidió.
+create function public.mi_lugar_promo()
+returns jsonb
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select jsonb_build_object(
+    'numero', l.numero,
+    'estado', l.estado,
+    'beneficio', l.beneficio,
+    'asignado_en', l.asignado_en,
+    'posicion_espera', case when l.estado = 'espera' then (
+      select count(*) + 1 from public.promo_lugares o
+      where o.estado = 'espera' and o.pedido_en < l.pedido_en
+    ) end
+  )
+  from public.promo_lugares l
+  where l.perfil_id = (select auth.uid());
+$$;
+revoke all on function public.mi_lugar_promo() from public;
+grant execute on function public.mi_lugar_promo() to authenticated;
+
 -- El embudo de la promo para el panel: visitas distintas y eventos por tipo.
 -- security invoker: lo calcula con los permisos de quien pregunta (RLS de
 -- eventos: solo admin).

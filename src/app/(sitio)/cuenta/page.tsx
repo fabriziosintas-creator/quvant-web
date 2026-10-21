@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { CLASE_BOTON, CLASE_BOTON_SECUNDARIO } from "@/componentes/cuenta/estilos";
 import { CambiarContrasena, DatosCuenta } from "@/componentes/cuenta/FormulariosCuenta";
 import { MarcoCuenta } from "@/componentes/cuenta/MarcoCuenta";
+import { LugarPromo } from "@/componentes/promo/LugarPromo";
 import { ACENTO_NICHO } from "@/datos/colores";
 import { CUENTA, PLATAFORMAS } from "@/datos/textos";
 import { salir } from "@/servidor/cuenta/acciones";
@@ -37,7 +38,7 @@ export default function Cuenta({ searchParams }: PageProps<"/cuenta">) {
 }
 
 async function ContenidoCuenta({ searchParams }: { searchParams: PageProps<"/cuenta">["searchParams"] }) {
-  const [{ perfil }, parametros] = await Promise.all([exigirPerfil("/cuenta"), searchParams]);
+  const [{ perfil, supabase }, parametros] = await Promise.all([exigirPerfil("/cuenta"), searchParams]);
   const bienvenida = parametros.bienvenida === "1";
   const nuevaContrasena = parametros.contrasena === "nueva";
   const acento = perfil.nicho_id in ACENTO_NICHO ? ACENTO_NICHO[perfil.nicho_id as keyof typeof ACENTO_NICHO] : "#9C9CA3";
@@ -60,6 +61,9 @@ async function ContenidoCuenta({ searchParams }: { searchParams: PageProps<"/cue
         {nuevaContrasena ? contrasena : null}
 
         <Sugerencia perfil={perfil} />
+
+        {/* La promo "Primeros 100": su lugar o el botón para reservarlo. */}
+        <LugarPromo perfil={perfil} supabase={supabase} />
 
         {perfil.rol === "admin" ? (
           <div>
