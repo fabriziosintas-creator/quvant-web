@@ -41,7 +41,7 @@ export const VIDEO_PROMO: {
   // Sin WebM: con el grano de la imagen, el VP9 salía más pesado que el MP4.
   archivoWebm: null,
   poster: "/promo100/promo-100-poster.webp",
-  // Los textos van quemados en la imagen (el video no tiene sonido): con el .vtt se leerían dos veces.
+  // Los textos van quemados en la imagen (casi todos lo miran sin sonido; la música es de fondo): con el .vtt se leerían dos veces.
   subtitulos: null,
   capitulos: [
     { id: "sin-internet", titulo: "Se cortó internet", desde: 0 },

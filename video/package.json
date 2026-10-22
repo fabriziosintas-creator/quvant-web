@@ -61,6 +61,8 @@
     "preparar-promo100": "node scripts/preparar-promo100.mjs",
     "render-promo100": "remotion render src/index.ts Promo100 out/promo100/promo-100-1080.mp4 --gl=angle --concurrency=3 --crf=18",
     "render-promo100-vertical": "remotion render src/index.ts Promo100-Vertical out/promo100/promo-100-vertical.mp4 --gl=angle --concurrency=3 --crf=18",
+    "musica-promo100": "tsx scripts/componer-musica-promo100.ts",
+    "sonorizar-promo100": "tsx scripts/sonorizar-promo100.ts",
     "promo100-vtt": "tsx scripts/promo100-vtt.ts",
     "web-promo100": "tsx scripts/web-promo100.ts"
   }

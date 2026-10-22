@@ -4,6 +4,8 @@
 
 **Reglas:** solo lo verificado en la demo (`docs/promo-primeros-100-verificacion.md`); nada de "contable", ARCA, Mercado Pago ni WhatsApp como funciones; sin "Yunque" (las capturas van recortadas sin la barra lateral); subtítulos siempre (casi todos lo miran sin sonido); el tono de la web: frases cortas, de mostrador.
 
+**Música:** una pista original compuesta en código (`npm run musica-promo100`), cálida y liviana, a 110,77 BPM para que cada capítulo dure justo 6 compases: la frase grande con solo el colchón, el ritmo entra cuando aparece la pantalla, respira en la línea de cierre y resuelve en Do mayor con campanas en el cierre. Es de fondo: los subtítulos siguen quemados porque casi todos lo miran sin sonido. Va a −14 LUFS, pico real −1 dBTP (lo de redes).
+
 **Duración:** 42 s a 30 cuadros por segundo. Tres capítulos de 13 s (empiezan en 0, 13 y 26: son los saltos de los botones de la web) y un cierre de 3 s.
 
 Los textos viven en `video/src/promo100/guion.ts`: si cambiás algo acá, cambialo ahí (de ahí salen la imagen y los subtítulos).
@@ -44,7 +46,9 @@ La Q y **Primeros 100** · "2 meses gratis del sistema o 50 % en tu web o tu app
 1. `npm run preparar-promo100`: recorta las capturas de la demo (`marca/promo/capturas-demo/`) sin la barra lateral (ahí están el logo de la demo y "con yunque") y las deja en `public/promo100/`.
 2. Revisar cuadros sueltos: `node scripts/fotogramas-promo100.mjs` (deja PNG en `out/promo100/cuadros/`).
 3. `npm run render-promo100` (16:9) y `npm run render-promo100-vertical` (9:16, para Reels y Stories). Los subtítulos van quemados en los dos: el video no tiene sonido, así que en la web no se agrega el `.vtt` (se leería dos veces).
-4. `npm run web-promo100`: del render 16:9 saca el MP4 liviano y el póster, y los deja en `../public/promo100/`, que es donde los busca `VIDEO_PROMO` en `src/datos/promo.ts`.
+4. `npm run musica-promo100`: compone la pista en `out/promo100/musica-promo100.wav` (unos 6 segundos; siempre sale igual).
+5. `npm run web-promo100`: del render 16:9 saca el MP4 liviano (con la música) y el póster, y los deja en `../public/promo100/`, que es donde los busca `VIDEO_PROMO` en `src/datos/promo.ts`.
+6. Si ya tenés los renders y solo cambió la música: `npm run sonorizar-promo100` le pone la pista actual al video de la web (en el lugar) y al vertical (queda como `promo-100-vertical-con-musica.mp4`), sin volver a renderizar la imagen.
 
 ## En la compu con placa de video
 
@@ -65,8 +69,8 @@ npm run web-promo100               # MP4 liviano + póster → ../public/promo10
 - `--gl=angle` (ya está en los comandos) usa la placa de video en Windows. Con más núcleos se puede subir `--concurrency=3` a 6 u 8 en `package.json`.
 - Para verlo en la página antes de publicar: `cd ..`, `npm ci`, `npm run dev` y abrir `http://localhost:3000/primeros-100`. Los botones de capítulo saltan a 0, 13 y 26 s.
 - Para publicarlo: commitear `public/promo100/` y pushear a master (Vercel lo publica solo).
-- El vertical no va a la web: queda en `video/out/promo100/` (no se versiona) para subirlo a Instagram a mano.
+- El vertical no va a la web: queda en `video/out/promo100/` (no se versiona) para subirlo a Instagram a mano. El que se sube es el `-con-musica`.
 
 **Si preferís grabarlo con el celular en un negocio real:** respetá los mismos tiempos (0, 13 y 26 s para los capítulos) y la página lo recibe igual.
 
-**Música:** sin música por ahora (la mayoría lo mira sin sonido). Si querés, se compone una pista corta como la del spot.
+
