@@ -7,6 +7,14 @@ const nextConfig: NextConfig = {
   // El service worker del panel: siempre la última versión, solo de este sitio.
   async headers() {
     return [
+      // Ningún otro sitio puede mostrar estas páginas adentro de un iframe (para hacerlas pasar por suyas).
+      {
+        source: "/:camino*",
+        headers: [
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "Content-Security-Policy", value: "frame-ancestors 'self'" },
+        ],
+      },
       {
         source: "/sw-panel.js",
         headers: [

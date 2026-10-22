@@ -11,7 +11,7 @@ import { exigirAdmin } from "@/servidor/panel/acceso";
 const T = PANEL_ADMIN.avisos;
 export const metadata: Metadata = { title: `${T.titulo} · ${PANEL_ADMIN.titulo} · Quvant` };
 
-const POR_DEFECTO_WHATSAPP: TipoAviso[] = ["registro", "chat", "alerta_roja"];
+const POR_DEFECTO_WHATSAPP: TipoAviso[] = ["registro", "chat", "alerta_roja", "copia_detectada"];
 const esTipo = (t: string): t is TipoAviso => (TIPOS_AVISO as readonly string[]).includes(t);
 
 /** Las preferencias de avisos de cada socio y los últimos avisos, todos juntos. */

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, IBM_Plex_Sans, Michroma } from "next/font/google";
 import "./globals.css";
+import { GUARDIA_DOMINIO } from "@/componentes/estructura/guardiaDominio";
 import { DECIDIR_INTRO } from "@/componentes/estructura/introDecision";
 import { DECIDIR_CINTA } from "@/componentes/promo/cintaDecision";
 import { SITIO } from "@/datos/sitio";
@@ -69,6 +70,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         {/* Decide la intro de la tele antes de pintar (ver IntroTV). */}
         <script dangerouslySetInnerHTML={{ __html: DECIDIR_INTRO }} />
+        {/* Si el sitio se abre desde otro dominio (una copia), avisa y lleva al original (ver guardiaDominio). */}
+        <script dangerouslySetInnerHTML={{ __html: GUARDIA_DOMINIO }} />
         {/* Si la cinta de "Primeros 100" estaba cerrada, ni se dibuja (ver CintaPromo). */}
         <script dangerouslySetInnerHTML={{ __html: DECIDIR_CINTA }} />
       </head>

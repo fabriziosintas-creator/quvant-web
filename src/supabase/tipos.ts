@@ -1701,7 +1701,6 @@ export type Database = {
       }
     }
     Functions: {
-      revisar_visitas_repetidas: { Args: never; Returns: number }
       anotar_en_bitacora: {
         Args: { p_accion: string; p_detalle?: Json; p_tabla: string }
         Returns: undefined
@@ -1761,6 +1760,7 @@ export type Database = {
       resumen_registros: { Args: never; Returns: Json }
       resumen_visitas: { Args: never; Returns: Json }
       revisar_visitas_interesantes: { Args: never; Returns: number }
+      revisar_visitas_repetidas: { Args: never; Returns: number }
       visitantes_por_dia: {
         Args: { desde: string; hasta: string }
         Returns: {

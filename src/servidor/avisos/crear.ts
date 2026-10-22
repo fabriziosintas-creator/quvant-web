@@ -15,7 +15,7 @@ import { crearClienteAdmin } from "@/supabase/admin";
 
 export type NuevoAviso = { tipo: TipoAviso; titulo: string; texto?: string; enlace?: string; clave: string; paraPerfil?: string | null; esPrueba?: boolean; /** El chat ya manda su propio WhatsApp: no se repite. */ sinWhatsApp?: boolean };
 
-const POR_DEFECTO_WHATSAPP: TipoAviso[] = ["registro", "chat", "alerta_roja"];
+const POR_DEFECTO_WHATSAPP: TipoAviso[] = ["registro", "chat", "alerta_roja", "copia_detectada"];
 
 export async function crearAviso(a: NuevoAviso): Promise<boolean> {
   if (!configSupabase() || !process.env.SUPABASE_SECRET_KEY) return false;

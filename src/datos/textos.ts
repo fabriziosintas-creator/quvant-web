@@ -666,7 +666,7 @@ export const PANEL = {
 export const PIE = {
   etiquetaSecciones: "Canales",
   etiquetaSeguinos: "Seguinos",
-  derechos: "© 2026 Quvant",
+  derechos: "© 2026 Quvant. Todos los derechos reservados. Prohibida su reproducción total o parcial sin autorización.",
   privacidad: "Privacidad",
 } as const;
 
@@ -1708,6 +1708,7 @@ export const PANEL_ADMIN = {
       alerta_roja: "Alerta de un socio",
       oportunidad_estancada: "Oportunidad estancada",
       visita_repetida: "Visitas repetidas",
+      copia_detectada: "Copia del sitio",
     },
     explicaciones: {
       registro: "Alguien se registró en la web.",
@@ -1718,6 +1719,7 @@ export const PANEL_ADMIN = {
       alerta_roja: "Un socio quedó en rojo o tiene una alerta nueva en Núcleos.",
       oportunidad_estancada: "Una oportunidad lleva más días de lo normal en la misma etapa.",
       visita_repetida: "Una misma conexión (que no es del equipo) entró 3 veces o más en el día: alguien mirando cómo está hecha la web, o alguien muy interesado.",
+      copia_detectada: "El sitio se abrió desde otro dominio o desde una copia guardada: alguien lo copió.",
     },
     pagina: {
       bajada: "Qué avisos ves en la campanita y cuáles te llegan también por WhatsApp. Cada socio elige los suyos.",

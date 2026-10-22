@@ -5,7 +5,7 @@ import { diaBA, sumarDias } from "../objetivos/fechas";
  * cambio de estado de un objetivo merece aviso y cómo se agrupan por día.
  */
 
-export const TIPOS_AVISO = ["registro", "visita_interesante", "chat", "objetivo_en_riesgo", "objetivo_cumplido", "alerta_roja", "oportunidad_estancada", "visita_repetida"] as const;
+export const TIPOS_AVISO = ["registro", "visita_interesante", "chat", "objetivo_en_riesgo", "objetivo_cumplido", "alerta_roja", "oportunidad_estancada", "visita_repetida", "copia_detectada"] as const;
 export type TipoAviso = (typeof TIPOS_AVISO)[number];
 export type Prioridad = "alta" | "media" | "baja";
 export const PRIORIDAD: Record<TipoAviso, Prioridad> = {
@@ -17,6 +17,7 @@ export const PRIORIDAD: Record<TipoAviso, Prioridad> = {
   alerta_roja: "alta",
   oportunidad_estancada: "media",
   visita_repetida: "media",
+  copia_detectada: "alta",
 };
 
 /** Un objetivo que bajó de "en camino" (o "cumplido") a "en riesgo" o "atrasado", o que se cumplió. */
