@@ -68,6 +68,12 @@ export async function LugarPromo({ perfil, supabase }: { perfil: Perfil; supabas
           {T.whatsapp}
         </a>
       ) : null}
+      {/* En espera y con lugares abiertos (se amplió el cupo): puede reservar desde acá. */}
+      {lugar.estado === "espera" && promoAbierta(estadoPromo) ? (
+        <div className="mt-6">
+          <ReservarLugar nicho={perfil.nicho_id} rubrosSistema={estadoPromo.rubros_sistema} />
+        </div>
+      ) : null}
       <Bases />
     </Marco>
   );

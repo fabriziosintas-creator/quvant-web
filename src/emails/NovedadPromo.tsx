@@ -7,7 +7,7 @@ import { Boton, COLOR, Cuadradito, estilos, MarcoEmail } from "./MarcoEmail";
  * El email de "Primeros 100" para quienes ya tienen cuenta y aceptaron
  * novedades: qué es, cuántos lugares quedan (el número del día, de la
  * base) y el botón para reservar desde su cuenta. Lo manda
- * scripts/promo-novedades.tsx, solo con --enviar.
+ * scripts/promo-novedades.mts, solo con --enviar.
  */
 export type DatosNovedad = { nombre: string; quedan: number; tope: number; hasta: string };
 

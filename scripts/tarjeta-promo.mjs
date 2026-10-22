@@ -1,5 +1,9 @@
 /**
- * node scripts/tarjeta-promo.mjs
+ * node scripts/tarjeta-promo.mjs --desde=AAAA-MM-DD
+ *
+ * La fecha de comienzo es el día en que se abrió la promo en el panel
+ * (Ley 24.240, art. 7: la oferta lleva fecha de comienzo y de fin, también
+ * en la publicidad). Sin --desde sale un BORRADOR que no se imprime.
  *
  * La tarjeta impresa de "Primeros 100" para dejar en los locales que se
  * visitan (docs/promo-primeros-100.md, sección F): un QR a la página de la
@@ -21,7 +25,11 @@ mkdirSync(SALIDA, { recursive: true });
 
 const URL_PROMO = "https://www.quvant.com.ar/primeros-100?utm_source=visita";
 const LINK_VISIBLE = "quvant.com.ar/primeros-100";
-const HASTA = "31/01/2027"; // TODO: si cambia la fecha en promo_config, cambiarla acá.
+const HASTA = "31/01/2027"; // Si cambia la fecha en promo_config, cambiarla acá.
+const argDesde = process.argv.find((a) => a.startsWith("--desde="))?.slice(8) ?? "";
+const DESDE = /^\d{4}-\d{2}-\d{2}$/.test(argDesde) ? argDesde.split("-").reverse().join("/") : null;
+const VIGENCIA = DESDE ? `Del ${DESDE} al ${HASTA}` : "Del [fecha de lanzamiento] al " + HASTA;
+const SUFIJO = DESDE ? "" : "-BORRADOR";
 
 // Las letras van embebidas: una página armada con setContent no puede leer archivos locales.
 const fuente = (archivo) => {
@@ -55,6 +63,7 @@ body { width: 105mm; height: 148mm; padding: 9mm 9mm 8mm; display: flex; flex-di
 <img class="firma" src="${firma}" style="width: 34mm">
 <p class="titulo" style="font-size: 30pt; margin-top: 9mm"><span class="cuadradito"></span>Primeros 100</p>
 <p class="texto" style="font-size: 11.5pt; margin-top: 4mm">2 meses gratis del sistema para administrar tu negocio, o 50 % en el desarrollo de tu web o tu app.</p>
+<p class="chico" style="font-size: 8pt; margin-top: 1.5mm">Los 2 meses del sistema: para Industria y comercio, y Gimnasios y fitness.</p>
 <p class="chico" style="font-size: 9pt; margin-top: 2.5mm">Para las primeras 100 personas que se registran.</p>
 <div style="display: flex; align-items: center; gap: 5mm; margin-top: auto">
   <div class="qr" style="width: 36mm; height: 36mm">${qr}</div>
@@ -63,7 +72,7 @@ body { width: 105mm; height: 148mm; padding: 9mm 9mm 8mm; display: flex; flex-di
     <p class="link" style="font-size: 7.5pt; margin-top: 2mm">${LINK_VISIBLE}</p>
   </div>
 </div>
-<p class="chico" style="font-size: 6.5pt; margin-top: 5mm">Hasta el ${HASTA} o hasta completar los 100 lugares. Bases y condiciones en la web.</p>
+<p class="chico" style="font-size: 6.5pt; margin-top: 5mm">${VIGENCIA} o hasta completar los 100 lugares. Bases y condiciones en la web.</p>
 </body></html>`;
 
 const PERSONAL = `<!doctype html><html><head><meta charset="utf-8"><style>${estilos}
@@ -75,7 +84,7 @@ body { width: 85mm; height: 55mm; padding: 5mm; display: flex; gap: 4mm; align-i
   <p class="titulo" style="font-size: 15pt; margin-top: 3.5mm"><span class="cuadradito"></span>Primeros 100</p>
   <p class="texto" style="font-size: 7.2pt; margin-top: 1.8mm">2 meses gratis del sistema o 50 % en tu web o tu app.</p>
   <p class="link" style="font-size: 5.6pt; margin-top: auto">${LINK_VISIBLE}</p>
-  <p class="chico" style="font-size: 4.6pt; margin-top: 1mm">Hasta el ${HASTA} o hasta completar los lugares.</p>
+  <p class="chico" style="font-size: 4.6pt; margin-top: 1mm">${VIGENCIA} o hasta completar los lugares. Bases en la web.</p>
 </div>
 <div class="qr" style="width: 30mm; height: 30mm; align-self: center">${qr}</div>
 </body></html>`;
@@ -83,8 +92,8 @@ body { width: 85mm; height: 55mm; padding: 5mm; display: flex; gap: 4mm; align-i
 const { chromium } = await import(pathToFileURL(path.join(RAIZ, "video", "node_modules", "playwright", "index.mjs")).href);
 const navegador = await chromium.launch({ channel: "chrome" });
 for (const [nombre, html, ancho, alto] of [
-  ["tarjeta-primeros-100-A6", A6, 105, 148],
-  ["tarjeta-primeros-100-personal", PERSONAL, 85, 55],
+  [`tarjeta-primeros-100-A6${SUFIJO}`, A6, 105, 148],
+  [`tarjeta-primeros-100-personal${SUFIJO}`, PERSONAL, 85, 55],
 ]) {
   const pagina = await navegador.newPage({ viewport: { width: Math.round((ancho / 25.4) * 96), height: Math.round((alto / 25.4) * 96) }, deviceScaleFactor: 4 });
   await pagina.setContent(html, { waitUntil: "load" });
@@ -96,3 +105,4 @@ for (const [nombre, html, ancho, alto] of [
 }
 await navegador.close();
 console.log(`QR → ${URL_PROMO}`);
+if (!DESDE) console.log("BORRADOR: falta --desde=AAAA-MM-DD (el día en que se abrió la promo). No imprimir.");

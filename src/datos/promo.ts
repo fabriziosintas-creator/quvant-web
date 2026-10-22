@@ -63,12 +63,20 @@ export const PROMO_TEXTOS = {
     dados: "{n} lugares ya tienen dueño.",
     ejemplo: "Número de ejemplo: el real sale de los registros.",
     lleno: "Se completaron los 100 lugares.",
+    /** La vigencia, cerca del contador (Ley 24.240, art. 7: fecha de comienzo y de fin a la vista). */
+    vigencia: "Del {desde} al {hasta}, o hasta completar los {tope} lugares.",
   },
   botones: { quiero: "Quiero mi lugar", espera: "Anotarme en la lista de espera", comoFunciona: "Ver cómo funciona" },
   /** Cuando se completan los lugares o pasa la fecha. */
   cerrada: {
     titulo: "Se completaron los 100 lugares.",
-    texto: "Gracias a todos los que se sumaron. Si te registrás igual eligiendo un beneficio, quedás en la lista de espera: si se libera un lugar, te escribimos.",
+    texto: "Gracias a todos los que se sumaron. Si te registrás igual eligiendo un beneficio, quedás en la lista de espera: si abrimos más lugares, te avisamos.",
+  },
+  /** Antes de abrirla desde el panel (todavía no tiene fecha de comienzo). */
+  antes: {
+    titulo: "Primeros 100 arranca muy pronto.",
+    texto: "Los primeros 100 que se registren van a elegir 2 meses gratis del sistema o 50 % en su web o su app. Mientras tanto, podés crear tu cuenta.",
+    boton: "Crear mi cuenta",
   },
 
   situaciones: {
@@ -154,16 +162,29 @@ export const PROMO_TEXTOS = {
 
   bases: {
     titulo: "Bases y condiciones",
-    /** {tope} y {hasta} se completan con lo que dice la base (promo_config). */
-    // TODO: revisar con un abogado antes de difundir (Ley 24.240). Valores por defecto del prompt.
+    /**
+     * Revisadas el 22-oct-2026 (marca/promo/bases-primeros-100-revisadas.pdf).
+     * {desde}, {hasta} y {tope} se completan con lo que dice la base
+     * (promo_config): desde es el día en que se abre la promo en el panel.
+     * Sin precio del abono a propósito (decisión de fabrizio): se informa
+     * por escrito antes de que terminen los 2 meses.
+     *
+     * TODO antes de publicar: los datos del organizador (razón social,
+     * CUIT, domicilio y email) y que las revise un abogado matriculado.
+     */
     items: [
-      "Vigencia: desde la publicación hasta completar {tope} lugares o hasta el {hasta}, lo que pase primero.",
-      "Un lugar por persona y por negocio. El lugar se asigna al confirmar el email, en el orden en que se confirman.",
-      "Cada lugar da un solo beneficio, a elección: 50 % sobre el presupuesto de desarrollo de una web o una app, o dos meses sin cargo del sistema de gestión.",
-      "El 50 % se aplica sobre el presupuesto aprobado. No incluye dominio, hosting, mantenimiento mensual ni carga de contenidos. El presupuesto tiene que aprobarse dentro de los 90 días de asignado el lugar.",
-      "Los dos meses sin cargo son para los rubros con sistema disponible (Industria y comercio; Gimnasios y fitness) y se activan dentro de los 60 días. No se pide tarjeta ni hay débito automático. Al terminar, el abono es de $____ por mes si la persona decide seguir.",
-      "Las puestas en marcha se agendan por orden de lugar, según la disponibilidad del equipo.",
-      "El beneficio no se cambia por dinero ni se transfiere.",
+      "Organizador. Organiza la promoción [razón social], CUIT [número], con domicilio en [domicilio] («Quvant»). Contacto: WhatsApp +54 11 2481-1956 y [email].",
+      "Vigencia. Del {desde} al {hasta} inclusive, o hasta asignar los {tope} lugares, lo que ocurra primero. Si Quvant la termina antes, lo anuncia en la web y en sus redes, y respeta los lugares ya asignados.",
+      "Quién participa. Personas mayores de 18 años que se registren en quvant.com.ar con datos verdaderos y confirmen su email. Un lugar por persona y por negocio: si hay más de un registro del mismo negocio, vale el primero. Las cuentas del equipo de Quvant no participan.",
+      "Cómo se asigna el lugar. Al registrarse (o desde su cuenta, si ya la tenía) la persona elige uno de los dos beneficios. El lugar se asigna solo, con un número del 1 al {tope}, en el orden en que se confirman los emails; se ve en la cuenta y llega por email. Registrarse y reservar no tiene costo ni obliga a contratar nada.",
+      "Lista de espera. Quien confirma cuando ya no quedan lugares queda en lista de espera, que no da derecho al beneficio. Si Quvant abre más lugares, avisa por email y se pueden reservar desde la cuenta. Un lugar asignado no pasa a otra persona.",
+      "Beneficio 1: 50 % en una web o una app. Descuento del 50 % sobre el precio del desarrollo de una web nueva (o la renovación completa de una existente) o de una app a medida, para cualquier rubro. El presupuesto se arma con los mismos criterios y precios que para cualquier cliente y muestra el precio sin descuento, el descuento y el total. No incluye dominio, hosting, mantenimiento mensual, carga de contenidos ni servicios de terceros. Quvant envía el presupuesto dentro de los 15 días hábiles de la primera reunión y la persona tiene 90 días corridos desde que lo recibe para aprobarlo; si no lo aprueba en ese plazo, el beneficio vence.",
+      "Beneficio 2: 2 meses sin cargo del sistema. Uso sin cargo, durante 2 meses, del sistema de gestión de Quvant para negocios de los rubros con sistema disponible: Industria y comercio, y Gimnasios y fitness. Incluye la puesta en marcha con el equipo de Quvant, la carga inicial de productos y precios a partir de las planillas del negocio y las funciones del sistema para su rubro. Los 2 meses corren desde el día en que el sistema queda funcionando en el negocio. Las puestas en marcha se coordinan por orden de lugar: la persona tiene 60 días corridos para empezar desde que Quvant le ofrece una fecha, y si la demora es de Quvant, ese plazo se extiende.",
+      "Al terminar los 2 meses. No se cobra nada ni se renueva solo: no se pide tarjeta ni hay débito automático. Antes de que terminen, Quvant informa por escrito el precio vigente del abono y la persona decide si sigue; si sigue, lo acepta de forma expresa. Si no sigue, puede pedir sus datos en una planilla dentro de los 30 días siguientes; después se borran.",
+      "Baja. Se puede dejar el beneficio en cualquier momento, sin costo, avisando por el mismo medio por el que se pidió (la web, WhatsApp o email).",
+      "Condiciones generales. El beneficio es personal: no se transfiere, no se cambia por dinero ni por otro servicio y no se suma a otras promociones. Estas bases no se modifican en perjuicio de quien ya tiene su lugar.",
+      "Datos personales. Los datos del registro se usan para asignar el lugar y coordinar el beneficio, según la política de privacidad (quvant.com.ar/privacidad); el teléfono, solo para coordinarlo. Se puede pedir el acceso, la corrección o el borrado de los datos (Ley 25.326).",
+      "Consultas y reclamos. Por WhatsApp o email a Quvant. Nada de estas bases limita los derechos de la Ley 24.240 de Defensa del Consumidor; los reclamos de consumo también se pueden hacer ante la autoridad de aplicación.",
     ],
   },
 
@@ -226,7 +247,7 @@ export const PROMO_TEXTOS = {
     asuntoLugar: "Tu lugar N° {n} de Primeros 100 está reservado",
     asuntoEspera: "Quedaste en la lista de espera de Primeros 100",
     lugar: "Tu lugar: N° {n} de {tope}.",
-    espera: "Se completaron los lugares justo antes de que confirmaras: quedaste en la lista de espera. Si se libera uno, te escribimos.",
+    espera: "Se completaron los lugares justo antes de que confirmaras: quedaste en la lista de espera. Si abrimos más lugares, te avisamos y lo reservás desde tu cuenta.",
     beneficio: "Tu beneficio: {beneficio}.",
     queSigue: "Te escribimos por WhatsApp para arrancar, por orden de lugar. Si querés adelantarte, escribinos vos.",
     plazos: {
@@ -301,8 +322,10 @@ export const PROMO_TEXTOS = {
     },
     control: {
       titulo: "La promo",
-      activa: "Abierta: la web muestra la cinta y da lugares.",
-      pausada: "Pausada: la web no la muestra y nadie recibe lugar (quedan en espera).",
+      activa: "Abierta desde el {desde}: la web muestra la cinta y da lugares.",
+      pausada: "Pausada: la web no la muestra y nadie recibe lugar (quedan en espera). Si la terminás antes de tiempo, anuncialo en la web y en las redes (Ley 24.240, art. 7).",
+      sinAbrir: "Todavía no se abrió. El día que la abras queda como fecha de comienzo de la oferta (sale en las bases, la página y la tarjeta).",
+      abrir: "Abrir la promo hoy",
       pausar: "Pausar la promo",
       reabrir: "Reabrir la promo",
     },
@@ -318,7 +341,7 @@ export const PROMO_TEXTOS = {
     beneficio: "Tu beneficio: {beneficio}.",
     estados: {
       pedido: "Confirmá tu email y tu lugar queda reservado con su número.",
-      espera: "Estás en la lista de espera, en el puesto {n}. Si se libera un lugar, te escribimos.",
+      espera: "Estás en la lista de espera, en el puesto {n}. Si abrimos más lugares, te avisamos y lo reservás desde acá.",
       reservado: "Tu lugar está reservado. Te escribimos por WhatsApp para arrancar, por orden de lugar.",
       coordinando: "Estamos coordinando con vos para arrancar.",
       en_uso: "Ya lo estás usando.",

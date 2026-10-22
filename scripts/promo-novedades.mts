@@ -1,6 +1,6 @@
 /**
- * npx tsx scripts/promo-novedades.tsx            → cuenta a quién le llegaría y deja la vista previa
- * npx tsx scripts/promo-novedades.tsx --enviar   → lo manda (SOLO con el OK de fabrizio)
+ * npx tsx scripts/promo-novedades.mts            → cuenta a quién le llegaría y deja la vista previa
+ * npx tsx scripts/promo-novedades.mts --enviar   → lo manda (SOLO con el OK de fabrizio)
  *
  * El email de "Primeros 100" a quienes ya tienen cuenta: confirmaron el
  * email, aceptaron recibir novedades, no son admin, no son de prueba y

@@ -4,6 +4,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { revalidatePath, updateTag } from "next/cache";
 import { esBeneficio } from "@/datos/promo";
 import { uuidValido } from "@/servidor/cuenta/validacion";
+import { hoyEnBuenosAires } from "@/componentes/panel/formato";
 import { exigirAdmin } from "@/servidor/panel/acceso";
 import { ESTADOS_EDITABLES } from "./panel";
 import { ETIQUETA_PROMO } from "./estado";
@@ -34,7 +35,11 @@ export async function guardarLugar(datos: FormData) {
 export async function cambiarPromoActiva(datos: FormData) {
   const { supabase } = await exigirAdmin(RUTA);
   const activa = datos.get("activa") === "si";
-  const { error } = await (supabase as unknown as SupabaseClient).from("promo_config").update({ activa }).eq("id", true);
+  const cliente = supabase as unknown as SupabaseClient;
+  // La primera vez que se abre, ese día queda como fecha de comienzo de la oferta.
+  const { data: config } = await cliente.from("promo_config").select("desde").maybeSingle();
+  const cambios = activa && !config?.desde ? { activa, desde: hoyEnBuenosAires() } : { activa };
+  const { error } = await cliente.from("promo_config").update(cambios).eq("id", true);
   if (error) console.error("[promo] activa:", error.message);
   updateTag(ETIQUETA_PROMO);
   revalidatePath(RUTA);

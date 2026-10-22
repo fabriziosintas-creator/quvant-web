@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import type { CSSProperties } from "react";
 import { Capitulo } from "@/componentes/canales/Capitulo";
 import { CLASE_BOTON, CLASE_BOTON_SECUNDARIO } from "@/componentes/cuenta/estilos";
@@ -36,11 +37,16 @@ const FECHA_LARGA = new Intl.DateTimeFormat("es-AR", { day: "numeric", month: "l
 export default async function PrimerosCien() {
   const estado = await obtenerEstadoPromo();
   const abierta = promoAbierta(estado);
-  const cerrada = Boolean(estado) && !abierta;
+  // Antes de abrirla desde el panel no tiene fecha de comienzo: "arranca muy pronto".
+  const antes = Boolean(estado) && !estado?.desde;
+  const cerrada = Boolean(estado?.desde) && !abierta;
   const ejemplo = !estado && process.env.NODE_ENV !== "production";
   const tope = estado?.tope ?? PROMO.tope;
-  const hasta = estado ? FECHA_LARGA.format(new Date(`${estado.hasta}T00:00:00Z`)) : "31 de enero de 2027";
-  const bases = T.bases.items.map((item) => item.replace("{tope}", String(tope)).replace("{hasta}", hasta));
+  const fecha = (dia: string) => FECHA_LARGA.format(new Date(`${dia}T00:00:00Z`));
+  const hasta = estado ? fecha(estado.hasta) : "31 de enero de 2027";
+  const desde = estado?.desde ? fecha(estado.desde) : "[el día de lanzamiento]";
+  const completar = (texto: string) => texto.replace("{tope}", String(tope)).replace("{hasta}", hasta).replace("{desde}", desde);
+  const bases = T.bases.items.map(completar);
   const botonPrincipal = cerrada ? T.botones.espera : T.botones.quiero;
 
   const situaciones = [
@@ -65,20 +71,33 @@ export default async function PrimerosCien() {
           <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           <span className="text-blanco">{T.etiqueta}</span>
         </p>
-        <h1 className="mt-6 max-w-4xl titulo text-[clamp(2rem,6vw,4rem)] leading-[1.08] text-blanco">{cerrada ? T.cerrada.titulo : T.titulo}</h1>
-        <p className="mt-6 max-w-2xl font-lectura text-base leading-relaxed text-blanco md:text-lg">{cerrada ? T.cerrada.texto : T.bajada}</p>
+        <h1 className="mt-6 max-w-4xl titulo text-[clamp(2rem,6vw,4rem)] leading-[1.08] text-blanco">
+          {antes ? T.antes.titulo : cerrada ? T.cerrada.titulo : T.titulo}
+        </h1>
+        <p className="mt-6 max-w-2xl font-lectura text-base leading-relaxed text-blanco md:text-lg">
+          {antes ? T.antes.texto : cerrada ? T.cerrada.texto : T.bajada}
+        </p>
 
-        {estado || ejemplo ? (
+        {(estado && !antes) || ejemplo ? (
           <div className="mt-12">
             <Contador dados={estado ? Math.min(estado.dados, tope) : PROMO.EJEMPLO_DADOS} tope={tope} ejemplo={ejemplo} />
+            {/* La vigencia, a la vista (Ley 24.240, art. 7: fecha de comienzo y de fin). */}
+            <p className="mt-4 font-lectura text-sm text-acero">{completar(T.contador.vigencia)}</p>
           </div>
         ) : null}
 
         <div className="mt-10 flex flex-wrap gap-3">
-          <BotonLugar className={CLASE_BOTON}>
-            <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
-            {botonPrincipal}
-          </BotonLugar>
+          {antes ? (
+            <Link href="/registro?origen=primeros-100" className={CLASE_BOTON}>
+              <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
+              {T.antes.boton}
+            </Link>
+          ) : (
+            <BotonLugar className={CLASE_BOTON}>
+              <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
+              {botonPrincipal}
+            </BotonLugar>
+          )}
           <a href="#como-funciona" className={CLASE_BOTON_SECUNDARIO}>
             {T.botones.comoFunciona}
           </a>

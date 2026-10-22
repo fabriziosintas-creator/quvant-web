@@ -16,6 +16,8 @@ import { configSupabase } from "@/supabase/entorno";
 
 export type EstadoPromo = {
   activa: boolean;
+  /** El día en que se abrió desde el panel (fecha de comienzo de la oferta), o null si todavía no se abrió. */
+  desde: string | null;
   tope: number;
   dados: number;
   quedan: number;

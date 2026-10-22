@@ -36,13 +36,13 @@ export type LugarPanel = {
   } | null;
 };
 
-export type ConfigPromo = { activa: boolean; tope: number; hasta: string; rubros_sistema: string[] };
+export type ConfigPromo = { activa: boolean; desde: string | null; tope: number; hasta: string; rubros_sistema: string[] };
 
 const sinTipos = (supabase: unknown) => supabase as SupabaseClient;
 
 /** La configuración, o null si la base todavía no tiene la promo. */
 export async function cargarConfigPromo(supabase: unknown): Promise<ConfigPromo | null> {
-  const { data, error } = await sinTipos(supabase).from("promo_config").select("activa, tope, hasta, rubros_sistema").maybeSingle();
+  const { data, error } = await sinTipos(supabase).from("promo_config").select("activa, desde, tope, hasta, rubros_sistema").maybeSingle();
   if (error) {
     if (error.code !== "42P01" && error.code !== "PGRST205") console.error("[promo] config:", error.code, error.message);
     return null;

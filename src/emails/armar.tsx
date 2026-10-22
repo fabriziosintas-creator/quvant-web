@@ -47,7 +47,7 @@ export const armarAvisoRegistro = (datos: DatosAviso, urlImagenes?: string) => {
   return armarEmail(asunto.replace("{nombre}", datos.nombre).replace("{rubro}", rubro), <EmailAvisoRegistro datos={datos} urlImagenes={urlImagenes} />);
 };
 
-/** "Primeros 100" a quienes ya tienen cuenta y aceptaron novedades (scripts/promo-novedades.tsx). */
+/** "Primeros 100" a quienes ya tienen cuenta y aceptaron novedades (scripts/promo-novedades.mts). */
 export const armarNovedadPromo = (datos: DatosNovedad, urlImagenes?: string) =>
   armarEmail(PROMO_TEXTOS.novedad.asunto, <EmailNovedadPromo datos={datos} urlImagenes={urlImagenes} />);
 

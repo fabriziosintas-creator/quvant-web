@@ -6,6 +6,10 @@
 -- El número lo da la base, en el orden en que se confirman los emails,
 -- con un candado para que dos confirmaciones al mismo tiempo no se lleven
 -- el mismo lugar ni pasen de 100. La web solo ve un número: cuántos quedan.
+--
+-- La promo arranca CERRADA: se abre a mano desde el panel, y ese día queda
+-- como su fecha de comienzo (desde). La Ley 24.240, art. 7, pide que la
+-- oferta tenga fecha precisa de comienzo y de finalización.
 
 -- ── Tipos ────────────────────────────────────────────────────────────
 create type public.beneficio_promo as enum ('web_app_50', 'sistema_2_meses');
@@ -32,7 +36,10 @@ alter table public.visitas add column tarjeta_promo boolean not null default fal
 -- ── Configuración (una sola fila) ────────────────────────────────────
 create table public.promo_config (
   id boolean primary key default true check (id),
-  activa boolean not null default true,
+  -- Cerrada hasta que un admin la abre desde el panel.
+  activa boolean not null default false,
+  -- El día en que se abrió por primera vez (fecha de comienzo de la oferta).
+  desde date,
   tope integer not null default 100 check (tope between 1 and 10000),
   hasta date not null default '2027-01-31',
   -- Los rubros que pueden elegir los 2 meses del sistema.
@@ -107,8 +114,10 @@ $$;
 revoke all on function privado.beneficio_permitido(public.beneficio_promo, text) from public;
 
 -- ── Dar el lugar ─────────────────────────────────────────────────────
--- A una persona que pidió la promo y ya confirmó el email: el número que
--- sigue, o la lista de espera si no quedan o la promo cerró. El candado
+-- A una persona que pidió la promo (o que está en la lista de espera) y ya
+-- confirmó el email: el número que sigue, o la lista de espera si no
+-- quedan o la promo no está abierta. Si se amplía el cupo, quien espera
+-- reserva desde su cuenta y pasa por acá. El candado
 -- (pg_advisory_xact_lock) pone en fila a las confirmaciones simultáneas.
 create function privado.asignar_lugar_promo(persona uuid)
 returns void
@@ -124,7 +133,7 @@ begin
 
   if not exists (
     select 1 from public.promo_lugares l
-    where l.perfil_id = persona and l.estado = 'pedido'
+    where l.perfil_id = persona and l.estado in ('pedido', 'espera')
   ) then
     return;
   end if;
@@ -138,7 +147,7 @@ begin
   select * into config from public.promo_config where id;
   select count(*) into dados from public.promo_lugares where numero is not null;
 
-  if config.activa and current_date <= config.hasta and dados < config.tope then
+  if config.activa and config.desde is not null and current_date between config.desde and config.hasta and dados < config.tope then
     update public.promo_lugares
        set numero = dados + 1, estado = 'reservado', asignado_en = now()
      where perfil_id = persona;
@@ -220,7 +229,8 @@ security definer
 set search_path = ''
 as $$
   select jsonb_build_object(
-    'activa', c.activa and current_date <= c.hasta,
+    'activa', c.activa and c.desde is not null and current_date between c.desde and c.hasta,
+    'desde', c.desde,
     'tope', c.tope,
     'dados', d.dados,
     'quedan', greatest(c.tope - d.dados, 0),
@@ -264,9 +274,9 @@ begin
   insert into public.promo_lugares (perfil_id, beneficio, es_prueba)
   values (persona, reservar_lugar_promo.beneficio, perfil.email like '%@prueba.quvant.test')
   on conflict (perfil_id) do nothing;
-  -- Si todavía estaba en "pedido" (sin lugar), vale el beneficio que elige ahora.
+  -- Si todavía no tenía número (pedido o espera), vale el beneficio que elige ahora.
   update public.promo_lugares l set beneficio = reservar_lugar_promo.beneficio
-   where l.perfil_id = persona and l.estado = 'pedido';
+   where l.perfil_id = persona and l.estado in ('pedido', 'espera');
 
   perform privado.asignar_lugar_promo(persona);
 
@@ -352,6 +362,6 @@ create policy "Solo los admin cambian los lugares" on public.promo_lugares
 -- Por la API: leer (con la regla de arriba) y, los admin, cambiar estado,
 -- beneficio y notas. Nadie inserta ni borra: eso lo hacen las funciones.
 revoke all on public.promo_config, public.promo_lugares from anon, authenticated;
-grant select, update (activa, tope, hasta, rubros_sistema) on public.promo_config to authenticated;
+grant select, update (activa, desde, tope, hasta, rubros_sistema) on public.promo_config to authenticated;
 grant select, update (estado, beneficio, notas) on public.promo_lugares to authenticated;
 grant all on public.promo_config, public.promo_lugares to service_role;

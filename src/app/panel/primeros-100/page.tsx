@@ -67,11 +67,11 @@ async function Contenido() {
         <form action={cambiarPromoActiva} className="flex flex-col gap-4 border border-profundo p-4 md:flex-row md:items-center md:justify-between md:p-5">
           <p className="flex items-center gap-3 font-lectura text-sm text-blanco">
             <span aria-hidden className={`size-2.5 shrink-0 ${config.activa ? "bg-blanco" : "border border-acero"}`} />
-            {config.activa ? T.control.activa : T.control.pausada}
+            {!config.desde ? T.control.sinAbrir : config.activa ? T.control.activa.replace("{desde}", config.desde.split("-").reverse().join("/")) : T.control.pausada}
           </p>
           <input type="hidden" name="activa" value={config.activa ? "no" : "si"} />
           <button type="submit" className="h-10 shrink-0 border border-profundo px-4 font-plex text-[11px] uppercase tracking-etiqueta text-blanco hover:border-acero">
-            {config.activa ? T.control.pausar : T.control.reabrir}
+            {!config.desde ? T.control.abrir : config.activa ? T.control.pausar : T.control.reabrir}
           </button>
         </form>
       </Bloque>
