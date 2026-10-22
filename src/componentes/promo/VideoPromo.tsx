@@ -15,6 +15,9 @@ import { VIDEO_PROMO, type IdSituacion } from "@/datos/promo";
  */
 export const EVENTO_CAPITULO = "promo:capitulo";
 
+/** El capítulo que corresponde a un segundo del video. */
+const capituloEn = (t: number) => [...VIDEO_PROMO.capitulos].reverse().find((c) => t >= c.desde) ?? VIDEO_PROMO.capitulos[0];
+
 export function VideoPromo() {
   const video = useRef<HTMLVideoElement>(null);
   const marco = useRef<HTMLDivElement>(null);
@@ -25,9 +28,11 @@ export function VideoPromo() {
     const v = video.current;
     if (!capitulo || !v) return;
     setActual(id);
+    const yaSeVeia = !v.paused;
     v.currentTime = capitulo.desde;
     void v.play().catch(() => {});
-    medir("play_video_promo", null, id);
+    // Si ya se estaba viendo no hay evento "play": se anota acá. Si no, lo anota onPlay (una sola vez).
+    if (yaSeVeia) medir("play_video_promo", null, id);
     if (desplazar) marco.current?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
@@ -40,9 +45,8 @@ export function VideoPromo() {
   if (!VIDEO_PROMO.archivo) return null;
 
   const alAvanzar = () => {
-    const t = video.current?.currentTime ?? 0;
-    const capitulo = [...VIDEO_PROMO.capitulos].reverse().find((c) => t >= c.desde);
-    if (capitulo && capitulo.id !== actual) setActual(capitulo.id);
+    const capitulo = capituloEn(video.current?.currentTime ?? 0);
+    if (capitulo.id !== actual) setActual(capitulo.id);
   };
 
   return (
@@ -69,7 +73,7 @@ export function VideoPromo() {
           preload="none"
           poster={VIDEO_PROMO.poster ?? undefined}
           onTimeUpdate={alAvanzar}
-          onPlay={() => medir("play_video_promo", null, actual)}
+          onPlay={() => medir("play_video_promo", null, capituloEn(video.current?.currentTime ?? 0).id)}
           className="block aspect-video w-full bg-negro"
         >
           {VIDEO_PROMO.archivoWebm ? <source src={VIDEO_PROMO.archivoWebm} type="video/webm" /> : null}

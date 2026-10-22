@@ -1,4 +1,4 @@
-# Video de "Primeros 100" · Guion (para aprobar)
+# Video de "Primeros 100" · Guion (aprobado por fabrizio el 22-oct-2026)
 
 **Para qué:** que un comerciante vea en 40 segundos tres momentos que conoce y cómo los resuelve el sistema, y quiera probarlo dos meses. Va en la página `/primeros-100` (16:9, con un botón por capítulo) y en Reels y Stories (9:16, subtítulos quemados).
 
@@ -43,8 +43,29 @@ La Q y **Primeros 100** · "2 meses gratis del sistema o 50 % en tu web o tu app
 
 1. `npm run preparar-promo100`: recorta las capturas de la demo (`marca/promo/capturas-demo/`) sin la barra lateral (ahí están el logo de la demo y "con yunque") y las deja en `public/promo100/`.
 2. Revisar cuadros sueltos: `node scripts/fotogramas-promo100.mjs` (deja PNG en `out/promo100/cuadros/`).
-3. **Con el guion aprobado**: `npm run render-promo100` (16:9) y `npm run render-promo100-vertical` (9:16), y `npm run promo100-vtt` para los subtítulos.
-4. Copiar el MP4, el WebM, el póster y el `.vtt` a `../public/promo100/` y completar `VIDEO_PROMO` en `src/datos/promo.ts`. La página lo muestra sola.
+3. `npm run render-promo100` (16:9) y `npm run render-promo100-vertical` (9:16, para Reels y Stories). Los subtítulos van quemados en los dos: el video no tiene sonido, así que en la web no se agrega el `.vtt` (se leería dos veces).
+4. `npm run web-promo100`: del render 16:9 saca el MP4 liviano y el póster, y los deja en `../public/promo100/`, que es donde los busca `VIDEO_PROMO` en `src/datos/promo.ts`.
+
+## En la compu con placa de video
+
+El video que está hoy en la web se renderizó el 22-oct-2026 en la notebook (Intel, unos 6 minutos el 16:9). Hace falta volver a renderizar solo si cambia algo: los textos (`src/promo100/guion.ts`), las capturas o la música.
+
+Lo que hace falta: Git y Node 24. Chrome no: Remotion baja el suyo la primera vez. Las capturas recortadas (`video/public/promo100/`) y las letras (`video/public/fonts/`) ya están en el repo, así que no hace falta el paso 1.
+
+```
+git pull
+cd video
+npm ci
+npm run estudio                    # opcional: mirarlo antes en el navegador (Remotion Studio)
+npm run render-promo100            # 16:9 → out/promo100/promo-100-1080.mp4
+npm run render-promo100-vertical   # 9:16 → out/promo100/promo-100-vertical.mp4 (Reels y Stories)
+npm run web-promo100               # MP4 liviano + póster → ../public/promo100/
+```
+
+- `--gl=angle` (ya está en los comandos) usa la placa de video en Windows. Con más núcleos se puede subir `--concurrency=3` a 6 u 8 en `package.json`.
+- Para verlo en la página antes de publicar: `cd ..`, `npm ci`, `npm run dev` y abrir `http://localhost:3000/primeros-100`. Los botones de capítulo saltan a 0, 13 y 26 s.
+- Para publicarlo: commitear `public/promo100/` y pushear a master (Vercel lo publica solo).
+- El vertical no va a la web: queda en `video/out/promo100/` (no se versiona) para subirlo a Instagram a mano.
 
 **Si preferís grabarlo con el celular en un negocio real:** respetá los mismos tiempos (0, 13 y 26 s para los capítulos) y la página lo recibe igual.
 

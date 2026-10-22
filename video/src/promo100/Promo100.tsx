@@ -87,7 +87,7 @@ function Pantalla({ plano, k, opacidad, m }: { plano: Plano; k: number; opacidad
   );
 }
 
-/** El subtítulo de abajo (en la web también va el .vtt; en redes queda quemado). */
+/** El subtítulo de abajo, quemado en la imagen en los dos formatos (el video no tiene sonido; en la web no va el .vtt, si no se leería dos veces). */
 function Subtitulo({ textoVisible, opacidad, m }: { textoVisible: string; opacidad: number; m: Medidas }) {
   return (
     <div

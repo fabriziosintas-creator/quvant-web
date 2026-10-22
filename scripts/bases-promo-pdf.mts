@@ -37,7 +37,7 @@ const CAMBIOS: Array<[string, string, string]> = [
   [
     "Organizador",
     "No se identificaba quién ofrece la promoción.",
-    "Cláusula 1 con razón social, CUIT, domicilio y contacto (faltan los datos).",
+    "Cláusula 1: organiza Quvant, con su WhatsApp de contacto. Por ahora sin razón social, CUIT, domicilio ni email (decisión de fabrizio, 22-oct-2026).",
   ],
   [
     "Después de los 2 meses",
@@ -92,9 +92,6 @@ const CAMBIOS: Array<[string, string, string]> = [
 ];
 
 const FALTA = [
-  "Los datos del organizador: razón social, CUIT, domicilio y email de contacto (el de la web, contacto@tudominio.com, sigue siendo de ejemplo).",
-  "Los límites del beneficio de 2 meses: cuántas sucursales, usuarios o productos entran en la puesta en marcha sin cargo.",
-  "Cómo se trata el IVA en el presupuesto con el 50 % (depende de la condición fiscal de Quvant).",
   "Confirmar que la venta sin conexión funciona igual en el sistema de los clientes, no solo en la demo.",
   "La fecha de comienzo se completa sola el día que se abre la promo desde el panel; ese día hay que generar la tarjeta con --desde.",
 ];

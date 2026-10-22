@@ -37,10 +37,12 @@ export const VIDEO_PROMO: {
   subtitulos: string | null;
   capitulos: ReadonlyArray<{ id: IdSituacion; titulo: string; desde: number }>;
 } = {
-  archivo: null, // TODO: "/promo100/promo-100-1080.mp4"
-  archivoWebm: null, // TODO: "/promo100/promo-100-1080.webm"
-  poster: null, // TODO: "/promo100/promo-100-poster.webp"
-  subtitulos: null, // TODO: "/promo100/promo-100.es.vtt"
+  archivo: "/promo100/promo-100-1080.mp4",
+  // Sin WebM: con el grano de la imagen, el VP9 salía más pesado que el MP4.
+  archivoWebm: null,
+  poster: "/promo100/promo-100-poster.webp",
+  // Los textos van quemados en la imagen (el video no tiene sonido): con el .vtt se leerían dos veces.
+  subtitulos: null,
   capitulos: [
     { id: "sin-internet", titulo: "Se cortó internet", desde: 0 },
     { id: "aumento", titulo: "La lista nueva del proveedor", desde: 13 },
@@ -169,12 +171,12 @@ export const PROMO_TEXTOS = {
      * Sin precio del abono a propósito (decisión de fabrizio): se informa
      * por escrito antes de que terminen los 2 meses.
      *
-     * TODO antes de publicar: los datos del organizador (razón social,
-     * CUIT, domicilio y email). Por ahora no se pasan por un abogado
-     * (decisión de fabrizio, 22-oct-2026).
+     * Sin razón social, CUIT, domicilio ni email del organizador y sin más
+     * límites para el beneficio 2, por ahora; tampoco se pasan por un
+     * abogado (decisiones de fabrizio, 22-oct-2026).
      */
     items: [
-      "Organizador. Organiza la promoción [razón social], CUIT [número], con domicilio en [domicilio] («Quvant»). Contacto: WhatsApp +54 11 2481-1956 y [email].",
+      "Organizador. Organiza la promoción Quvant (quvant.com.ar). Contacto: WhatsApp +54 11 2481-1956.",
       "Vigencia. Del {desde} al {hasta} inclusive, o hasta asignar los {tope} lugares, lo que ocurra primero. Si Quvant la termina antes, lo anuncia en la web y en sus redes, y respeta los lugares ya asignados.",
       "Quién participa. Personas mayores de 18 años que se registren en quvant.com.ar con datos verdaderos y confirmen su email. Un lugar por persona y por negocio: si hay más de un registro del mismo negocio, vale el primero. Las cuentas del equipo de Quvant no participan.",
       "Cómo se asigna el lugar. Al registrarse (o desde su cuenta, si ya la tenía) la persona elige uno de los dos beneficios. El lugar se asigna solo, con un número del 1 al {tope}, en el orden en que se confirman los emails; se ve en la cuenta y llega por email. Registrarse y reservar no tiene costo ni obliga a contratar nada.",
@@ -185,7 +187,7 @@ export const PROMO_TEXTOS = {
       "Baja. Se puede dejar el beneficio en cualquier momento, sin costo, avisando por el mismo medio por el que se pidió (la web, WhatsApp o email).",
       "Condiciones generales. El beneficio es personal: no se transfiere, no se cambia por dinero ni por otro servicio y no se suma a otras promociones. Estas bases no se modifican en perjuicio de quien ya tiene su lugar.",
       "Datos personales. Los datos del registro se usan para asignar el lugar y coordinar el beneficio, según la política de privacidad (quvant.com.ar/privacidad); el teléfono, solo para coordinarlo. Se puede pedir el acceso, la corrección o el borrado de los datos (Ley 25.326).",
-      "Consultas y reclamos. Por WhatsApp o email a Quvant. Nada de estas bases limita los derechos de la Ley 24.240 de Defensa del Consumidor; los reclamos de consumo también se pueden hacer ante la autoridad de aplicación.",
+      "Consultas y reclamos. Por WhatsApp a Quvant. Nada de estas bases limita los derechos de la Ley 24.240 de Defensa del Consumidor; los reclamos de consumo también se pueden hacer ante la autoridad de aplicación.",
     ],
   },
 
