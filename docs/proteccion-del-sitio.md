@@ -38,6 +38,25 @@ Lo que sí hacemos es que copiar salga caro, que una copia publicada no sirva y 
 - **Registrar la marca "Quvant" en el INPI** (Instituto Nacional de la Propiedad Industrial). Así, nadie puede usar el nombre para algo parecido.
 - **Registrar la web y el sistema como obra en la DNDA** (Dirección Nacional del Derecho de Autor). No es obligatorio para tener los derechos, pero da una fecha cierta que sirve de prueba ante cualquier reclamo.
 - **Protección de bots de Vercel (opcional).** En el proyecto, en Vercel → Firewall, se pueden activar las reglas de bots administradas, que desafían al tráfico que no es un navegador real. Pruebenlo de a poco: puede frenar algunas herramientas legítimas.
-  - Hoy el sitio deja entrar a propósito a los bots de ChatGPT, Claude y Perplexity (`src/app/robots.ts`), para que nos citen cuando alguien pregunta por sistemas de gestión. Bloquearlos nos saca de esa vidriera.
+
+## Las IA (ChatGPT, Claude, Perplexity y compañía)
+
+Desde el 22 de octubre de 2026 (`src/datos/bots.ts`, usado por `robots.ts` y por el proxy):
+
+| Tipo de bot | Qué hace | Qué hacemos |
+|---|---|---|
+| Buscadores con IA (OAI-SearchBot, Claude-SearchBot, PerplexityBot) | Leen el sitio para citarlo cuando alguien pregunta por sistemas de gestión | **Entran**: son vidriera |
+| Entrenamiento (GPTBot, ClaudeBot, CCBot, Bytespider, los de Meta, Amazon, Cohere…) | Juntan páginas para entrenar modelos | **No entran**: robots.txt + 403 en el servidor |
+| Lectura a pedido (ChatGPT-User, Claude-User, Perplexity-User…) | Leen una página cuando alguien la pega en un chat ("copiame esta web") | **No entran**: robots.txt + 403 en el servidor |
+
+El 403 hace falta porque algunos de estos bots no respetan robots.txt.
+
+Lo que no se puede frenar con esto:
+- **Un agente de IA que maneja un navegador de verdad** se ve igual que una persona.
+- **Alguien que copia el código a mano y lo pega en un chat.**
+
+Para el primer caso, Vercel tiene en el Firewall una protección de bots que desafía al tráfico automatizado. Probala con cuidado: puede molestar a algunas personas reales.
+
+Para volver a dejar entrar a algún bot, se saca su nombre de la lista en `src/datos/bots.ts`.
 
 Nada de esto es asesoramiento legal: son los pasos habituales, para ordenar qué hacer.

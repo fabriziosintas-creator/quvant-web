@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { IA_BLOQUEADAS_EXPRESION } from "@/datos/bots";
 import { actualizarSesion } from "@/supabase/proxy";
 
 /** Las páginas que piden sesión: sin cookie de Supabase, directo a /ingresar. */
@@ -24,7 +25,9 @@ const COPIADORAS =
 
 export async function proxy(pedido: NextRequest) {
   const { pathname, search } = pedido.nextUrl;
-  if (!pathname.startsWith("/api/") && COPIADORAS.test(pedido.headers.get("user-agent") ?? "")) {
+  const agente = pedido.headers.get("user-agent") ?? "";
+  // Las herramientas de copia y las IA que entrenan modelos o leen la página a pedido desde un chat (datos/bots.ts).
+  if (!pathname.startsWith("/api/") && (COPIADORAS.test(agente) || IA_BLOQUEADAS_EXPRESION.test(agente))) {
     return new NextResponse("Acceso no permitido.", { status: 403, headers: { "Content-Type": "text/plain; charset=utf-8" } });
   }
   const pideSesion = CON_SESION.some((ruta) => pathname === ruta || pathname.startsWith(`${ruta}/`));
