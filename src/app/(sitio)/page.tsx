@@ -6,6 +6,7 @@ import { AuroraFondo } from "@/componentes/estructura/AuroraFondo";
 import { CintaRubros } from "@/componentes/estructura/CintaRubros";
 import { IntroTV } from "@/componentes/estructura/IntroTV";
 import { VideoPortada } from "@/componentes/estructura/VideoPortada";
+import { PortalPromoPortada } from "@/componentes/promo/PortalPromoPortada";
 import { Vitrina } from "@/componentes/secciones/vitrina/Vitrina";
 import { DatosEstructurados } from "@/componentes/seo/DatosEstructurados";
 import { ACENTO_CANAL } from "@/datos/colores";
@@ -34,7 +35,7 @@ export default function Inicio() {
         <IntroTV />
         <section
           id="inicio"
-          className="relative flex min-h-svh flex-col justify-end overflow-hidden pb-16 pt-16 lg:justify-center lg:pb-0"
+          className="relative flex min-h-svh flex-col justify-end overflow-hidden pb-28 pt-16 md:pb-16 lg:justify-center lg:pb-0"
         >
           <VideoPortada />
           <AuroraFondo />
@@ -67,6 +68,10 @@ export default function Inicio() {
               </Link>
             </div>
             <CintaRubros />
+            {/* Primeros 100: lleva al video y de ahí al registro. Los números salen de la base (en caché). */}
+            <Suspense fallback={null}>
+              <PortalPromoPortada />
+            </Suspense>
           </div>
 
           {/* Pista de scroll: el punto cuadrado bajando por un riel fino. */}

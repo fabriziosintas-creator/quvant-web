@@ -207,6 +207,23 @@ export const PROMO_TEXTOS = {
     cerrar: "Cerrar el aviso",
   },
 
+  /** El botón de la portada, debajo de la cinta de rubros: lleva al video y de ahí al registro. */
+  portal: {
+    etiqueta: "Primeros 100",
+    titulo: "Mirá en 40 segundos qué hace el sistema por tu negocio",
+    texto: "Y elegí: 2 meses gratis del sistema o 50 % en tu web o tu app.",
+    accion: "Ver el video",
+    estados: { abierta: "Quedan {n} de {tope}", pronto: "Arranca muy pronto", llena: "Lista de espera" },
+  },
+
+  /** Lo que aparece sobre el video cuando termina: el paso al registro. */
+  finVideo: {
+    titulo: "¿Te sirve para tu negocio?",
+    texto: "Registrate, confirmá tu email y tu lugar queda reservado con su número.",
+    textoAntes: "Creá tu cuenta ahora: cuando arranque, sos de los primeros en enterarte.",
+    otraVez: "Ver de nuevo",
+  },
+
   /** Una línea con link, para Sistemas, Contacto y el pie. */
   entrada: {
     texto: "Primeros 100: elegí 50 % en tu web o 2 meses gratis del sistema.",

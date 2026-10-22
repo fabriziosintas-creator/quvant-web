@@ -109,7 +109,7 @@ export default async function PrimerosCien() {
         <p className="max-w-2xl font-lectura text-base leading-relaxed text-blanco md:text-lg">{T.situaciones.bajada}</p>
         {/* El video, cuando esté (VIDEO_PROMO en datos/promo.ts); mientras tanto, nada. */}
         <div className="mt-10 max-w-4xl empty:hidden">
-          <VideoPromo />
+          <VideoPromo cta={{ texto: antes ? T.antes.boton : botonPrincipal, antes }} />
         </div>
         <div className="mt-10 grid gap-12 lg:grid-cols-3 lg:gap-6">
           {situaciones.map(({ id, textos, Demo }) => (
