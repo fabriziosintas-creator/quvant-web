@@ -9,7 +9,8 @@ import { crearAviso } from "./crear";
  * Lo que el proceso diario revisa para los avisos (los de objetivos salen
  * de la foto diaria de Objetivos):
  *  · oportunidades estancadas (más días que el umbral de su etapa);
- *  · visitas interesantes que se fueron, si pg_cron no está corriendo.
+ *  · visitas interesantes que se fueron y visitas repetidas de una misma
+ *    conexión, si pg_cron no está corriendo.
  */
 export async function procesoDiarioAvisos(supabase: SupabaseClient<Database>) {
   const ahora = new Date().toISOString();
@@ -27,6 +28,6 @@ export async function procesoDiarioAvisos(supabase: SupabaseClient<Database>) {
       if (nuevo) estancadas++;
     }
   }
-  const { data: visitas } = await supabase.rpc("revisar_visitas_interesantes");
-  return { estancadas, visitasInteresantes: typeof visitas === "number" ? visitas : 0 };
+  const [{ data: visitas }, { data: repetidas }] = await Promise.all([supabase.rpc("revisar_visitas_interesantes"), supabase.rpc("revisar_visitas_repetidas")]);
+  return { estancadas, visitasInteresantes: typeof visitas === "number" ? visitas : 0, visitasRepetidas: typeof repetidas === "number" ? repetidas : 0 };
 }

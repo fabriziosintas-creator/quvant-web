@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { ORIGENES, PROFUNDIDADES, TRAMOS } from "@/componentes/medicion/atencion";
 import { ACENTO_NICHO } from "@/datos/colores";
 import { esNicho, uuidValido } from "@/servidor/cuenta/validacion";
+import { diaEnBuenosAires, huellaDelDia, ipDelPedido } from "@/servidor/medicion/huella";
 import { crearClienteAdmin } from "@/supabase/admin";
 import { configSupabase } from "@/supabase/entorno";
 import { crearClienteServidor } from "@/supabase/servidor";
@@ -15,9 +16,14 @@ import type { Enums } from "@/supabase/tipos";
  *
  * Sin datos personales: ni IP, ni navegador, ni email. El id anónimo lo
  * crea el navegador; si la persona está logueada va también su id, nada
- * más. Con la señal de "no rastrear" (Do Not Track o Global Privacy
- * Control) no se guarda nada. El límite de frecuencia lo pone la base
- * (privado.limitar_eventos): acá solo se valida la forma.
+ * más. Las visitas llevan además la huella del día (servidor/medicion/
+ * huella.ts): un código que sale de la IP y el navegador con una clave
+ * secreta y la fecha, para contar una persona por día y avisar si una
+ * misma conexión entra muchas veces. La IP no se guarda; la huella cambia
+ * cada día y la base la borra a los 7. Con la señal de "no rastrear" (Do
+ * Not Track o Global Privacy Control) no se guarda nada. El límite de
+ * frecuencia lo pone la base (privado.limitar_eventos): acá solo se valida
+ * la forma.
  */
 
 /**
@@ -127,10 +133,20 @@ export async function POST(pedido: NextRequest) {
     filas.filter((f) => conDetalle(f) && !promo(f)),
     filas.filter(promo),
   ];
+  // La huella del día, solo para las visitas (una persona por día y el aviso de visitas repetidas).
+  const huella = huellaDelDia(ipDelPedido(pedido.headers), pedido.headers.get("user-agent") ?? "", diaEnBuenosAires(), process.env.MEDICION_SAL ?? process.env.SUPABASE_SECRET_KEY);
   for (const tanda of tandas) {
     if (tanda.length === 0) continue;
-    const { error } = await admin.from("eventos").insert(tanda.map((fila) => ({ ...fila, perfil_id: perfil })));
-    if (error) console.error("[eventos]", error.message);
+    const conPerfil = tanda.map((fila) => ({ ...fila, perfil_id: perfil }));
+    const sonVisitas = huella !== null && tanda.every((f) => f.tipo === "visita");
+    const { error } = await admin.from("eventos").insert(sonVisitas ? conPerfil.map((f) => ({ ...f, huella })) : conPerfil);
+    if (error && sonVisitas && /huella/.test(error.message)) {
+      // Sin la migración de la huella (20261025120000): la visita se guarda igual, sin ella.
+      const { error: sinHuella } = await admin.from("eventos").insert(conPerfil);
+      if (sinHuella) console.error("[eventos]", sinHuella.message);
+    } else if (error) {
+      console.error("[eventos]", error.message);
+    }
   }
   return new NextResponse(null, { status: 204 });
 }

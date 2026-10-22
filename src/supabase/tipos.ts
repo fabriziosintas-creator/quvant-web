@@ -617,6 +617,7 @@ export type Database = {
         Row: {
           creado_en: string
           detalle: string | null
+          huella: string | null
           id: number
           nicho_id: string | null
           pagina: string | null
@@ -627,6 +628,7 @@ export type Database = {
         Insert: {
           creado_en?: string
           detalle?: string | null
+          huella?: string | null
           id?: never
           nicho_id?: string | null
           pagina?: string | null
@@ -637,6 +639,7 @@ export type Database = {
         Update: {
           creado_en?: string
           detalle?: string | null
+          huella?: string | null
           id?: never
           nicho_id?: string | null
           pagina?: string | null
@@ -1698,6 +1701,7 @@ export type Database = {
       }
     }
     Functions: {
+      revisar_visitas_repetidas: { Args: never; Returns: number }
       anotar_en_bitacora: {
         Args: { p_accion: string; p_detalle?: Json; p_tabla: string }
         Returns: undefined

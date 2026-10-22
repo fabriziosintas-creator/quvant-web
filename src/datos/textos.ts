@@ -873,7 +873,7 @@ export const PRIVACIDAD = {
       parrafos: [
         "Si creás una cuenta: tu nombre y apellido, tu email, el rubro de tu negocio, qué te trajo a Quvant y, si los cargás, tu empresa, tu ciudad y tu teléfono. Tu contraseña se guarda cifrada: nadie de Quvant la puede ver.",
         "Si usás el chat de la web: lo que escribís en la conversación.",
-        "Para medir qué secciones interesan, la web anota visitas y clics con un identificador anónimo propio, sin cookies de terceros y sin tu nombre ni tu email: qué rubro mirás, cuánto tiempo (en tramos) y hasta dónde bajás en su sección, y de dónde llegaste (buscador, redes, una campaña o directo, nunca la dirección exacta). Si tu navegador pide no ser rastreado (Do Not Track o Global Privacy Control), no anotamos nada.",
+        "Para medir qué secciones interesan, la web anota visitas y clics con un identificador anónimo propio, sin cookies de terceros y sin tu nombre ni tu email: qué rubro mirás, cuánto tiempo (en tramos) y hasta dónde bajás en su sección, y de dónde llegaste (buscador, redes, una campaña o directo, nunca la dirección exacta). Para contarte una sola vez por día, aunque entres desde otra pestaña, y para detectar usos abusivos, el servidor arma un código a partir de tu conexión (IP) y tu navegador, mezclado con una clave secreta y la fecha: tu IP no se guarda, el código cambia todos los días, no permite saber quién sos y se borra a los 7 días. Si tu navegador pide no ser rastreado (Do Not Track o Global Privacy Control), no anotamos nada.",
       ],
     },
     {
@@ -1707,6 +1707,7 @@ export const PANEL_ADMIN = {
       objetivo_cumplido: "Objetivo cumplido",
       alerta_roja: "Alerta de un socio",
       oportunidad_estancada: "Oportunidad estancada",
+      visita_repetida: "Visitas repetidas",
     },
     explicaciones: {
       registro: "Alguien se registró en la web.",
@@ -1716,6 +1717,7 @@ export const PANEL_ADMIN = {
       objetivo_cumplido: "Un objetivo se cumplió.",
       alerta_roja: "Un socio quedó en rojo o tiene una alerta nueva en Núcleos.",
       oportunidad_estancada: "Una oportunidad lleva más días de lo normal en la misma etapa.",
+      visita_repetida: "Una misma conexión (que no es del equipo) entró 3 veces o más en el día: alguien mirando cómo está hecha la web, o alguien muy interesado.",
     },
     pagina: {
       bajada: "Qué avisos ves en la campanita y cuáles te llegan también por WhatsApp. Cada socio elige los suyos.",
