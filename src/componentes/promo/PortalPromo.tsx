@@ -8,8 +8,8 @@ import { PROMO, PROMO_TEXTOS } from "@/datos/promo";
 
 const T = PROMO_TEXTOS.portal;
 
-/** Al video de la página de la promo (el #video lo deja a la vista y lo hace arrancar). */
-export const DESTINO_PORTAL = `${PROMO.ruta}?utm_source=portada#video`;
+/** A la página de la promo, arriba: el contador; desde ahí, "Deslizá y mirá el video" invita a bajar. */
+export const DESTINO_PORTAL = `${PROMO.ruta}?utm_source=portada`;
 /** Lo que dura el "encendido" antes de navegar (sin movimiento: nada). */
 const ENCENDIDO_MS = 460;
 
@@ -21,8 +21,9 @@ export type EstadoPortal = "abierta" | "pronto" | "llena";
  * Al tocarlo se "enciende" (una onda que sale del play, una luz que lo
  * barre y el borde que se ilumina) y después navega a la página de la
  * promo con el tipo de transición "portal-promo": la cápsula se estira
- * hasta convertirse en el marco del video (el mismo nombre de
- * <ViewTransition> en VideoPromo), donde el video arranca solo.
+ * hasta convertirse en el contador de lugares (el mismo nombre de
+ * <ViewTransition> en la página); abajo, "Deslizá y mirá el video"
+ * (IrAlVideo) invita a bajar hasta el video.
  *
  * Es un link de verdad: sin JavaScript, con Ctrl/Cmd o con la rueda
  * abre la página normalmente. Con "menos movimiento" navega directo.
@@ -62,10 +63,13 @@ export function PortalPromo({ estado, quedan, tope }: { estado: EstadoPortal; qu
               <span className="font-michroma text-[11px] uppercase tracking-marca text-blanco">{T.etiqueta}</span>
               <span className="portal-promo__chip font-plex text-[10px] uppercase tracking-etiqueta">{chip}</span>
             </span>
-            <span className="font-lectura text-[15px] font-medium leading-snug text-blanco md:text-base">{T.titulo}</span>
-            <span className="font-lectura text-[13px] leading-snug text-acero md:text-sm">{T.texto}</span>
+            <span className="mt-0.5 titulo text-[19px] leading-[1.2] text-blanco md:text-2xl">
+              <span className="portal-promo__resalte">{T.resalte}</span> {T.titulo}
+            </span>
+            <span className="font-lectura text-[13px] leading-snug text-blanco/85 md:text-sm">{T.texto}</span>
+            <span className="font-lectura text-[11px] leading-snug text-acero md:text-xs">{T.nota}</span>
           </span>
-          <span className="portal-promo__accion font-lectura text-sm font-medium">
+          <span className="portal-promo__accion font-lectura text-sm font-medium max-sm:hidden">
             <span className="hidden md:inline">{T.accion}</span>
             <svg aria-hidden viewBox="0 0 24 24" className="size-4 fill-none stroke-current" strokeWidth="1.8">
               <path d="M5 12h14M13 6l6 6-6 6" />

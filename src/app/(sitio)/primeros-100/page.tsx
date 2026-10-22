@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import type { CSSProperties } from "react";
+import { ViewTransition, type CSSProperties } from "react";
 import { Capitulo } from "@/componentes/canales/Capitulo";
 import { CLASE_BOTON, CLASE_BOTON_SECUNDARIO } from "@/componentes/cuenta/estilos";
 import { BotonLugar } from "@/componentes/promo/BotonLugar";
 import { Contador } from "@/componentes/promo/Contador";
+import { GrillaSituaciones } from "@/componentes/promo/GrillaSituaciones";
+import { InvitacionRegalo } from "@/componentes/promo/InvitacionRegalo";
 import { MedirPromo } from "@/componentes/promo/MedirPromo";
+import { IrAlVideo } from "@/componentes/promo/IrAlVideo";
 import { VerEnVideo, VideoPromo } from "@/componentes/promo/VideoPromo";
 import { DemoAumento, DemoSinInternet, DemoStock } from "@/componentes/promo/Demos";
-import { ACENTO_CANAL } from "@/datos/colores";
-import { PROMO, PROMO_TEXTOS as T } from "@/datos/promo";
+import { ACENTO_CANAL, AURORA } from "@/datos/colores";
+import { PROMO, PROMO_TEXTOS as T, VIDEO_PROMO } from "@/datos/promo";
 import { obtenerEstadoPromo, promoAbierta } from "@/servidor/promo/estado";
 
 /** Se indexa solo con la promo andando en la base (y con lugares). */
@@ -49,10 +52,11 @@ export default async function PrimerosCien() {
   const bases = T.bases.items.map(completar);
   const botonPrincipal = cerrada ? T.botones.espera : T.botones.quiero;
 
+  // Cada situación con un color de la aurora (el mismo del fondo del sitio); la demostración de adentro lo hereda.
   const situaciones = [
-    { id: "sin-internet" as const, textos: T.situaciones.sinInternet, Demo: DemoSinInternet },
-    { id: "aumento" as const, textos: T.situaciones.aumento, Demo: DemoAumento },
-    { id: "stock" as const, textos: T.situaciones.stock, Demo: DemoStock },
+    { id: "sin-internet" as const, textos: T.situaciones.sinInternet, Demo: DemoSinInternet, color: AURORA[0] },
+    { id: "aumento" as const, textos: T.situaciones.aumento, Demo: DemoAumento, color: AURORA[2] },
+    { id: "stock" as const, textos: T.situaciones.stock, Demo: DemoStock, color: AURORA[1] },
   ];
 
   return (
@@ -79,11 +83,14 @@ export default async function PrimerosCien() {
         </p>
 
         {(estado && !antes) || ejemplo ? (
-          <div className="mt-12">
-            <Contador dados={estado ? Math.min(estado.dados, tope) : PROMO.EJEMPLO_DADOS} tope={tope} ejemplo={ejemplo} />
-            {/* La vigencia, a la vista (Ley 24.240, art. 7: fecha de comienzo y de fin). */}
-            <p className="mt-4 font-lectura text-sm text-acero">{completar(T.contador.vigencia)}</p>
-          </div>
+          // El mismo nombre que el botón de la portada: la cápsula se convierte en el contador.
+          <ViewTransition name="portal-promo" share="portal-promo" default="none">
+            <div className="mt-12">
+              <Contador dados={estado ? Math.min(estado.dados, tope) : PROMO.EJEMPLO_DADOS} tope={tope} ejemplo={ejemplo} />
+              {/* La vigencia, a la vista (Ley 24.240, art. 7: fecha de comienzo y de fin). */}
+              <p className="mt-4 font-lectura text-sm text-acero">{completar(T.contador.vigencia)}</p>
+            </div>
+          </ViewTransition>
         ) : null}
 
         <div className="mt-10 flex flex-wrap gap-3">
@@ -104,29 +111,44 @@ export default async function PrimerosCien() {
         </div>
       </header>
 
+      {/* El video, solo, justo debajo del contador (sin capítulos arriba), y la invitación a deslizar hasta él. */}
+      {VIDEO_PROMO.archivo ? (
+        <section className="contenedor relative pb-20 md:pb-28">
+          <div className="max-w-4xl">
+            <VideoPromo cta={{ texto: antes ? T.antes.boton : botonPrincipal, antes }} capitulos={false} />
+          </div>
+          <IrAlVideo />
+        </section>
+      ) : null}
+
       {/* Las tres situaciones, para tocar. */}
       <Capitulo id="situaciones" etiqueta={T.situaciones.etiqueta}>
-        <p className="max-w-2xl font-lectura text-base leading-relaxed text-blanco md:text-lg">{T.situaciones.bajada}</p>
-        {/* El video, cuando esté (VIDEO_PROMO en datos/promo.ts); mientras tanto, nada. */}
-        <div className="mt-10 max-w-4xl empty:hidden">
-          <VideoPromo cta={{ texto: antes ? T.antes.boton : botonPrincipal, antes }} />
-        </div>
-        <div className="mt-10 grid gap-12 lg:grid-cols-3 lg:gap-6">
-          {situaciones.map(({ id, textos, Demo }) => (
-            <article key={id} className="flex flex-col gap-5">
+        <p className="max-w-3xl titulo text-[clamp(1.75rem,4.2vw,3rem)] leading-[1.1] text-blanco">{T.situaciones.bajada}</p>
+        <GrillaSituaciones>
+          {situaciones.map(({ id, textos, Demo, color }, i) => (
+            <article key={id} className="situacion" style={{ "--acento": color } as CSSProperties}>
+              <div className="flex items-start justify-between gap-4">
+                <span aria-hidden className="situacion__numero font-michroma">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <VerEnVideo id={id} />
+              </div>
               <div>
-                <h3 className="titulo text-2xl text-blanco">{textos.titulo}</h3>
+                <h3 className="titulo text-2xl leading-tight text-blanco md:text-[1.7rem]">{textos.titulo}</h3>
                 <p className="mt-3 font-lectura text-[15px] leading-relaxed text-acero md:text-base">{textos.texto}</p>
               </div>
-              <VerEnVideo id={id} />
-              <div className="flex-1">
+              {/* La demostración, encastrada abajo de la tarjeta y a todo su ancho (las tablas necesitan el lugar). */}
+              <div className="situacion__demo -mx-5 -mb-5 flex-1 md:-mx-6 md:-mb-6">
                 <Demo />
               </div>
             </article>
           ))}
-        </div>
+        </GrillaSituaciones>
         <p className="mt-8 font-plex text-xs text-acero">{T.situaciones.nota}</p>
       </Capitulo>
+
+      {/* La Q que gira y suelta su punto hacia lo que te regalamos. */}
+      <InvitacionRegalo destino="beneficios" />
 
       {/* Los dos beneficios. */}
       <Capitulo id="beneficios" etiqueta={T.beneficios.etiqueta}>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useLayoutEffect, useRef, useState, ViewTransition } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { CLASE_BOTON } from "@/componentes/cuenta/estilos";
 import { medir } from "@/componentes/medicion/medir";
 import { PROMO_TEXTOS, VIDEO_PROMO, type IdSituacion } from "@/datos/promo";
@@ -17,6 +17,8 @@ import { BotonLugar } from "./BotonLugar";
  * "promo:capitulo".
  */
 export const EVENTO_CAPITULO = "promo:capitulo";
+/** "Mirá el video" (IrAlVideo): lo deja en el centro de la pantalla y lo hace arrancar desde el principio. */
+export const EVENTO_REPRODUCIR = "promo:reproducir";
 
 /** El capítulo que corresponde a un segundo del video. */
 const capituloEn = (t: number) => [...VIDEO_PROMO.capitulos].reverse().find((c) => t >= c.desde) ?? VIDEO_PROMO.capitulos[0];
@@ -26,19 +28,20 @@ const capituloEn = (t: number) => [...VIDEO_PROMO.capitulos].reverse().find((c) 
  * promo (o crear la cuenta, si todavía no arrancó). `cta` lo arma la
  * página, que sabe en qué estado está la promo.
  *
- * Si se llega con #video (el botón de la portada), queda a la vista y
- * arranca solo: el toque en la portada cuenta como gesto de la persona,
+ * Si se llega con #video, o al tocar "Mirá el video" (IrAlVideo), queda
+ * a la vista y arranca solo: ese toque cuenta como gesto de la persona,
  * así que el navegador lo deja sonar. Si igual lo bloquea, arranca mudo.
+ * `capitulos` muestra u oculta los botones de capítulo de arriba (la
+ * página de la promo los oculta: el video va solo, debajo del contador).
  */
-export function VideoPromo({ cta }: { cta?: { texto: string; antes: boolean } }) {
+export function VideoPromo({ cta, capitulos = true }: { cta?: { texto: string; antes: boolean }; capitulos?: boolean }) {
   const video = useRef<HTMLVideoElement>(null);
   const marco = useRef<HTMLDivElement>(null);
   const [actual, setActual] = useState<IdSituacion>(VIDEO_PROMO.capitulos[0].id);
   const [terminado, setTerminado] = useState(false);
 
-  // Llegó desde el botón de la portada: el video queda en el centro de la pantalla. Va en un
-  // efecto de layout (dentro del mismo commit de la navegación) para que la transición
-  // "portal-promo" ya lo encuentre ahí; se repite por si algo más movió el scroll después.
+  // Llegó con #video: el video queda en el centro de la pantalla. Va en un efecto de layout
+  // (dentro del mismo commit de la navegación); se repite por si algo más movió el scroll después.
   useLayoutEffect(() => {
     if (window.location.hash !== "#video") return;
     const ubicar = () => marco.current?.scrollIntoView({ block: "center", behavior: "instant" });
@@ -85,8 +88,23 @@ export function VideoPromo({ cta }: { cta?: { texto: string; antes: boolean } })
 
   useEffect(() => {
     const alPedir = (evento: Event) => ir((evento as CustomEvent<IdSituacion>).detail, true);
+    const alReproducir = () => {
+      const v = video.current;
+      if (!v) return;
+      marco.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      setTerminado(false);
+      if (v.ended) v.currentTime = 0;
+      v.play().catch(() => {
+        v.muted = true;
+        void v.play().catch(() => {});
+      });
+    };
     window.addEventListener(EVENTO_CAPITULO, alPedir);
-    return () => window.removeEventListener(EVENTO_CAPITULO, alPedir);
+    window.addEventListener(EVENTO_REPRODUCIR, alReproducir);
+    return () => {
+      window.removeEventListener(EVENTO_CAPITULO, alPedir);
+      window.removeEventListener(EVENTO_REPRODUCIR, alReproducir);
+    };
   });
 
   if (!VIDEO_PROMO.archivo) return null;
@@ -98,6 +116,7 @@ export function VideoPromo({ cta }: { cta?: { texto: string; antes: boolean } })
 
   return (
     <div ref={marco} id="video" className="flex scroll-mt-24 flex-col gap-4">
+      {capitulos ? (
       <div role="group" aria-label="Capítulos del video" className="flex flex-wrap gap-2">
         {VIDEO_PROMO.capitulos.map((c) => (
           <button
@@ -112,9 +131,8 @@ export function VideoPromo({ cta }: { cta?: { texto: string; antes: boolean } })
           </button>
         ))}
       </div>
-      {/* El mismo nombre que el botón de la portada: la cápsula se convierte en este marco. */}
-      <ViewTransition name="portal-promo" share="portal-promo" default="none">
-        <div className="pantalla relative overflow-hidden">
+      ) : null}
+      <div className="pantalla relative overflow-hidden">
           <video
             ref={video}
             controls
@@ -159,7 +177,6 @@ export function VideoPromo({ cta }: { cta?: { texto: string; antes: boolean } })
             </div>
           ) : null}
         </div>
-      </ViewTransition>
     </div>
   );
 }
@@ -171,8 +188,13 @@ export function VerEnVideo({ id }: { id: IdSituacion }) {
     <button
       type="button"
       onClick={() => window.dispatchEvent(new CustomEvent(EVENTO_CAPITULO, { detail: id }))}
-      className="self-start font-lectura text-sm text-blanco underline decoration-profundo underline-offset-4 hover:decoration-blanco"
+      className="group/ver inline-flex shrink-0 items-center gap-2 rounded-full border border-[var(--acento)]/40 py-1 pl-1 pr-3.5 font-lectura text-sm font-medium text-blanco transition-colors hover:border-[var(--acento)] hover:bg-[var(--acento)]/10"
     >
+      <span aria-hidden className="grid size-7 place-items-center rounded-full bg-[var(--acento)] text-negro shadow-[0_0_16px_var(--acento)] transition-transform group-hover/ver:scale-110">
+        <svg viewBox="0 0 24 24" className="size-3 translate-x-px fill-current">
+          <path d="M8 5.5v13a.6.6 0 0 0 .92.5l10.2-6.5a.6.6 0 0 0 0-1L8.92 5a.6.6 0 0 0-.92.5Z" />
+        </svg>
+      </span>
       Ver en el video
     </button>
   );

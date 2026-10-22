@@ -4,23 +4,18 @@ import { useEffect, useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment } from "@react-three/drei";
 import * as THREE from "three";
+import { FiguraQ } from "@/componentes/3d/FiguraQ";
 import { obtenerEntornoManual } from "@/componentes/3d/entornoManual";
 
 /**
- * La Q de cromo del registro (la misma geometría y el mismo entorno que
- * la Q de la portada, ver 3d/laboratorio): flota, sigue al mouse, se tiñe
- * con el color del rubro elegido, da una vuelta en cada paso y dos al
- * terminar. Todo el movimiento va en useFrame, sin renders de React.
- * Solo se arma en computadora y en vista 3D (FichaRegistro).
+ * La Q de cromo del registro (FiguraQ, con el entorno del manual): flota,
+ * sigue al mouse, se tiñe con el color del rubro elegido, da una vuelta en
+ * cada paso y dos al terminar. Todo el movimiento va en useFrame, sin
+ * renders de React. Solo se arma en computadora y en vista 3D
+ * (FichaRegistro).
  */
 
-const ARO_CENTRO = new THREE.Vector3(-8.5, 8.5, 0);
-const COLA_INICIO = new THREE.Vector3(10.5, -10.5, 0);
-const COLA_LARGO = Math.hypot(17, 17);
-const PUNTO_CENTRO = new THREE.Vector3(39, -39, 0);
-const ESCALA = 0.042;
 const BLANCO = new THREE.Color("#ffffff");
-
 const puntero = { x: 0, y: 0 };
 
 function Q({ acento, paso, celebrar }: { acento: string; paso: number; celebrar: boolean }) {
@@ -29,24 +24,12 @@ function Q({ acento, paso, celebrar }: { acento: string; paso: number; celebrar:
   const giroDestino = useRef(0);
   const giro = useRef(0);
   const pulso = useRef(0);
+  const mirada = useRef({ x: 0, y: 0 });
   const tinte = useMemo(() => new THREE.Color(), []);
 
   const cromo = useMemo(() => new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 1, roughness: 0.16, envMapIntensity: 1.3 }), []);
   // Arranca gris y va hacia el color del rubro en useFrame (así no depende de `acento` al crearse).
   const punto = useMemo(() => new THREE.MeshStandardMaterial({ color: "#9c9ca3", metalness: 0.55, roughness: 0.22, emissive: "#9c9ca3", emissiveIntensity: 0.4 }), []);
-  const mirada = useRef({ x: 0, y: 0 });
-
-  const geometriaPunto = useMemo(() => {
-    const forma = new THREE.Shape();
-    forma.moveTo(-5.5, -5.5);
-    forma.lineTo(5.5, -5.5);
-    forma.lineTo(5.5, 5.5);
-    forma.lineTo(-5.5, 5.5);
-    forma.closePath();
-    const g = new THREE.ExtrudeGeometry(forma, { depth: 7, bevelEnabled: true, bevelThickness: 1.2, bevelSize: 1.2, bevelSegments: 4 });
-    g.center();
-    return g;
-  }, []);
 
   useEffect(() => {
     destino.current.set(acento);
@@ -60,14 +43,12 @@ function Q({ acento, paso, celebrar }: { acento: string; paso: number; celebrar:
     giroDestino.current += Math.PI * 4;
     pulso.current = 1;
   }, [celebrar]);
-
   useEffect(
     () => () => {
       cromo.dispose();
       punto.dispose();
-      geometriaPunto.dispose();
     },
-    [cromo, punto, geometriaPunto],
+    [cromo, punto],
   );
 
   useFrame((estado, delta) => {
@@ -86,25 +67,11 @@ function Q({ acento, paso, celebrar }: { acento: string; paso: number; celebrar:
     const t = estado.clock.elapsedTime;
     g.rotation.y = giro.current + mirada.current.x;
     g.rotation.x = mirada.current.y + Math.sin(t * 0.6) * 0.04;
-    g.position.y = Math.sin(t * 0.8) * 0.08;
+    g.position.y = Math.sin(t * 0.8) * 0.08 / 0.042;
     g.scale.setScalar(1 + pulso.current * 0.12);
   });
 
-  return (
-    <group scale={ESCALA}>
-      <group ref={raiz}>
-        <mesh position={ARO_CENTRO} material={cromo}>
-          <torusGeometry args={[31, 5, 32, 144]} />
-        </mesh>
-        <group position={COLA_INICIO} rotation={[0, 0, -Math.PI * 0.75]}>
-          <mesh position={[0, COLA_LARGO / 2, 0]} material={cromo}>
-            <cylinderGeometry args={[5, 5, COLA_LARGO, 32]} />
-          </mesh>
-        </group>
-        <mesh geometry={geometriaPunto} position={PUNTO_CENTRO} material={punto} />
-      </group>
-    </group>
-  );
+  return <FiguraQ cromo={cromo} punto={punto} raiz={raiz} />;
 }
 
 export default function QRegistro({ acento, paso, celebrar, activo }: { acento: string; paso: number; celebrar: boolean; activo: boolean }) {

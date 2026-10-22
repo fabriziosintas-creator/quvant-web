@@ -209,12 +209,27 @@ export const PROMO_TEXTOS = {
 
   /** El botón de la portada, debajo de la cinta de rubros: lleva al video y de ahí al registro. */
   portal: {
-    etiqueta: "Primeros 100",
-    titulo: "Mirá en 40 segundos qué hace el sistema por tu negocio",
-    texto: "Y elegí: 2 meses gratis del sistema o 50 % en tu web o tu app.",
+    etiqueta: "Primeros 100 registros",
+    /** El título, con la parte que se resalta aparte. */
+    resalte: "2 meses gratis",
+    titulo: "de sistema administrativo para tu negocio",
+    texto: "Mirá en 40 segundos qué hace el sistema por tu negocio.",
+    /** Los 2 meses son para los rubros con sistema (rubros_sistema); para el resto, el 50 % (ver las bases). */
+    nota: "O, según tu rubro, 50 % en tu web o tu app.",
     accion: "Ver el video",
     estados: { abierta: "Quedan {n} de {tope}", pronto: "Arranca muy pronto", llena: "Lista de espera" },
   },
+
+  /** La invitación a bajar hasta los beneficios, con la Q que gira y suelta su punto. */
+  regalo: {
+    etiqueta: "Lo mejor viene ahora",
+    titulo: "Y esto es lo que te regalamos.",
+    texto: "Por ser de los primeros 100, elegís uno de los dos beneficios. Seguí bajando.",
+    boton: "Ver lo que te regalamos",
+  },
+
+  /** La invitación a deslizar hasta el video, en la página de la promo. */
+  irAlVideo: { texto: "Deslizá y mirá el video", duracion: "40 s" },
 
   /** Lo que aparece sobre el video cuando termina: el paso al registro. */
   finVideo: {
