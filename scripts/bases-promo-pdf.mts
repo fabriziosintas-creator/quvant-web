@@ -2,8 +2,9 @@
  * npx tsx scripts/bases-promo-pdf.mts
  *
  * Las bases y condiciones de "Primeros 100" en PDF, con la revisión: qué se
- * cambió y por qué, qué falta completar y qué tiene que confirmar un
- * abogado. Las bases salen de src/datos/promo.ts (las mismas de la web).
+ * cambió y por qué, qué falta completar y las dudas que quedan abiertas
+ * (por si más adelante se consulta a un abogado; por ahora no hace falta,
+ * decisión de fabrizio). Las bases salen de src/datos/promo.ts (las mismas de la web).
  * Sale en ../marca/promo/bases-primeros-100-revisadas.pdf (fuera del repo).
  */
 import { mkdirSync, readFileSync } from "node:fs";
@@ -143,8 +144,8 @@ ul li { margin-bottom: 2mm; }
 </style></head><body>
 <div class="marca">QUVANT</div>
 <h1><span class="cuadrado"></span>Primeros 100 · Bases y condiciones</h1>
-<p class="bajada">Versión revisada el 22 de octubre de 2026. Borrador: falta completar los datos marcados en amarillo y que lo revise un abogado matriculado antes de publicar.</p>
-<div class="aviso"><b>Sobre esta revisión.</b> La hizo Claude (un asistente de inteligencia artificial) con criterio jurídico general, a partir del texto de las leyes citadas y de fuentes públicas. No es asesoramiento legal ni reemplaza la firma de un abogado: sirve para llegar a esa revisión con un texto ordenado y con las preguntas claras.</div>
+<p class="bajada">Versión revisada el 22 de octubre de 2026. Antes de publicar falta completar los datos marcados en amarillo.</p>
+<div class="aviso"><b>Sobre esta revisión.</b> La hizo Claude (un asistente de inteligencia artificial) con criterio jurídico general, a partir del texto de las leyes citadas y de fuentes públicas. No es asesoramiento legal. Por ahora no se va a pasar por un abogado (decisión de Quvant); las dudas que quedan abiertas están en la sección 4, por si más adelante se consulta.</div>
 
 <h2>1. Bases y condiciones (texto propuesto, el mismo de la web)</h2>
 <ol class="bases">
@@ -162,7 +163,7 @@ ${CAMBIOS.map(([punto, antes, despues]) => `<tr><td>${html(punto)}</td><td>${htm
 <h2>3. Lo que falta completar antes de publicar</h2>
 <ul>${FALTA.map((f) => `<li>${html(f)}</li>`).join("")}</ul>
 
-<h2>4. Para que confirme un abogado</h2>
+<h2>4. Dudas abiertas (para cuando se consulte a un abogado)</h2>
 <ul>${ABOGADO.map((f) => `<li>${html(f)}</li>`).join("")}</ul>
 
 <h2>5. Fuentes consultadas</h2>

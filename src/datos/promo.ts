@@ -170,7 +170,8 @@ export const PROMO_TEXTOS = {
      * por escrito antes de que terminen los 2 meses.
      *
      * TODO antes de publicar: los datos del organizador (razón social,
-     * CUIT, domicilio y email) y que las revise un abogado matriculado.
+     * CUIT, domicilio y email). Por ahora no se pasan por un abogado
+     * (decisión de fabrizio, 22-oct-2026).
      */
     items: [
       "Organizador. Organiza la promoción [razón social], CUIT [número], con domicilio en [domicilio] («Quvant»). Contacto: WhatsApp +54 11 2481-1956 y [email].",
