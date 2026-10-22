@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { ChatQuvant } from "@/componentes/chat/ChatQuvant";
+import { AmbienteFondo } from "@/componentes/estructura/AmbienteFondo";
 import { MedirRubros } from "@/componentes/medicion/MedirRubros";
 import { DockCanales } from "@/componentes/estructura/DockCanales";
 import { Encabezado } from "@/componentes/estructura/Encabezado";
@@ -29,6 +30,7 @@ export default async function LayoutSitio({ children }: { children: ReactNode })
       >
         {ACCESIBILIDAD.saltarAlContenido}
       </a>
+      <AmbienteFondo />
       <ScrollSuave />
       <Revelar />
       <FocoTactil />
