@@ -246,7 +246,7 @@ export type Database = {
           creado_en?: string
           enlace?: string | null
           es_prueba?: boolean
-          id?: number
+          id?: never
           para_perfil?: string | null
           prioridad?: string
           texto?: string | null
@@ -258,14 +258,22 @@ export type Database = {
           creado_en?: string
           enlace?: string | null
           es_prueba?: boolean
-          id?: number
+          id?: never
           para_perfil?: string | null
           prioridad?: string
           texto?: string | null
           tipo?: string
           titulo?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "avisos_para_perfil_fkey"
+            columns: ["para_perfil"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       avisos_leidos: {
         Row: {
@@ -283,7 +291,22 @@ export type Database = {
           leido_en?: string
           perfil_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "avisos_leidos_aviso_id_fkey"
+            columns: ["aviso_id"]
+            isOneToOne: false
+            referencedRelation: "avisos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "avisos_leidos_perfil_id_fkey"
+            columns: ["perfil_id"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       avisos_preferencias: {
         Row: {
@@ -304,7 +327,15 @@ export type Database = {
           perfil_id?: string
           por_whatsapp?: string[]
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "avisos_preferencias_perfil_id_fkey"
+            columns: ["perfil_id"]
+            isOneToOne: true
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       bitacora: {
         Row: {
@@ -324,7 +355,7 @@ export type Database = {
           cambios?: Json | null
           creado_en?: string
           detalle?: Json | null
-          id?: number
+          id?: never
           quien?: string | null
           registro_id?: string | null
           resumen?: string | null
@@ -336,7 +367,7 @@ export type Database = {
           cambios?: Json | null
           creado_en?: string
           detalle?: Json | null
-          id?: number
+          id?: never
           quien?: string | null
           registro_id?: string | null
           resumen?: string | null
@@ -354,9 +385,9 @@ export type Database = {
           empresa: string
           es_prueba: boolean
           estado: Database["public"]["Enums"]["estado_cliente"]
+          fecha: string
           fecha_alta: string | null
           fecha_baja: string | null
-          fecha: string
           id: string
           local_id: string | null
           motivo_baja: string | null
@@ -371,9 +402,9 @@ export type Database = {
           empresa: string
           es_prueba?: boolean
           estado?: Database["public"]["Enums"]["estado_cliente"]
+          fecha?: string
           fecha_alta?: string | null
           fecha_baja?: string | null
-          fecha?: string
           id?: string
           local_id?: string | null
           motivo_baja?: string | null
@@ -388,9 +419,9 @@ export type Database = {
           empresa?: string
           es_prueba?: boolean
           estado?: Database["public"]["Enums"]["estado_cliente"]
+          fecha?: string
           fecha_alta?: string | null
           fecha_baja?: string | null
-          fecha?: string
           id?: string
           local_id?: string | null
           motivo_baja?: string | null
@@ -667,7 +698,15 @@ export type Database = {
           hasta?: string
           perfil_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "hoy_pospuestas_perfil_id_fkey"
+            columns: ["perfil_id"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       indicadores_diarios: {
         Row: {
@@ -715,8 +754,8 @@ export type Database = {
           clave_cliente: string | null
           contacto: string | null
           creado_en: string
-          direccion_normalizada: string | null
           direccion: string | null
+          direccion_normalizada: string | null
           es_prueba: boolean
           estado: Database["public"]["Enums"]["estado_local"]
           id: string
@@ -742,8 +781,8 @@ export type Database = {
           clave_cliente?: string | null
           contacto?: string | null
           creado_en?: string
-          direccion_normalizada?: string | null
           direccion?: string | null
+          direccion_normalizada?: string | null
           es_prueba?: boolean
           estado?: Database["public"]["Enums"]["estado_local"]
           id?: string
@@ -769,8 +808,8 @@ export type Database = {
           clave_cliente?: string | null
           contacto?: string | null
           creado_en?: string
-          direccion_normalizada?: string | null
           direccion?: string | null
+          direccion_normalizada?: string | null
           es_prueba?: boolean
           estado?: Database["public"]["Enums"]["estado_local"]
           id?: string
@@ -1203,7 +1242,43 @@ export type Database = {
           valor_abono?: number | null
           valor_proyecto?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "oportunidades_cliente_plantilla_id_fkey"
+            columns: ["cliente_plantilla_id"]
+            isOneToOne: false
+            referencedRelation: "clientes_plantilla"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oportunidades_local_id_fkey"
+            columns: ["local_id"]
+            isOneToOne: false
+            referencedRelation: "locales"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oportunidades_local_id_fkey"
+            columns: ["local_id"]
+            isOneToOne: false
+            referencedRelation: "locales_resumen"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oportunidades_nicho_id_fkey"
+            columns: ["nicho_id"]
+            isOneToOne: false
+            referencedRelation: "nichos"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oportunidades_perfil_id_fkey"
+            columns: ["perfil_id"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       oportunidades_actividad: {
         Row: {
@@ -1222,7 +1297,7 @@ export type Database = {
           es_prueba?: boolean
           etapa_anterior?: string | null
           etapa_nueva?: string | null
-          id?: number
+          id?: never
           oportunidad_id: string
           quien?: string | null
           resultado?: string | null
@@ -1233,13 +1308,28 @@ export type Database = {
           es_prueba?: boolean
           etapa_anterior?: string | null
           etapa_nueva?: string | null
-          id?: number
+          id?: never
           oportunidad_id?: string
           quien?: string | null
           resultado?: string | null
           tipo?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "oportunidades_actividad_oportunidad_id_fkey"
+            columns: ["oportunidad_id"]
+            isOneToOne: false
+            referencedRelation: "oportunidades"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oportunidades_actividad_quien_fkey"
+            columns: ["quien"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       perfiles: {
         Row: {
@@ -1338,7 +1428,7 @@ export type Database = {
           creado_en?: string
           detalle?: string | null
           fecha?: string
-          id?: number
+          id?: never
           medio: string
           quien: string
         }
@@ -1349,11 +1439,103 @@ export type Database = {
           creado_en?: string
           detalle?: string | null
           fecha?: string
-          id?: number
+          id?: never
           medio?: string
           quien?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "permisos_metricas_cargado_por_fkey"
+            columns: ["cargado_por"]
+            isOneToOne: false
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "permisos_metricas_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "clientes_sistema"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      promo_config: {
+        Row: {
+          activa: boolean
+          actualizado_en: string
+          desde: string | null
+          hasta: string
+          id: boolean
+          rubros_sistema: string[]
+          tope: number
+        }
+        Insert: {
+          activa?: boolean
+          actualizado_en?: string
+          desde?: string | null
+          hasta?: string
+          id?: boolean
+          rubros_sistema?: string[]
+          tope?: number
+        }
+        Update: {
+          activa?: boolean
+          actualizado_en?: string
+          desde?: string | null
+          hasta?: string
+          id?: boolean
+          rubros_sistema?: string[]
+          tope?: number
+        }
         Relationships: []
+      }
+      promo_lugares: {
+        Row: {
+          actualizado_en: string
+          asignado_en: string | null
+          beneficio: Database["public"]["Enums"]["beneficio_promo"]
+          es_prueba: boolean
+          estado: Database["public"]["Enums"]["estado_lugar"]
+          id: string
+          notas: string | null
+          numero: number | null
+          pedido_en: string
+          perfil_id: string
+        }
+        Insert: {
+          actualizado_en?: string
+          asignado_en?: string | null
+          beneficio: Database["public"]["Enums"]["beneficio_promo"]
+          es_prueba?: boolean
+          estado?: Database["public"]["Enums"]["estado_lugar"]
+          id?: string
+          notas?: string | null
+          numero?: number | null
+          pedido_en?: string
+          perfil_id: string
+        }
+        Update: {
+          actualizado_en?: string
+          asignado_en?: string | null
+          beneficio?: Database["public"]["Enums"]["beneficio_promo"]
+          es_prueba?: boolean
+          estado?: Database["public"]["Enums"]["estado_lugar"]
+          id?: string
+          notas?: string | null
+          numero?: number | null
+          pedido_en?: string
+          perfil_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promo_lugares_perfil_id_fkey"
+            columns: ["perfil_id"]
+            isOneToOne: true
+            referencedRelation: "perfiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tipo_cambio_mensual: {
         Row: {
@@ -1399,6 +1581,7 @@ export type Database = {
           nota: string | null
           que_se_mostro: string | null
           siguiente_paso: string | null
+          tarjeta_promo: boolean
           visitante_id: string
           volver: Database["public"]["Enums"]["volver"] | null
         }
@@ -1413,6 +1596,7 @@ export type Database = {
           nota?: string | null
           que_se_mostro?: string | null
           siguiente_paso?: string | null
+          tarjeta_promo?: boolean
           visitante_id?: string
           volver?: Database["public"]["Enums"]["volver"] | null
         }
@@ -1427,6 +1611,7 @@ export type Database = {
           nota?: string | null
           que_se_mostro?: string | null
           siguiente_paso?: string | null
+          tarjeta_promo?: boolean
           visitante_id?: string
           volver?: Database["public"]["Enums"]["volver"] | null
         }
@@ -1513,14 +1698,10 @@ export type Database = {
       }
     }
     Functions: {
-      buscar_panel: {
-        Args: { limite?: number; texto: string }
-        Returns: { contexto: string; enlace: string; id: string; nicho: string | null; puntaje: number; tipo: string; titulo: string }[]
+      anotar_en_bitacora: {
+        Args: { p_accion: string; p_detalle?: Json; p_tabla: string }
+        Returns: undefined
       }
-      anotar_en_bitacora: { Args: { p_accion: string; p_detalle?: Json; p_tabla: string }; Returns: undefined }
-      deshacer_cambio: { Args: { p_id: number }; Returns: string }
-      limpiar_bitacora: { Args: never; Returns: number }
-      revisar_visitas_interesantes: { Args: never; Returns: number }
       atencion_nicho: {
         Args: { desde: string; hasta: string; nicho: string }
         Returns: {
@@ -1529,10 +1710,33 @@ export type Database = {
           visitas: number
         }[]
       }
+      buscar_panel: {
+        Args: { limite?: number; texto: string }
+        Returns: {
+          contexto: string
+          enlace: string
+          id: string
+          nicho: string
+          puntaje: number
+          tipo: string
+          titulo: string
+        }[]
+      }
+      deshacer_cambio: { Args: { p_id: number }; Returns: string }
       embudo_nicho: {
         Args: { desde: string; hasta: string; nicho: string }
         Returns: Json
       }
+      embudo_promo: {
+        Args: { desde: string }
+        Returns: {
+          tipo: Database["public"]["Enums"]["tipo_evento"]
+          total: number
+          visitas: number
+        }[]
+      }
+      estado_promo: { Args: never; Returns: Json }
+      limpiar_bitacora: { Args: never; Returns: number }
       metricas_nichos: {
         Args: { desde: string }
         Returns: {
@@ -1545,8 +1749,14 @@ export type Database = {
           vistas: number
         }[]
       }
+      mi_lugar_promo: { Args: never; Returns: Json }
+      reservar_lugar_promo: {
+        Args: { beneficio: Database["public"]["Enums"]["beneficio_promo"] }
+        Returns: Json
+      }
       resumen_registros: { Args: never; Returns: Json }
       resumen_visitas: { Args: never; Returns: Json }
+      revisar_visitas_interesantes: { Args: never; Returns: number }
       visitantes_por_dia: {
         Args: { desde: string; hasta: string }
         Returns: {
@@ -1556,6 +1766,7 @@ export type Database = {
       }
     }
     Enums: {
+      beneficio_promo: "web_app_50" | "sistema_2_meses"
       estado_cliente: "demo_mostrada" | "en_prueba" | "activo" | "baja"
       estado_local:
         | "por_visitar"
@@ -1563,6 +1774,15 @@ export type Database = {
         | "interesado"
         | "cliente"
         | "descartado"
+      estado_lugar:
+        | "pedido"
+        | "espera"
+        | "reservado"
+        | "coordinando"
+        | "en_uso"
+        | "usado"
+        | "vencido"
+        | "cancelado"
       feedback: "bueno" | "regular" | "malo"
       origen_local: "manual" | "importado"
       rol: "usuario" | "admin"
@@ -1577,6 +1797,14 @@ export type Database = {
         | "tiempo_nicho"
         | "profundidad_nicho"
         | "origen"
+        | "vista_cinta_promo"
+        | "cierre_cinta_promo"
+        | "clic_cinta_promo"
+        | "vista_promo"
+        | "uso_demo_promo"
+        | "play_video_promo"
+        | "inicio_registro_promo"
+        | "lugar_asignado"
       volver: "si" | "mas_adelante" | "no"
     }
     CompositeTypes: {
@@ -1705,6 +1933,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      beneficio_promo: ["web_app_50", "sistema_2_meses"],
       estado_cliente: ["demo_mostrada", "en_prueba", "activo", "baja"],
       estado_local: [
         "por_visitar",
@@ -1712,6 +1941,16 @@ export const Constants = {
         "interesado",
         "cliente",
         "descartado",
+      ],
+      estado_lugar: [
+        "pedido",
+        "espera",
+        "reservado",
+        "coordinando",
+        "en_uso",
+        "usado",
+        "vencido",
+        "cancelado",
       ],
       feedback: ["bueno", "regular", "malo"],
       origen_local: ["manual", "importado"],
@@ -1727,6 +1966,14 @@ export const Constants = {
         "tiempo_nicho",
         "profundidad_nicho",
         "origen",
+        "vista_cinta_promo",
+        "cierre_cinta_promo",
+        "clic_cinta_promo",
+        "vista_promo",
+        "uso_demo_promo",
+        "play_video_promo",
+        "inicio_registro_promo",
+        "lugar_asignado",
       ],
       volver: ["si", "mas_adelante", "no"],
     },
