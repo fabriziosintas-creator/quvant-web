@@ -1,4 +1,10 @@
-@import "tailwindcss";
+/*
+ * Tailwind busca clases solo en src/ (todas las de la web viven ahí). Si
+ * recorre todo el proyecto, en desarrollo vigila también .next/, donde el
+ * servidor escribe sin parar (registro, caché de Turbopack): cada escritura
+ * recompilaba el CSS y la página podía quedar recargándose sin fin.
+ */
+@import "tailwindcss" source("..");
 
 /*
  * Tailwind no revisa la carpeta del video (proyecto Remotion aparte, con
