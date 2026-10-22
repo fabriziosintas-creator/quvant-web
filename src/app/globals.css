@@ -1048,7 +1048,7 @@ html[data-vista="texto"] .ficha-web .telefono-web {
   }
 }
 
-/* "2 meses gratis": texto con degradé verde y un brillo que lo recorre. */
+/* "1 mes gratis": texto con degradé verde y un brillo que lo recorre. */
 .portal-promo__resalte {
   background: linear-gradient(100deg, var(--portal-acento) 0%, var(--portal-luz) 35%, white 50%, var(--portal-luz) 65%, var(--portal-acento) 100%);
   background-size: 250% 100%;

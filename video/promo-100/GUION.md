@@ -1,6 +1,6 @@
 # Video de "Primeros 100" · Guion (aprobado por fabrizio el 22-oct-2026)
 
-**Para qué:** que un comerciante vea en 40 segundos tres momentos que conoce y cómo los resuelve el sistema, y quiera probarlo dos meses. Va en la página `/primeros-100` (16:9, con un botón por capítulo) y en Reels y Stories (9:16, subtítulos quemados).
+**Para qué:** que un comerciante vea en 40 segundos tres momentos que conoce y cómo los resuelve el sistema, y quiera probarlo un mes. Va en la página `/primeros-100` (16:9, con un botón por capítulo) y en Reels y Stories (9:16, subtítulos quemados).
 
 **Reglas:** solo lo verificado en la demo (`docs/promo-primeros-100-verificacion.md`); nada de "contable", ARCA, Mercado Pago ni WhatsApp como funciones; sin "Yunque" (las capturas van recortadas sin la barra lateral); subtítulos siempre (casi todos lo miran sin sonido); el tono de la web: frases cortas, de mostrador.
 
@@ -39,7 +39,7 @@ Los textos viven en `video/src/promo100/guion.ts`: si cambiás algo acá, cambia
 
 ## Cierre (0:39 – 0:42)
 
-La Q y **Primeros 100** · "2 meses gratis del sistema o 50 % en tu web o tu app." · `quvant.com.ar/primeros-100`
+La Q y **Primeros 100** · "1 mes gratis del sistema o 50 % en tu web o tu app." · `quvant.com.ar/primeros-100`
 
 ## Cómo se hace
 

@@ -104,7 +104,7 @@ export async function registrarse(_previo: EstadoFormulario, datos: FormData): P
   if (conPromo) {
     const E = PROMO_TEXTOS.registro.errores;
     if (!esBeneficio(beneficio)) errores.promo_beneficio = E.beneficio;
-    else if (beneficio === "sistema_2_meses" && !(PROMO.rubrosSistema as readonly string[]).includes(perfil.nicho)) errores.promo_beneficio = E.noDisponible;
+    else if (beneficio === "sistema_1_mes" && !(PROMO.rubrosSistema as readonly string[]).includes(perfil.nicho)) errores.promo_beneficio = E.noDisponible;
     if (!perfil.telefono) errores.telefono = E.telefono;
   }
   if (!emailValido(email)) errores.email = ERROR.email;

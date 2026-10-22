@@ -40,9 +40,9 @@ const CAMBIOS: Array<[string, string, string]> = [
     "Cláusula 1: organiza Quvant, con su WhatsApp de contacto. Por ahora sin razón social, CUIT, domicilio ni email (decisión de fabrizio, 22-oct-2026).",
   ],
   [
-    "Después de los 2 meses",
+    "Después del mes gratis",
     "Fijaba un precio del abono que todavía no está definido.",
-    "Sin precio: no hay cobro automático; antes de que terminen los 2 meses se informa por escrito el precio vigente y solo sigue quien lo acepta de forma expresa. Así la prueba gratis no se convierte en una suscripción sin consentimiento.",
+    "Sin precio: no hay cobro automático; antes de que termine el mes se informa por escrito el precio vigente y solo sigue quien lo acepta de forma expresa. Así la prueba gratis no se convierte en una suscripción sin consentimiento.",
   ],
   [
     "Base del 50 %",
@@ -52,7 +52,7 @@ const CAMBIOS: Array<[string, string, string]> = [
   [
     "Plazos que dependían de Quvant",
     "Los 90 días corrían desde que se asignaba el lugar y los 60 días «para activar» aunque Quvant se demorara. Un plazo que vence por demora del proveedor puede ser una cláusula abusiva (Ley 24.240, art. 37).",
-    "Quvant manda el presupuesto en 15 días hábiles y los 90 días corren desde que se recibe; los 60 días corren desde que Quvant ofrece una fecha y se extienden si la demora es de Quvant; los 2 meses corren desde que el sistema funciona.",
+    "Quvant manda el presupuesto en 15 días hábiles y los 90 días corren desde que se recibe; los 60 días corren desde que Quvant ofrece una fecha y se extienden si la demora es de Quvant; el mes corre desde que el sistema funciona.",
   ],
   [
     "Lista de espera",
@@ -86,7 +86,7 @@ const CAMBIOS: Array<[string, string, string]> = [
   ],
   [
     "Publicidad coherente",
-    "Lo que dice la publicidad integra el contrato (Ley 24.240, art. 8). La tarjeta y los textos para redes no tenían fechas ni el límite de rubros de los 2 meses.",
+    "Lo que dice la publicidad integra el contrato (Ley 24.240, art. 8). La tarjeta y los textos para redes no tenían fechas ni el límite de rubros del mes gratis.",
     "La tarjeta impresa sale con la vigencia («Del … al 31/01/2027») y el límite de rubros, y sin fecha de comienzo se genera como BORRADOR. Los textos para redes llevan las fechas o remiten a las bases.",
   ],
 ];

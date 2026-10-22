@@ -62,8 +62,8 @@ body { width: 105mm; height: 148mm; padding: 9mm 9mm 8mm; display: flex; flex-di
 </style></head><body>
 <img class="firma" src="${firma}" style="width: 34mm">
 <p class="titulo" style="font-size: 30pt; margin-top: 9mm"><span class="cuadradito"></span>Primeros 100</p>
-<p class="texto" style="font-size: 11.5pt; margin-top: 4mm">2 meses gratis del sistema para administrar tu negocio, o 50 % en el desarrollo de tu web o tu app.</p>
-<p class="chico" style="font-size: 8pt; margin-top: 1.5mm">Los 2 meses del sistema: para Industria y comercio, y Gimnasios y fitness.</p>
+<p class="texto" style="font-size: 11.5pt; margin-top: 4mm">1 mes gratis del sistema para administrar tu negocio, o 50 % en el desarrollo de tu web o tu app.</p>
+<p class="chico" style="font-size: 8pt; margin-top: 1.5mm">El mes gratis del sistema: para Industria y comercio, y Gimnasios y fitness.</p>
 <p class="chico" style="font-size: 9pt; margin-top: 2.5mm">Para las primeras 100 personas que se registran.</p>
 <div style="display: flex; align-items: center; gap: 5mm; margin-top: auto">
   <div class="qr" style="width: 36mm; height: 36mm">${qr}</div>
@@ -82,7 +82,7 @@ body { width: 85mm; height: 55mm; padding: 5mm; display: flex; gap: 4mm; align-i
 <div style="display: flex; flex-direction: column; flex: 1">
   <img class="firma" src="${firma}" style="width: 24mm">
   <p class="titulo" style="font-size: 15pt; margin-top: 3.5mm"><span class="cuadradito"></span>Primeros 100</p>
-  <p class="texto" style="font-size: 7.2pt; margin-top: 1.8mm">2 meses gratis del sistema o 50 % en tu web o tu app.</p>
+  <p class="texto" style="font-size: 7.2pt; margin-top: 1.8mm">1 mes gratis del sistema o 50 % en tu web o tu app.</p>
   <p class="link" style="font-size: 5.6pt; margin-top: auto">${LINK_VISIBLE}</p>
   <p class="chico" style="font-size: 4.6pt; margin-top: 1mm">${VIGENCIA} o hasta completar los lugares. Bases en la web.</p>
 </div>

@@ -20,7 +20,7 @@ export async function reservarLugar(_previo: EstadoReserva, datos: FormData): Pr
   const T = PROMO_TEXTOS;
   const beneficio = String(datos.get("promo_beneficio") ?? "");
   if (!esBeneficio(beneficio)) return { estado: "error", errores: { promo_beneficio: T.registro.errores.beneficio } };
-  if (beneficio === "sistema_2_meses" && !(PROMO.rubrosSistema as readonly string[]).includes(perfil.nicho_id)) {
+  if (beneficio === "sistema_1_mes" && !(PROMO.rubrosSistema as readonly string[]).includes(perfil.nicho_id)) {
     return { estado: "error", errores: { promo_beneficio: T.registro.errores.noDisponible } };
   }
 

@@ -1,6 +1,6 @@
 # Promo "Primeros 100": prompt para Claude Code
 
-Sumar a quvant-web una promoción de lanzamiento: **las primeras 100 personas que se registren eligen un beneficio**, 50 % de descuento en el desarrollo de su web o app, o 2 meses sin cargo del sistema de gestión. Va acompañada de un video corto e interactivo con las funciones del sistema que más le importan a un comerciante. El video todavía no existe: todo tiene que quedar armado para que funcione sin él y se enchufe cuando esté.
+Sumar a quvant-web una promoción de lanzamiento: **las primeras 100 personas que se registren eligen un beneficio**, 50 % de descuento en el desarrollo de su web o app, o 1 mes sin cargo del sistema de gestión. Va acompañada de un video corto e interactivo con las funciones del sistema que más le importan a un comerciante. El video todavía no existe: todo tiene que quedar armado para que funcione sin él y se enchufe cuando esté.
 
 Trabajá en una rama nueva `promo-primeros-100` desde `master`, un commit por paso, sin push ni deploy (publicar se hace solo con mi OK). Avanzá de paso a paso sin pedir permiso; frená únicamente para lo marcado como **PREGUNTAR**.
 
@@ -16,8 +16,8 @@ Lo que quede sin completar va con el valor **por defecto**, y lo anotás en el r
 | 2 | Fecha límite (se cierra al llegar a 100 o en esta fecha, lo que pase primero) | 31 de enero de 2027 |
 | 3 | Qué cuenta como lugar | Cuenta con **email confirmado** (registrarse sin confirmar no ocupa lugar) |
 | 4 | Beneficio A: 50 % sobre el presupuesto de desarrollo de una web o una app | Sin tope. No incluye dominio, hosting, mantenimiento mensual ni contenidos. El presupuesto se aprueba dentro de los 90 días |
-| 5 | Beneficio B: 2 meses sin cargo del sistema de gestión | Solo rubros con sistema disponible hoy (Industria y comercio; Gimnasios y fitness). Sin tarjeta y sin débito automático: al terminar los 2 meses se pregunta si sigue. Se activa dentro de los 60 días |
-| 6 | Precio del abono después de los 2 meses (va en las bases) | TODO: `$____ por mes` |
+| 5 | Beneficio B: 1 mes sin cargo del sistema de gestión | Solo rubros con sistema disponible hoy (Industria y comercio; Gimnasios y fitness). Sin tarjeta y sin débito automático: al terminar el mes se pregunta si sigue. Se activa dentro de los 60 días |
+| 6 | Precio del abono después del mes gratis (va en las bases) | TODO: `$____ por mes` |
 | 7 | ¿Se elige uno o los dos beneficios? | Uno solo |
 | 8 | Teléfono obligatorio para reservar el lugar | Sí (para coordinar por WhatsApp) |
 | 9 | Cuántas puestas en marcha pueden hacer por semana | 5: se agenda por orden de lugar |
@@ -60,10 +60,10 @@ Lo que quede sin completar va con el valor **por defecto**, y lo anotás en el r
 **No va como ventana que tapa la página al entrar.** En la portada ya corre la intro de la tele: una ventana encima se cierra sin leer. Además, Google castiga en el celular las ventanas que tapan el contenido, y el tono que buscamos es el de alguien que te cuenta algo, no el de un cartel que te frena. La promo va en cinco lugares que no interrumpen:
 
 ### A. Una cinta fina arriba del encabezado (todas las páginas públicas)
-- Una línea: "Lanzamiento: los primeros 100 eligen 50 % en su web o 2 meses gratis del sistema · Quedan 63 →". Lleva a `/primeros-100`.
+- Una línea: "Lanzamiento: los primeros 100 eligen 50 % en su web o 1 mes gratis del sistema · Quedan 63 →". Lleva a `/primeros-100`.
 - Aparece recién cuando terminó la intro de la tele (evento que ya emite `IntroTV`) y no se anima con nada más que un fundido.
 - Se cierra con una cruz; queda cerrada 7 días en ese navegador (`localStorage`, con try/catch). No mueve el contenido al aparecer (reservá su alto o ponela antes del primer pintado: sin saltos de diseño).
-- En el celular, en un renglón y con texto más corto ("Primeros 100: 50 % en tu web o 2 meses gratis · Quedan 63").
+- En el celular, en un renglón y con texto más corto ("Primeros 100: 50 % en tu web o 1 mes gratis · Quedan 63").
 - No aparece en `/panel`, `/registro` ni `/cuenta` (ahí la promo ya está en la página).
 
 ### B. Una página propia: `/primeros-100`
@@ -82,7 +82,7 @@ En este orden:
 - Sin promo, el registro queda exactamente como está.
 
 ### D. La cuenta
-- Con lugar: "Tu lugar: N° 37 de 100 · 2 meses gratis del sistema", el estado (reservado, coordinando, en uso) y el próximo paso, con un botón de WhatsApp con el mensaje armado ("Hola, soy Marta, tengo el lugar 37 de Primeros 100…").
+- Con lugar: "Tu lugar: N° 37 de 100 · 1 mes gratis del sistema", el estado (reservado, coordinando, en uso) y el próximo paso, con un botón de WhatsApp con el mensaje armado ("Hola, soy Marta, tengo el lugar 37 de Primeros 100…").
 - Sin lugar y con lugares libres: "Reservar mi lugar" (decisión 10).
 - En lista de espera: lo dice, con su posición.
 
@@ -105,7 +105,7 @@ La web hoy tiene poco tráfico propio: la cinta atrapa a quien ya llega, pero a 
 Migración nueva en `supabase/migrations/`, validada en PGlite (scratchpad) antes de aplicarla. **No la apliques a la base real**: dejala lista y decime el comando.
 
 - `promo_config`: una fila (activa, tope = 100, hasta = fecha límite, rubros del beneficio B). Solo admin escribe.
-- `promo_lugares`: `perfil_id` (único), `numero` (1..100, único; nulo en lista de espera), `beneficio` (enum `web_app_50` | `sistema_2_meses`), `estado` (enum `reservado` | `coordinando` | `en_uso` | `usado` | `vencido` | `cancelado` | `espera`), `pedido_en`, `asignado_en`, `notas`, `es_prueba`.
+- `promo_lugares`: `perfil_id` (único), `numero` (1..100, único; nulo en lista de espera), `beneficio` (enum `web_app_50` | `sistema_1_mes`), `estado` (enum `reservado` | `coordinando` | `en_uso` | `usado` | `vencido` | `cancelado` | `espera`), `pedido_en`, `asignado_en`, `notas`, `es_prueba`.
 - **La asignación del número tiene que ser segura con dos confirmaciones al mismo tiempo**: una función `privado.asignar_lugar_promo(perfil)` (security definer, `set search_path = ''`) que toma un `pg_advisory_xact_lock`, cuenta los asignados y da el siguiente número o deja a la persona en espera. Se llama al confirmar el email (si la persona pidió la promo al registrarse) o al tocar "Reservar mi lugar" con la cuenta ya confirmada.
 - `lugares_restantes()`: función pública que devuelve **solo un número** (ningún dato de nadie). La web la cachea un minuto (`"use cache"` con `cacheLife`), así la cinta no consulta la base en cada visita.
 - RLS: cada persona ve solo su fila; los admin, todas. Nadie puede elegir su número ni cambiar su estado desde el navegador.

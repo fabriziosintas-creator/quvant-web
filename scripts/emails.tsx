@@ -84,7 +84,7 @@ async function vista() {
     // Primeros 100: con lugar, en lista de espera, y el aviso interno con lugar.
     ["novedad-promo", await armarNovedadPromo({ nombre: "Ana", quedan: 63, tope: 100, hasta: "31/01/2027" }, base)],
     ["bienvenida-promo-lugar", await armarBienvenida({ ...ejemplo, objetivo: "hacer_web", promo: { numero: 37, beneficio: "web_app_50", tope: 100 } }, base)],
-    ["bienvenida-promo-espera", await armarBienvenida({ ...ejemplo, objetivo: "mejorar_clientela", promo: { numero: null, beneficio: "sistema_2_meses", tope: 100 } }, base)],
+    ["bienvenida-promo-espera", await armarBienvenida({ ...ejemplo, objetivo: "mejorar_clientela", promo: { numero: null, beneficio: "sistema_1_mes", tope: 100 } }, base)],
     [
       "aviso-interno-promo",
       await armarAvisoRegistro(
@@ -100,7 +100,7 @@ async function vista() {
           novedades: true,
           origen: "primeros-100/visita",
           telefono: "11 2481-1956",
-          promo: { numero: 37, beneficio: "sistema_2_meses", tope: 100 },
+          promo: { numero: 37, beneficio: "sistema_1_mes", tope: 100 },
         },
         base,
       ),

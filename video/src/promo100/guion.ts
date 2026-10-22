@@ -85,7 +85,7 @@ export const CAPITULOS: Capitulo[] = [
 
 export const FINAL = {
   titulo: "Primeros 100",
-  texto: "2 meses gratis del sistema o 50 % en tu web o tu app.",
+  texto: "1 mes gratis del sistema o 50 % en tu web o tu app.",
   link: "quvant.com.ar/primeros-100",
 };
 

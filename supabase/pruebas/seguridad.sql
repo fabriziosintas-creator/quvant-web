@@ -224,8 +224,8 @@ begin
     res := res || format(E'Ana no ve las visitas\t%s', case when filas = 0 then 'OK' else 'FALLA: ve ' || filas end);
 
     -- ── Primeros 100 (Ana, ya confirmada, reserva desde su cuenta) ───
-    texto := public.reservar_lugar_promo('sistema_2_meses')::text;
-    res := res || format(E'Ana (gimnasios) reserva los 2 meses del sistema\t%s',
+    texto := public.reservar_lugar_promo('sistema_1_mes')::text;
+    res := res || format(E'Ana (gimnasios) reserva el mes gratis del sistema\t%s',
       case when texto like '%reservado%' or texto like '%espera%' then 'OK (' || texto || ')' else 'FALLA: ' || texto end);
 
     select count(*) into filas from public.promo_lugares;

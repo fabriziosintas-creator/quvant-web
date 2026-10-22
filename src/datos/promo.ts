@@ -16,7 +16,7 @@ export const PROMO = {
   /** Ejemplo: cuántos lugares ya se dieron (solo si la base todavía no tiene la promo). */
   EJEMPLO_DADOS: 37,
   registro: "/registro?promo=primeros-100",
-  /** Los rubros que pueden elegir los 2 meses del sistema (el dato real está en promo_config). */
+  /** Los rubros que pueden elegir el mes gratis del sistema (el dato real está en promo_config). */
   rubrosSistema: ["industria", "gimnasios"],
 } as const;
 
@@ -50,8 +50,8 @@ export const VIDEO_PROMO: {
   ],
 };
 
-export type IdBeneficio = "web_app_50" | "sistema_2_meses";
-export const BENEFICIOS: readonly IdBeneficio[] = ["web_app_50", "sistema_2_meses"];
+export type IdBeneficio = "web_app_50" | "sistema_1_mes";
+export const BENEFICIOS: readonly IdBeneficio[] = ["web_app_50", "sistema_1_mes"];
 export const esBeneficio = (valor: unknown): valor is IdBeneficio => typeof valor === "string" && (BENEFICIOS as readonly string[]).includes(valor);
 
 export const PROMO_TEXTOS = {
@@ -59,7 +59,7 @@ export const PROMO_TEXTOS = {
   etiqueta: "Primeros 100",
   titulo: "Para los primeros 100 que se suman.",
   bajada:
-    "Elegí lo que más te sirve: 50 % de descuento en el desarrollo de tu web o tu app, o dos meses sin cargo del sistema para administrar tu negocio.",
+    "Elegí lo que más te sirve: 50 % de descuento en el desarrollo de tu web o tu app, o un mes sin cargo del sistema para administrar tu negocio.",
   contador: {
     quedan: "Quedan {n} de {tope}",
     dados: "{n} lugares ya tienen dueño.",
@@ -77,7 +77,7 @@ export const PROMO_TEXTOS = {
   /** Antes de abrirla desde el panel (todavía no tiene fecha de comienzo). */
   antes: {
     titulo: "Primeros 100 arranca muy pronto.",
-    texto: "Los primeros 100 que se registren van a elegir 2 meses gratis del sistema o 50 % en su web o su app. Mientras tanto, podés crear tu cuenta.",
+    texto: "Los primeros 100 que se registren van a elegir 1 mes gratis del sistema o 50 % en su web o su app. Mientras tanto, podés crear tu cuenta.",
     boton: "Crear mi cuenta",
   },
 
@@ -143,11 +143,11 @@ export const PROMO_TEXTOS = {
       condicion: "Se usa aprobando el presupuesto dentro de los 90 días.",
     },
     sistema: {
-      titulo: "2 meses gratis del sistema",
+      titulo: "1 mes gratis del sistema",
       para: "Para Industria y comercio, y Gimnasios y fitness.",
       texto: "El sistema para administrar tu negocio: caja, stock, precios y compras, desde la computadora y el celular.",
       incluye: ["La puesta en marcha con nosotros", "Tus productos y precios cargados", "Todas las funciones de tu rubro"],
-      noIncluye: "Sin tarjeta y sin débito automático: al terminar los dos meses te preguntamos si seguís.",
+      noIncluye: "Sin tarjeta y sin débito automático: al terminar el mes te preguntamos si seguís.",
       condicion: "Se activa dentro de los 60 días.",
     },
     incluyeTitulo: "Incluye",
@@ -169,7 +169,7 @@ export const PROMO_TEXTOS = {
      * {desde}, {hasta} y {tope} se completan con lo que dice la base
      * (promo_config): desde es el día en que se abre la promo en el panel.
      * Sin precio del abono a propósito (decisión de fabrizio): se informa
-     * por escrito antes de que terminen los 2 meses.
+     * por escrito antes de que termine el mes.
      *
      * Sin razón social, CUIT, domicilio ni email del organizador y sin más
      * límites para el beneficio 2, por ahora; tampoco se pasan por un
@@ -182,8 +182,8 @@ export const PROMO_TEXTOS = {
       "Cómo se asigna el lugar. Al registrarse (o desde su cuenta, si ya la tenía) la persona elige uno de los dos beneficios. El lugar se asigna solo, con un número del 1 al {tope}, en el orden en que se confirman los emails; se ve en la cuenta y llega por email. Registrarse y reservar no tiene costo ni obliga a contratar nada.",
       "Lista de espera. Quien confirma cuando ya no quedan lugares queda en lista de espera, que no da derecho al beneficio. Si Quvant abre más lugares, avisa por email y se pueden reservar desde la cuenta. Un lugar asignado no pasa a otra persona.",
       "Beneficio 1: 50 % en una web o una app. Descuento del 50 % sobre el precio del desarrollo de una web nueva (o la renovación completa de una existente) o de una app a medida, para cualquier rubro. El presupuesto se arma con los mismos criterios y precios que para cualquier cliente y muestra el precio sin descuento, el descuento y el total. No incluye dominio, hosting, mantenimiento mensual, carga de contenidos ni servicios de terceros. Quvant envía el presupuesto dentro de los 15 días hábiles de la primera reunión y la persona tiene 90 días corridos desde que lo recibe para aprobarlo; si no lo aprueba en ese plazo, el beneficio vence.",
-      "Beneficio 2: 2 meses sin cargo del sistema. Uso sin cargo, durante 2 meses, del sistema de gestión de Quvant para negocios de los rubros con sistema disponible: Industria y comercio, y Gimnasios y fitness. Incluye la puesta en marcha con el equipo de Quvant, la carga inicial de productos y precios a partir de las planillas del negocio y las funciones del sistema para su rubro. Los 2 meses corren desde el día en que el sistema queda funcionando en el negocio. Las puestas en marcha se coordinan por orden de lugar: la persona tiene 60 días corridos para empezar desde que Quvant le ofrece una fecha, y si la demora es de Quvant, ese plazo se extiende.",
-      "Al terminar los 2 meses. No se cobra nada ni se renueva solo: no se pide tarjeta ni hay débito automático. Antes de que terminen, Quvant informa por escrito el precio vigente del abono y la persona decide si sigue; si sigue, lo acepta de forma expresa. Si no sigue, puede pedir sus datos en una planilla dentro de los 30 días siguientes; después se borran.",
+      "Beneficio 2: 1 mes sin cargo del sistema. Uso sin cargo, durante 1 mes, del sistema de gestión de Quvant para negocios de los rubros con sistema disponible: Industria y comercio, y Gimnasios y fitness. Incluye la puesta en marcha con el equipo de Quvant, la carga inicial de productos y precios a partir de las planillas del negocio y las funciones del sistema para su rubro. El mes corre desde el día en que el sistema queda funcionando en el negocio. Las puestas en marcha se coordinan por orden de lugar: la persona tiene 60 días corridos para empezar desde que Quvant le ofrece una fecha, y si la demora es de Quvant, ese plazo se extiende.",
+      "Al terminar el mes. No se cobra nada ni se renueva solo: no se pide tarjeta ni hay débito automático. Antes de que termine, Quvant informa por escrito el precio vigente del abono y la persona decide si sigue; si sigue, lo acepta de forma expresa. Si no sigue, puede pedir sus datos en una planilla dentro de los 30 días siguientes; después se borran.",
       "Baja. Se puede dejar el beneficio en cualquier momento, sin costo, avisando por el mismo medio por el que se pidió (la web, WhatsApp o email).",
       "Condiciones generales. El beneficio es personal: no se transfiere, no se cambia por dinero ni por otro servicio y no se suma a otras promociones. Estas bases no se modifican en perjuicio de quien ya tiene su lugar.",
       "Datos personales. Los datos del registro se usan para asignar el lugar y coordinar el beneficio, según la política de privacidad (quvant.com.ar/privacidad); el teléfono, solo para coordinarlo. Se puede pedir el acceso, la corrección o el borrado de los datos (Ley 25.326).",
@@ -197,12 +197,12 @@ export const PROMO_TEXTOS = {
   },
 
   /** Los beneficios en una línea (cuenta, emails, panel). */
-  beneficiosCortos: { web_app_50: "50 % en tu web o tu app", sistema_2_meses: "2 meses gratis del sistema" },
+  beneficiosCortos: { web_app_50: "50 % en tu web o tu app", sistema_1_mes: "1 mes gratis del sistema" },
 
   /** La cinta de arriba del encabezado. */
   cinta: {
-    largo: "Lanzamiento: los primeros 100 eligen 50 % en su web o 2 meses gratis del sistema",
-    corto: "Primeros 100: 50 % en tu web o 2 meses gratis",
+    largo: "Lanzamiento: los primeros 100 eligen 50 % en su web o 1 mes gratis del sistema",
+    corto: "Primeros 100: 50 % en tu web o 1 mes gratis",
     quedan: "Quedan {n}",
     cerrar: "Cerrar el aviso",
   },
@@ -211,10 +211,10 @@ export const PROMO_TEXTOS = {
   portal: {
     etiqueta: "Primeros 100 registros",
     /** El título, con la parte que se resalta aparte. */
-    resalte: "2 meses gratis",
+    resalte: "1 mes gratis",
     titulo: "de sistema administrativo para tu negocio",
     texto: "Mirá en 40 segundos qué hace el sistema por tu negocio.",
-    /** Los 2 meses son para los rubros con sistema (rubros_sistema); para el resto, el 50 % (ver las bases). */
+    /** El mes gratis es para los rubros con sistema (rubros_sistema); para el resto, el 50 % (ver las bases). */
     nota: "O, según tu rubro, 50 % en tu web o tu app.",
     accion: "Ver el video",
     estados: { abierta: "Quedan {n} de {tope}", pronto: "Arranca muy pronto", llena: "Lista de espera" },
@@ -241,7 +241,7 @@ export const PROMO_TEXTOS = {
 
   /** Una línea con link, para Sistemas, Contacto y el pie. */
   entrada: {
-    texto: "Primeros 100: elegí 50 % en tu web o 2 meses gratis del sistema.",
+    texto: "Primeros 100: elegí 50 % en tu web o 1 mes gratis del sistema.",
     link: "Ver cómo",
   },
 
@@ -257,18 +257,18 @@ export const PROMO_TEXTOS = {
     errores: {
       beneficio: "Elegí uno de los dos beneficios.",
       telefono: "Dejanos un teléfono para coordinar tu beneficio.",
-      noDisponible: "Los 2 meses del sistema todavía no están disponibles para tu rubro.",
+      noDisponible: "El mes gratis del sistema todavía no está disponible para tu rubro.",
     },
   },
 
   /** El email a quienes ya tienen cuenta y aceptaron novedades (se manda solo con el OK de fabrizio). */
   novedad: {
-    asunto: "Primeros 100: 2 meses gratis del sistema o 50 % en tu web",
+    asunto: "Primeros 100: 1 mes gratis del sistema o 50 % en tu web",
     vistaPrevia: "Para las primeras 100 personas. Quedan {n} lugares.",
     titulo: "Hola, {nombre}.",
     texto: "Como tenés cuenta en Quvant y nos dijiste que querías recibir novedades, te lo contamos antes que a nadie: arrancamos con Primeros 100.",
     beneficios: [
-      "2 meses gratis del sistema para administrar tu negocio (Industria y comercio; Gimnasios y fitness).",
+      "1 mes gratis del sistema para administrar tu negocio (Industria y comercio; Gimnasios y fitness).",
       "O 50 % en el desarrollo de tu web o tu app, para cualquier rubro.",
     ],
     quedan: "Quedan {n} de {tope} lugares, hasta el {hasta}.",
@@ -287,7 +287,7 @@ export const PROMO_TEXTOS = {
     queSigue: "Te escribimos por WhatsApp para arrancar, por orden de lugar. Si querés adelantarte, escribinos vos.",
     plazos: {
       web_app_50: "Para usarlo, el presupuesto se aprueba dentro de los 90 días.",
-      sistema_2_meses: "Los dos meses se activan dentro de los 60 días. Sin tarjeta y sin débito automático.",
+      sistema_1_mes: "El mes gratis se activa dentro de los 60 días. Sin tarjeta y sin débito automático.",
     },
     boton: "Escribirnos por WhatsApp",
     aviso: {

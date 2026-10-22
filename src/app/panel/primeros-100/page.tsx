@@ -55,7 +55,7 @@ async function Contenido() {
         <Indicador etiqueta={I.espera} valor={numero(espera.length)} />
         <Indicador etiqueta={I.pedidos} valor={numero(pedidos.length)} />
         <Indicador etiqueta={I.web} valor={numero(conNumero.filter((l) => l.beneficio === "web_app_50").length)} />
-        <Indicador etiqueta={I.sistema} valor={numero(conNumero.filter((l) => l.beneficio === "sistema_2_meses").length)} />
+        <Indicador etiqueta={I.sistema} valor={numero(conNumero.filter((l) => l.beneficio === "sistema_1_mes").length)} />
         <Indicador
           etiqueta={I.tarjetas}
           valor={numero(tarjetas)}

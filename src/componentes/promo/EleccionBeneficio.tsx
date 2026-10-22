@@ -7,9 +7,9 @@ import { PROMO_TEXTOS, type IdBeneficio } from "@/datos/promo";
 const T = PROMO_TEXTOS;
 
 /**
- * "Elegí tu beneficio": dos tarjetas grandes, para el dedo. Los 2 meses
- * del sistema se apagan (con su motivo) si el rubro elegido todavía no
- * tiene sistema; si estaban elegidos y cambia el rubro, se sueltan.
+ * "Elegí tu beneficio": dos tarjetas grandes, para el dedo. El mes gratis
+ * del sistema se apaga (con su motivo) si el rubro elegido todavía no
+ * tiene sistema; si estaba elegido y cambia el rubro, se suelta.
  */
 export function EleccionBeneficio({
   nicho,
@@ -24,11 +24,11 @@ export function EleccionBeneficio({
 }) {
   const [elegido, setElegido] = useState<string>(inicial ?? "");
   const conSistema = rubrosSistema.includes(nicho);
-  const valor = elegido === "sistema_2_meses" && nicho && !conSistema ? "" : elegido;
+  const valor = elegido === "sistema_1_mes" && nicho && !conSistema ? "" : elegido;
 
   const opciones: Array<{ id: IdBeneficio; titulo: string; texto: string; disponible: boolean }> = [
     { id: "web_app_50", titulo: T.beneficios.web.titulo, texto: T.beneficios.web.texto, disponible: true },
-    { id: "sistema_2_meses", titulo: T.beneficios.sistema.titulo, texto: T.beneficios.sistema.texto, disponible: !nicho || conSistema },
+    { id: "sistema_1_mes", titulo: T.beneficios.sistema.titulo, texto: T.beneficios.sistema.texto, disponible: !nicho || conSistema },
   ];
 
   return (

@@ -1770,7 +1770,7 @@ export type Database = {
       }
     }
     Enums: {
-      beneficio_promo: "web_app_50" | "sistema_2_meses"
+      beneficio_promo: "web_app_50" | "sistema_1_mes"
       estado_cliente: "demo_mostrada" | "en_prueba" | "activo" | "baja"
       estado_local:
         | "por_visitar"
@@ -1937,7 +1937,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      beneficio_promo: ["web_app_50", "sistema_2_meses"],
+      beneficio_promo: ["web_app_50", "sistema_1_mes"],
       estado_cliente: ["demo_mostrada", "en_prueba", "activo", "baja"],
       estado_local: [
         "por_visitar",
