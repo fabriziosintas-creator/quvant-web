@@ -1968,35 +1968,6 @@ html[data-vista="texto"]::view-transition-group(*) {
   animation-delay: 0s !important;
 }
 
-/* Los canales de la portada: el pulso que corre por el cable encendido. */
-.cable-flujo {
-  animation: flujo 1.8s linear infinite;
-}
-
-@keyframes flujo {
-  to {
-    stroke-dashoffset: -18;
-  }
-}
-
-/* En el celular, la línea que une los canales se llena con el scroll. */
-@supports (animation-timeline: view()) {
-  .linea-canales {
-    animation: llenar-linea linear both;
-    animation-timeline: view();
-    animation-range: entry 30% cover 75%;
-  }
-}
-
-@keyframes llenar-linea {
-  from {
-    transform: scaleY(0);
-  }
-  to {
-    transform: scaleY(1);
-  }
-}
-
 /*
  * El pulso que baja por la línea hacia el canal siguiente. Se mueve con
  * transform (el 100% es el alto de la línea): animar "top" obligaba a
@@ -2024,16 +1995,12 @@ html[data-vista="texto"]::view-transition-group(*) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cable-flujo,
-  .pulso-canal,
-  .linea-canales {
+  .pulso-canal {
     animation: none;
   }
 }
 
-html[data-vista="texto"] .cable-flujo,
-html[data-vista="texto"] .pulso-canal,
-html[data-vista="texto"] .linea-canales {
+html[data-vista="texto"] .pulso-canal {
   animation: none;
 }
 

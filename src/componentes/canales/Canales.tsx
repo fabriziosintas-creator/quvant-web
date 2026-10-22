@@ -1,63 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import {
-  ViewTransition,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  useSyncExternalStore,
-  type CSSProperties,
-} from "react";
+import { ViewTransition, useEffect, useRef, useState, type CSSProperties } from "react";
 import { ACENTO_CANAL, type IdCanal } from "@/datos/colores";
 import { CANALES, INICIO } from "@/datos/textos";
-import { usePrefiereQuieto } from "@/estado/quieto";
 import { useVista } from "@/estado/vista";
 import { IconoCanal } from "./IconoCanal";
 import { tipoTransicion } from "./navegacion";
-import { puntosDeCurva, usePuntosACables, type Destino } from "./puntosACables";
 import { VistaPreviaCanal } from "./VistaPreviaCanal";
 
 const TEXTOS = INICIO.canales;
 const SEGUNDOS_POR_CANAL = 4.8;
 
-type Par = [number, number];
-/** Un cable: el trazo del SVG y sus cuatro puntos de control (para que los puntos de la grilla caigan justo encima). */
-type Cable = { d: string; id: IdCanal; control: [Par, Par, Par, Par] | null };
-
-const consultaAncha = (aviso: () => void) => {
-  const consulta = window.matchMedia("(min-width: 1024px)");
-  consulta.addEventListener("change", aviso);
-  return () => consulta.removeEventListener("change", aviso);
-};
-/** Si se ve la versión de computadora (lista, cables y monitor). En el servidor, no. */
-function useAncho() {
-  return useSyncExternalStore(consultaAncha, () => window.matchMedia("(min-width: 1024px)").matches, () => false);
-}
-
-const PUNTOS_POR_CABLE = 22;
-const PUNTOS_EN_LA_LINEA = 56;
-
 /**
  * Los canales de la portada: por dónde seguir mirando.
  *
  * Computadora: la lista de canales a la izquierda y un monitor a la
- * derecha, unidos por cables (las líneas de conexión). El canal al frente
- * se enciende con su color, su cable lleva un pulso que corre hacia el
- * monitor y el monitor muestra una vista en vivo de lo que hay adentro.
- * Se recorren solos; al pasar el mouse por uno, se queda en ese. Hay un
- * botón para pausar el recorrido.
+ * derecha, sin líneas ni cables entre los dos (decisión de fabrizio): el
+ * canal al frente se pone en blanco y el monitor muestra una vista en vivo
+ * de lo que hay adentro. Se recorren solos, uno por uno; al pasar el mouse
+ * por uno, se queda en ese. Hay un botón para pausar el recorrido.
  *
- * Antes de todo eso, el paso desde la portada (puntosACables.ts): los
- * puntos de la grilla de la marca se ordenan con el scroll y se vuelven los
- * cables (en la computadora) o la línea de las tarjetas (en el celular).
- *
- * Celular: una línea vertical que une las tarjetas de cada canal, como un
- * mapa de subte; se va llenando con el scroll. Sin mouse, lo que en la
- * computadora pasa al pasar por encima pasa con el scroll: la tarjeta que
- * queda en el medio de la pantalla se enciende y su vista se mueve.
+ * Celular: las tarjetas de cada canal, una debajo de la otra. Sin mouse,
+ * lo que en la computadora pasa al pasar por encima pasa con el scroll: la
+ * tarjeta que queda en el medio de la pantalla mueve su vista.
  *
  * Cada nombre de canal comparte transición con el encabezado de su
  * página: al tocarlo, la palabra viaja hasta allá.
@@ -68,55 +34,12 @@ export function Canales() {
   const [encima, setEncima] = useState(false);
   const [enPausa, setEnPausa] = useState(false);
   const [aLaVista, setALaVista] = useState(false);
-  const [cables, setCables] = useState<Cable[]>([]);
   const caja = useRef<HTMLDivElement>(null);
-  const monitor = useRef<HTMLDivElement>(null);
-  const filas = useRef<Array<HTMLAnchorElement | null>>([]);
   const tarjetas = useRef<Array<HTMLLIElement | null>>([]);
   const [alCentro, setAlCentro] = useState(-1);
-  const quieto = usePrefiereQuieto();
-  const ancho = useAncho();
-  const lienzo = useRef<HTMLCanvasElement>(null);
-  const lienzoCelular = useRef<HTMLCanvasElement>(null);
-  const trazos = useRef<SVGSVGElement>(null);
-  const listaCelular = useRef<HTMLOListElement>(null);
-  const conPuntos = vista === "3d" && !quieto;
 
   const canal = CANALES[activo];
   const recorriendo = vista === "3d" && aLaVista && !encima && !enPausa;
-
-  // Los cables: de la punta derecha de cada fila al puerto del monitor.
-  const trazar = useCallback(() => {
-    const raiz = caja.current?.getBoundingClientRect();
-    const pantalla = monitor.current?.getBoundingClientRect();
-    if (!raiz || !pantalla || pantalla.width === 0) return;
-    const x1 = pantalla.left - raiz.left;
-    const y1 = pantalla.top - raiz.top + pantalla.height / 2;
-    setCables(
-      CANALES.map((c, i) => {
-        const fila = filas.current[i]?.getBoundingClientRect();
-        if (!fila) return { d: "", id: c.id, control: null };
-        const x0 = fila.right - raiz.left;
-        const y0 = fila.top - raiz.top + fila.height / 2;
-        const curva = (x1 - x0) * 0.55;
-        return {
-          d: `M ${x0} ${y0} C ${x0 + curva} ${y0}, ${x1 - curva} ${y1}, ${x1} ${y1}`,
-          id: c.id,
-          control: [[x0, y0], [x0 + curva, y0], [x1 - curva, y1], [x1, y1]],
-        };
-      }),
-    );
-  }, []);
-
-  useLayoutEffect(() => {
-    const raiz = caja.current;
-    if (!raiz) return;
-    trazar();
-    const observador = new ResizeObserver(trazar);
-    observador.observe(raiz);
-    document.fonts?.ready.then(trazar);
-    return () => observador.disconnect();
-  }, [trazar]);
 
   useEffect(() => {
     const raiz = caja.current;
@@ -145,54 +68,6 @@ export function Canales() {
     return () => observador.disconnect();
   }, [vista]);
 
-  // Computadora: los puntos caen sobre los cables; cuando llegan, aparecen los cables de verdad.
-  usePuntosACables({
-    lienzo,
-    disparador: caja,
-    activo: conPuntos && ancho,
-    version: cables.map((c) => c.d).join("|"),
-    destinos: (rectLienzo) => {
-      const raiz = caja.current?.getBoundingClientRect();
-      if (!raiz) return [];
-      const dx = raiz.left - rectLienzo.left;
-      const dy = raiz.top - rectLienzo.top;
-      return cables.flatMap((cable): Destino[] =>
-        cable.control
-          ? puntosDeCurva(...cable.control, PUNTOS_POR_CABLE).map((p) => ({ x: p.x + dx, y: p.y + dy, color: ACENTO_CANAL[cable.id] }))
-          : [],
-      );
-    },
-    alAvanzar: (avance) => {
-      if (trazos.current) trazos.current.style.opacity = String(Math.min(1, Math.max(0, (avance - 0.78) / 0.2)));
-    },
-  });
-
-  // Celular: los puntos caen sobre la línea que une las tarjetas (con el color de cada tramo).
-  usePuntosACables({
-    lienzo: lienzoCelular,
-    disparador: listaCelular,
-    activo: conPuntos && !ancho,
-    inicio: "top 92%",
-    fin: "top 45%",
-    lado: 3,
-    destinos: (rectLienzo) => {
-      const lista = listaCelular.current?.getBoundingClientRect();
-      if (!lista) return [];
-      const dx = lista.left - rectLienzo.left;
-      const dy = lista.top - rectLienzo.top;
-      const desde = 24;
-      const hasta = Math.min(lista.height - 40, 1000);
-      const colores = CANALES.map((c) => ACENTO_CANAL[c.id as IdCanal]);
-      return Array.from({ length: PUNTOS_EN_LA_LINEA }, (_, i) => {
-        const y = desde + ((hasta - desde) * i) / (PUNTOS_EN_LA_LINEA - 1);
-        // La línea lleva los colores de los canales repartidos en todo su alto.
-        const tramo = Math.min(colores.length - 1, Math.floor((y / lista.height) * colores.length));
-        return { x: 5.5 + dx, y: y + dy, color: colores[tramo] };
-      });
-    },
-    alAvanzar: () => {},
-  });
-
   useEffect(() => {
     if (!recorriendo) return;
     const temporizador = setTimeout(
@@ -209,42 +84,13 @@ export function Canales() {
           {TEXTOS.titulo}
         </h2>
 
-        {/* Computadora: lista, cables y monitor. */}
+        {/* Computadora: la lista y el monitor. */}
         <div
           ref={caja}
           onPointerEnter={() => setEncima(true)}
           onPointerLeave={() => setEncima(false)}
-          className="relative mt-14 hidden grid-cols-[minmax(0,0.9fr)_6rem_minmax(0,1.1fr)] items-center lg:grid xl:grid-cols-[minmax(0,0.9fr)_8rem_minmax(0,1.1fr)]"
+          className="relative mt-14 hidden grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] items-center gap-16 lg:grid xl:gap-24"
         >
-          {/* Los puntos de la grilla que se vuelven cables (arranca arriba, a la altura del título). */}
-          <canvas
-            ref={lienzo}
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 -top-48 h-[calc(100%+12rem)] w-full"
-          />
-          <svg ref={trazos} aria-hidden className="pointer-events-none absolute inset-0 h-full w-full overflow-visible">
-            {cables.map((cable, i) =>
-              cable.d ? (
-                <g key={cable.id}>
-                  <path d={cable.d} fill="none" stroke="#26262B" strokeWidth="1" />
-                  {i === activo ? (
-                    <>
-                      <path d={cable.d} fill="none" stroke={ACENTO_CANAL[cable.id]} strokeWidth="1" opacity="0.5" />
-                      <path
-                        d={cable.d}
-                        fill="none"
-                        stroke={ACENTO_CANAL[cable.id]}
-                        strokeWidth="2"
-                        strokeDasharray="4 14"
-                        className="cable-flujo"
-                      />
-                    </>
-                  ) : null}
-                </g>
-              ) : null,
-            )}
-          </svg>
-
           <ol className="relative">
             {CANALES.map((c, i) => {
               const encendido = i === activo;
@@ -252,15 +98,12 @@ export function Canales() {
               return (
                 <li key={c.id} style={{ "--acento": ACENTO_CANAL[id] } as CSSProperties}>
                   <Link
-                    ref={(elemento) => {
-                      filas.current[i] = elemento;
-                    }}
                     href={c.ruta}
                     transitionTypes={[tipoTransicion("/", c.ruta)]}
                     onPointerEnter={() => setActivo(i)}
                     onFocus={() => setActivo(i)}
                     data-cursor-texto={TEXTOS.entrar}
-                    className="group relative flex items-center gap-5 border-b border-profundo py-5 first:border-t"
+                    className="group relative flex items-center gap-5 py-5"
                   >
                     <span className="min-w-0 flex-1">
                       <ViewTransition name={`canal-${id}`} share="morph-web" default="none">
@@ -284,33 +127,17 @@ export function Canales() {
                       id={id}
                       className={`size-5 shrink-0 transition-colors duration-(--duracion-rapida) ${encendido ? "text-[var(--acento)]" : "text-profundo"}`}
                     />
-                    {/* El tiempo que queda en este canal. */}
-                    {encendido && recorriendo ? (
-                      <span
-                        key={activo}
-                        aria-hidden
-                        className="absolute -bottom-px left-0 h-px bg-[var(--acento)]"
-                        style={{ animation: `avance ${SEGUNDOS_POR_CANAL}s linear forwards` }}
-                      />
-                    ) : encendido ? (
-                      <span aria-hidden className="absolute -bottom-px left-0 h-px w-full bg-[var(--acento)]" />
-                    ) : null}
                   </Link>
                 </li>
               );
             })}
           </ol>
 
-          <span aria-hidden />
-
           {/* El monitor: lo que hay dentro del canal al frente. */}
           <div
-            ref={monitor}
             style={{ "--acento": ACENTO_CANAL[canal.id as IdCanal] } as CSSProperties}
             className="relative overflow-hidden rounded-2xl border border-profundo bg-negro transition-colors duration-(--duracion-media)"
           >
-            {/* El puerto donde llegan los cables. */}
-            <span aria-hidden className="absolute -left-px top-1/2 z-10 block h-6 w-[3px] -translate-y-1/2 bg-[var(--acento)]" />
             <div className="flex items-center gap-3 border-b border-profundo px-4 py-2.5">
               <span aria-hidden className="flex gap-1.5">
                 <span className="size-1.5 bg-[var(--acento)]" />
@@ -382,46 +209,25 @@ export function Canales() {
           </div>
         </div>
 
-        {/* Celular y pantallas medianas: la línea de canales. */}
-        <ol ref={listaCelular} className="relative mt-10 lg:hidden">
-          <canvas
-            ref={lienzoCelular}
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 -top-32 z-10 h-[min(calc(100%+8rem),70rem)] w-full"
-          />
-          <span aria-hidden className="absolute bottom-10 left-[5px] top-6 w-px bg-profundo" />
-          <span
-            aria-hidden
-            className="linea-canales absolute bottom-10 left-[5px] top-6 w-px origin-top"
-            style={{
-              background: `linear-gradient(${CANALES.map((c) => ACENTO_CANAL[c.id as IdCanal]).join(", ")})`,
-            }}
-          />
+        {/* Celular y pantallas medianas: las tarjetas de los canales. */}
+        <ol className="relative mt-10 lg:hidden">
           {CANALES.map((c, i) => {
             const id = c.id as IdCanal;
-            const encendida = i === alCentro;
             return (
               <li
                 key={c.id}
                 ref={(elemento) => {
                   tarjetas.current[i] = elemento;
                 }}
-                className="relative pb-6 pl-8 last:pb-0"
-                style={{ "--acento": ACENTO_CANAL[id] } as CSSProperties}
+                className="relative pb-6 last:pb-0"
               >
-                <span
-                  aria-hidden
-                  className={`absolute left-0 top-5 block size-[11px] border border-[var(--acento)] transition-colors ${encendida ? "bg-[var(--acento)]" : "bg-negro"}`}
-                />
                 <Link
                   href={c.ruta}
                   transitionTypes={[tipoTransicion("/", c.ruta)]}
-                  className={`group block overflow-hidden rounded-2xl border bg-negro transition-colors active:border-[var(--acento)] ${
-                    encendida ? "border-[var(--acento)]" : "border-profundo"
-                  }`}
+                  className="group block overflow-hidden rounded-2xl border border-profundo bg-negro"
                 >
                   <span className="relative block aspect-[16/9] overflow-hidden">
-                    <VistaPreviaCanal id={id} vivo={encendida} />
+                    <VistaPreviaCanal id={id} vivo={i === alCentro} />
                   </span>
                   <span className="flex items-end justify-between gap-4 p-4">
                     <span className="min-w-0">
@@ -432,7 +238,7 @@ export function Canales() {
                     </span>
                     <span
                       aria-hidden
-                      className="flex size-10 shrink-0 items-center justify-center border border-profundo font-plex text-blanco transition-colors group-active:border-[var(--acento)]"
+                      className="flex size-10 shrink-0 items-center justify-center border border-profundo font-plex text-blanco"
                     >
                       →
                     </span>
