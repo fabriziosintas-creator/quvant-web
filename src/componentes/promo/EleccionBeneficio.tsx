@@ -38,8 +38,9 @@ export function EleccionBeneficio({
         {opciones.map((o) => (
           <label
             key={o.id}
-            className={`flex min-h-24 cursor-pointer flex-col gap-2 rounded-2xl border p-4 transition-colors has-[:checked]:border-blanco has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blanco ${
-              o.disponible ? "border-profundo bg-profundo/35 hover:border-acero" : "cursor-not-allowed border-profundo/60 opacity-50"
+            style={{ "--acento": "#7BD389" } as React.CSSProperties}
+            className={`group flex min-h-28 flex-col gap-2 rounded-2xl border p-5 has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-blanco ${
+              o.disponible ? "tarjeta-3d cursor-pointer border-profundo" : "cursor-not-allowed border-profundo/60 opacity-50"
             }`}
           >
             <span className="flex items-center gap-3">
@@ -52,7 +53,7 @@ export function EleccionBeneficio({
                 onChange={() => setElegido(o.id)}
                 className="peer sr-only"
               />
-              <span aria-hidden className="size-2.5 shrink-0 border border-acero peer-checked:border-blanco peer-checked:bg-blanco" />
+              <span aria-hidden className="tarjeta-3d__marca size-3 shrink-0 border border-acero peer-checked:border-[var(--acento)] peer-checked:bg-[var(--acento)]" />
               <span className="titulo text-lg leading-snug text-blanco">{o.titulo}</span>
             </span>
             <span className="font-lectura text-sm leading-relaxed text-acero">{o.texto}</span>

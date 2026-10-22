@@ -20,7 +20,8 @@ export function MarcoCuenta({
   etiqueta?: string;
   /** El color del punto y del brillo de arriba (en la cuenta, el del rubro de la persona). */
   acento?: string;
-  ancho?: "angosto" | "lectura";
+  /** "amplio": el registro por pasos, con la ficha y la Q al costado en computadora. */
+  ancho?: "angosto" | "lectura" | "amplio";
   children: ReactNode;
 }) {
   return (
@@ -33,7 +34,7 @@ export function MarcoCuenta({
             "radial-gradient(ellipse 55% 65% at 12% 0%, color-mix(in srgb, var(--acento) 12%, transparent), transparent 70%)",
         }}
       />
-      <div className={`contenedor relative pb-20 pt-28 md:pb-28 md:pt-36 ${ancho === "angosto" ? "max-w-2xl" : "max-w-3xl"}`}>
+      <div className={`contenedor relative pb-20 pt-28 md:pb-28 md:pt-36 ${ancho === "angosto" ? "max-w-2xl" : ancho === "amplio" ? "max-w-2xl lg:max-w-5xl" : "max-w-3xl"}`}>
         <p className="flex items-center gap-3 font-lectura text-sm font-medium text-acero">
           <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           {etiqueta}

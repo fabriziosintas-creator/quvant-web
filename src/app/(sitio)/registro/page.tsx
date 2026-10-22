@@ -23,7 +23,7 @@ export default async function Registro() {
     ? { quedan: estado.quedan, tope: estado.tope, abierta: promoAbierta(estado), rubrosSistema: estado.rubros_sistema }
     : null;
   return (
-    <MarcoCuenta titulo={CUENTA.registro.titulo} bajada={CUENTA.registro.bajada}>
+    <MarcoCuenta titulo={CUENTA.registro.titulo} bajada={CUENTA.registro.bajada} ancho="amplio">
       <Suspense fallback={<FormularioRegistro />}>
         <RegistroConParametros promo={promo} />
       </Suspense>
