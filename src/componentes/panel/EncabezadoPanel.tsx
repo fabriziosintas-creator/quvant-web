@@ -73,6 +73,7 @@ const ACENTO_SECCION: Record<string, string> = {
   "/panel/resumen": AURORA[0],
   "/panel/comercial": ACENTO_CANAL.servicios,
   "/panel/clientes": ACENTO_NICHO.gimnasios,
+  "/panel/primeros-100": ACENTO_NICHO.farmacias,
   "/panel/plantillas": ACENTO_NICHO.industria,
   "/panel/nichos": ACENTO_NICHO.kioscos,
   "/panel/nucleos": ACENTO_NICHO.pymes,
@@ -84,7 +85,7 @@ const ACENTO_SECCION: Record<string, string> = {
 
 function Secciones({ actual }: { actual: (ruta: string) => boolean }) {
   return (
-    <ul className="flex h-11 items-stretch gap-5 lg:gap-6">
+    <ul className="flex h-11 items-stretch gap-4 xl:gap-6">
       {PANEL_ADMIN.secciones.map((seccion) => (
         <li key={seccion.ruta} className="flex">
           <Link
