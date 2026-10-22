@@ -14,3 +14,15 @@ Verificado el 21 de octubre de 2026 en la demo del sistema (`https://yunque-rust
 **Pendiente para fabrizio:** confirmar que la venta sin conexión funciona igual en el sistema de los clientes, no solo en la demo (la demo emula la sincronización).
 
 **Para el video:** las capturas muestran "con yunque" abajo a la izquierda, el logo de la demo arriba y las marcas "DEMO". Hay que recortarlos o taparlos (regla 4 del prompt).
+
+---
+
+# Paso 10 · Prueba de punta a punta
+
+Corrida el 21 de octubre de 2026 contra la base real, con la promo abierta solo mientras duraba la prueba (tope 3) y todo lo de prueba borrado al final. **30/30**: cinta con los lugares, página con contador y vigencia, demostración medida, registro con teléfono obligatorio, lugar al confirmar el email, reserva desde la cuenta, carrera por el último lugar (uno lo gana, el otro queda en espera, nunca más lugares que el tope), panel (estado, exportar CSV, pausar y reabrir sin perder la fecha de comienzo), lista de espera que reserva al ampliar el cupo, la cruz de la cinta y sin errores de JavaScript.
+
+**Lighthouse (celular, build de producción):** la cinta no mueve nada (CLS 0) y no cambia el rendimiento: el inicio da 43 a 54 con la promo abierta y 45 a 47 cerrada. /primeros-100: rendimiento 60, accesibilidad 96, buenas prácticas 100, SEO 100. Los avisos de accesibilidad del inicio (el "QUVANT" del pie, las fichas y los puntos del carrusel de trabajos) son de antes de la promo.
+
+**Lo que se arregló en el camino:**
+- En desarrollo, las páginas quedaban recargándose sin parar. Tailwind recorría todo el proyecto y vigilaba también `.next/`, donde el servidor escribe todo el tiempo. Ahora busca clases solo en `src/` (`globals.css`). Además, Next 16.4.0 → 16.4.2, que también corrige fallas de seguridad de 16.4.1.
+- Al confirmar el email, la base da el lugar y el contador de la web se vence en ese momento (`/auth/confirmar`), no al minuto.

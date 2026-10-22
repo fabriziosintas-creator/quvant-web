@@ -1,8 +1,10 @@
 import type { EmailOtpType } from "@supabase/supabase-js";
+import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { after, type NextRequest } from "next/server";
 import { destinoSeguro } from "@/servidor/cuenta/validacion";
 import { despuesDeConfirmar } from "@/servidor/emails/bienvenida";
+import { ETIQUETA_PROMO } from "@/servidor/promo/estado";
 import { configSupabase } from "@/supabase/entorno";
 import { crearClienteServidor } from "@/supabase/servidor";
 
@@ -42,6 +44,8 @@ export async function GET(pedido: NextRequest) {
     // El email de bienvenida (y el aviso a los socios) sale después de responder: no demora la entrada.
     const id = data.user?.id;
     if (id) after(() => despuesDeConfirmar(id));
+    // Al confirmar, la base da el lugar de "Primeros 100": el contador de la web se vence ya, no en un minuto.
+    revalidateTag(ETIQUETA_PROMO, { expire: 0 });
   }
   if (tipo === "recovery") {
     destino.pathname = "/cuenta";
