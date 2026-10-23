@@ -5,7 +5,7 @@ import { Capitulo } from "@/componentes/canales/Capitulo";
 import { CLASE_BOTON, CLASE_BOTON_SECUNDARIO } from "@/componentes/cuenta/estilos";
 import { BotonLugar } from "@/componentes/promo/BotonLugar";
 import { Contador } from "@/componentes/promo/Contador";
-import { GrillaSituaciones } from "@/componentes/promo/GrillaSituaciones";
+import { GrillaLuz } from "@/componentes/estructura/GrillaLuz";
 import { InvitacionRegalo } from "@/componentes/promo/InvitacionRegalo";
 import { MedirPromo } from "@/componentes/promo/MedirPromo";
 import { IrAlVideo } from "@/componentes/promo/IrAlVideo";
@@ -124,11 +124,11 @@ export default async function PrimerosCien() {
       {/* Las tres situaciones, para tocar. */}
       <Capitulo id="situaciones" etiqueta={T.situaciones.etiqueta}>
         <p className="max-w-3xl titulo text-[clamp(1.75rem,4.2vw,3rem)] leading-[1.1] text-blanco">{T.situaciones.bajada}</p>
-        <GrillaSituaciones>
+        <GrillaLuz className="mt-12 grid gap-6 lg:grid-cols-3 lg:gap-5">
           {situaciones.map(({ id, textos, Demo, color }, i) => (
-            <article key={id} className="situacion" style={{ "--acento": color } as CSSProperties}>
+            <article key={id} className="situacion tarjeta-luz entra-luz" style={{ "--acento": color } as CSSProperties}>
               <div className="flex items-start justify-between gap-4">
-                <span aria-hidden className="situacion__numero font-michroma">
+                <span aria-hidden className="numero-luz font-michroma">
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <VerEnVideo id={id} />
@@ -143,7 +143,7 @@ export default async function PrimerosCien() {
               </div>
             </article>
           ))}
-        </GrillaSituaciones>
+        </GrillaLuz>
         <p className="mt-8 font-plex text-xs text-acero">{T.situaciones.nota}</p>
       </Capitulo>
 

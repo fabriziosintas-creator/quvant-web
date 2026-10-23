@@ -3,13 +3,13 @@
 import { useRef, type PointerEvent, type ReactNode } from "react";
 
 /**
- * La grilla de las tres situaciones: cada tarjeta (.situacion) se inclina
- * un poco en 3D siguiendo al mouse, con un reflejo que lo acompaña. Se
- * endereza mientras se usa la demostración de adentro (al apretar), para
- * que mover un control no haga bailar la tarjeta. Solo con mouse y sin
- * "menos movimiento". Lo visual vive en globals.css (.situacion).
+ * Una grilla de tarjetas de luz (.tarjeta-luz, en globals.css): cada una se
+ * inclina un poco en 3D siguiendo al mouse, con un reflejo que lo acompaña.
+ * Se endereza mientras se usa lo de adentro (al apretar), para que mover un
+ * control no haga bailar la tarjeta. Solo con mouse y sin "menos
+ * movimiento". La usan las situaciones de la promo y el contacto.
  */
-export function GrillaSituaciones({ children }: { children: ReactNode }) {
+export function GrillaLuz({ children, className }: { children: ReactNode; className?: string }) {
   const actual = useRef<HTMLElement | null>(null);
   const apretado = useRef(false);
 
@@ -20,7 +20,7 @@ export function GrillaSituaciones({ children }: { children: ReactNode }) {
 
   const mover = (evento: PointerEvent<HTMLDivElement>) => {
     if (evento.pointerType !== "mouse" || apretado.current || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const tarjeta = (evento.target as HTMLElement).closest<HTMLElement>(".situacion");
+    const tarjeta = (evento.target as HTMLElement).closest<HTMLElement>(".tarjeta-luz");
     if (actual.current && actual.current !== tarjeta) enderezar();
     actual.current = tarjeta;
     if (!tarjeta) return;
@@ -45,7 +45,7 @@ export function GrillaSituaciones({ children }: { children: ReactNode }) {
         enderezar();
       }}
       onPointerUp={() => (apretado.current = false)}
-      className="mt-12 grid gap-6 lg:grid-cols-3 lg:gap-5"
+      className={className}
     >
       {children}
     </div>

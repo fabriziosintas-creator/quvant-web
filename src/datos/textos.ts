@@ -174,6 +174,14 @@ export const CONTACTO_SECCION = {
   directo: {
     titulo: "¿Ya sabés lo que querés?",
     filas: { whatsapp: "WhatsApp", email: "Email", instagram: "Instagram" },
+    /** Una línea por vía, en sus tarjetas. */
+    detalles: {
+      chat: "Responde al instante y, si hace falta, te pasa con nosotros.",
+      whatsapp: "Escribinos directo, como a cualquier contacto.",
+      instagram: "Lo que vamos haciendo, día a día.",
+      email: "Para mandar con calma, con adjuntos.",
+    },
+    chat: "Chat",
   },
   asuntoEmail: "Consulta desde la web de Quvant",
 } as const;

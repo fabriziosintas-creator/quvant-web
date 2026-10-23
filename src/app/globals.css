@@ -1586,24 +1586,20 @@ html[data-liviano="si"] .tarjeta-3d {
 }
 
 /*
- * Las tres situaciones de la promo: tarjetas de vidrio con el color de su
- * situación (--acento, que también toma la demostración de adentro), el
- * número grande con degradé, un borde de luz que gira al pasar (el mismo
+ * Tarjetas de luz (las situaciones de la promo, el contacto): vidrio con el
+ * color de cada una (--acento), un borde de luz que gira al pasar (el mismo
  * --portal-giro del botón de la portada, con máscara para que sea solo el
- * borde) y un reflejo que sigue al mouse (--luz-x/y, GrillaSituaciones).
- * Aparecen subiendo con el scroll (animation-timeline: view(): la animación
- * la maneja el navegador, sin JavaScript), una después de la otra.
+ * borde), un reflejo que sigue al mouse (--luz-x/y) y una inclinación leve
+ * en 3D (--rx/--ry), las dos desde GrillaLuz. Una tarjeta que se elige (un
+ * radio como hijo directo) deja el borde encendido mientras está elegida.
+ * El radio se cambia con --radio-luz (lo de acá le gana a las utilidades).
  */
-.situacion {
+.tarjeta-luz {
   --rx: 0deg;
   --ry: 0deg;
   position: relative;
   isolation: isolate;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  border-radius: 1.5rem;
-  padding: 1.25rem;
+  border-radius: var(--radio-luz, 1.5rem);
   background:
     radial-gradient(240px circle at var(--luz-x, 50%) var(--luz-y, 0%), color-mix(in oklch, var(--acento) 14%, transparent), transparent 70%),
     linear-gradient(165deg, color-mix(in oklch, var(--acento) 13%, transparent), color-mix(in oklch, var(--color-negro) 55%, transparent) 50%);
@@ -1611,11 +1607,19 @@ html[data-liviano="si"] .tarjeta-3d {
     inset 0 0 0 1px color-mix(in oklch, var(--acento) 24%, transparent),
     0 40px 80px -50px color-mix(in oklch, var(--acento) 70%, transparent);
   transform: perspective(1200px) rotateX(var(--rx)) rotateY(var(--ry));
-  /* La demostración va encastrada abajo: los bordes redondeados de la tarjeta la recortan. */
+  /* Lo que va encastrado abajo (la demostración): los bordes redondeados lo recortan. */
   overflow: hidden;
   transition:
     transform 320ms var(--ease-quvant),
     box-shadow 420ms var(--ease-quvant);
+}
+
+/* Las tres situaciones de la promo: el número, el texto y la demostración encastrada abajo. */
+.situacion {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.25rem;
 }
 
 .situacion__demo .pantalla {
@@ -1642,7 +1646,7 @@ html[data-liviano="si"] .tarjeta-3d {
   }
 }
 
-.situacion::before {
+.tarjeta-luz::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -1666,19 +1670,28 @@ html[data-liviano="si"] .tarjeta-3d {
   pointer-events: none;
 }
 
-.situacion:hover::before,
-.situacion:focus-within::before {
+.tarjeta-luz:hover::before,
+.tarjeta-luz:focus-within::before,
+.tarjeta-luz:has(> input:checked)::before {
   opacity: 1;
 }
 
-.situacion:hover {
+.tarjeta-luz:hover,
+.tarjeta-luz:has(> input:checked) {
   box-shadow:
     inset 0 0 0 1px color-mix(in oklch, var(--acento) 35%, transparent),
     0 44px 90px -46px color-mix(in oklch, var(--acento) 85%, transparent);
 }
 
-.situacion__numero {
-  font-size: clamp(2.5rem, 6vw, 3.25rem);
+/* La elegida, con teclado: el anillo de foco alrededor de la tarjeta. */
+.tarjeta-luz:has(> input:focus-visible) {
+  outline: 2px solid var(--color-blanco);
+  outline-offset: 3px;
+}
+
+/* El número grande con degradé (01, 02…). El tamaño se cambia con --tam-numero. */
+.numero-luz {
+  font-size: var(--tam-numero, clamp(2.5rem, 6vw, 3.25rem));
   line-height: 1;
   letter-spacing: 0.04em;
   background: linear-gradient(160deg, white 10%, var(--acento) 70%);
@@ -1688,23 +1701,30 @@ html[data-liviano="si"] .tarjeta-3d {
   filter: drop-shadow(0 0 18px color-mix(in oklch, var(--acento) 45%, transparent));
 }
 
+/*
+ * Aparecen subiendo con el scroll (animation-timeline: view(): la animación
+ * la maneja el navegador, sin JavaScript), una después de la otra.
+ */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .situacion {
-      animation: situacion-entra linear both;
+    .entra-luz {
+      animation: entra-luz linear both;
       animation-timeline: view();
       animation-range: entry 0% cover 28%;
     }
-    .situacion:nth-child(2) {
+    .entra-luz:nth-child(2) {
       animation-range: entry 8% cover 34%;
     }
-    .situacion:nth-child(3) {
+    .entra-luz:nth-child(3) {
       animation-range: entry 16% cover 40%;
+    }
+    .entra-luz:nth-child(4) {
+      animation-range: entry 24% cover 46%;
     }
   }
 }
 
-@keyframes situacion-entra {
+@keyframes entra-luz {
   from {
     opacity: 0;
     translate: 0 70px;
@@ -1720,10 +1740,10 @@ html[data-liviano="si"] .tarjeta-3d {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .situacion {
+  .tarjeta-luz {
     transform: none;
   }
-  .situacion::before {
+  .tarjeta-luz::before {
     animation: none;
   }
 }

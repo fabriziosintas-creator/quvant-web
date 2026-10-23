@@ -1,6 +1,7 @@
 "use client";
 
-import type { FormEvent, MouseEvent } from "react";
+import type { CSSProperties, FormEvent, MouseEvent } from "react";
+import { AURORA } from "@/datos/colores";
 import { armarMensajeContacto, urlEmailMensaje, urlWhatsApp } from "@/datos/contacto";
 import { CONTACTO_SECCION, PLATAFORMAS } from "@/datos/textos";
 
@@ -12,8 +13,10 @@ import { CONTACTO_SECCION, PLATAFORMAS } from "@/datos/textos";
  */
 
 const CLASE_CAMPO =
-  "w-full rounded-2xl border border-profundo bg-transparent px-4 py-3 font-lectura text-base text-blanco placeholder:text-acero/60 focus:border-acero focus:outline-none md:text-sm";
+  "w-full rounded-2xl border border-profundo bg-negro/50 px-4 py-3 font-lectura text-base text-blanco transition-[border-color,box-shadow] placeholder:text-acero/60 focus:border-[var(--acento)] focus:shadow-[0_0_0_3px_color-mix(in_oklch,var(--acento)_22%,transparent)] focus:outline-none md:text-sm";
 const CLASE_ETIQUETA = "mb-2 block font-lectura text-sm font-medium text-acero";
+/** Cada opción de "Qué necesitás" con su color (los de las situaciones de la promo). */
+const COLOR_OPCION: Record<string, string> = { sistema: AURORA[0], app: AURORA[2], web: AURORA[1] };
 
 function leerDatos(formulario: HTMLFormElement) {
   const datos = new FormData(formulario);
@@ -65,11 +68,14 @@ export function FormularioContacto() {
           {campos.necesidad.opciones.map((opcion, indice) => (
             <label
               key={opcion.id}
-              className="flex min-h-12 cursor-pointer items-center gap-3 rounded-2xl border border-transparent bg-profundo/35 px-4 py-3 transition-colors has-[:checked]:border-acero"
+              style={{ "--acento": COLOR_OPCION[opcion.id] } as CSSProperties}
+              className="tarjeta-luz flex cursor-pointer flex-col gap-3 p-4 [--radio-luz:1rem] [--tam-numero:1.9rem]"
             >
               <input type="radio" name="necesidad" value={opcion.id} defaultChecked={indice === 0} className="peer sr-only" />
-              <span aria-hidden className="size-2 shrink-0 border border-acero peer-checked:bg-blanco" />
-              <span className="font-lectura text-sm leading-snug text-acero peer-checked:text-blanco">{opcion.texto}</span>
+              <span aria-hidden className="numero-luz font-michroma">
+                {String(indice + 1).padStart(2, "0")}
+              </span>
+              <span className="font-lectura text-sm font-medium leading-snug text-acero transition-colors peer-checked:text-blanco">{opcion.texto}</span>
             </label>
           ))}
         </div>
@@ -126,8 +132,9 @@ export function FormularioContacto() {
       <div className="mt-2 flex flex-wrap items-center gap-4">
         <button
           type="submit"
-          className="rounded-full inline-flex h-12 items-center justify-center bg-blanco px-7 font-lectura text-sm font-medium text-negro transition-colors hover:bg-acero"
+          className="rounded-full inline-flex h-12 items-center justify-center gap-2.5 bg-blanco px-7 font-lectura text-sm font-medium text-negro shadow-[0_18px_48px_-14px_var(--acento)] transition-[background-color,box-shadow] hover:bg-acero hover:shadow-[0_22px_56px_-12px_var(--acento)]"
         >
+          <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
           {botones.whatsapp}
         </button>
         <button
