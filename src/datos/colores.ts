@@ -38,6 +38,9 @@ export type IdCanal = keyof typeof ACENTO_CANAL;
 /** Los tres colores del brillo de fondo (portada y cierre). */
 export const AURORA = ["#4FD1C5", "#6C8CFF", "#F0A33A"] as const;
 
+/** Las dos fuerzas de Nosotros: desarrollo (Michel) y comercial (Fabrizio). */
+export const COLOR_FUERZA = { desarrollo: "#6C8CFF", comercial: "#F0A33A" } as const;
+
 /** Convierte "#rrggbb" a "r g b" para usar con opacidad en CSS: rgb(var(--x) / 0.3). */
 export function aRgb(hex: string) {
   const n = parseInt(hex.slice(1), 16);

@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { Cara } from "@/componentes/estructura/Foto";
+import { COLOR_FUERZA } from "@/datos/colores";
 import { NOSOTROS } from "@/datos/textos";
 import { useVista } from "@/estado/vista";
 import { CURVA, DURACION } from "@/componentes/estructura/movimiento";
@@ -23,8 +24,8 @@ if (typeof window !== "undefined") {
  * quieto.
  */
 
-const COLOR_DESARROLLO = "#6C8CFF";
-const COLOR_COMERCIAL = "#F0A33A";
+const COLOR_DESARROLLO = COLOR_FUERZA.desarrollo;
+const COLOR_COMERCIAL = COLOR_FUERZA.comercial;
 
 /** Si el elemento está a la vista (para no animar lo que nadie mira). */
 function useEnVista(ref: RefObject<HTMLElement | null>) {
@@ -274,15 +275,16 @@ function TarjetaFuerza({
           izquierda ? "md:ml-auto md:pr-10 lg:pr-14" : "md:mr-auto md:pl-10 lg:pl-14"
         }`}
       >
-        <p className="flex items-center gap-3 font-lectura text-sm font-medium text-[var(--acento)]">
-          <span aria-hidden className="size-1.5 bg-[var(--acento)]" />
+        <p className="flex items-center gap-3 titulo text-2xl leading-tight text-[var(--acento)] md:text-[1.9rem]">
+          <span aria-hidden className="size-2.5 shrink-0 bg-[var(--acento)] shadow-[0_0_18px_var(--acento)]" />
           {fuerza.etiqueta}
         </p>
-        <p className="mt-6">
-          <span className="block font-michroma text-[clamp(4.5rem,11vw,9rem)] leading-[0.9] text-blanco">
+        {/* El dato se lee de corrido: "+10 años construyendo software", el número con degradé y lo que cuenta al lado, grande. */}
+        <p className="mt-8 flex flex-wrap items-end gap-x-4 gap-y-3 sm:flex-nowrap">
+          <span className="numero-luz block font-michroma leading-[0.9] [--tam-numero:clamp(3.5rem,6.5vw,6rem)]">
             <Contador numero={fuerza.dato.numero} prefijo={fuerza.dato.prefijo} />
           </span>
-          <span className="mt-3 block max-w-[18rem] font-lectura text-sm leading-snug text-acero">
+          <span className="mb-[0.2em] block min-w-0 max-w-[13ch] titulo text-[clamp(1.3rem,2vw,1.75rem)] leading-[1.12] text-blanco">
             {fuerza.dato.etiqueta}
           </span>
         </p>

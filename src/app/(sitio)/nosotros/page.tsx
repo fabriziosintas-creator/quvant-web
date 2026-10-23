@@ -4,6 +4,7 @@ import { metadatosCanal } from "@/componentes/canales/metadatos";
 import { PaginaCanal } from "@/componentes/canales/PaginaCanal";
 import { FuerzasQueSeJuntan } from "@/componentes/secciones/FuerzasQueSeJuntan";
 import { SpotQuvant } from "@/componentes/secciones/SpotQuvant";
+import { COLOR_FUERZA } from "@/datos/colores";
 import { CANALES } from "@/datos/textos";
 
 const [FUERZAS, VIDEO] = CANALES[3].capitulos;
@@ -19,7 +20,11 @@ export const metadata: Metadata = metadatosCanal("nosotros");
 export default function Nosotros() {
   return (
     <PaginaCanal id="nosotros">
-      <Capitulo id={FUERZAS.id} etiqueta={FUERZAS.nombre}>
+      <Capitulo
+        id={FUERZAS.id}
+        etiqueta={FUERZAS.nombre}
+        degrade={`linear-gradient(100deg, #ECECEE 15%, ${COLOR_FUERZA.desarrollo} 55%, ${COLOR_FUERZA.comercial} 95%)`}
+      >
         <FuerzasQueSeJuntan />
       </Capitulo>
       <Capitulo id={VIDEO.id} etiqueta={VIDEO.nombre}>
