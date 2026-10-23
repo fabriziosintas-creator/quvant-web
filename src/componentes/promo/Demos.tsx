@@ -35,8 +35,18 @@ const CLASE_BOTON_CHICO =
 
 // ─────────────────────────────────────────── Se cortó internet
 
-type Venta = { id: number; hora: string; total: number; estado: "enviada" | "pendiente" | "enviando" };
+type Venta = { id: number; hora: string; articulos: number; total: number; estado: "enviada" | "pendiente" | "enviando" };
 const TOTALES = [4800, 12350, 2100, 7900, 15600, 3450];
+const ARTICULOS = [2, 5, 1, 3, 6, 2];
+/** Las ventas de la mañana, ya mandadas: el mostrador no arranca vacío. */
+const VENTAS_DE_LA_MANANA: Venta[] = [
+  { id: -1, hora: "10:35", articulos: 1, total: 2100, estado: "enviada" },
+  { id: -2, hora: "10:27", articulos: 4, total: 12350, estado: "enviada" },
+  { id: -3, hora: "10:18", articulos: 2, total: 5400, estado: "enviada" },
+  { id: -4, hora: "10:12", articulos: 2, total: 4800, estado: "enviada" },
+];
+/** Siempre las cuatro últimas: la tarjeta no crece al cobrar. */
+const VENTAS_A_LA_VISTA = 4;
 
 function Wifi({ conectado }: { conectado: boolean }) {
   return (
@@ -53,22 +63,32 @@ function Wifi({ conectado }: { conectado: boolean }) {
 export function DemoSinInternet() {
   const T = S.sinInternet;
   const [conectado, setConectado] = useState(true);
-  const [ventas, setVentas] = useState<Venta[]>([]);
+  const [ventas, setVentas] = useState<Venta[]>(VENTAS_DE_LA_MANANA);
+  // Hasta que se toca algo, abajo va la pista de qué probar.
+  const [tocado, setTocado] = useState(false);
   const siguiente = useRef(0);
   const temporizadores = useRef<number[]>([]);
   useEffect(() => () => temporizadores.current.forEach((t) => window.clearTimeout(t)), []);
 
   const cobrar = () => {
     usoDemo("sin-internet");
+    setTocado(true);
     const n = siguiente.current++;
     const minutos = 42 + n * 3;
     const hora = `${10 + Math.floor(minutos / 60)}:${String(minutos % 60).padStart(2, "0")}`;
-    const venta: Venta = { id: n, hora, total: TOTALES[n % TOTALES.length], estado: conectado ? "enviada" : "pendiente" };
-    setVentas((v) => [venta, ...v].slice(0, 5));
+    const venta: Venta = {
+      id: n,
+      hora,
+      articulos: ARTICULOS[n % ARTICULOS.length],
+      total: TOTALES[n % TOTALES.length],
+      estado: conectado ? "enviada" : "pendiente",
+    };
+    setVentas((v) => [venta, ...v].slice(0, VENTAS_A_LA_VISTA));
   };
 
   const alternar = () => {
     usoDemo("sin-internet");
+    setTocado(true);
     if (conectado) return setConectado(false);
     setConectado(true);
     // Vuelve la conexión: lo pendiente se manda solo, de a una.
@@ -99,11 +119,14 @@ export function DemoSinInternet() {
         {T.cobrar}
       </button>
 
-      <ul className="flex flex-col gap-1.5" aria-label="Ventas de hoy">
-        {ventas.length === 0 ? <li className="font-lectura text-sm text-acero">{T.vacio}</li> : null}
+      <p className="-mb-2 font-lectura text-xs text-acero">{T.ventas}</p>
+      <ul className="flex flex-col gap-1.5" aria-label={T.ventas}>
         {ventas.map((v) => (
           <li key={v.id} className="flex items-center justify-between gap-3 rounded-lg bg-profundo/40 px-3 py-2 font-plex text-xs">
-            <span className="tabular-nums text-acero">{v.hora}</span>
+            <span className="flex flex-col tabular-nums text-acero">
+              {v.hora}
+              <span className="font-lectura text-[11px]">{T.articulos.replace("{n}", String(v.articulos)).replace("{s}", v.articulos === 1 ? "" : "s")}</span>
+            </span>
             <span className="tabular-nums text-blanco">{PESOS.format(v.total)}</span>
             <span className={`flex items-center gap-1.5 ${v.estado === "enviada" ? "text-acero" : "text-blanco"}`}>
               <span aria-hidden className={`size-1.5 ${v.estado === "enviada" ? "bg-acero" : "border border-[var(--acento)]"}`} />
@@ -114,7 +137,7 @@ export function DemoSinInternet() {
       </ul>
 
       <p aria-live="polite" className="mt-auto font-lectura text-sm text-acero">
-        {conectado ? (paraMandar > 0 ? T.enviando : ventas.length ? T.estadoConectado : "") : T.estadoCortado.replace("{n}", String(paraMandar))}
+        {!tocado ? T.pista : conectado ? (paraMandar > 0 ? T.enviando : T.estadoConectado) : T.estadoCortado.replace("{n}", String(paraMandar))}
       </p>
     </Marco>
   );
@@ -233,6 +256,12 @@ const MINIMO = 10;
 const IDEAL = 30;
 const PRODUCTO = "Disco de corte 115 mm";
 const PROVEEDOR = "Distribuidora del Oeste";
+/** Lo demás del depósito, todo arriba del mínimo: el sistema mira todos los productos, no uno. */
+const OTROS = [
+  { nombre: "Guantes de trabajo", stock: 24, minimo: 8 },
+  { nombre: "Cinta métrica 5 m", stock: 15, minimo: 6 },
+  { nombre: "Mecha para metal 8 mm", stock: 18, minimo: 10 },
+];
 
 export function DemoStock() {
   const T = S.stock;
@@ -270,9 +299,22 @@ export function DemoStock() {
         </button>
       </div>
 
+      <p className="-mb-2 font-lectura text-xs text-acero">{T.otros}</p>
+      <ul className="flex flex-col gap-1.5" aria-label={T.otros}>
+        {OTROS.map((o) => (
+          <li key={o.nombre} className="flex items-center justify-between gap-3 rounded-lg bg-profundo/40 px-3 py-2 font-plex text-xs">
+            <span className="font-lectura text-blanco">{o.nombre}</span>
+            <span className="shrink-0 tabular-nums text-acero">
+              {o.stock} · {T.minimo.replace("{n}", String(o.minimo))}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      {/* El pedido sugerido ocupa siempre su lugar: al aparecer, la tarjeta no salta. */}
       <div aria-live="polite" className="mt-auto">
         {bajo ? (
-          <div className="flex flex-col gap-2 rounded-xl border border-[var(--acento)]/60 bg-profundo/40 p-3">
+          <div className="flex min-h-28 flex-col gap-2 rounded-xl border border-[var(--acento)]/60 bg-profundo/40 p-3">
             <p className="flex items-center gap-2 font-lectura text-sm font-medium text-blanco">
               <span aria-hidden className="size-2 border border-[var(--acento)]" />
               {T.aviso.replace("{producto}", PRODUCTO)}
@@ -283,7 +325,10 @@ export function DemoStock() {
             </p>
           </div>
         ) : (
-          <p className="font-lectura text-sm text-acero">{T.todoBien}</p>
+          <div className="flex min-h-28 flex-col justify-center gap-2 rounded-xl border border-dashed border-profundo p-3">
+            <p className="font-lectura text-sm font-medium text-acero">{T.sinPedido}</p>
+            <p className="font-lectura text-sm text-acero">{T.todoBien}</p>
+          </div>
         )}
       </div>
     </Marco>

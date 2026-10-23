@@ -99,7 +99,9 @@ export const PROMO_TEXTOS = {
       enviando: "Mandando…",
       estadoCortado: "Sin internet, el mostrador sigue cobrando. {n} para mandar cuando vuelva la conexión.",
       estadoConectado: "Todo al día.",
-      vacio: "Todavía no cobraste nada. Probá cortar internet y cobrar igual.",
+      ventas: "Ventas de hoy",
+      articulos: "{n} artículo{s}",
+      pista: "Probá cortar internet y cobrar igual.",
     },
     aumento: {
       titulo: "Llegó la lista nueva del proveedor.",
@@ -129,6 +131,8 @@ export const PROMO_TEXTOS = {
       pedido: "Pedido sugerido para {proveedor}",
       llevar: "{n} unidades para volver a {ideal}",
       todoBien: "Hay stock. Vendé hasta que baje del mínimo.",
+      otros: "Otros productos",
+      sinPedido: "Pedido sugerido",
     },
   },
 

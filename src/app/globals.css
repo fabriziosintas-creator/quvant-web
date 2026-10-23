@@ -1629,6 +1629,19 @@ html[data-liviano="si"] .tarjeta-3d {
   }
 }
 
+/*
+ * Computadora: las tres tarjetas comparten las filas (número, título y
+ * texto, demostración). Así las demostraciones arrancan y terminan a la
+ * misma altura aunque los textos de arriba tengan largos distintos.
+ */
+@media (min-width: 64rem) {
+  .situacion {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 3;
+  }
+}
+
 .situacion::before {
   content: "";
   position: absolute;
